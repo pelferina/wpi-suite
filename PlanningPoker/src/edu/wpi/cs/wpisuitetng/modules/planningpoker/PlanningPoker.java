@@ -16,7 +16,7 @@ import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 
 public class PlanningPoker implements IJanewayModule{
 
-	/** The tabs used by this module -test2 */
+	/** The tabs used by this module */
 	private ArrayList<JanewayTabModel> tabs;
 	
 	/**
