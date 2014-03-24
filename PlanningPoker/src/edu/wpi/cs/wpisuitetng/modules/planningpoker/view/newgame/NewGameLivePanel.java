@@ -12,7 +12,8 @@ import javax.swing.*;
 import java.awt.Color;
 
 /**
- * Description
+ * The panel for creating a new live Planning Poker game, along with fields
+ * that have the parameters for what a new game should have.
  *
  * @author Xi Wen; Anthony Dresser; Nathan Bryant
  * @version Mar 24, 2014
