@@ -8,6 +8,8 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
+import java.awt.Dimension;
+
 import javax.swing.*;
 
 /**
@@ -28,6 +30,8 @@ public class NewGameLivePanel extends JSplitPane {
 	
 	private void setPanel(){
 		addImpl(newGameInputPanel, JSplitPane.LEFT, 1);
+		Dimension minimumSize = new Dimension(600, 200);
+		leftComponent.setMinimumSize(minimumSize);
 		addImpl(newGameReqPanel, JSplitPane.RIGHT, 2);
 	}
 

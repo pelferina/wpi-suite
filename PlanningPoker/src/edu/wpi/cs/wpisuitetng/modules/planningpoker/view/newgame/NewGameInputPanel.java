@@ -46,24 +46,25 @@ public class NewGameInputPanel extends JPanel {
 		importButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				NewGameImportWindow importWindow = new NewGameImportWindow();
+				importWindow.setVisible(true);
 			}
 		});
 	}
 	
 	private void setPanel(){
 		SpringLayout springLayout = new SpringLayout();
-		springLayout.putConstraint(SpringLayout.NORTH, minuteInput, -3, SpringLayout.NORTH, minuteLabel);
-		springLayout.putConstraint(SpringLayout.WEST, minuteInput, 0, SpringLayout.WEST, nameInput);
 		springLayout.putConstraint(SpringLayout.EAST, minuteInput, 0, SpringLayout.EAST, nameInput);
-		springLayout.putConstraint(SpringLayout.NORTH, hourInput, -3, SpringLayout.NORTH, hourLabel);
-		springLayout.putConstraint(SpringLayout.WEST, hourInput, 0, SpringLayout.WEST, nameInput);
 		springLayout.putConstraint(SpringLayout.EAST, hourInput, 0, SpringLayout.EAST, nameInput);
 		springLayout.putConstraint(SpringLayout.EAST, userStoryInput, 0, SpringLayout.EAST, nameInput);
-		springLayout.putConstraint(SpringLayout.WEST, userStoryInput, 67, SpringLayout.EAST, userStoryLabel);
-		springLayout.putConstraint(SpringLayout.NORTH, descriptionInput, 6, SpringLayout.SOUTH, nameInput);
-		springLayout.putConstraint(SpringLayout.WEST, descriptionInput, 63, SpringLayout.EAST, descriptionLabel);
 		springLayout.putConstraint(SpringLayout.EAST, descriptionInput, -300, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.EAST, nameInput, 0, SpringLayout.EAST, descriptionInput);
+		springLayout.putConstraint(SpringLayout.EAST, nameInput, -300, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.WEST, minuteInput, 0, SpringLayout.WEST, nameInput);
+		springLayout.putConstraint(SpringLayout.WEST, hourInput, 0, SpringLayout.WEST, nameInput);
+		springLayout.putConstraint(SpringLayout.WEST, userStoryInput, 0, SpringLayout.WEST, nameInput);
+		springLayout.putConstraint(SpringLayout.WEST, descriptionInput, 0, SpringLayout.WEST, nameInput);
+		springLayout.putConstraint(SpringLayout.NORTH, minuteInput, -3, SpringLayout.NORTH, minuteLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, hourInput, -3, SpringLayout.NORTH, hourLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, descriptionInput, 6, SpringLayout.SOUTH, nameInput);
 		springLayout.putConstraint(SpringLayout.NORTH, userStoryInput, -3, SpringLayout.NORTH, userStoryLabel);
 		springLayout.putConstraint(SpringLayout.SOUTH, nextButton, -10, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, userStoryLabel, 35, SpringLayout.WEST, this);
