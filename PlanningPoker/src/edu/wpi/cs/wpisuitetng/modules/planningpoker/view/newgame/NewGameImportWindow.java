@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
@@ -17,7 +18,7 @@ import javax.swing.SpringLayout;
  * @version March 24, 2014
  */
 @SuppressWarnings("serial")
-public class NewGameImportWindow extends JWindow {
+public class NewGameImportWindow extends JFrame {
 	private JPanel mainPanel = new JPanel();
 	private JButton finishButton = new JButton("Finish");
 	String[] listValue = {"Here's a Requirement", "Here's Another"};
@@ -35,7 +36,7 @@ public class NewGameImportWindow extends JWindow {
 	
 	private void setupPanel()
 	{
-		getContentPane().add(mainPanel);
+		add(mainPanel);
 		SpringLayout sl_mainPanel = new SpringLayout();
 		sl_mainPanel.putConstraint(SpringLayout.WEST, finishButton, 178, SpringLayout.WEST, mainPanel);
 		sl_mainPanel.putConstraint(SpringLayout.SOUTH, finishButton, -25, SpringLayout.SOUTH, mainPanel);
@@ -47,5 +48,6 @@ public class NewGameImportWindow extends JWindow {
 		sl_mainPanel.putConstraint(SpringLayout.SOUTH, reqList, -44, SpringLayout.NORTH, finishButton);
 		sl_mainPanel.putConstraint(SpringLayout.EAST, reqList, -78, SpringLayout.EAST, mainPanel);
 		mainPanel.add(reqList);
+		setVisible(true);
 	}
 }
