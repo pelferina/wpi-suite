@@ -37,6 +37,8 @@ public class NewGameLivePanel extends JSplitPane {
 		Dimension minimumSize = new Dimension(600, 200);
 		leftComponent.setMinimumSize(minimumSize);
 		addImpl(newGameReqPanel, JSplitPane.RIGHT, 2);
+		
+		setDividerLocation(500);
 	}
 
 }
