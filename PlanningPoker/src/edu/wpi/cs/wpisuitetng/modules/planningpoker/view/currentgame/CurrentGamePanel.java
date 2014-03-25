@@ -8,8 +8,23 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTextField;
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameInputPanel;
 
 /**
  * Description
@@ -17,11 +32,9 @@ import javax.swing.JSplitPane;
  * @author Xi Wen;Anthony Dresser; Nathan Bryant
  * @version Mar 24, 2014
  */
-public class CurrentGamePanel extends JPanel {
+public class CurrentGamePanel {
 	
-	public CurrentGamePanel(){
-		
-	}
+
 	
 
 }

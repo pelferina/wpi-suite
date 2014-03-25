@@ -10,6 +10,11 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
 
 import javax.swing.*;
 
@@ -36,17 +41,27 @@ public class NewGameInputPanel extends JPanel {
 	private final JLabel minuteLabel = new JLabel("Min.");
 	private JTextField minuteInput = new JTextField();
 	private final JLabel userLabel = new JLabel("Users:");
-	private JButton addButton = new JButton("Add");
+	public JButton addButton = new JButton("Add");
 	private JButton deleteButton = new JButton("Delete");
 	private JButton backButton  = new JButton("Back");
 	private JButton nextButton = new JButton("Next");
-	
-	public NewGameInputPanel() {
+	private  final GameModel lstGameModel;
+//	private final JList lstGame;
+	public NewGameInputPanel(GameModel gameModel) {
+		lstGameModel = gameModel;
+//		lstGame = new JList(lstGameModel);
+		
 		setPanel();
+		addButton.addActionListener(new AddGameController(lstGameModel, this));
 		importButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				NewGameImportWindow importWindow = new NewGameImportWindow();
 				importWindow.setVisible(true);
+			}
+		});
+		nameInput.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				nameInput.setText("");
 			}
 		});
 	}
@@ -114,5 +129,7 @@ public class NewGameInputPanel extends JPanel {
 		add(backButton);
 		add(nextButton);
 	}
-
+	public JTextField getTxtNewGame() {
+		return nameInput;
+	}
 }
