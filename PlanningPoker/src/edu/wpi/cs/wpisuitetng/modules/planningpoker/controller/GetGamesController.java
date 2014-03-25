@@ -40,7 +40,7 @@ public class GetGamesController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// Send a request to the core to save this message
-		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokermessage", HttpMethod.GET); // GET == read
+		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.GET); // GET == read
 		request.addObserver(new GetGamesRequestObserver(this)); // add an observer to process the response
 		request.send(); // send the request
 	}
