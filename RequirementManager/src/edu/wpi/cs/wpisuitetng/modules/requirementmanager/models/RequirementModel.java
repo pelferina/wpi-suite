@@ -204,6 +204,7 @@ public class RequirementModel extends AbstractListModel{
 	
 	 * @return the requirements held within the requirementmodel. */
 	public List<Requirement> getRequirements() {
+		System.out.println("getrequirements"+requirements.size());
 		return requirements;
 	}
 

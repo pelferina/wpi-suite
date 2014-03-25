@@ -12,9 +12,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 import javax.swing.*;
 
@@ -57,7 +61,21 @@ public class NewGameInputPanel extends JPanel {
 		addButton.addActionListener(new AddGameController(lstGameModel, this));
 		importButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				NewGameImportWindow importWindow = new NewGameImportWindow();
+				GetRequirementsController.getInstance().retrieveRequirements();
+			
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				List<Requirement> requirements = RequirementModel.getInstance().getRequirements();
+
+				System.out.println( "Internal Size: "+RequirementModel.getInstance().getRequirements().size() );
+				System.out.println( "ex Size: "+requirements.size() );
+				
+				NewGameImportWindow importWindow = new NewGameImportWindow(requirements);
 				importWindow.setVisible(true);
 			}
 		});

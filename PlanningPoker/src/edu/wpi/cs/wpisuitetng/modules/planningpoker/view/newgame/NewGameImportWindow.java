@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,6 +15,10 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
 import javax.swing.SpringLayout;
+
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+
+
 
 /**
  * @author Anthony Dresser
@@ -23,11 +28,19 @@ import javax.swing.SpringLayout;
 public class NewGameImportWindow extends JFrame {
 	private JPanel mainPanel = new JPanel();
 	private JButton finishButton = new JButton("Finish");
-	private String[] listValue = {"Here's a Requirement", "Here's Another"};
+	private String[] listValue;
 	private final JList<String> reqList = new JList<String>();
+	private final List<Requirement> requirements;
 	
-	public NewGameImportWindow()
+	public NewGameImportWindow(List<Requirement> requirements)
 	{
+		this.requirements = requirements;
+		listValue = new String[requirements.size()];
+		for (int i = 0; i < this.requirements.size(); i++) 
+		{
+			Requirement req = this.requirements.get(i);
+			listValue[i] = req.getName();
+		}
 		setupPanel();
 		finishButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
