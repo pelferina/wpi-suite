@@ -29,6 +29,8 @@ public class NewGameLivePanel extends JSplitPane {
 	private void setPanel(){
 		addImpl(newGameInputPanel, JSplitPane.LEFT, 1);
 		addImpl(newGameReqPanel, JSplitPane.RIGHT, 2);
+		
+		setDividerLocation(500);
 	}
 
 }

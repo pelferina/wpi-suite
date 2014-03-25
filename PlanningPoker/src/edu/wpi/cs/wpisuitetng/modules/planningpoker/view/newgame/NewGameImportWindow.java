@@ -3,6 +3,8 @@
  */
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -21,7 +23,7 @@ import javax.swing.SpringLayout;
 public class NewGameImportWindow extends JFrame {
 	private JPanel mainPanel = new JPanel();
 	private JButton finishButton = new JButton("Finish");
-	String[] listValue = {"Here's a Requirement", "Here's Another"};
+	private String[] listValue = {"Here's a Requirement", "Here's Another"};
 	private final JList<String> reqList = new JList<String>();
 	
 	public NewGameImportWindow()
@@ -38,7 +40,7 @@ public class NewGameImportWindow extends JFrame {
 	{
 		add(mainPanel);
 		SpringLayout sl_mainPanel = new SpringLayout();
-		sl_mainPanel.putConstraint(SpringLayout.WEST, finishButton, 178, SpringLayout.WEST, mainPanel);
+		sl_mainPanel.putConstraint(SpringLayout.HORIZONTAL_CENTER, finishButton, 0, SpringLayout.HORIZONTAL_CENTER, mainPanel);
 		sl_mainPanel.putConstraint(SpringLayout.SOUTH, finishButton, -25, SpringLayout.SOUTH, mainPanel);
 		mainPanel.setLayout(sl_mainPanel);
 		reqList.setListData(listValue);
@@ -48,6 +50,12 @@ public class NewGameImportWindow extends JFrame {
 		sl_mainPanel.putConstraint(SpringLayout.SOUTH, reqList, -44, SpringLayout.NORTH, finishButton);
 		sl_mainPanel.putConstraint(SpringLayout.EAST, reqList, -78, SpringLayout.EAST, mainPanel);
 		mainPanel.add(reqList);
+		
+		setSize(300, 500);
+		
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation(dim.width/2-getSize().width/2, dim.height/2-getSize().height/2);
+		
 		setVisible(true);
 	}
 }

@@ -8,6 +8,9 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 
 /**
@@ -18,47 +21,51 @@ import javax.swing.*;
  */
 @SuppressWarnings("serial")
 public class NewGameMainPanel extends JPanel{
-	//private JPanel mainPanel;
-	private JLabel gameNameLabel;
-	private JTextField gameNameInput;
-	private JRadioButton liveButton;
-	private JRadioButton distributedButton;
-	private ButtonGroup gameType;
-	private JButton next;
+	private JButton nextInitialButton = new JButton("Next");
+	private NewGameInitialPanel initialPanel = new NewGameInitialPanel();
+	private NewGameLivePanel livePanel = new NewGameLivePanel();
 	
 	public NewGameMainPanel(){
-		//mainPanel = new JPanel();
-		gameNameLabel = new JLabel("Game Name: ");
-		gameNameInput = new JTextField();
-		liveButton = new JRadioButton("Live");
-		distributedButton = new JRadioButton("Distributed");
-		gameType = new ButtonGroup();
-		gameType.add(liveButton);
-		gameType.add(distributedButton);
-		next = new JButton("Next");
-		setPanel();
+		setupInitialPanel();
+		nextInitialButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				removeAll();
+				setupLivePanel();
+			}
+		});
 	}
 	
-	private void setPanel(){
-		SpringLayout sl_mainPanel = new SpringLayout();
-		sl_mainPanel.putConstraint(SpringLayout.SOUTH, gameNameLabel, -30, SpringLayout.NORTH, liveButton);
-		sl_mainPanel.putConstraint(SpringLayout.NORTH, gameNameInput, -3, SpringLayout.NORTH, gameNameLabel);
-		sl_mainPanel.putConstraint(SpringLayout.WEST, gameNameInput, 0, SpringLayout.WEST, distributedButton);
-		sl_mainPanel.putConstraint(SpringLayout.EAST, gameNameInput, -104, SpringLayout.EAST, this);
-		sl_mainPanel.putConstraint(SpringLayout.EAST, gameNameLabel, 0, SpringLayout.EAST, liveButton);
-		sl_mainPanel.putConstraint(SpringLayout.NORTH, next, 41, SpringLayout.SOUTH, distributedButton);
-		sl_mainPanel.putConstraint(SpringLayout.WEST, next, 197, SpringLayout.WEST, this);
-		sl_mainPanel.putConstraint(SpringLayout.SOUTH, liveButton, -133, SpringLayout.SOUTH, this);
-		sl_mainPanel.putConstraint(SpringLayout.NORTH, distributedButton, 0, SpringLayout.NORTH, liveButton);
-		sl_mainPanel.putConstraint(SpringLayout.WEST, distributedButton, 23, SpringLayout.EAST, liveButton);
-		sl_mainPanel.putConstraint(SpringLayout.WEST, liveButton, 151, SpringLayout.WEST, this);
-		setLayout(sl_mainPanel);
-		add(gameNameLabel);
-		add(gameNameInput);
-		add(liveButton);
-		add(distributedButton);
-		add(next);
+	private void setupInitialPanel(){
+		SpringLayout springLayout = new SpringLayout();
+		
+		//Spring layout for nextButton
+		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, nextInitialButton, 0, SpringLayout.HORIZONTAL_CENTER, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, nextInitialButton, -10, SpringLayout.SOUTH, this);
+		
+		//Spring layout for initialPanel
+		springLayout.putConstraint(SpringLayout.NORTH, initialPanel, 10, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, initialPanel, 47, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, initialPanel, -6, SpringLayout.NORTH, nextInitialButton);
+		springLayout.putConstraint(SpringLayout.EAST, initialPanel, -50, SpringLayout.EAST, this);
+		
+		setLayout(springLayout);
+		
+		add(nextInitialButton);
+		add(initialPanel);
 	}
 	
-
+	private void setupLivePanel()
+	{
+		SpringLayout springLayout = new SpringLayout();
+		
+		//Spring layout for livePanel
+		springLayout.putConstraint(SpringLayout.NORTH, livePanel, 0, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, livePanel, 0, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, livePanel, 0, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.EAST, livePanel, 0, SpringLayout.EAST, this);
+		
+		setLayout(springLayout);
+		
+		add(livePanel);
+	}
 }
