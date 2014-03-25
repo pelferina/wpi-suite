@@ -38,20 +38,18 @@ public class NewGameImportWindow extends JFrame {
 	
 	private void setupPanel()
 	{
-		add(mainPanel);
+		getContentPane().add(mainPanel);
 		SpringLayout sl_mainPanel = new SpringLayout();
 		sl_mainPanel.putConstraint(SpringLayout.HORIZONTAL_CENTER, finishButton, 0, SpringLayout.HORIZONTAL_CENTER, mainPanel);
 		sl_mainPanel.putConstraint(SpringLayout.SOUTH, finishButton, -25, SpringLayout.SOUTH, mainPanel);
 		mainPanel.setLayout(sl_mainPanel);
 		reqList.setListData(listValue);
 		mainPanel.add(finishButton);
-		sl_mainPanel.putConstraint(SpringLayout.NORTH, reqList, 42, SpringLayout.NORTH, mainPanel);
 		sl_mainPanel.putConstraint(SpringLayout.WEST, reqList, 62, SpringLayout.WEST, mainPanel);
-		sl_mainPanel.putConstraint(SpringLayout.SOUTH, reqList, -44, SpringLayout.NORTH, finishButton);
 		sl_mainPanel.putConstraint(SpringLayout.EAST, reqList, -78, SpringLayout.EAST, mainPanel);
 		mainPanel.add(reqList);
 		
-		setSize(300, 500);
+		setSize(450, 300);
 		
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation(dim.width/2-getSize().width/2, dim.height/2-getSize().height/2);

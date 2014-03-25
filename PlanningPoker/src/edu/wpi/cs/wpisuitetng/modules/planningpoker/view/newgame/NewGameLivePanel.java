@@ -8,7 +8,11 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
+import java.awt.Dimension;
+
 import javax.swing.*;
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 
 /**
  * Description
@@ -18,16 +22,20 @@ import javax.swing.*;
  */
 @SuppressWarnings("serial")
 public class NewGameLivePanel extends JSplitPane {
-	
-	NewGameInputPanel newGameInputPanel = new NewGameInputPanel(); 
-	NewGameReqPanel newGameReqPanel = new NewGameReqPanel();
-	
-	public NewGameLivePanel() {
+	NewGameInputPanel newGameInputPanel;
+	NewGameReqPanel newGameReqPanel;
+	private GameModel lstgameModel;
+	public NewGameLivePanel(GameModel gameModel) {
+		lstgameModel = gameModel;
+		newGameInputPanel = new NewGameInputPanel(lstgameModel);
+		newGameReqPanel = new NewGameReqPanel();
 		setPanel();
 	}
 	
 	private void setPanel(){
 		addImpl(newGameInputPanel, JSplitPane.LEFT, 1);
+		Dimension minimumSize = new Dimension(600, 200);
+		leftComponent.setMinimumSize(minimumSize);
 		addImpl(newGameReqPanel, JSplitPane.RIGHT, 2);
 		
 		setDividerLocation(500);

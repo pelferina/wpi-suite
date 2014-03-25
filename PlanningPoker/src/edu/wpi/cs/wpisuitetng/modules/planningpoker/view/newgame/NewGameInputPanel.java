@@ -10,6 +10,11 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
 
 import javax.swing.*;
 
@@ -42,14 +47,23 @@ public class NewGameInputPanel extends JPanel {
 	private final JTextField hourTextField = new JTextField();
 	private final JTextField minutesTextField = new JTextField();
 	private final JTextField descriptionTextField = new JTextField();
+	private final GameModel lstGameModel;
 	
 	
-	public NewGameInputPanel() {
+	public NewGameInputPanel(GameModel gameModel) {
+		lstGameModel = gameModel;
 		descriptionTextField.setColumns(10);
 		setPanel();
+		addButton.addActionListener(new AddGameController(lstGameModel, this));
 		importButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				NewGameImportWindow importWindow = new NewGameImportWindow();
+				importWindow.setVisible(true);
+			}
+		});
+		nameTextField.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				nameTextField.setText("");
 			}
 		});
 	}
@@ -170,5 +184,9 @@ public class NewGameInputPanel extends JPanel {
 		add(hourTextField);
 		add(minutesTextField);
 		add(descriptionTextField);
+	}
+	
+	public JTextField getTxtNewGame() {
+		return nameTextField;
 	}
 }

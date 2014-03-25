@@ -11,7 +11,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameLivePanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameMainPanel;
 
 /**
@@ -23,11 +23,14 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameMainPane
 @SuppressWarnings("serial")
 public class MainView extends JTabbedPane {
 
-	private NewGameMainPanel newGame = new NewGameMainPanel();
-	private final JPanel currentGame = new JPanel();
-	private final JPanel pastGames = new JPanel();
+	private NewGameMainPanel newGame;
+	private final JPanel currentGame;
+	private final JPanel pastGames;
 	
-	public MainView() {
+	public MainView(GameModel gameModel) {
+		newGame = new NewGameMainPanel(gameModel);
+		currentGame = new JPanel();
+		pastGames = new JPanel();
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		addTab("New Game", newGame);
 		addTab("Current Game", currentGame);
