@@ -18,6 +18,7 @@ import java.awt.event.ActionListener;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameInputPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameMainPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -31,14 +32,14 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class AddGameController implements ActionListener {
 	
 	private final GameModel model;
-	private final NewGameInputPanel view;
+	private final NewGameMainPanel view;
 	
 	/**
 	 * Construct an AddMessageController for the given model, view pair
 	 * @param model the model containing the messages
 	 * @param view the view where the user enters new messages
 	 */
-	public AddGameController(GameModel model, NewGameInputPanel view) {
+	public AddGameController(GameModel model, NewGameMainPanel view) {
 		this.model = model;
 		this.view = view;
 	}
@@ -51,12 +52,12 @@ public class AddGameController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		// Get the text that was entered
-		String message = view.getTxtNewGame().getText();
+		String message = view.initialPanel.getTxtNewGame().getText();
 		
 		// Make sure there is text
 		if (message.length() > 0) {
 			// Clear the text field
-			view.getTxtNewGame().setText("");
+			view.initialPanel.getTxtNewGame().setText("");
 			
 			// Send a request to the core to save this message
 			final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.PUT); // PUT == create

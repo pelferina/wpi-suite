@@ -8,7 +8,15 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import javax.swing.*;
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 
 /**
  * Description
@@ -26,6 +34,12 @@ public class NewGameInitialPanel extends JPanel{
 	
 	public NewGameInitialPanel(){
 		setPanel();
+
+		gameNameLabel.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				gameNameLabel.setText("");
+			}
+		});
 	}
 	
 	private void setPanel(){
@@ -50,5 +64,8 @@ public class NewGameInitialPanel extends JPanel{
 		add(distributedButton);
 	}
 	
+	public JTextField getTxtNewGame() {
+		return gameNameInput;
+	}
 
 }

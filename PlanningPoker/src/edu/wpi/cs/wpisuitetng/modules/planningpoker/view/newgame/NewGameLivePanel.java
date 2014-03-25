@@ -24,10 +24,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 public class NewGameLivePanel extends JSplitPane {
 	NewGameInputPanel newGameInputPanel;
 	NewGameReqPanel newGameReqPanel;
-	private GameModel lstgameModel;
 	public NewGameLivePanel(GameModel gameModel) {
-		lstgameModel = gameModel;
-		newGameInputPanel = new NewGameInputPanel(lstgameModel);
+		newGameInputPanel = new NewGameInputPanel();
 		newGameReqPanel = new NewGameReqPanel();
 		setPanel();
 	}

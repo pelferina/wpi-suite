@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 
 /**
@@ -24,9 +25,10 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 @SuppressWarnings("serial")
 public class NewGameMainPanel extends JPanel{
 	private JButton nextInitialButton = new JButton("Next");
-	private NewGameInitialPanel initialPanel = new NewGameInitialPanel();
+	public NewGameInitialPanel initialPanel = new NewGameInitialPanel();
 	private NewGameLivePanel livePanel;
-	
+	private final GameModel lstGameModel;
+
 	public NewGameMainPanel(GameModel gameModel){
 		livePanel = new NewGameLivePanel(gameModel);
 		setupInitialPanel();
@@ -36,6 +38,10 @@ public class NewGameMainPanel extends JPanel{
 				setupLivePanel();
 			}
 		});
+		
+		lstGameModel = gameModel;
+		nextInitialButton.addActionListener(new AddGameController(lstGameModel, this));
+		
 	}
 	
 	private void setupInitialPanel(){
