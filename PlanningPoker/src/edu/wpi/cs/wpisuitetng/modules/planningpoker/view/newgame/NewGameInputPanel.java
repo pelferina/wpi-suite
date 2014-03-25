@@ -51,14 +51,11 @@ public class NewGameInputPanel extends JPanel {
 	private final JTextField hourTextField = new JTextField();
 	private final JTextField minutesTextField = new JTextField();
 	private final JTextField descriptionTextField = new JTextField();
-	private final GameModel lstGameModel;
 	
 	
-	public NewGameInputPanel(GameModel gameModel) {
-		lstGameModel = gameModel;
+	public NewGameInputPanel() {
 		descriptionTextField.setColumns(10);
 		setPanel();
-		addButton.addActionListener(new AddGameController(lstGameModel, this));
 		importButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				GetRequirementsController.getInstance().retrieveRequirements();
@@ -77,11 +74,6 @@ public class NewGameInputPanel extends JPanel {
 				
 				NewGameImportWindow importWindow = new NewGameImportWindow(requirements);
 				importWindow.setVisible(true);
-			}
-		});
-		nameTextField.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				nameTextField.setText("");
 			}
 		});
 	}
@@ -202,9 +194,5 @@ public class NewGameInputPanel extends JPanel {
 		add(hourTextField);
 		add(minutesTextField);
 		add(descriptionTextField);
-	}
-	
-	public JTextField getTxtNewGame() {
-		return nameTextField;
 	}
 }

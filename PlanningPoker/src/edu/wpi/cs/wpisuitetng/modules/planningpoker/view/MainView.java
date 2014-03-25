@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame.CurrentGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameMainPanel;
 
 /**
@@ -29,7 +30,7 @@ public class MainView extends JTabbedPane {
 	
 	public MainView(GameModel gameModel) {
 		newGame = new NewGameMainPanel(gameModel);
-		currentGame = new JPanel();
+		currentGame = new CurrentGamePanel(gameModel);
 		pastGames = new JPanel();
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		addTab("New Game", newGame);

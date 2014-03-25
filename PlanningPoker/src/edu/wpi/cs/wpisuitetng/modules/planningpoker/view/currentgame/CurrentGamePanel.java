@@ -25,6 +25,7 @@ import javax.swing.JTextField;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameInputPanel;
+
 import javax.swing.SpringLayout;
 
 /**
@@ -33,23 +34,38 @@ import javax.swing.SpringLayout;
  * @author Xi Wen;Anthony Dresser; Nathan Bryant
  * @version Mar 24, 2014
  */
+@SuppressWarnings({"serial"})
 public class CurrentGamePanel extends JPanel {
 	
 	private String[] testList = {"test1", "test2"};
-	private JList<String> gameList = new JList<String>();
+	private JList<String> List = new JList<String>(); 
 	
-	public CurrentGamePanel() {
+	private final JList gameList;
+	private final GameModel lstGameModel;
+	
+
+	public CurrentGamePanel(GameModel gameModel) {
+		// Construct the list box model
+		lstGameModel = gameModel;
+		// Construct the components to be displayed
+		gameList = new JList(lstGameModel);
+		// Change the font of the JList
+		gameList.setFont(gameList.getFont().deriveFont(11));
 		setPanel();
+		// Put the listbox in a scroll pane
+//		JScrollPane lstScrollPane = new JScrollPane(gameList);
+//		lstScrollPane.setPreferredSize(new Dimension(500,400));
+//		add(lstScrollPane);
 	}
 	
 	private void setPanel(){
 		SpringLayout springLayout = new SpringLayout();
-		springLayout.putConstraint(SpringLayout.NORTH, gameList, 44, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, gameList, 64, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, gameList, 256, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, gameList, 386, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, List, 44, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, List, 64, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, List, 256, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, List, 386, SpringLayout.WEST, this);
 		setLayout(springLayout);
-		gameList.setListData(testList);;
-		add(gameList);
+		List.setListData(testList);
+		add(List);
 	}
 }

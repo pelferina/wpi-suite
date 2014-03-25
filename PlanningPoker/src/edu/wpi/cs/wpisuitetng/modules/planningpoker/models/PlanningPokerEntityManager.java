@@ -64,9 +64,10 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
 		if (!db.save(newGame, s.getProject())) {
+			System.err.println("Game not saved");
 			throw new WPISuiteException();
 		}
-
+		System.out.println("Game saved");
 		// Return the newly created message (this gets passed back to the client)
 		return newGame;
 	}
@@ -95,7 +96,7 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 		// Passing a dummy PostBoardMessage lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
 		List<Model> messages = db.retrieveAll(new GameSession(null), s.getProject());
-
+		System.out.println(messages);
 		// Return the list of messages as an array
 		return messages.toArray(new GameSession[0]);
 	}
