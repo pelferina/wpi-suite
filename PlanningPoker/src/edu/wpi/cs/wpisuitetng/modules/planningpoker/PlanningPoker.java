@@ -1,22 +1,17 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker;
 
-import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameMainPanel;
-
-import javax.swing.SwingConstants;
 
 public class PlanningPoker implements IJanewayModule{
 
@@ -29,6 +24,7 @@ public class PlanningPoker implements IJanewayModule{
 	public PlanningPoker() {
 		
 		// Setup button panel
+		GameModel gameModel = new GameModel();
 		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
@@ -37,7 +33,7 @@ public class PlanningPoker implements IJanewayModule{
 		buttonPanel.add(new JButton("Current Game"));
 		
 		// Setup the main panel
-		MainView mainPanel = new MainView();
+		MainView mainPanel = new MainView(gameModel);
 		/*
 		mainPanel.setLayout(new BorderLayout());
 		JLabel label = new JLabel("Planning Poker");
