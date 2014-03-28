@@ -68,18 +68,15 @@ public class NewGameInputPanel extends JPanel {
 		importButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				GetRequirementsController.getInstance().retrieveRequirements();
-			
+				
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
-				List<Requirement> requirements = RequirementModel.getInstance().getRequirements();
 
-				System.out.println( "Internal Size: "+RequirementModel.getInstance().getRequirements().size() );
-				System.out.println( "ex Size: "+requirements.size() );
+				List<Requirement> requirements = RequirementModel.getInstance().getRequirements();
 				
 				JPanel panel = new JPanel();
 				Window parentWindow = SwingUtilities.windowForComponent(panel); 
