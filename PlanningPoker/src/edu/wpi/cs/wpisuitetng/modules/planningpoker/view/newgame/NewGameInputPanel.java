@@ -8,6 +8,8 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
+import java.awt.Frame;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -23,7 +25,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 import javax.swing.*;
 
 /**
- * Description
+ * This is the window for the user to create a planning poker session
  *
  * @author Xi Wen; Anthony Dresser; Nathan Bryant
  * @version Mar 24, 2014
@@ -31,6 +33,7 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class NewGameInputPanel extends JPanel {
 	
+	private String reqSelection;
 	private JButton importButton = new JButton("Import");
 	private final JLabel nameLabel = new JLabel("Name:");
 	private final JLabel descriptionLabel = new JLabel("Description:");
@@ -51,9 +54,15 @@ public class NewGameInputPanel extends JPanel {
 	private final JTextField hourTextField = new JTextField();
 	private final JTextField minutesTextField = new JTextField();
 	private final JTextField descriptionTextField = new JTextField();
+	private NewGameLivePanel newGameLiveP;
 	
-	
-	public NewGameInputPanel() {
+	/**
+	 * The constructor for the NewGameInputPanel
+	 * has void parameters
+	 * @param nglp, The NewGameLivePanel that it was added from
+	 */
+	public NewGameInputPanel(NewGameLivePanel nglp) {
+		newGameLiveP = nglp;
 		descriptionTextField.setColumns(10);
 		setPanel();
 		importButton.addActionListener(new ActionListener(){
@@ -72,12 +81,23 @@ public class NewGameInputPanel extends JPanel {
 				System.out.println( "Internal Size: "+RequirementModel.getInstance().getRequirements().size() );
 				System.out.println( "ex Size: "+requirements.size() );
 				
-				NewGameImportWindow importWindow = new NewGameImportWindow(requirements);
-				importWindow.setVisible(true);
+				JPanel panel = new JPanel();
+				Window parentWindow = SwingUtilities.windowForComponent(panel); 
+				// or pass 'this' if you are inside the panel
+				Frame parentFrame = null;
+				if (parentWindow instanceof Frame) {
+				    parentFrame = (Frame)parentWindow;
+				}
+				NewGameImportWindow importWindow = new NewGameImportWindow(requirements, parentFrame);
+				reqSelection = importWindow.currentSelectedReq;
+				newGameLiveP.updatePanels(reqSelection);
 			}
 		});
 	}
-	
+	/**
+	 * a lot of Window Builder generated UI
+	 * for setting the NewGameInputPage
+	 */
 	private void setPanel(){
 		userList.setListData(listValue);
 		SpringLayout springLayout = new SpringLayout();

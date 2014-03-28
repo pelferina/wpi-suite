@@ -25,11 +25,16 @@ public class NewGameLivePanel extends JSplitPane {
 	NewGameInputPanel newGameInputPanel;
 	NewGameReqPanel newGameReqPanel;
 	public NewGameLivePanel(GameModel gameModel) {
-		newGameInputPanel = new NewGameInputPanel();
+		newGameInputPanel = new NewGameInputPanel(this);
 		newGameReqPanel = new NewGameReqPanel();
 		setPanel();
 	}
-	
+	/**
+	 * This sets up the panels
+	 * Must be private so that it cannot be set up more than once
+	 * Only to be called in the constructor
+	 * <3
+	 */
 	private void setPanel(){
 		addImpl(newGameInputPanel, JSplitPane.LEFT, 1);
 		Dimension minimumSize = new Dimension(600, 200);
@@ -37,6 +42,14 @@ public class NewGameLivePanel extends JSplitPane {
 		addImpl(newGameReqPanel, JSplitPane.RIGHT, 2);
 		
 		setDividerLocation(500);
+	}
+	/**
+	 * Takes in a requirement from the NewGameInputPanel
+	 * and sets it into the newGameReqPanel
+	 * @param requirment
+	 */
+	public void updatePanels(String requirement){
+		newGameReqPanel.addReq(requirement);
 	}
 
 }
