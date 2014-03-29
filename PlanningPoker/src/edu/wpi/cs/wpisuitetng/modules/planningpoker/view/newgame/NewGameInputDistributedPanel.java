@@ -31,17 +31,17 @@ import javax.swing.*;
  * @version Mar 24, 2014
  */
 @SuppressWarnings("serial")
-public class NewGameInputPanel extends JPanel {
+public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	
-	private String reqSelection;
+	private String reqSelection; 
+	private String[] yearString = {"2014", "2015"}; //TODO
+	private String[] monthString = {"Jan", "Feb"}; //TODO
 	private JButton importButton = new JButton("Import");
 	private final JLabel nameLabel = new JLabel("Name:");
 	private final JLabel descriptionLabel = new JLabel("Description:");
 	private final JLabel userStoryLabel = new JLabel("User Story:");
 	private JButton addNewButton = new JButton("Add New");
-	private final JLabel timeLabel = new JLabel("Time");
-	private final JLabel hourLabel = new JLabel ("Hours:");
-	private final JLabel minuteLabel = new JLabel("Minutes:");
+	private final JLabel deadlineLabel = new JLabel("Deadline");
 	private final JLabel userLabel = new JLabel("Users");
 	private JButton addButton = new JButton("Add");
 	private JButton deleteButton = new JButton("Delete");
@@ -51,20 +51,43 @@ public class NewGameInputPanel extends JPanel {
 	private final JList<String> userList = new JList<String>();
 	private JTextField nameTextField = new JTextField();
 	private final JTextField userStoryTextField = new JTextField();
-	private final JTextField hourTextField = new JTextField();
-	private final JTextField minutesTextField = new JTextField();
 	private final JTextField descriptionTextField = new JTextField();
-	private NewGameLivePanel newGameLiveP;
+	private AbsNewGamePanel newGameP;
+	private JComboBox yearBox = new JComboBox(yearString);
+	private JComboBox monthBox = new JComboBox(monthString);
+	private JComboBox dayBox = new JComboBox();
+	
 	
 	/**
 	 * The constructor for the NewGameInputPanel
 	 * has void parameters
 	 * @param nglp, The NewGameLivePanel that it was added from
 	 */
-	public NewGameInputPanel(NewGameLivePanel nglp) {
-		newGameLiveP = nglp;
+	public NewGameInputDistributedPanel(AbsNewGamePanel nglp) {
+		newGameP = nglp;
 		descriptionTextField.setColumns(10);
 		setPanel();
+//		
+////		int[] daysInMonth = {31,28,31,30,31,30,31,31,30,31,30,31};
+////		monthBox.addActionListener(new ActionListener() {
+////
+////			@Override
+////			public void actionPerformed(ActionEvent e) {
+////				int days = monthBox.getSelectedIndex();
+////				for (int i=0; i<daysInMonth[days]; i++){
+////					dayBox.add
+////				}
+////				
+////			}
+//			
+//			
+//			
+//			
+//		});
+		
+		
+		
+		
 		importButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				GetRequirementsController.getInstance().retrieveRequirements();
@@ -87,7 +110,7 @@ public class NewGameInputPanel extends JPanel {
 				}
 				NewGameImportWindow importWindow = new NewGameImportWindow(requirements, parentFrame);
 				reqSelection = importWindow.currentSelectedReq;
-				newGameLiveP.updatePanels(reqSelection);
+				newGameP.updatePanels(reqSelection);
 			}
 		});
 	}
@@ -137,30 +160,8 @@ public class NewGameInputPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.NORTH, addNewButton, 6, SpringLayout.SOUTH, userStoryTextField);
 		
 		//Spring layout for the timeLabel
-		springLayout.putConstraint(SpringLayout.SOUTH, timeLabel, -237, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, timeLabel, 0, SpringLayout.WEST, userStoryLabel);
-		
-		//Spring layout for the hourLabel
-		springLayout.putConstraint(SpringLayout.WEST, hourLabel, 0, SpringLayout.WEST, timeLabel);
-		springLayout.putConstraint(SpringLayout.NORTH, hourLabel, 18, SpringLayout.SOUTH, timeLabel);
-		
-		//Spring layout for the hourTextField
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, hourTextField, 0, SpringLayout.VERTICAL_CENTER, hourLabel);
-		springLayout.putConstraint(SpringLayout.WEST, hourTextField, 0, SpringLayout.WEST, userStoryTextField);
-		springLayout.putConstraint(SpringLayout.EAST, hourTextField, 40, SpringLayout.WEST, hourTextField);
-		
-		//Spring layout for the minuteLabel
-		springLayout.putConstraint(SpringLayout.WEST, minuteLabel, 0, SpringLayout.WEST, hourLabel);
-		springLayout.putConstraint(SpringLayout.NORTH, minuteLabel, 18, SpringLayout.SOUTH, hourLabel);
-		
-		//Spring layout for the minutesTextField
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, minutesTextField, 0, SpringLayout.VERTICAL_CENTER, minuteLabel);
-		springLayout.putConstraint(SpringLayout.WEST, minutesTextField, 0, SpringLayout.WEST, hourTextField);
-		springLayout.putConstraint(SpringLayout.EAST, minutesTextField, 40, SpringLayout.WEST, minutesTextField);
-		
-		//Spring layout for the userLabel
-		springLayout.putConstraint(SpringLayout.NORTH, userLabel, 18, SpringLayout.SOUTH, minuteLabel);
-		springLayout.putConstraint(SpringLayout.WEST, userLabel, 0, SpringLayout.WEST, minuteLabel);
+		springLayout.putConstraint(SpringLayout.SOUTH, deadlineLabel, -237, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, deadlineLabel, 0, SpringLayout.WEST, userStoryLabel);
 		
 		//Spring layout for the userList
 		springLayout.putConstraint(SpringLayout.NORTH, userList, 0, SpringLayout.NORTH, userLabel);
@@ -189,17 +190,14 @@ public class NewGameInputPanel extends JPanel {
 		
 		nameTextField.setColumns(10);
 		userStoryTextField.setColumns(10);
-		minutesTextField.setColumns(10);
-		hourTextField.setColumns(10);
+
 		
 		add(importButton);
 		add(nameLabel);
 		add(descriptionLabel);
 		add(userStoryLabel);
 		add(addNewButton);
-		add(timeLabel);
-		add(hourLabel);
-		add(minuteLabel);
+		add(deadlineLabel);
 		add(userLabel);
 		add(addButton);
 		add(deleteButton);
@@ -208,8 +206,9 @@ public class NewGameInputPanel extends JPanel {
 		add(userList);
 		add(nameTextField);
 		add(userStoryTextField);
-		add(hourTextField);
-		add(minutesTextField);
 		add(descriptionTextField);
+		add(yearBox);
+		add(monthBox);
+		add(dayBox);
 	}
 }

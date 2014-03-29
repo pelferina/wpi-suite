@@ -22,9 +22,9 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
  * @version Mar 24, 2014
  */
 @SuppressWarnings("serial")
-public class NewGameLivePanel extends AbsNewGamePanel {
-	public NewGameLivePanel(GameModel gameModel) {
-		newGameInputPanel = new NewGameInputLivePanel(this);
+public class NewGameDistributedPanel extends AbsNewGamePanel {
+	public NewGameDistributedPanel(GameModel gameModel) {
+		newGameInputPanel = new NewGameInputDistributedPanel(this);
 		newGameReqPanel = new NewGameReqPanel();
 		setPanel();
 	}
@@ -47,5 +47,4 @@ public class NewGameLivePanel extends AbsNewGamePanel {
 	 * and sets it into the newGameReqPanel
 	 * @param requirment
 	 */
-	
 }

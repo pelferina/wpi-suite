@@ -27,15 +27,22 @@ public class NewGameMainPanel extends JPanel{
 	private JButton nextInitialButton = new JButton("Next");
 	public NewGameInitialPanel initialPanel = new NewGameInitialPanel();
 	private NewGameLivePanel livePanel;
+	private NewGameDistributedPanel distributedPanel;
 	private final GameModel lstGameModel;
 
 	public NewGameMainPanel(GameModel gameModel){
 		livePanel = new NewGameLivePanel(gameModel);
+		distributedPanel = new NewGameDistributedPanel(gameModel);
 		setupInitialPanel();
 		nextInitialButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				removeAll();
-				setupLivePanel();
+				
+				if (initialPanel.getGameType() == 1)
+					setupLivePanel();
+				else
+					setupDistributedPanel();
+				
 			}
 		});
 		
@@ -43,7 +50,7 @@ public class NewGameMainPanel extends JPanel{
 		nextInitialButton.addActionListener(new AddGameController(lstGameModel, this));
 		
 	}
-	
+
 	private void setupInitialPanel(){
 		SpringLayout springLayout = new SpringLayout();
 		
@@ -76,5 +83,19 @@ public class NewGameMainPanel extends JPanel{
 		setLayout(springLayout);
 		
 		add(livePanel);
+	}
+	
+	private void setupDistributedPanel() {
+		SpringLayout springLayout = new SpringLayout();
+		
+		//Spring layout for livePanel
+		springLayout.putConstraint(SpringLayout.NORTH, distributedPanel, 0, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, distributedPanel, 0, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, distributedPanel, 0, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.EAST, distributedPanel, 0, SpringLayout.EAST, this);
+		
+		setLayout(springLayout);
+		
+		add(distributedPanel);
 	}
 }
