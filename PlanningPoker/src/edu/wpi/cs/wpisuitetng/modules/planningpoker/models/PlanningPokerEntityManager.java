@@ -124,6 +124,11 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 	public GameSession update(Session s, String content)
 			throws WPISuiteException {
 
+		// Parse the message from JSON
+		final GameSession importedGame = GameSession.fromJson(content);
+		db.update(GameSession.class, "GameID", importedGame.getGameID(), "GameReqs", importedGame.getGameReqs());
+		db.update(GameSession.class, "GameID", importedGame.getGameID(), "EndDate", importedGame.getEndDate());
+		db.update(GameSession.class, "GameID", importedGame.getGameID(), "GameName", importedGame.getGameName());
 		// This module does not allow PostBoardMessages to be modified, so throw an exception
 		throw new WPISuiteException();
 	}

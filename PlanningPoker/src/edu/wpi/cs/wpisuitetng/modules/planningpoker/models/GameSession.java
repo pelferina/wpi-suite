@@ -30,7 +30,8 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 public class GameSession extends AbstractModel {
 
 	/** The game */
-	private final String gameName;
+	private String gameName;
+
 
 
 	private final int ownerID;
@@ -151,5 +152,8 @@ public class GameSession extends AbstractModel {
 	}
 	public String getGameName() {
 		return gameName;
+	}
+	public void setGameName(String gameName) {
+		this.gameName = gameName;
 	}
 }
