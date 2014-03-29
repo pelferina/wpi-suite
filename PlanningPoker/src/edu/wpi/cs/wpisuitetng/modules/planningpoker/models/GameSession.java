@@ -30,7 +30,9 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 public class GameSession extends AbstractModel {
 
 	/** The game */
-	private final String game;
+	private final String gameName;
+
+
 	private final int ownerID;
 	private final int gameID;
 	/** game status indicator 
@@ -53,7 +55,7 @@ public class GameSession extends AbstractModel {
 	 * @param gameID the next ID in the list of game IDs
 	 */
 	public GameSession(String game, int ownerID, int gameID) {
-		this.game = game;
+		this.gameName = game;
 		this.ownerID = ownerID;
 		this.gameID = gameID;
 		creationdate = new Date();
@@ -99,7 +101,7 @@ public class GameSession extends AbstractModel {
 		// Format the date-time stamp
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");
 		
-		return dateFormat.format(creationdate) + ":    " + game;
+		return dateFormat.format(creationdate) + ":    " + gameName;
 	}
 
 	/*
@@ -147,5 +149,7 @@ public class GameSession extends AbstractModel {
 	public void setGameReqs(int[] gameReqs) {
 		this.gameReqs = gameReqs;
 	}
-
+	public String getGameName() {
+		return gameName;
+	}
 }
