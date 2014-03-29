@@ -13,6 +13,8 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.Session;
@@ -61,6 +63,9 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 		// Parse the message from JSON
 		final GameSession newGame = GameSession.fromJson(content);
 
+		// set the number of GameSessions stored in the database
+		int size = db.retrieveAll(new GameSession(null), s.getProject()).size();
+		
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
 		if (!db.save(newGame, s.getProject())) {
@@ -69,6 +74,10 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 		}
 		System.out.println("Game saved");
 		// Return the newly created message (this gets passed back to the client)
+		
+		
+		newGame.setId(size + 1);
+		
 		return newGame;
 	}
 
@@ -96,11 +105,31 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 		// Passing a dummy PostBoardMessage lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
 		List<Model> messages = db.retrieveAll(new GameSession(null), s.getProject());
+		
+		
+
+		Calendar cal = Calendar.getInstance();
+		cal.set(2014, 2, 28);
+		System.out.println(cal);
+		Date date = cal.getTime();
+
+		for(int i=0;i<=messages.size();i++){
+			GameSession a_game = (GameSession)messages.get(i);
+			
+			if(a_game.getDate().after(date))
+				a_game.isExpired = false;
+			else
+				a_game.isExpired = true;
+		}
+		
 		System.out.println(messages);
 		// Return the list of messages as an array
 		return messages.toArray(new GameSession[0]);
 	}
 
+	
+	
+	
 	/*
 	 * Message cannot be updated. This method always throws an exception.
 	 * 

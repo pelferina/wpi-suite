@@ -38,7 +38,9 @@ public class GetGamesRequestObserver implements RequestObserver {
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
+		
 		GameSession[] messages = GameSession.fromJsonArray(iReq.getResponse().getBody());
+		System.out.println("Recieve request messages" + messages.length);
 		controller.receivedMessages(messages);
 	}
 

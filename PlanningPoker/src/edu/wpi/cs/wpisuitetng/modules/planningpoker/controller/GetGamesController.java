@@ -32,13 +32,21 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class GetGamesController implements ActionListener {
 
 	private final GameModel model;
-
-	public GetGamesController(GameModel model) {
+	
+	private final GameModel expiredModel;
+	private final GameModel activeModel;
+	
+	public GetGamesController(GameModel model, GameModel expiredModel, GameModel activeModel) {
 		this.model = model;
+		this.expiredModel = expiredModel;
+		this.activeModel = activeModel;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		System.out.println("The refresh button is clicked");
+		
+		
 		// Send a request to the core to save this message
 		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.GET); // GET == read
 		request.addObserver(new GetGamesRequestObserver(this)); // add an observer to process the response
@@ -60,6 +68,18 @@ public class GetGamesController implements ActionListener {
 			
 			// add the messages to the local model
 			model.addMessages(messages);
+		}
+		
+		expiredModel.emptyModel();
+		activeModel.emptyModel();
+		
+		for(int i=0; i < messages.length; i++){
+			GameSession a_game = messages[i];
+			if(a_game.isExpired){
+				expiredModel.addMessage(a_game);
+			}else{
+				activeModel.addMessage(a_game);
+			}
 		}
 	}
 }
