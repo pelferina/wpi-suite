@@ -31,17 +31,32 @@ public class GameSession extends AbstractModel {
 
 	/** The game */
 	private final String game;
-
-	/** The date-time stamp */
-	private final Date date;
+	private final int ownerID;
+	private final int gameID;
+	/** game status indicator 
+	 * 0  = game is in draft mode
+	 * 1  = game is in progress
+	 * 2  = game is finished.
+	 * */
+	
+	private int gameStatus;
+	/** The date-time stamp of the creation */
+	private int[] gameReqs;
+	private final Date creationdate;
+	/** The date that the game will end, if there is no end time then this value is null*/
+	private Date endDate;
 
 	/**
 	 * Constructs a PostBoardMessage for the given string game
-	 * @param game
+	 * @param game the name of the game
+	 * @param ownerID the user ID of the logged in user who created the game
+	 * @param gameID the next ID in the list of game IDs
 	 */
-	public GameSession(String game) {
+	public GameSession(String game, int ownerID, int gameID) {
 		this.game = game;
-		date = new Date();
+		this.ownerID = ownerID;
+		this.gameID = gameID;
+		creationdate = new Date();
 	}
 
 	/**
@@ -84,7 +99,7 @@ public class GameSession extends AbstractModel {
 		// Format the date-time stamp
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");
 		
-		return dateFormat.format(date) + ":    " + game;
+		return dateFormat.format(creationdate) + ":    " + game;
 	}
 
 	/*
@@ -100,5 +115,37 @@ public class GameSession extends AbstractModel {
 
 	@Override
 	public Boolean identify(Object o) {return null;}
+
+	public int getOwnerID() {
+		return ownerID;
+	}
+
+	public int getGameID() {
+		return gameID;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+	public int getGameStatus() {
+		return gameStatus;
+	}
+
+	public void setGameStatus(int gameStatus) {
+		this.gameStatus = gameStatus;
+	}
+
+	public int[] getGameReqs() {
+		return gameReqs;
+	}
+
+	public void setGameReqs(int[] gameReqs) {
+		this.gameReqs = gameReqs;
+	}
 
 }

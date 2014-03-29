@@ -19,12 +19,12 @@ import java.util.List;
 import javax.swing.AbstractListModel;
 
 /**
- * This is a model for the post board. It contains all of the games
+ * This is a model for the game model. It contains all of the games
  * to be displayed on the board. It extends AbstractListModel so that
  * it can provide the model data to the JList component in the BoardPanel.
  * 
  * @author Chris Casola
- *
+ * 
  */
 @SuppressWarnings({"serial"})
 public class GameModel extends AbstractListModel {
