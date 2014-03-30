@@ -60,6 +60,7 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 
 		// Parse the message from JSON
 		final GameSession importedGame = GameSession.fromJson(content);
+		System.out.println("Adding: " + content);
 		int nextID = 0;
 		GameSession[] games = getAll(s);
 		for(GameSession Game: games)
