@@ -8,17 +8,25 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame;
 
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTextField;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameInputLivePanel;
+
+import javax.swing.SpringLayout;
 
 /**
  * Description
@@ -30,50 +38,34 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 public class CurrentGamePanel extends JPanel {
 	
 	private String[] testList = {"test1", "test2"};
-	private JButton btnRefresh;
 	private JList<String> List = new JList<String>(); 
 	
-	private final JList activeGameList;
-	private final JList expiredGameList;
-	private final GameModel allGameModel;
-	private GameModel activeModel = new GameModel();
-	private GameModel expiredModel = new GameModel();
+	private final JList gameList;
+	private final GameModel lstGameModel;
 	
 
 	public CurrentGamePanel(GameModel gameModel) {
 		// Construct the list box model
-		allGameModel = gameModel;
-		
+		lstGameModel = gameModel;
 		// Construct the components to be displayed
-		activeGameList = new JList(activeModel);
-		expiredGameList = new JList(expiredModel);
-		
+		gameList = new JList(lstGameModel);
 		// Change the font of the JList
-		activeGameList.setFont(activeGameList.getFont().deriveFont(11));
-		expiredGameList.setFont(expiredGameList.getFont().deriveFont(11));
-		
+		gameList.setFont(gameList.getFont().deriveFont(11));
 		setPanel();
+		// Put the listbox in a scroll pane
+//		JScrollPane lstScrollPane = new JScrollPane(gameList);
+//		lstScrollPane.setPreferredSize(new Dimension(500,400));
+//		add(lstScrollPane);
 	}
 	
 	private void setPanel(){
-		
-		
-		JScrollPane activeLstScrollPane = new JScrollPane(activeGameList);
-		JScrollPane expiredLstScrollPane = new JScrollPane(expiredGameList);
-        activeLstScrollPane.setPreferredSize(new Dimension(300,300));
-        expiredLstScrollPane.setPreferredSize(new Dimension(300,300));
-
-		
-		btnRefresh = new JButton("Refresh");
-		
-		btnRefresh.addActionListener(new GetGamesController(allGameModel, expiredModel, activeModel));
-
-		add(Box.createVerticalStrut(20)); // leave a 20 pixel gap
-        add(activeLstScrollPane);
-        add(Box.createVerticalStrut(20)); // leave a 20 pixel gap
-        add(expiredLstScrollPane);
-		add(Box.createVerticalStrut(20)); // leave a 20 pixel gap
-		add(btnRefresh);
-		
+		SpringLayout springLayout = new SpringLayout();
+		springLayout.putConstraint(SpringLayout.NORTH, List, 44, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, List, 64, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, List, 256, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, List, 386, SpringLayout.WEST, this);
+		setLayout(springLayout);
+		List.setListData(testList);
+		add(List);
 	}
 }

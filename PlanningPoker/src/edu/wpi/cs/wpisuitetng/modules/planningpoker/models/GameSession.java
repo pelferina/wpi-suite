@@ -34,11 +34,6 @@ public class GameSession extends AbstractModel {
 
 	/** The date-time stamp */
 	private final Date date;
-	
-	private int id;
-	
-	public boolean isExpired = true;
-	
 
 	/**
 	 * Constructs a PostBoardMessage for the given string game
@@ -46,29 +41,9 @@ public class GameSession extends AbstractModel {
 	 */
 	public GameSession(String game) {
 		this.game = game;
-		this.id = -1;
 		date = new Date();
 	}
 
-	
-	/* Set id of the gameSession.
-	 * This should only be called by server side.
-	 * */
-	public void setId(int id){
-		if(this.id == -1)
-			this.id = id;
-		else
-			System.err.println("This should not be re assigned");
-	}
-	
-	public int getId(){
-		return this.id;
-	}
-	public Date getDate(){
-		return this.date;
-	}
-	
-	
 	/**
 	 * Returns a JSON-encoded string representation of this game object
 	 */

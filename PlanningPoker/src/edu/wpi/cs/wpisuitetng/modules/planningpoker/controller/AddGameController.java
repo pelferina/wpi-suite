@@ -72,7 +72,6 @@ public class AddGameController implements ActionListener {
 	 * @param message
 	 */
 	public void addMessageToModel(GameSession message) {
-		System.out.println("New gamesession id: " + message.getId());
 		model.addMessage(message);
 	}
 }
