@@ -34,8 +34,8 @@ import javax.swing.*;
 public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	
 	private String reqSelection; 
-	private String[] yearString = {"2014", "2015"}; //TODO
-	private String[] monthString = {"Jan", "Feb"}; //TODO
+	private String[] yearString = {"2014", "2015","2016","2017","2018","2019","2020","2021","2022","2030"}; //TODO
+	private String[] monthString = {"Jan", "Feb", "Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec" }; //TODO
 	private JButton importButton = new JButton("Import");
 	private final JLabel nameLabel = new JLabel("Name:");
 	private final JLabel descriptionLabel = new JLabel("Description:");
