@@ -67,5 +67,12 @@ public class NewGameInitialPanel extends JPanel{
 	public JTextField getTxtNewGame() {
 		return gameNameInput;
 	}
+	
+	public int getGameType(){
+		if (liveButton.isSelected())
+			return 1; // flag for live game
+		else return 2; // flag for distributed game
+	
+	}
 
 }
