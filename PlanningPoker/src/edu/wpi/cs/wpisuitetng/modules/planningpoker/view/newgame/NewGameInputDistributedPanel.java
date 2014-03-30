@@ -37,11 +37,14 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private Requirement reqSelection; 
 	private String[] yearString = {"2014", "2015","2016","2017","2018","2019","2020","2021","2022","2030"}; //TODO
 	private String[] monthString = {"Jan", "Feb", "Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec" }; //TODO
+	private int[] deckCards;
+	private int[] defaultDeck = {1, 1, 2, 3, 5, 8, 13, -1};
 	private final JLabel nameLabel = new JLabel("Name:");
 	private final JLabel descriptionLabel = new JLabel("Description:");
 	private final JLabel userStoryLabel = new JLabel("User Story:");
 	private JButton addNewButton = new JButton("Add New");
 	private final JLabel deadlineLabel = new JLabel("Deadline");
+	private final JLabel deckLabel = new JLabel("Choose a deck");
 //	private final JLabel userLabel = new JLabel("Users");
 //	private JButton addButton = new JButton("Add");
 //	private JButton deleteButton = new JButton("Delete");
@@ -59,6 +62,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private JComboBox yearBox = new JComboBox(yearString);
 	private JComboBox monthBox = new JComboBox(monthString);
 	private JComboBox dayBox = new JComboBox();
+	private JComboBox deckBox = new JComboBox();
 	private List<Requirement> selectionsMade = new ArrayList<Requirement>();
 	private List<Requirement> requirements;
 	
@@ -79,6 +83,17 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		for (int i=0; i<31; i++){
 			dayBox.addItem(i+1);
 		}	
+		deckBox.addItem("Default Deck");
+		
+		deckBox.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (deckBox.getSelectedIndex() == 0){
+					deckCards = defaultDeck;
+				}
+			}
+		});
 		
 		monthBox.addActionListener(new ActionListener() {
 			int[] daysInMonth = {31,28,31,30,31,30,31,31,30,31,30,31};
@@ -91,9 +106,6 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				}		
 			}	
 		});
-		
-		
-		
 		
 		importButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -231,6 +243,14 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		springLayout.putConstraint(SpringLayout.WEST, dayBox, 0, SpringLayout.WEST, monthBox);
 		springLayout.putConstraint(SpringLayout.EAST, dayBox, 100, SpringLayout.WEST, dayBox);
 		
+		//Spring layout for the deckBox
+		springLayout.putConstraint(SpringLayout.EAST, deckBox, 150, SpringLayout.EAST, yearBox);
+		springLayout.putConstraint(SpringLayout.SOUTH, deckBox, 0, SpringLayout.SOUTH, yearBox);
+		
+		//Spring layout for the deckLabel
+		springLayout.putConstraint(SpringLayout.EAST, deckLabel, 250, SpringLayout.EAST, deadlineLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, deckLabel, 0, SpringLayout.NORTH, deadlineLabel);		
+		
 		setLayout(springLayout);
 		
 		nameTextField.setColumns(10);
@@ -256,6 +276,11 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		add(yearBox);
 		add(monthBox);
 		add(dayBox);
+		add(yearLabel);
+		add(monthLabel);
+		add(dayLabel);
+		add(deckLabel);
+		add(deckBox);
 	}
 	
 }
