@@ -17,6 +17,7 @@ import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 
 /**
  * Description
@@ -66,6 +67,13 @@ public class NewGameInitialPanel extends JPanel{
 	
 	public JTextField getTxtNewGame() {
 		return gameNameInput;
+	}
+	
+	public int getGameType(){
+		if (liveButton.isSelected())
+			return 1; // flag for live game
+		else return 2; // flag for distributed game
+	
 	}
 
 }

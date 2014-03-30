@@ -59,8 +59,15 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 			throws BadRequestException, ConflictException, WPISuiteException {
 
 		// Parse the message from JSON
-		final GameSession newGame = GameSession.fromJson(content);
-
+		final GameSession importedGame = GameSession.fromJson(content);
+		int nextID = 0;
+		GameSession[] games = getAll(s);
+		for(GameSession Game: games)
+		{
+			if(Game.getGameID() >= nextID) nextID = Game.getGameID();
+		}
+		nextID++;
+		GameSession newGame = new GameSession(importedGame.getGameName(), importedGame.getOwnerID(), nextID);
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
 		if (!db.save(newGame, s.getProject())) {
@@ -82,7 +89,14 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 			throws NotFoundException, WPISuiteException {
 		// Throw an exception if an ID was specified, as this module does not support
 		// retrieving specific PostBoardMessages.
-		throw new WPISuiteException();
+		try{
+			int ID = Integer.parseInt(id);
+			GameSession aSample = new GameSession(null, 0, ID);
+			return (GameSession[]) db.retrieveAll(aSample).toArray();
+		}catch(NumberFormatException e)
+		{
+			throw new WPISuiteException(e.getMessage());
+		}
 	}
 
 	/* 
@@ -95,7 +109,7 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 		// Ask the database to retrieve all objects of the type PostBoardMessage.
 		// Passing a dummy PostBoardMessage lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
-		List<Model> messages = db.retrieveAll(new GameSession(null), s.getProject());
+		List<Model> messages = db.retrieveAll(new GameSession(null, 0, 0), s.getProject());
 		System.out.println(messages);
 		// Return the list of messages as an array
 		return messages.toArray(new GameSession[0]);
@@ -110,6 +124,11 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 	public GameSession update(Session s, String content)
 			throws WPISuiteException {
 
+		// Parse the message from JSON
+		final GameSession importedGame = GameSession.fromJson(content);
+		db.update(GameSession.class, "GameID", importedGame.getGameID(), "GameReqs", importedGame.getGameReqs());
+		db.update(GameSession.class, "GameID", importedGame.getGameID(), "EndDate", importedGame.getEndDate());
+		db.update(GameSession.class, "GameID", importedGame.getGameID(), "GameName", importedGame.getGameName());
 		// This module does not allow PostBoardMessages to be modified, so throw an exception
 		throw new WPISuiteException();
 	}
@@ -155,7 +174,7 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 	@Override
 	public int Count() throws WPISuiteException {
 		// Return the number of PostBoardMessages currently in the database
-		return db.retrieveAll(new GameSession(null)).size();
+		return db.retrieveAll(new GameSession(null, 0, 0)).size();
 	}
 
 	@Override

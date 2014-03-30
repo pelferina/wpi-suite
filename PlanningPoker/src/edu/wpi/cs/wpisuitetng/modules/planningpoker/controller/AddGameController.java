@@ -17,7 +17,7 @@ import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameInputPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameInputLivePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameMainPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -32,18 +32,25 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class AddGameController implements ActionListener {
 	
 	private final GameModel model;
-	private final NewGameMainPanel view;
-	
+	//TODO Remove depreciated methods once GUI is updated for new data definitions
 	/**
 	 * Construct an AddMessageController for the given model, view pair
 	 * @param model the model containing the messages
 	 * @param view the view where the user enters new messages
 	 */
-	public AddGameController(GameModel model, NewGameMainPanel view) {
+	public AddGameController(GameModel model, NewGameMainPanel LOLNO ) {
 		this.model = model;
-		this.view = view;
+		System.err.println("Depreciated Constructor");
 	}
-
+	public AddGameController(GameModel model) {
+		this.model = model;
+	}
+	public void sendMessage(GameSession ToSend){
+		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.PUT); // PUT == create
+		request.setBody(ToSend.toJSON()); // put the new session in the body of the request
+		request.addObserver(new AddGameRequestObserver(this)); // add an observer to process the response
+		request.send(); // send the request
+	}
 	/* 
 	 * This method is called when the user clicks the Submit button
 	 * 
@@ -51,20 +58,8 @@ public class AddGameController implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		// Get the text that was entered
-		String message = view.initialPanel.getTxtNewGame().getText();
-		
-		// Make sure there is text
-		if (message.length() > 0) {
-			// Clear the text field
-			view.initialPanel.getTxtNewGame().setText("");
-			
-			// Send a request to the core to save this message
-			final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.PUT); // PUT == create
-			request.setBody(new GameSession(message).toJSON()); // put the new message in the body of the request
-			request.addObserver(new AddGameRequestObserver(this)); // add an observer to process the response
-			request.send(); // send the request
-		}
+		// make sure there is a session
+		//TODO DEPRECIATED
 	}
 
 	/**
