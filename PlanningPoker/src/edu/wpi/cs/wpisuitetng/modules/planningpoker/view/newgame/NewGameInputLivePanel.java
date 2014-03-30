@@ -33,7 +33,7 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class NewGameInputLivePanel extends AbsNewGameInputPanel {
 	
-	private String reqSelection;
+	private Requirement reqSelection;
 	private JButton importButton = new JButton("Import");
 	private final JLabel nameLabel = new JLabel("Name:");
 	private final JLabel descriptionLabel = new JLabel("Description:");

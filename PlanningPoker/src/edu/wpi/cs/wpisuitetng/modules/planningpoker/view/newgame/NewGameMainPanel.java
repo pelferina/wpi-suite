@@ -15,6 +15,7 @@ import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 
 /**
  * Description
@@ -37,6 +38,7 @@ public class NewGameMainPanel extends JPanel{
 		nextInitialButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				removeAll();
+				GetRequirementsController.getInstance().retrieveRequirements(); /**TODO this is sketchy as **** - Rafi Haynes*/
 				
 				if (initialPanel.getGameType() == 1)
 					setupLivePanel();

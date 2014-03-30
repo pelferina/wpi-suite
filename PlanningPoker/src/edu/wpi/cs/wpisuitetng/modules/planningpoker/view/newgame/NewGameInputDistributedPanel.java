@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
@@ -33,10 +34,9 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	
-	private String reqSelection; 
+	private Requirement reqSelection; 
 	private String[] yearString = {"2014", "2015","2016","2017","2018","2019","2020","2021","2022","2030"}; //TODO
 	private String[] monthString = {"Jan", "Feb", "Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec" }; //TODO
-	private JButton importButton = new JButton("Import");
 	private final JLabel nameLabel = new JLabel("Name:");
 	private final JLabel descriptionLabel = new JLabel("Description:");
 	private final JLabel userStoryLabel = new JLabel("User Story:");
@@ -59,6 +59,8 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private JComboBox yearBox = new JComboBox(yearString);
 	private JComboBox monthBox = new JComboBox(monthString);
 	private JComboBox dayBox = new JComboBox();
+	private List<Requirement> selectionsMade = new ArrayList<Requirement>();
+	private List<Requirement> requirements;
 	
 	
 	/**
@@ -70,6 +72,8 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		newGameP = nglp;
 		descriptionTextField.setColumns(10);
 		setPanel();
+		
+		requirements = RequirementModel.getInstance().getRequirements();
 		
 		//initialize dayBox to 31 days (as in January)
 		for (int i=0; i<31; i++){
@@ -93,16 +97,6 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		
 		importButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				GetRequirementsController.getInstance().retrieveRequirements();
-				
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
-				List<Requirement> requirements = RequirementModel.getInstance().getRequirements();
 				
 				JPanel panel = new JPanel();
 				Window parentWindow = SwingUtilities.windowForComponent(panel); 
@@ -112,8 +106,25 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				    parentFrame = (Frame)parentWindow;
 				}
 				NewGameImportWindow importWindow = new NewGameImportWindow(requirements, parentFrame);
-				reqSelection = importWindow.currentSelectedReq;
-				newGameP.updatePanels(reqSelection);
+				if (importWindow.currentSelectedReq !=null && !selectionsMade.contains(importWindow.currentSelectedReq))
+				{
+					reqSelection = importWindow.currentSelectedReq;
+					/**TODO selections made persist when switching modules, but selectionsmade does nto persist*/
+					newGameP.updatePanels(reqSelection);
+					selectionsMade.add(reqSelection);
+					requirements.remove(reqSelection);
+				}
+
+			}
+		});
+		
+		removeButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				Requirement removed = newGameP.getSelectedRequirement();
+				if( removed != null){
+					selectionsMade.remove(removed);
+					requirements.add(removed);
+				}
 			}
 		});
 	}
@@ -147,6 +158,10 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		//Spring layout for the importButton
 		springLayout.putConstraint(SpringLayout.NORTH, importButton, -5, SpringLayout.NORTH, nameLabel);
 		springLayout.putConstraint(SpringLayout.EAST, importButton, -23, SpringLayout.EAST, this);
+		
+		//Spring layout for the removeButton
+		springLayout.putConstraint(SpringLayout.NORTH, removeButton, -30, SpringLayout.NORTH, importButton);
+		springLayout.putConstraint(SpringLayout.EAST, removeButton, 0, SpringLayout.EAST, this);
 		
 		//Spring layout for the userStoryLabel
 		springLayout.putConstraint(SpringLayout.NORTH, userStoryLabel, 18, SpringLayout.SOUTH, descriptionLabel);
@@ -223,6 +238,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 
 		
 		add(importButton);
+		add(removeButton);
 		add(nameLabel);
 		add(descriptionLabel);
 		add(userStoryLabel);
@@ -241,4 +257,5 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		add(monthBox);
 		add(dayBox);
 	}
+	
 }

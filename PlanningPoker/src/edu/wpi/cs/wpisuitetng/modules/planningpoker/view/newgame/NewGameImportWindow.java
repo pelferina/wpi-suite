@@ -32,7 +32,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  */
 @SuppressWarnings("serial")
 public class NewGameImportWindow {
-	String currentSelectedReq;
+	Requirement currentSelectedReq;
 	JDialog importWindow;
 	private JRootPane mainPanel = new JRootPane();
 	private JButton finishButton = new JButton("Finish");
@@ -45,21 +45,23 @@ public class NewGameImportWindow {
 	 * @param requirements
 	 * @param parentFrame
 	 */
-	public NewGameImportWindow(List<Requirement> requirements, Window parentFrame)
+	public NewGameImportWindow(List<Requirement> theRequirements, Window parentFrame)
 	{
 		importWindow = new JDialog((Frame) parentFrame, "Import", true);
-		this.requirements = requirements;
+		this.requirements = theRequirements;
 		listValue = new String[requirements.size()];
+		
+		//Get the string names for the import window JList
 		for (int i = 0; i < this.requirements.size(); i++) 
 		{
 			Requirement req = this.requirements.get(i);
 			listValue[i] = req.getName();
 		}
-		//setupPanel();
 		finishButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				System.out.println("Finish selected");
-				currentSelectedReq = reqList.getSelectedValue();
+				int tempIndex = reqList.getSelectedIndex();
+				if (tempIndex!=-1)
+					currentSelectedReq = requirements.get(tempIndex);
 				importWindow.dispose();
 			}
 		});
