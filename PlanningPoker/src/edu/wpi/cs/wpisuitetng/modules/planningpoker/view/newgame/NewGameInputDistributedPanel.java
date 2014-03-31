@@ -49,7 +49,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private JButton backButton  = new JButton("Back");
 	private JButton nextButton = new JButton("Next");
 	private JTextField nameTextField = new JTextField();
-	private final JTextField userStoryTextField = new JTextField();
+	private final JTextArea userStoryTextArea = new JTextArea();
 	private final JTextField descriptionTextField = new JTextField();
 	private AbsNewGamePanel newGameP;
 	private JLabel yearLabel = new JLabel("Year: ");
@@ -216,14 +216,15 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		springLayout.putConstraint(SpringLayout.WEST, userStoryLabel, 0, SpringLayout.WEST, nameLabel);
 		
 		//Spring layout for the UserStoryTextField
-		springLayout.putConstraint(SpringLayout.NORTH, userStoryTextField, 8, SpringLayout.SOUTH, descriptionTextField);
-		springLayout.putConstraint(SpringLayout.SOUTH, userStoryTextField, -308, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, userStoryTextField, 0, SpringLayout.WEST, descriptionTextField);
-		springLayout.putConstraint(SpringLayout.EAST, userStoryTextField, -23, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, userStoryTextArea, 8, SpringLayout.SOUTH, descriptionTextField);
+		springLayout.putConstraint(SpringLayout.SOUTH, userStoryTextArea, -308, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, userStoryTextArea, 0, SpringLayout.WEST, descriptionTextField);
+		springLayout.putConstraint(SpringLayout.EAST, userStoryTextArea, -23, SpringLayout.EAST, this);
+		userStoryTextArea.setLineWrap(true);
 		
 		//Spring layout for the addNewButton
-		springLayout.putConstraint(SpringLayout.WEST, addNewButton, 0, SpringLayout.WEST, userStoryTextField);
-		springLayout.putConstraint(SpringLayout.NORTH, addNewButton, 6, SpringLayout.SOUTH, userStoryTextField);
+		springLayout.putConstraint(SpringLayout.WEST, addNewButton, 0, SpringLayout.WEST, userStoryTextArea);
+		springLayout.putConstraint(SpringLayout.NORTH, addNewButton, 6, SpringLayout.SOUTH, userStoryTextArea);
 		
 		//Spring layout for the timeLabel
 		springLayout.putConstraint(SpringLayout.SOUTH, deadlineLabel, -237, SpringLayout.SOUTH, this);
@@ -266,7 +267,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		
 		//Spring layout for the yearBox
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, yearBox, 0, SpringLayout.VERTICAL_CENTER, yearLabel);
-		springLayout.putConstraint(SpringLayout.WEST, yearBox, 0, SpringLayout.WEST, userStoryTextField);
+		springLayout.putConstraint(SpringLayout.WEST, yearBox, 0, SpringLayout.WEST, userStoryTextArea);
 		springLayout.putConstraint(SpringLayout.EAST, yearBox, 100, SpringLayout.WEST, yearBox);
 		
 		//Spring layout for the monthBox
@@ -290,7 +291,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		setLayout(springLayout);
 		
 		nameTextField.setColumns(10);
-		userStoryTextField.setColumns(10);
+		userStoryTextArea.setColumns(10);
 
 		
 		add(importButton);
@@ -307,7 +308,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		add(nextButton);
 //		add(userList);
 		add(nameTextField);
-		add(userStoryTextField);
+		add(userStoryTextArea);
 		add(descriptionTextField);
 		add(yearBox);
 		add(monthBox);
