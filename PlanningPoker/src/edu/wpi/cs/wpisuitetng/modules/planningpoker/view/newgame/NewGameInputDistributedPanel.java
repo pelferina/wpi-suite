@@ -171,7 +171,12 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				if(!selectedDeadline.after(currentDate)){
 					System.out.println("Cannot have a deadline in the past");
 					JOptionPane deadlineError = new JOptionPane("Deadline error");
-					JOptionPane.showMessageDialog(deadlineError, "Cannot have a deadline in the past", "Deadline error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(deadlineError, "Can not have a deadline in the past", "Deadline error", JOptionPane.ERROR_MESSAGE);
+				}
+				else if (selectionsMade.isEmpty()){
+					System.out.println("Can not have a game with no requirements");
+					JOptionPane deadlineError = new JOptionPane("No requirements selected");
+					JOptionPane.showMessageDialog(deadlineError, "Can not have a game with no requirements", "No requirements selected", JOptionPane.ERROR_MESSAGE);
 				}
 				else{
 					System.out.println("Valid date selected");
