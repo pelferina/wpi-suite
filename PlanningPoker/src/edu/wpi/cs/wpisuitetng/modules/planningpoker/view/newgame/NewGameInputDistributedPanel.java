@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
@@ -37,6 +38,8 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private Requirement reqSelection; 
 	private String[] yearString = {"2014", "2015","2016","2017","2018","2019","2020","2021","2022","2030"}; //TODO
 	private String[] monthString = {"Jan", "Feb", "Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec" }; //TODO
+	private Calendar selectedDeadline;
+	private Calendar currentDate;
 	private int[] deckCards;
 	private int[] defaultDeck = {1, 1, 2, 3, 5, 8, 13, -1};
 	private final JLabel nameLabel = new JLabel("Name:");
@@ -73,6 +76,9 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	 * @param nglp, The NewGameLivePanel that it was added from
 	 */
 	public NewGameInputDistributedPanel(AbsNewGamePanel nglp) {
+		currentDate = Calendar.getInstance();
+		selectedDeadline = Calendar.getInstance();
+		selectedDeadline.set(2014, 1, 1);
 		newGameP = nglp;
 		descriptionTextField.setColumns(10);
 		setPanel();
@@ -95,6 +101,15 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 			}
 		});
 		
+		yearBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e){
+				int year = yearBox.getSelectedIndex();
+				selectedDeadline.set(selectedDeadline.YEAR, year + 2014);
+			}
+			
+		});
+		
 		monthBox.addActionListener(new ActionListener() {
 			int[] daysInMonth = {31,28,31,30,31,30,31,31,30,31,30,31};
 			@Override
@@ -103,8 +118,18 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				int days = monthBox.getSelectedIndex();
 				for (int i=0; i<daysInMonth[days]; i++){
 					dayBox.addItem(i+1);
-				}		
+				}	
+				selectedDeadline.set(selectedDeadline.MONTH, days + 1);
 			}	
+		});
+		
+		dayBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e){
+				int day = dayBox.getSelectedIndex();
+				selectedDeadline.set(selectedDeadline.DAY_OF_MONTH, day + 1);
+			}
+			
 		});
 		
 		importButton.addActionListener(new ActionListener(){
@@ -136,6 +161,20 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				if( removed != null){
 					selectionsMade.remove(removed);
 					requirements.add(removed);
+				}
+			}
+		});
+		
+		nextButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				currentDate = Calendar.getInstance();
+				if(!selectedDeadline.after(currentDate)){
+					System.out.println("Cannot have a deadline in the past");
+					JOptionPane deadlineError = new JOptionPane("Deadline error");
+					JOptionPane.showMessageDialog(deadlineError, "Cannot have a deadline in the past", "Deadline error", JOptionPane.ERROR_MESSAGE);
+				}
+				else{
+					System.out.println("Valid date selected");
 				}
 			}
 		});
