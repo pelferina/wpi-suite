@@ -12,15 +12,15 @@ import java.awt.Frame;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+//import java.awt.event.MouseAdapter;
+//import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
+//import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+//import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -29,8 +29,6 @@ import javax.swing.*;
 /**
  * This is the window for the user to create a planning poker session
  *
- * @author Xi Wen; Anthony Dresser; Nathan Bryant
- * @version Mar 24, 2014
  */
 @SuppressWarnings("serial")
 public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
@@ -48,13 +46,8 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private JButton addNewButton = new JButton("Add New");
 	private final JLabel deadlineLabel = new JLabel("Deadline");
 	private final JLabel deckLabel = new JLabel("Choose a deck");
-//	private final JLabel userLabel = new JLabel("Users");
-//	private JButton addButton = new JButton("Add");
-//	private JButton deleteButton = new JButton("Delete");
 	private JButton backButton  = new JButton("Back");
 	private JButton nextButton = new JButton("Next");
-//	private String[] listValue = {"Here's a Requirement", "Here's Another"};
-//	private final JList<String> userList = new JList<String>();
 	private JTextField nameTextField = new JTextField();
 	private final JTextField userStoryTextField = new JTextField();
 	private final JTextField descriptionTextField = new JTextField();
@@ -62,14 +55,13 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private JLabel yearLabel = new JLabel("Year: ");
 	private JLabel monthLabel = new JLabel("Month: ");
 	private JLabel dayLabel = new JLabel("Day: ");
-	private JComboBox yearBox = new JComboBox(yearString);
-	private JComboBox monthBox = new JComboBox(monthString);
-	private JComboBox dayBox = new JComboBox();
+	private JComboBox<String> yearBox = new JComboBox<String>(yearString);
+	private JComboBox<String> monthBox = new JComboBox<String>(monthString);
+	private JComboBox<Integer> dayBox = new JComboBox<Integer>();
 	private JComboBox deckBox = new JComboBox();
 	private List<Requirement> selectionsMade = new ArrayList<Requirement>();
 	private List<Requirement> requirements;
-	
-	
+
 	/**
 	 * The constructor for the NewGameInputPanel
 	 * has void parameters
@@ -105,7 +97,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				int year = yearBox.getSelectedIndex();
-				selectedDeadline.set(selectedDeadline.YEAR, year + 2014);
+				selectedDeadline.set(Calendar.YEAR, year + 2014);
 			}
 			
 		});
@@ -119,7 +111,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				for (int i=0; i<daysInMonth[days]; i++){
 					dayBox.addItem(i+1);
 				}	
-				selectedDeadline.set(selectedDeadline.MONTH, days + 1);
+				selectedDeadline.set(Calendar.MONTH, days + 1);
 			}	
 		});
 		
@@ -127,7 +119,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				int day = dayBox.getSelectedIndex();
-				selectedDeadline.set(selectedDeadline.DAY_OF_MONTH, day + 1);
+				selectedDeadline.set(Calendar.DAY_OF_MONTH, day + 1);
 			}
 			
 		});
