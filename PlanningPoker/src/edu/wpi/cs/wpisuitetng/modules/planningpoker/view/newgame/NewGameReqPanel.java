@@ -17,10 +17,12 @@ import java.util.List;
  * @version March 23, 2014
  */
 @SuppressWarnings("serial")
-public class NewGameReqPanel extends JPanel {
+public class NewGameReqPanel extends JTabbedPane {
 
 	DefaultListModel<String> listValue; //= {"Requirement One", "Requirement Two", "Requirement Three"};
 	private final JList<String> reqList;// = new JList<String>();
+	private final JPanel listPanel = new JPanel();
+	private final JLabel gameReqs = new JLabel("Requirements in the game");
 	private List<Requirement> selected = new ArrayList<Requirement>();
 	
 	public NewGameReqPanel()
@@ -33,8 +35,9 @@ public class NewGameReqPanel extends JPanel {
 	private void setupPanel()
 	{
 		//reqList.setListData(listValue);
-		setLayout(new BorderLayout(0, 0));
-		add(reqList);
+		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+		listPanel.add(reqList);
+		addTab("Game Requirements", listPanel);
 	}
 	/**
 	 * Takes a requirement and adds it to its reqList

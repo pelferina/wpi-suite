@@ -41,16 +41,17 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private Calendar currentDate;
 	private int[] deckCards;
 	private int[] defaultDeck = {1, 1, 2, 3, 5, 8, 13, -1};
-	private final JLabel nameLabel = new JLabel("Name:");
-	private final JLabel descriptionLabel = new JLabel("Description:");
-	private final JLabel userStoryLabel = new JLabel("User Story:");
-	private JButton addNewButton = new JButton("Add New");
+	private final JLabel nameLabel = new JLabel("Game Name:");
+	private final JLabel descriptionLabel = new JLabel("Game Description:");
+	private final JLabel requirementLabel = new JLabel("Game Requirements:");
+	//private final JLabel userStoryLabel = new JLabel("User Story:");
+	//private JButton addNewButton = new JButton("Add New");
 	private final JLabel deadlineLabel = new JLabel("Deadline");
 	private final JLabel deckLabel = new JLabel("Choose a deck");
-	private JButton backButton  = new JButton("Back");
-	private JButton nextButton = new JButton("Next");
+	//private JButton backButton  = new JButton("Back");
+	private JButton activateButton = new JButton("Activate Game");
 	private JTextField nameTextField = new JTextField();
-	private final JTextArea userStoryTextArea = new JTextArea();
+	//private final JTextArea userStoryTextArea = new JTextArea();
 	private final JTextField descriptionTextField = new JTextField();
 	private AbsNewGamePanel newGameP;
 	private JLabel yearLabel = new JLabel("Year: ");
@@ -62,18 +63,20 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private JComboBox deckBox = new JComboBox();
 	private List<Requirement> selectionsMade = new ArrayList<Requirement>();
 	private List<Requirement> requirements;
+	private final JButton addNewButton = new JButton("Create New");
 
 	/**
 	 * The constructor for the NewGameInputPanel
 	 * has void parameters
 	 * @param nglp, The NewGameLivePanel that it was added from
 	 */
-	public NewGameInputDistributedPanel(AbsNewGamePanel nglp) {
+	public NewGameInputDistributedPanel(AbsNewGamePanel nglp, String name) {
 		currentDate = Calendar.getInstance();
 		selectedDeadline = Calendar.getInstance();
 		selectedDeadline.set(2014, 1, 1);
 		newGameP = nglp;
-		descriptionTextField.setColumns(10);
+		nameTextField.setText(name);
+		//descriptionTextField.setColumns(10);
 		setPanel();
 		
 		requirements = RequirementModel.getInstance().getRequirements();
@@ -158,9 +161,10 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 			}
 		});
 		
-		nextButton.addActionListener(new ActionListener(){
+		activateButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				currentDate = Calendar.getInstance();
+				String name = nameTextField.getText();
 				if(!selectedDeadline.after(currentDate)){
 					System.out.println("Cannot have a deadline in the past");
 					JOptionPane deadlineError = new JOptionPane("Deadline error");
@@ -171,15 +175,17 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 					JOptionPane deadlineError = new JOptionPane("No requirements selected");
 					JOptionPane.showMessageDialog(deadlineError, "Can not have a game with no requirements", "No requirements selected", JOptionPane.ERROR_MESSAGE);
 				}
-				else{
-					System.out.println("Valid date selected");
+				else if (name.length() < 1){
+					JOptionPane deadlineError = new JOptionPane("No name inputted");
+					JOptionPane.showMessageDialog(deadlineError, "Please input a name for the game", "Name error", JOptionPane.ERROR_MESSAGE);
 				}
-
-				GameSession newGame = new GameSession(nameTextField.getText(), 0 , -1); //TODO Import name from previous panel
-				GameModel model = new GameModel();
-				AddGameController msgr = new AddGameController(model);
-				msgr.sendMessage(newGame);
-
+				else{
+					System.out.println("Valid date selected and requirements were selected");
+					GameSession newGame = new GameSession(name, 0 , -1, selectedDeadline, selectionsMade); 
+					GameModel model = new GameModel();
+					AddGameController msgr = new AddGameController(model);
+					msgr.sendMessage(newGame);		
+				}
 			}
 		});
 	}
@@ -197,7 +203,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		
 		//Spring layout for the nameTextField
 		springLayout.putConstraint(SpringLayout.WEST, nameTextField, 43, SpringLayout.EAST, nameLabel);
-		springLayout.putConstraint(SpringLayout.EAST, nameTextField, -40, SpringLayout.WEST, importButton);
+		springLayout.putConstraint(SpringLayout.EAST, nameTextField, 200, SpringLayout.EAST, nameLabel);
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameTextField, 0, SpringLayout.VERTICAL_CENTER, nameLabel);
 		
 		
@@ -210,15 +216,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		springLayout.putConstraint(SpringLayout.WEST, descriptionTextField, 0, SpringLayout.WEST, nameTextField);
 		springLayout.putConstraint(SpringLayout.EAST, descriptionTextField, -23, SpringLayout.EAST, this);
 		
-		//Spring layout for the importButton
-		springLayout.putConstraint(SpringLayout.NORTH, importButton, -5, SpringLayout.NORTH, nameLabel);
-		springLayout.putConstraint(SpringLayout.EAST, importButton, -23, SpringLayout.EAST, this);
-		
-		//Spring layout for the removeButton
-		springLayout.putConstraint(SpringLayout.NORTH, removeButton, -30, SpringLayout.NORTH, importButton);
-		springLayout.putConstraint(SpringLayout.EAST, removeButton, 0, SpringLayout.EAST, this);
-		
-		//Spring layout for the userStoryLabel
+		/*Spring layout for the userStoryLabel
 		springLayout.putConstraint(SpringLayout.NORTH, userStoryLabel, 18, SpringLayout.SOUTH, descriptionLabel);
 		springLayout.putConstraint(SpringLayout.WEST, userStoryLabel, 0, SpringLayout.WEST, nameLabel);
 		
@@ -228,14 +226,18 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		springLayout.putConstraint(SpringLayout.WEST, userStoryTextArea, 0, SpringLayout.WEST, descriptionTextField);
 		springLayout.putConstraint(SpringLayout.EAST, userStoryTextArea, -23, SpringLayout.EAST, this);
 		userStoryTextArea.setLineWrap(true);
+		*/
 		
-		//Spring layout for the addNewButton
+		
+		/*Spring layout for the addNewButton
 		springLayout.putConstraint(SpringLayout.WEST, addNewButton, 0, SpringLayout.WEST, userStoryTextArea);
 		springLayout.putConstraint(SpringLayout.NORTH, addNewButton, 6, SpringLayout.SOUTH, userStoryTextArea);
+		*/
 		
 		//Spring layout for the timeLabel
 		springLayout.putConstraint(SpringLayout.SOUTH, deadlineLabel, -237, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, deadlineLabel, 0, SpringLayout.WEST, userStoryLabel);
+		springLayout.putConstraint(SpringLayout.WEST, deadlineLabel, 0, SpringLayout.WEST, nameLabel);
+		
 		
 //		//Spring layout for the userList
 //		springLayout.putConstraint(SpringLayout.NORTH, userList, 0, SpringLayout.NORTH, userLabel);
@@ -252,13 +254,30 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 //		springLayout.putConstraint(SpringLayout.SOUTH, deleteButton, -10, SpringLayout.SOUTH, userList);
 //		springLayout.putConstraint(SpringLayout.WEST, deleteButton, 0, SpringLayout.WEST, addButton);
 		
-		//Spring layout for the backButton
+		/*Spring layout for the backButton
 		springLayout.putConstraint(SpringLayout.WEST, backButton, 23, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, backButton, -10, SpringLayout.SOUTH, this);
+		*/
 		
-		//Spring layout for the nextButton
-		springLayout.putConstraint(SpringLayout.NORTH, nextButton, 0, SpringLayout.NORTH, backButton);
-		springLayout.putConstraint(SpringLayout.EAST, nextButton, -23, SpringLayout.EAST, this);
+		//Spring layout for the activateButton
+		springLayout.putConstraint(SpringLayout.SOUTH, activateButton, -10, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, activateButton, 180, SpringLayout.WEST, this);
+		
+		//Spring layout for the requirementLabel
+		springLayout.putConstraint(SpringLayout.WEST, requirementLabel, 0, SpringLayout.WEST, activateButton);
+		springLayout.putConstraint(SpringLayout.SOUTH, requirementLabel, 30, SpringLayout.SOUTH, descriptionTextField);
+		
+		//Spring layout for the importButton
+		springLayout.putConstraint(SpringLayout.SOUTH, importButton, 50, SpringLayout.SOUTH, requirementLabel);
+		springLayout.putConstraint(SpringLayout.WEST, importButton, -50, SpringLayout.WEST, requirementLabel);
+				
+		//Spring layout for the addNewButton
+		springLayout.putConstraint(SpringLayout.NORTH, addNewButton, 0, SpringLayout.NORTH, importButton);
+		springLayout.putConstraint(SpringLayout.EAST, addNewButton, 150, SpringLayout.EAST, importButton);
+		
+		//Spring layout for the removeButton
+		springLayout.putConstraint(SpringLayout.NORTH, removeButton, 0, SpringLayout.NORTH, importButton);
+		springLayout.putConstraint(SpringLayout.EAST, removeButton, 300, SpringLayout.EAST, importButton);
 		
 		//Spring layout for the yearLabel
 		springLayout.putConstraint(SpringLayout.WEST, yearLabel, 0, SpringLayout.WEST, deadlineLabel);
@@ -274,7 +293,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		
 		//Spring layout for the yearBox
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, yearBox, 0, SpringLayout.VERTICAL_CENTER, yearLabel);
-		springLayout.putConstraint(SpringLayout.WEST, yearBox, 0, SpringLayout.WEST, userStoryTextArea);
+		springLayout.putConstraint(SpringLayout.WEST, yearBox, 50, SpringLayout.WEST, yearLabel);
 		springLayout.putConstraint(SpringLayout.EAST, yearBox, 100, SpringLayout.WEST, yearBox);
 		
 		//Spring layout for the monthBox
@@ -298,24 +317,25 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		setLayout(springLayout);
 		
 		nameTextField.setColumns(10);
-		userStoryTextArea.setColumns(10);
+		//userStoryTextArea.setColumns(10);
 
 		
 		add(importButton);
 		add(removeButton);
 		add(nameLabel);
 		add(descriptionLabel);
-		add(userStoryLabel);
-		add(addNewButton);
+		//add(userStoryLabel);
+		//add(addNewButton);
 		add(deadlineLabel);
 //		add(userLabel);
 //		add(addButton);
 //		add(deleteButton);
-		add(backButton);
-		add(nextButton);
+		//add(backButton);
+		add(activateButton);
+		add(addNewButton);
 //		add(userList);
 		add(nameTextField);
-		add(userStoryTextArea);
+		//add(userStoryTextArea);
 		add(descriptionTextField);
 		add(yearBox);
 		add(monthBox);
@@ -325,6 +345,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		add(dayLabel);
 		add(deckLabel);
 		add(deckBox);
+		add(requirementLabel);
 	}
 	
 	//Added by Ruofan.
