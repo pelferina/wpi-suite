@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 
 public class PlanningPoker implements IJanewayModule{
@@ -29,8 +30,10 @@ public class PlanningPoker implements IJanewayModule{
 		
 		// Setup button panel
 		final GameModel gameModel = new GameModel();
-		mainPanel = new MainView(gameModel, true);
+		DeckModel deckModel = new DeckModel();
+		mainPanel = new MainView(gameModel, deckModel, true);
 		buttonPanel = new JPanel();
+		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
 		JButton newGameButton = new JButton("New Game");
 		buttonPanel.add(newGameButton);
