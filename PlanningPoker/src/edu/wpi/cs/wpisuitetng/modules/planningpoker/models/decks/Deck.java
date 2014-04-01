@@ -9,6 +9,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -32,6 +33,7 @@ public class Deck extends AbstractModel {
 	{
 		super();
 		id = 0;
+		this.cards = Arrays.asList(0,1,1,2,3,5,8,13); 
 	}
 	
 	public Deck(int id, List<Integer> cards)
