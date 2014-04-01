@@ -42,6 +42,11 @@ public class NewGameDistributedPanel extends AbsNewGamePanel {
 		
 		setDividerLocation(500);
 	}
+	
+	//Added by Ruofan
+	public void setGameName(String gameName){
+		newGameInputPanel.setGameName(gameName);
+	}
 	/**
 	 * Takes in a requirement from the NewGameInputPanel
 	 * and sets it into the newGameReqPanel
