@@ -18,22 +18,25 @@ public class PlanningPoker implements IJanewayModule{
 	/** The tabs used by this module */
 	private ArrayList<JanewayTabModel> tabs;
 	
+	private MainView mainPanel;
+	private JPanel buttonPanel;
+	
+	
 	/**
 	 * Construct a new DummyModule for demonstration purposes
 	 */
 	public PlanningPoker() {
 		
 		// Setup button panel
-		GameModel gameModel = new GameModel();
-		
-		JPanel buttonPanel = new JPanel();
+		final GameModel gameModel = new GameModel();
+		mainPanel = new MainView(gameModel, true);
+		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
-		JButton button = new JButton("New Game");
-		buttonPanel.add(button);
-		buttonPanel.add(new JButton("Current Game"));
+		JButton newGameButton = new JButton("New Game");
+		buttonPanel.add(newGameButton);
+		buttonPanel.add(new JButton("Options"));
 		
 		// Setup the main panel
-		MainView mainPanel = new MainView(gameModel);
 		/*
 		mainPanel.setLayout(new BorderLayout());
 		JLabel label = new JLabel("Planning Poker");

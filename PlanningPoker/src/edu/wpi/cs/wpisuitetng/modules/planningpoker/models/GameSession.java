@@ -15,11 +15,14 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * Model to contain a single game on the PostBoard
@@ -44,10 +47,10 @@ public class GameSession extends AbstractModel {
 	
 	private int gameStatus;
 	/** The date-time stamp of the creation */
-	private int[] gameReqs;
+	private List<Requirement> gameReqs;
 	private final Date creationdate;
 	/** The date that the game will end, if there is no end time then this value is null*/
-	private Date endDate;
+	private Calendar endDate;
 
 	/**
 	 * Constructs a PostBoardMessage for the given string game
@@ -59,6 +62,15 @@ public class GameSession extends AbstractModel {
 		this.gameName = game;
 		this.ownerID = ownerID;
 		this.gameID = gameID;
+		creationdate = new Date();
+	}
+	
+	public GameSession(String game, int ownerID, int gameID, Calendar deadline, List<Requirement> gameReqs){
+		this.gameName = game;
+		this.ownerID = ownerID;
+		this.gameID = gameID;
+		this.endDate = deadline;
+		this.gameReqs = gameReqs;
 		creationdate = new Date();
 	}
 
@@ -129,11 +141,11 @@ public class GameSession extends AbstractModel {
 		return gameID;
 	}
 
-	public Date getEndDate() {
+	public Calendar getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(Calendar endDate) {
 		this.endDate = endDate;
 	}
 
@@ -145,11 +157,11 @@ public class GameSession extends AbstractModel {
 		this.gameStatus = gameStatus;
 	}
 
-	public int[] getGameReqs() {
+	public List<Requirement> getGameReqs() {
 		return gameReqs;
 	}
 
-	public void setGameReqs(int[] gameReqs) {
+	public void setGameReqs(List<Requirement> gameReqs) {
 		this.gameReqs = gameReqs;
 	}
 	public String getGameName() {
