@@ -62,17 +62,19 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private JComboBox deckBox = new JComboBox();
 	private List<Requirement> selectionsMade = new ArrayList<Requirement>();
 	private List<Requirement> requirements;
+	private final JButton addNewButton = new JButton("Create New");
 
 	/**
 	 * The constructor for the NewGameInputPanel
 	 * has void parameters
 	 * @param nglp, The NewGameLivePanel that it was added from
 	 */
-	public NewGameInputDistributedPanel(AbsNewGamePanel nglp) {
+	public NewGameInputDistributedPanel(AbsNewGamePanel nglp, String name) {
 		currentDate = Calendar.getInstance();
 		selectedDeadline = Calendar.getInstance();
 		selectedDeadline.set(2014, 1, 1);
 		newGameP = nglp;
+		nameTextField.setText(name);
 		//descriptionTextField.setColumns(10);
 		setPanel();
 		
@@ -268,9 +270,13 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		springLayout.putConstraint(SpringLayout.SOUTH, importButton, 50, SpringLayout.SOUTH, requirementLabel);
 		springLayout.putConstraint(SpringLayout.WEST, importButton, -50, SpringLayout.WEST, requirementLabel);
 				
+		//Spring layout for the addNewButton
+		springLayout.putConstraint(SpringLayout.NORTH, addNewButton, 0, SpringLayout.NORTH, importButton);
+		springLayout.putConstraint(SpringLayout.EAST, addNewButton, 150, SpringLayout.EAST, importButton);
+		
 		//Spring layout for the removeButton
 		springLayout.putConstraint(SpringLayout.NORTH, removeButton, 0, SpringLayout.NORTH, importButton);
-		springLayout.putConstraint(SpringLayout.EAST, removeButton, 150, SpringLayout.EAST, importButton);
+		springLayout.putConstraint(SpringLayout.EAST, removeButton, 300, SpringLayout.EAST, importButton);
 		
 		//Spring layout for the yearLabel
 		springLayout.putConstraint(SpringLayout.WEST, yearLabel, 0, SpringLayout.WEST, deadlineLabel);
@@ -325,6 +331,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 //		add(deleteButton);
 		//add(backButton);
 		add(activateButton);
+		add(addNewButton);
 //		add(userList);
 		add(nameTextField);
 		//add(userStoryTextArea);

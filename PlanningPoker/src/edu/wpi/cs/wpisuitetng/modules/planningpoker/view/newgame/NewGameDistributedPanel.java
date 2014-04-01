@@ -24,7 +24,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 @SuppressWarnings("serial")
 public class NewGameDistributedPanel extends AbsNewGamePanel {
 	public NewGameDistributedPanel(GameModel gameModel) {
-		newGameInputPanel = new NewGameInputDistributedPanel(this);
+		newGameInputPanel = new NewGameInputDistributedPanel(this, "Test");
 		newGameReqPanel = new NewGameReqPanel();
 		setPanel();
 	}

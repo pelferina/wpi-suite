@@ -26,12 +26,12 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequireme
 @SuppressWarnings("serial")
 public class MainView extends JTabbedPane {
 
-	private NewGameDistributedPanel newGame;
+	private NewGameMainPanel newGame;
 	private final JPanel currentGame;
 	private final JPanel pastGames;
 	
 	public MainView(GameModel gameModel, boolean hasNewGame) {
-		newGame = new NewGameDistributedPanel(gameModel);
+		newGame = new NewGameMainPanel(gameModel);
 		currentGame = new CurrentGamePanel(gameModel);
 		pastGames = new JPanel();
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
