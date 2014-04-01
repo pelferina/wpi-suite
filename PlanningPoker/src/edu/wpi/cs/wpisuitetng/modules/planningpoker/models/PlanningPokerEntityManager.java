@@ -60,6 +60,7 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 
 		// Parse the message from JSON
 		final GameSession importedGame = GameSession.fromJson(content);
+		System.out.println("Adding: " + content);
 		int nextID = 0;
 		GameSession[] games = getAll(s);
 		for(GameSession Game: games)
@@ -109,6 +110,8 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 		// Ask the database to retrieve all objects of the type PostBoardMessage.
 		// Passing a dummy PostBoardMessage lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
+		if(s == null) System.out.println("Session IS NULL!!!!!!");
+		System.out.println("Session = " + s);
 		List<Model> messages = db.retrieveAll(new GameSession(null, 0, 0), s.getProject());
 		System.out.println(messages);
 		// Return the list of messages as an array

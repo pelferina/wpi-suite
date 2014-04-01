@@ -54,7 +54,7 @@ public class GetGamesController implements ActionListener {
 	public void receivedMessages(GameSession[] messages) {
 		// Empty the local model to eliminate duplications
 		model.emptyModel();
-		
+		System.out.println("Yo! " + messages);
 		// Make sure the response was not null
 		if (messages != null) {
 			

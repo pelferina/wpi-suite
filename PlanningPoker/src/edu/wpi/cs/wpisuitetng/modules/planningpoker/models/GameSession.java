@@ -100,8 +100,10 @@ public class GameSession extends AbstractModel {
 	@Override
 	public String toString() {
 		// Format the date-time stamp
+
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm a");
-		
+		if(creationdate == null || dateFormat == null) 
+			return gameName;
 		return dateFormat.format(creationdate) + ":    " + gameName;
 	}
 

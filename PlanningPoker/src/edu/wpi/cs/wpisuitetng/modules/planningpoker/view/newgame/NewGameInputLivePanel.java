@@ -17,7 +17,9 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
@@ -88,6 +90,14 @@ public class NewGameInputLivePanel extends AbsNewGameInputPanel {
 				NewGameImportWindow importWindow = new NewGameImportWindow(requirements, parentFrame);
 				reqSelection = importWindow.currentSelectedReq;
 				newGameP.updatePanels(reqSelection);
+			}
+		});
+		nextButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				GameSession newGame = new GameSession("flower", 0 , -1); //TODO Import name from previous panel
+				GameModel model = new GameModel();
+				AddGameController msgr = new AddGameController(model);
+				msgr.sendMessage(newGame);
 			}
 		});
 	}
