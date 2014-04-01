@@ -17,6 +17,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
@@ -174,7 +175,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 					System.out.println("Valid date selected");
 				}
 
-				GameSession newGame = new GameSession("flower", 0 , -1); //TODO Import name from previous panel
+				GameSession newGame = new GameSession(nameTextField.getText(), 0 , -1); //TODO Import name from previous panel
 				GameModel model = new GameModel();
 				AddGameController msgr = new AddGameController(model);
 				msgr.sendMessage(newGame);
@@ -326,4 +327,8 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		add(deckBox);
 	}
 	
+	//Added by Ruofan.
+	public void setGameName(String gameName){
+		nameTextField.setText(gameName);
+	}
 }

@@ -94,7 +94,7 @@ public class NewGameInputLivePanel extends AbsNewGameInputPanel {
 		});
 		nextButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				GameSession newGame = new GameSession("flower", 0 , -1); //TODO Import name from previous panel
+				GameSession newGame = new GameSession(nameTextField.getText(), 0 , -1); //TODO Import name from previous panel
 				GameModel model = new GameModel();
 				AddGameController msgr = new AddGameController(model);
 				msgr.sendMessage(newGame);
@@ -221,5 +221,10 @@ public class NewGameInputLivePanel extends AbsNewGameInputPanel {
 		add(hourTextField);
 		add(minutesTextField);
 		add(descriptionTextField);
+	}
+	
+	//Added by Ruofan.
+	public void setGameName(String gameName){
+		nameTextField.setText(gameName);
 	}
 }

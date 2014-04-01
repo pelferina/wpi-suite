@@ -73,7 +73,11 @@ public class NewGameInitialPanel extends JPanel{
 		if (liveButton.isSelected())
 			return 1; // flag for live game
 		else return 2; // flag for distributed game
+	}
 	
+	// Added by Ruofan
+	public String getGameName(){
+		return gameNameInput.getText();
 	}
 
 }

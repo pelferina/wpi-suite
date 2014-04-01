@@ -39,11 +39,13 @@ public class NewGameMainPanel extends JPanel{
 			public void actionPerformed(ActionEvent e){
 				removeAll();
 				GetRequirementsController.getInstance().retrieveRequirements(); /**TODO this is sketchy as **** - Rafi Haynes*/
-				
+				 
+				//Edited by R
+				String gameName = initialPanel.getGameName();
 				if (initialPanel.getGameType() == 1)
-					setupLivePanel();
+					setupLivePanel(gameName);
 				else
-					setupDistributedPanel();
+					setupDistributedPanel(gameName);
 				
 			}
 		});
@@ -72,7 +74,7 @@ public class NewGameMainPanel extends JPanel{
 		add(initialPanel);
 	}
 	
-	private void setupLivePanel()
+	private void setupLivePanel(String gameName)
 	{
 		SpringLayout springLayout = new SpringLayout();
 		
@@ -84,10 +86,11 @@ public class NewGameMainPanel extends JPanel{
 		
 		setLayout(springLayout);
 		
+		livePanel.setGameName(gameName);
 		add(livePanel);
 	}
 	
-	private void setupDistributedPanel() {
+	private void setupDistributedPanel(String gameName) {
 		SpringLayout springLayout = new SpringLayout();
 		
 		//Spring layout for livePanel
@@ -98,6 +101,7 @@ public class NewGameMainPanel extends JPanel{
 		
 		setLayout(springLayout);
 		
+		distributedPanel.setGameName(gameName);
 		add(distributedPanel);
 	}
 }

@@ -23,6 +23,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
  */
 @SuppressWarnings("serial")
 public class NewGameLivePanel extends AbsNewGamePanel {
+	
 	public NewGameLivePanel(GameModel gameModel) {
 		newGameInputPanel = new NewGameInputLivePanel(this);
 		newGameReqPanel = new NewGameReqPanel();
@@ -41,6 +42,11 @@ public class NewGameLivePanel extends AbsNewGamePanel {
 		addImpl(newGameReqPanel, JSplitPane.RIGHT, 2);
 		
 		setDividerLocation(500);
+	}
+	
+	//Added by Ruofan
+	public void setGameName(String gameName){
+		newGameInputPanel.setGameName(gameName);
 	}
 	/**
 	 * Takes in a requirement from the NewGameInputPanel
