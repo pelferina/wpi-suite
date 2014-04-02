@@ -117,13 +117,16 @@ public class GameSession extends AbstractModel {
 		String returnStr = new String();
 		returnStr = gameName + "	";
 		if(creationdate != null)
-		returnStr = returnStr + "	Start: " + dateFormat1.format(creationdate);
+		returnStr = returnStr + "     " + "	Start: " + dateFormat1.format(creationdate);
+		if(endDate != null){
+			returnStr = returnStr + "    " +  "	    End: " + endDate.get(Calendar.MONTH) + "/" + endDate.get(Calendar.DAY_OF_MONTH) + "/" + endDate.get(Calendar.YEAR);
+		}	
 		//if(endDate != null)
-			//returnStr = returnStr + "	End: " + endDate.MONTH + '/'+ endDate.DAY_OF_MONTH + '/' + endDate.YEAR ;
+		//	returnStr = returnStr + "	End: " + endDate.get(Calendar.MONTH) + '/'+ endDate.get(Calendar.DAY_OF_MONTH) + '/' + endDate.get(Calendar.YEAR);
 
 
 		if(gameReqs != null){
-			returnStr = returnStr +" Requirements:";
+			returnStr = returnStr +"      Requirements:";
 			for(int i = 0; i < gameReqs.size(); i++){
 			returnStr =  returnStr + gameReqs.get(i).getName() + ';';
 			}

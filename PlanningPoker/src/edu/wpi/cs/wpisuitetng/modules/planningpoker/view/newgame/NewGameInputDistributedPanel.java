@@ -37,10 +37,13 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private Requirement reqSelection; 
 	private String[] yearString = {"2014", "2015","2016","2017","2018","2019","2020","2021","2022","2030"}; //TODO
 	private String[] monthString = {"Jan", "Feb", "Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec" }; //TODO
-	private Calendar selectedDeadline;
+	//private Calendar selectedDeadline;
 	private Calendar currentDate;
 	private int[] deckCards;
 	private int[] defaultDeck = {1, 1, 2, 3, 5, 8, 13, -1};
+	private int deadlineDay = 1;
+	private int deadlineMonth = 1;
+	private int deadlineYear = 2014;
 	private final JLabel nameLabel = new JLabel("Game Name:");
 	//private final JLabel descriptionLabel = new JLabel("Game Description:");
 	private final JLabel requirementLabel = new JLabel("Game Requirements");
@@ -72,8 +75,8 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	 */
 	public NewGameInputDistributedPanel(AbsNewGamePanel nglp, String name) {
 		currentDate = Calendar.getInstance();
-		selectedDeadline = Calendar.getInstance();
-		selectedDeadline.set(2014, 1, 1);
+		//selectedDeadline = Calendar.getInstance();
+		//selectedDeadline.set(2014, 1, 1);
 		newGameP = nglp;
 		nameTextField.setText(name);
 		//descriptionTextField.setColumns(10);
@@ -101,7 +104,9 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				int year = yearBox.getSelectedIndex();
-				selectedDeadline.set(Calendar.YEAR, year + 2014);
+				deadlineYear = year + 2014;
+				System.out.println(deadlineYear);
+				//selectedDeadline.set(Calendar.YEAR, year + 2014);
 			}
 			
 		});
@@ -115,7 +120,9 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				for (int i=0; i<daysInMonth[days]; i++){
 					dayBox.addItem(i+1);
 				}	
-				selectedDeadline.set(Calendar.MONTH, days + 1);
+				deadlineMonth = days + 1;
+				System.out.println(deadlineMonth);
+				//selectedDeadline.set(Calendar.MONTH, days + 1);
 			}	
 		});
 		
@@ -123,7 +130,9 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				int day = dayBox.getSelectedIndex();
-				selectedDeadline.set(Calendar.DAY_OF_MONTH, day + 1);
+				deadlineDay = day + 1;
+				System.out.println(deadlineDay);
+				//selectedDeadline.set(selectedDeadline.DAY_OF_MONTH, day + 1);
 			}
 			
 		});
@@ -164,7 +173,10 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		activateButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				currentDate = Calendar.getInstance();
+				currentDate.set(Calendar.MONTH, currentDate.get(Calendar.MONTH) + 1);
 				String name = nameTextField.getText();
+				Calendar selectedDeadline = Calendar.getInstance();
+				selectedDeadline.set(deadlineYear, deadlineMonth, deadlineDay);
 				if(!selectedDeadline.after(currentDate)){
 					System.out.println("Cannot have a deadline in the past");
 					JOptionPane deadlineError = new JOptionPane("Deadline error");
@@ -185,6 +197,8 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 					GameModel model = new GameModel();
 					AddGameController msgr = new AddGameController(model);
 					msgr.sendMessage(newGame);	
+					System.out.println(selectedDeadline.get(Calendar.MONTH) + "/" + selectedDeadline.get(Calendar.DAY_OF_MONTH) + "/" + selectedDeadline.get(Calendar.YEAR));
+					System.out.println(currentDate.get(Calendar.MONTH) + "/" + currentDate.get(Calendar.DAY_OF_MONTH) + "/" + currentDate.get(Calendar.YEAR));
 					JOptionPane gameCreated = new JOptionPane("Game Created and Activated");
 					JOptionPane.showMessageDialog(gameCreated, "Game has been created and activated", "Game created", JOptionPane.INFORMATION_MESSAGE);
 				}
