@@ -68,7 +68,7 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 			if(Game.getGameID() >= nextID) nextID = Game.getGameID();
 		}
 		nextID++;
-		GameSession newGame = new GameSession(importedGame.getGameName(), importedGame.getOwnerID(), nextID);
+		GameSession newGame = new GameSession(importedGame.getGameName(), importedGame.getOwnerID(), nextID, importedGame.getEndDate(), importedGame.getGameReqs());
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
 		if (!db.save(newGame, s.getProject())) {
@@ -110,8 +110,9 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 		// Ask the database to retrieve all objects of the type PostBoardMessage.
 		// Passing a dummy PostBoardMessage lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
-		List<Model> messages = db.retrieveAll(new GameSession(null, 0, 0), s.getProject());
+		List<Model> messages = db.retrieveAll(new GameSession(null, 0, 0, null, null), s.getProject());
 		System.out.println(messages);
+		
 		// Return the list of messages as an array
 		return messages.toArray(new GameSession[0]);
 	}
@@ -175,7 +176,7 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 	@Override
 	public int Count() throws WPISuiteException {
 		// Return the number of PostBoardMessages currently in the database
-		return db.retrieveAll(new GameSession(null, 0, 0)).size();
+		return db.retrieveAll(new GameSession(null, 0, 0, null, null)).size();
 	}
 
 	@Override

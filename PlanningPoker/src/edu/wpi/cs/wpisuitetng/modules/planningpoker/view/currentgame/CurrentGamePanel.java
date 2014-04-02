@@ -47,7 +47,7 @@ public class CurrentGamePanel extends JPanel {
 	private void setPanel(){
 		JScrollPane activeLstScrollPane = new JScrollPane(activeGameList);
 
-		activeLstScrollPane.setPreferredSize(new Dimension(300,300));
+		activeLstScrollPane.setPreferredSize(new Dimension(1000,300));
 
 		btnRefresh = new JButton("Refresh");
 		btnRefresh.addActionListener(new GetGamesController(allGameModel));
