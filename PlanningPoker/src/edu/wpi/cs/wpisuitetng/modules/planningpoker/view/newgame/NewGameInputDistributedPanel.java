@@ -42,8 +42,8 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private int[] deckCards;
 	private int[] defaultDeck = {1, 1, 2, 3, 5, 8, 13, -1};
 	private final JLabel nameLabel = new JLabel("Game Name:");
-	private final JLabel descriptionLabel = new JLabel("Game Description:");
-	private final JLabel requirementLabel = new JLabel("Game Requirements:");
+	//private final JLabel descriptionLabel = new JLabel("Game Description:");
+	private final JLabel requirementLabel = new JLabel("Game Requirements");
 	//private final JLabel userStoryLabel = new JLabel("User Story:");
 	//private JButton addNewButton = new JButton("Add New");
 	private final JLabel deadlineLabel = new JLabel("Deadline");
@@ -52,7 +52,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private JButton activateButton = new JButton("Activate Game");
 	private JTextField nameTextField = new JTextField();
 	//private final JTextArea userStoryTextArea = new JTextArea();
-	private final JTextField descriptionTextField = new JTextField();
+	//private final JTextField descriptionTextField = new JTextField();
 	private AbsNewGamePanel newGameP;
 	private JLabel yearLabel = new JLabel("Year: ");
 	private JLabel monthLabel = new JLabel("Month: ");
@@ -184,7 +184,9 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 					GameSession newGame = new GameSession(name, 0 , -1, selectedDeadline, selectionsMade); 
 					GameModel model = new GameModel();
 					AddGameController msgr = new AddGameController(model);
-					msgr.sendMessage(newGame);		
+					msgr.sendMessage(newGame);	
+					JOptionPane gameCreated = new JOptionPane("Game Created and Activated");
+					JOptionPane.showMessageDialog(gameCreated, "Game has been created and activated", "Game created", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		});
@@ -207,7 +209,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameTextField, 0, SpringLayout.VERTICAL_CENTER, nameLabel);
 		
 		
-		//Spring layout for the descriptionLabel
+		/*Spring layout for the descriptionLabel
 		springLayout.putConstraint(SpringLayout.NORTH, descriptionLabel, 18, SpringLayout.SOUTH, nameLabel);
 		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 0, SpringLayout.WEST, nameLabel);
 		
@@ -215,7 +217,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, descriptionTextField, 0, SpringLayout.VERTICAL_CENTER, descriptionLabel);
 		springLayout.putConstraint(SpringLayout.WEST, descriptionTextField, 0, SpringLayout.WEST, nameTextField);
 		springLayout.putConstraint(SpringLayout.EAST, descriptionTextField, -23, SpringLayout.EAST, this);
-		
+		*/
 		/*Spring layout for the userStoryLabel
 		springLayout.putConstraint(SpringLayout.NORTH, userStoryLabel, 18, SpringLayout.SOUTH, descriptionLabel);
 		springLayout.putConstraint(SpringLayout.WEST, userStoryLabel, 0, SpringLayout.WEST, nameLabel);
@@ -264,12 +266,12 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		springLayout.putConstraint(SpringLayout.WEST, activateButton, 180, SpringLayout.WEST, this);
 		
 		//Spring layout for the requirementLabel
-		springLayout.putConstraint(SpringLayout.WEST, requirementLabel, 0, SpringLayout.WEST, activateButton);
-		springLayout.putConstraint(SpringLayout.SOUTH, requirementLabel, 30, SpringLayout.SOUTH, descriptionTextField);
+		springLayout.putConstraint(SpringLayout.WEST, requirementLabel, 0, SpringLayout.WEST, nameLabel);
+		springLayout.putConstraint(SpringLayout.SOUTH, requirementLabel, 50, SpringLayout.SOUTH, nameTextField);
 		
 		//Spring layout for the importButton
 		springLayout.putConstraint(SpringLayout.SOUTH, importButton, 50, SpringLayout.SOUTH, requirementLabel);
-		springLayout.putConstraint(SpringLayout.WEST, importButton, -50, SpringLayout.WEST, requirementLabel);
+		springLayout.putConstraint(SpringLayout.WEST, importButton, 0, SpringLayout.WEST, requirementLabel);
 				
 		//Spring layout for the addNewButton
 		springLayout.putConstraint(SpringLayout.NORTH, addNewButton, 0, SpringLayout.NORTH, importButton);
@@ -323,7 +325,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		add(importButton);
 		add(removeButton);
 		add(nameLabel);
-		add(descriptionLabel);
+		//add(descriptionLabel);
 		//add(userStoryLabel);
 		//add(addNewButton);
 		add(deadlineLabel);
@@ -336,7 +338,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 //		add(userList);
 		add(nameTextField);
 		//add(userStoryTextArea);
-		add(descriptionTextField);
+		//add(descriptionTextField);
 		add(yearBox);
 		add(monthBox);
 		add(dayBox);
