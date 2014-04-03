@@ -49,10 +49,14 @@ public class Deck extends AbstractModel {
 	 * 
 	 * @return boolean for equality */
 	// TODO: implement two decks being equal
-	public boolean equals(Deck that) {
-		if (this.id == that.id)
-			return true;
-		else
+	public boolean equals(AbstractModel that) {
+		if (that instanceof Deck){
+			Deck compared = (Deck)that;
+			if (this.id == compared.id)
+				return true;
+			else
+				return false;
+		}
 		return false;
 	}
 

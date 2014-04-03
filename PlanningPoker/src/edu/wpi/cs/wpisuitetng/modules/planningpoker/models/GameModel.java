@@ -22,9 +22,6 @@ import javax.swing.AbstractListModel;
  * This is a model for the game model. It contains all of the games
  * to be displayed on the board. It extends AbstractListModel so that
  * it can provide the model data to the JList component in the BoardPanel.
- * 
- * @author Chris Casola
- * 
  */
 @SuppressWarnings({"serial"})
 public class GameModel extends AbstractListModel {
@@ -40,13 +37,13 @@ public class GameModel extends AbstractListModel {
 	}
 
 	/**
-	 * Adds the given message to the board
+	 * Adds the given game to the board
 	 * 
-	 * @param newMessage the new message to add
+	 * @param newGame the new game to add
 	 */
-	public void addMessage(GameSession newMessage) {
+	public void addGame(GameSession newGame) {
 		// Add the message
-		games.add(newMessage);
+		games.add(newGame);
 		
 		// Notify the model that it has changed so the GUI will be udpated
 		this.fireIntervalAdded(this, 0, 0);
@@ -57,7 +54,7 @@ public class GameModel extends AbstractListModel {
 	 * 
 	 * @param games the array of games to add
 	 */
-	public void addMessages(GameSession[] games) {
+	public void addGames(GameSession[] games) {
 		for (int i = 0; i < games.length; i++) {
 			this.games.add(games[i]);
 		}
@@ -69,7 +66,7 @@ public class GameModel extends AbstractListModel {
 	 * 
 	 * NOTE: One cannot simply construct a new instance of
 	 * the model, because other classes in this module have
-	 * references to it. Hence, we manually remove each message
+	 * references to it. Hence, we manually remove each game
 	 * from the model.
 	 */
 	public void emptyModel() {
@@ -83,7 +80,7 @@ public class GameModel extends AbstractListModel {
 	}
 	
 	/* 
-	 * Returns the message at the given index. This method is called
+	 * Returns the game at the given index. This method is called
 	 * internally by the JList in BoardPanel. Note this method returns
 	 * elements in reverse order, so newest games are returned first.
 	 * 

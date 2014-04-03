@@ -35,8 +35,8 @@ public class UpdateGameController {
 	 * When the new message is received back from the server, add it to the local model.
 	 * @param message
 	 */
-	public void addMessageToModel(GameSession message) {
-		model.addMessage(message);
+	public void addMessageToModel(GameSession game) {
+		model.addGame(game);
 	}
 
 }
