@@ -27,15 +27,23 @@ public class GameSessionTest {
 	public void testGameSessionCreate(){
 		GameSession gs = new GameSession("Test Game", 0, 1, Calendar.getInstance(), new ArrayList<Requirement>());
 		assertNotNull(gs);
+		assertEquals("Test Game", gs.getGameName());
+		assertEquals(0,gs.getOwnerID());
+		assertEquals(1,gs.getGameID());
+		assertNotNull(gs.toString());
 		
 	}
 	
 	@Test
-	public void testGameSessionToString(){
+	public void testSetDeadline(){
 		GameSession gs = new GameSession("Test Game", 0, 1, Calendar.getInstance(), new ArrayList<Requirement>());
-		assertTrue(gs.toString().length()>0);
+		Calendar deadline = Calendar.getInstance();
+		deadline.set(2014, 1, 1);
+		
+		gs.setEndDate(deadline);
+		assertTrue(gs.getEndDate().equals(deadline));
 	}
-
+	
 	
 	
 }
