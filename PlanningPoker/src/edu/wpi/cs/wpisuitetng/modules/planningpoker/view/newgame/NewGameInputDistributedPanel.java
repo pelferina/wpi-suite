@@ -75,6 +75,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private List<Requirement> requirements;
 	private final JButton addNewButton = new JButton("Create New");
 	private boolean isAM = true;
+	//private boolean isNew = true;
 
 	/**
 	 * The constructor for the NewGameInputPanel
@@ -220,7 +221,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 					/**TODO selections made persist when switching modules, but selectionsmade does nto persist*/
 					newGameP.updatePanels(importWindow.currentSelectedReq);
 					selectionsMade.add(reqSelection);
-					requirements.remove(reqSelection);
+					requirements.remove(importWindow.currentSelectedReq);
 				}
 
 			}
@@ -230,7 +231,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 			public void actionPerformed(ActionEvent e){
 				Requirement removed = newGameP.getSelectedRequirement();
 				if( removed != null){
-					selectionsMade.remove(removed);
+					selectionsMade.remove(removed.getId());
 					requirements.add(removed);
 				}
 			}

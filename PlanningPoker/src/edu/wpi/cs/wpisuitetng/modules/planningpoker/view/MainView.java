@@ -10,6 +10,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -61,12 +62,14 @@ public class MainView extends JTabbedPane {
 		pnlTab.setOpaque(false);
 		JLabel lblTitle = new JLabel("New Game");
 		JButton btnClose = new JButton("x");
-
+		btnClose.setMargin(new Insets(0, 0, 0, 0));
+		btnClose.setFont(btnClose.getFont().deriveFont((float) 8));
 		GridBagConstraints gbc = new GridBagConstraints();
+		
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.weightx = 1;
-
+		
 		pnlTab.add(lblTitle, gbc);
 
 		gbc.gridx++;
@@ -82,7 +85,7 @@ public class MainView extends JTabbedPane {
 	public class MyCloseActionHandler implements ActionListener {
 
 	    private String tabName;
-
+	    
 	    public MyCloseActionHandler(String tabName) {
 	        this.tabName = tabName;
 	    }
@@ -93,7 +96,7 @@ public class MainView extends JTabbedPane {
 
 	    public void actionPerformed(ActionEvent evt) {
 
-	        int index = indexOfTab(getTabName());
+	        int index = getSelectedIndex();
 	        if (index >= 0) {
 
 	            removeTabAt(index);
