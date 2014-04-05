@@ -55,7 +55,7 @@ public class MainView extends JTabbedPane {
 	
 	public void addNewGameTab()
 	{
-		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler("New Game");
+		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler("New Game", getSelectedIndex());
 		NewGameMainPanel newGame = new NewGameMainPanel(gameModel);
 		add(newGame, 0);
 		JPanel pnlTab = new JPanel(new GridBagLayout());
@@ -85,9 +85,11 @@ public class MainView extends JTabbedPane {
 	public class MyCloseActionHandler implements ActionListener {
 
 	    private String tabName;
+	    private int index;
 	    
-	    public MyCloseActionHandler(String tabName) {
+	    public MyCloseActionHandler(String tabName, int index) {
 	        this.tabName = tabName;
+	        this.index = index;
 	    }
 
 	    public String getTabName() {
@@ -96,7 +98,6 @@ public class MainView extends JTabbedPane {
 
 	    public void actionPerformed(ActionEvent evt) {
 
-	        int index = getSelectedIndex();
 	        if (index >= 0) {
 
 	            removeTabAt(index);
