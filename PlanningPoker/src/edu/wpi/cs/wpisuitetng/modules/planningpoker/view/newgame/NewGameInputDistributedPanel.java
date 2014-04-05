@@ -64,7 +64,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private int minuteTime = -1;
 	//private final JTextArea userStoryTextArea = new JTextArea();
 	//private final JTextField descriptionTextField = new JTextField();
-	private AbsNewGamePanel newGameP;
+	private NewGameDistributedPanel newGameP;
 	private JLabel yearLabel = new JLabel("Year: ");
 	private JLabel monthLabel = new JLabel("Month: ");
 	private JLabel dayLabel = new JLabel("Day: ");
@@ -76,19 +76,18 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private List<Requirement> requirements;
 	private final JButton addNewButton = new JButton("Create New");
 	private boolean isAM = true;
-	//private boolean isNew = true;
+	public boolean isNew = true;
 
 	/**
 	 * The constructor for the NewGameInputPanel
 	 * has void parameters
 	 * @param nglp, The NewGameLivePanel that it was added from
 	 */
-	public NewGameInputDistributedPanel(AbsNewGamePanel nglp, String name) {
+	public NewGameInputDistributedPanel(NewGameDistributedPanel ngdp) {
 		currentDate = Calendar.getInstance();
 		//selectedDeadline = Calendar.getInstance();
 		//selectedDeadline.set(2014, 1, 1);
-		newGameP = nglp;
-		nameTextField.setText(name);
+		newGameP = ngdp;
 		//descriptionTextField.setColumns(10);
 		setPanel();
 		
@@ -117,6 +116,13 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		
 		deckBox.addItem("Default Deck");
 		
+		nameTextField.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e){
+				isNew = false;
+			}
+		});
+		
 		deckBox.addActionListener(new ActionListener() {
 			
 			@Override
@@ -124,6 +130,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				if (deckBox.getSelectedIndex() == 0){
 					deckCards = defaultDeck;
 				}
+				newGameP.isNew = false;
 			}
 		});
 		
@@ -136,6 +143,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				else {
 					isAM = false;
 				}
+				newGameP.isNew = false;
 			}
 		});
 		
@@ -143,6 +151,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				minuteTime = minuteComboBox.getSelectedIndex() - 1;
+				newGameP.isNew = false;
 			}
 		});
 		
@@ -156,12 +165,14 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				else{
 					hourTime = 0;
 				}
+				newGameP.isNew = false;
 			}
 		});
 		
 		yearBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
+				newGameP.isNew = false;
 				int year = yearBox.getSelectedIndex();
 				if ((deadlineYear == 2016 || deadlineYear == 2020) && (year + 2014 != 2016 || year + 2014 != 2020)){
 					dayBox.removeAllItems();
@@ -184,6 +195,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 			int[] daysInMonth = {31,28,31,30,31,30,31,31,30,31,30,31};
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				newGameP.isNew = false;
 				dayBox.removeAllItems();
 				int days = monthBox.getSelectedIndex();
 				for (int i=0; i<daysInMonth[days]; i++){
@@ -199,6 +211,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		dayBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
+				newGameP.isNew = false;
 				int day = dayBox.getSelectedIndex();
 				deadlineDay = day + 1;
 			}
@@ -207,7 +220,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		
 		importButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				
+				newGameP.isNew = false;
 				JPanel panel = new JPanel();
 				Window parentWindow = SwingUtilities.windowForComponent(panel); 
 				// or pass 'this' if you are inside the panel
@@ -230,6 +243,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		
 		removeButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				newGameP.isNew = false;
 				Requirement removed = newGameP.getSelectedRequirement();
 				if( removed != null){
 					selectionsMade.remove(removed.getId());
@@ -266,6 +280,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 					JOptionPane.showMessageDialog(deadlineError, "Please input a name for the game", "Name error", JOptionPane.ERROR_MESSAGE);
 				}
 				else{
+					newGameP.isNew = true;
 					System.out.println("Valid date selected and requirements were selected");
 					Date deadlineDate = new Date(deadlineYear, deadlineMonth, deadlineDay, getHour(hourTime), minuteTime);
 					GameSession newGame = new GameSession(name, 0 , -1, deadlineDate, selectionsMade); 

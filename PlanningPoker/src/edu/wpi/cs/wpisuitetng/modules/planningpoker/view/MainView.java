@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
@@ -23,6 +24,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame.CurrentGamePanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameInputDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameMainPanel;
 
 /**
@@ -37,7 +40,6 @@ public class MainView extends JTabbedPane {
 	private final JPanel pastGames;
 	private final JPanel deckPanel;
 	private GameModel gameModel;
-	
 
 	public MainView(GameModel gameModel, DeckModel deckModel, boolean hasNewGame) {
 		this.gameModel = gameModel;
@@ -55,8 +57,8 @@ public class MainView extends JTabbedPane {
 	
 	public void addNewGameTab()
 	{
-		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler("New Game", getSelectedIndex());
-		NewGameMainPanel newGame = new NewGameMainPanel(gameModel);
+		NewGameDistributedPanel newGame = new NewGameDistributedPanel(gameModel);
+		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler("New Game", getSelectedIndex(), newGame);
 		add(newGame, 0);
 		JPanel pnlTab = new JPanel(new GridBagLayout());
 		pnlTab.setOpaque(false);
@@ -86,10 +88,12 @@ public class MainView extends JTabbedPane {
 
 	    private String tabName;
 	    private int index;
+	    private NewGameDistributedPanel ngdp;
 	    
-	    public MyCloseActionHandler(String tabName, int index) {
+	    public MyCloseActionHandler(String tabName, int index, NewGameDistributedPanel ngdp) {
 	        this.tabName = tabName;
 	        this.index = index;
+	        this.ngdp = ngdp;
 	    }
 
 	    public String getTabName() {
@@ -99,7 +103,10 @@ public class MainView extends JTabbedPane {
 	    public void actionPerformed(ActionEvent evt) {
 
 	        if (index >= 0) {
-
+	        	if (ngdp.isNew){
+	        		JOptionPane toClose = new JOptionPane("Game Created and Activated");
+					JOptionPane.showMessageDialog(ngdp, "Discard unsaved changes and close tab?", "Discard changes?", JOptionPane.INFORMATION_MESSAGE);
+	        	}
 	            removeTabAt(index);
 	            // It would probably be worthwhile getting the source
 	            // casting it back to a JButton and removing
