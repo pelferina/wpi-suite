@@ -111,7 +111,7 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 		// Passing a dummy PostBoardMessage lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
 		List<Model> messages = db.retrieveAll(new GameSession(null, 0, 0, null, null), s.getProject());
-		System.out.println(messages);
+//		System.out.println(messages);
 		
 		// Return the list of messages as an array
 		return messages.toArray(new GameSession[0]);

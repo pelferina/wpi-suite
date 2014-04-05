@@ -22,6 +22,7 @@ import java.util.List;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
@@ -39,13 +40,8 @@ public class GameSession extends AbstractModel {
 
 	private final int ownerID;
 	private final int gameID;
-	/** game status indicator 
-	 * 0  = game is in draft mode
-	 * 1  = game is in progress
-	 * 2  = game is finished.
-	 * */
 	
-	private int gameStatus;
+	private GameStatus gameStatus;
 	/** The date-time stamp of the creation */
 	private List<Requirement> gameReqs;
 	private final Date creationdate;
@@ -53,7 +49,7 @@ public class GameSession extends AbstractModel {
 	private Calendar endDate;
 
 	/**
-	 * Constructs a PostBoardMessage for the given string game
+	 * Constructs a GameSession for the given string game
 	 * @param game the name of the game
 	 * @param ownerID the user ID of the logged in user who created the game
 	 * @param gameID the next ID in the list of game IDs
@@ -63,6 +59,7 @@ public class GameSession extends AbstractModel {
 		this.ownerID = ownerID;
 		this.gameID = gameID;
 		creationdate = new Date();
+		this.gameStatus = GameStatus.DRAFT;
 	}
 	
 	public GameSession(String game, int ownerID, int gameID, Calendar deadline, List<Requirement> gameReqs){
@@ -72,6 +69,7 @@ public class GameSession extends AbstractModel {
 		this.endDate = deadline;
 		this.gameReqs = gameReqs;
 		creationdate = new Date();
+		this.gameStatus = GameStatus.DRAFT;
 	}
 
 	/**
@@ -83,11 +81,11 @@ public class GameSession extends AbstractModel {
 	}
 
 	/**
-	 * Returns an instance of PostBoardMessage constructed using the given
-	 * PostBoardMessage encoded as a JSON string.
+	 * Returns an instance of GameSession constructed using the given
+	 * GameSession encoded as a JSON string.
 	 * 
-	 * @param json the json-encoded PostBoardMessage to deserialize
-	 * @return the PostBoardMessage contained in the given JSON
+	 * @param json the json-encoded GameSession to deserialize
+	 * @return the GameSession contained in the given JSON
 	 */
 	public static GameSession fromJson(String json) {
 		final Gson parser = new Gson();
@@ -95,11 +93,11 @@ public class GameSession extends AbstractModel {
 	}
 	
 	/**
-	 * Returns an array of PostBoardMessage parsed from the given JSON-encoded
+	 * Returns an array of GameSession parsed from the given JSON-encoded
 	 * string.
 	 * 
-	 * @param json a string containing a JSON-encoded array of PostBoardMessage
-	 * @return an array of PostBoardMessage deserialzied from the given json string
+	 * @param json a string containing a JSON-encoded array of GameSession
+	 * @return an array of GameSession deserialzied from the given json string
 	 */
 	public static GameSession[] fromJsonArray(String json) {
 		final Gson parser = new Gson();
@@ -138,7 +136,7 @@ public class GameSession extends AbstractModel {
 
 	/*
 	 * The methods below are required by the model interface, however they
-	 * do not need to be implemented for a basic model like PostBoardMessage. 
+	 * do not need to be implemented for a basic model like GameSession. 
 	 */
 
 	@Override
@@ -166,11 +164,11 @@ public class GameSession extends AbstractModel {
 		this.endDate = endDate;
 	}
 
-	public int getGameStatus() {
+	public GameStatus getGameStatus() {
 		return gameStatus;
 	}
 
-	public void setGameStatus(int gameStatus) {
+	public void setGameStatus(GameStatus gameStatus) {
 		this.gameStatus = gameStatus;
 	}
 
