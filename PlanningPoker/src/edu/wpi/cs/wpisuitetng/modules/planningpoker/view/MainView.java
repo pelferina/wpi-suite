@@ -13,6 +13,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -40,6 +42,9 @@ public class MainView extends JTabbedPane {
 	private final JPanel pastGames;
 	private final JPanel deckPanel;
 	private GameModel gameModel;
+	private int newGameTabs = 0;
+	private int j = 0;
+	private List<Integer> openTabs = new ArrayList<Integer>();
 
 	public MainView(GameModel gameModel, DeckModel deckModel, boolean hasNewGame) {
 		this.gameModel = gameModel;
@@ -57,9 +62,10 @@ public class MainView extends JTabbedPane {
 	
 	public void addNewGameTab()
 	{
+		openTabs.add(newGameTabs, j);
 		NewGameDistributedPanel newGame = new NewGameDistributedPanel(gameModel);
-		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler("New Game", getSelectedIndex(), newGame);
-		add(newGame, 0);
+		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler("New Game", j, newGame);
+		add(newGame, newGameTabs + 3);
 		JPanel pnlTab = new JPanel(new GridBagLayout());
 		pnlTab.setOpaque(false);
 		JLabel lblTitle = new JLabel("New Game");
@@ -78,10 +84,12 @@ public class MainView extends JTabbedPane {
 		gbc.weightx = 0;
 		pnlTab.add(btnClose, gbc);
 
-		setTabComponentAt(0, pnlTab);
+		setTabComponentAt(newGameTabs + 3, pnlTab);
 
 		btnClose.addActionListener(myCloseActionHandler);
-		setSelectedIndex(0);
+		setSelectedIndex(newGameTabs+3);
+		newGameTabs++;
+		j++;
 	}
 	
 	public class MyCloseActionHandler implements ActionListener {
@@ -100,17 +108,29 @@ public class MainView extends JTabbedPane {
 	        return tabName;
 	    }
 
+	    
+	    //Helper function to remove a tab
+	    public void removeTab(int index){
+	    	for(int i=0; i<newGameTabs; i++){
+				if (openTabs.get(i) == index){
+					removeTabAt(i + 3);
+					openTabs.remove(i);
+					newGameTabs--;
+				}
+			}
+	    }
+	    
 	    public void actionPerformed(ActionEvent evt) {
 
 	        if (index >= 0) {
 	        	if (!ngdp.isNew){
 					int option = JOptionPane.showOptionDialog(ngdp, "Discard unsaved changes and close tab?", "Discard changes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 					if (option == 0){
-						removeTabAt(index);
+						removeTab(index);
 					}
 	        	}
 	        	else{
-	        		removeTabAt(index);
+	        		removeTab(index);
 	        	}
 	        }
 	            // It would probably be worthwhile getting the source

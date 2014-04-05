@@ -41,7 +41,6 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private String[] yearString = {"2014", "2015","2016","2017","2018","2019","2020","2021","2022"}; //TODO
 	private String[] monthString = {"Jan", "Feb", "Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec" }; //TODO
 	private String[] ampmString = {"AM", "PM"};
-	//private Calendar selectedDeadline;
 	private Calendar currentDate;
 	private int[] deckCards;
 	private int[] defaultDeck = {1, 1, 2, 3, 5, 8, 13, -1};
@@ -56,7 +55,6 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	//private JButton addNewButton = new JButton("Add New");
 	private final JLabel deadlineLabel = new JLabel("Deadline");
 	private final JLabel deckLabel = new JLabel("Choose a deck");
-	//private JButton backButton  = new JButton("Back");
 	private JButton activateButton = new JButton("Activate Game");
 	private JTextField nameTextField = new JTextField();
 	private JComboBox<String> hourComboBox = new JComboBox<String>();
@@ -64,8 +62,6 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private JComboBox<String> ampmBox = new JComboBox<String>(ampmString);
 	private int hourTime = -1;
 	private int minuteTime = -1;
-	//private final JTextArea userStoryTextArea = new JTextArea();
-	//private final JTextField descriptionTextField = new JTextField();
 	private NewGameDistributedPanel newGameP;
 	private JLabel yearLabel = new JLabel("Year: ");
 	private JLabel monthLabel = new JLabel("Month: ");
@@ -118,6 +114,8 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		
 		deckBox.addItem("Default Deck");
 		
+		//Adds a documentlistener to the name text field so that way if the text is changed, the pop-up will appear if 
+		//the new game tab is closed.
 		nameTextField.getDocument().addDocumentListener(new DocumentListener(){
 			@Override
 			public void changedUpdate(DocumentEvent e){
@@ -144,6 +142,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 			}
 		});
 		
+		//Sets isNew to false, and sets isAM to true if AM is selected, or false if PM is selected
 		ampmBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
@@ -157,6 +156,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 			}
 		});
 		
+		//Sets isNew to false, and sets minuteTime to the selected minute.
 		minuteComboBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
@@ -165,6 +165,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 			}
 		});
 		
+		//Sets isNew to false and sets hourtime to the hour selected. It is set to 0 if 12 is selected.
 		hourComboBox.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed(ActionEvent e){
@@ -179,6 +180,8 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 			}
 		});
 		
+		//Sets isNew to false, deadlineYear to the selected year, and rebuilds what is in the dayBox if a leap year is deselected or selected
+		//and the deadline month is February
 		yearBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
@@ -201,6 +204,8 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 			
 		});
 		
+		//Adds an action listener to the month selection combo box, which sets isNew to false and rebuilds what is inside the 
+		//dayBox based on the month selected. Also sets deadlineMonth to the chosen month.
 		monthBox.addActionListener(new ActionListener() {
 			int[] daysInMonth = {31,28,31,30,31,30,31,31,30,31,30,31};
 			@Override
@@ -218,6 +223,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 			}	
 		});
 		
+		//Adds an action listener to the day of month selection combo box, and sets isNew to false, and changes the deadlineDay
 		dayBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
@@ -261,6 +267,8 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				}
 			}
 		});
+		
+		//Checks to see if all the fields are properly filled, and then sends the game object to the database if done.
 		
 		activateButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
