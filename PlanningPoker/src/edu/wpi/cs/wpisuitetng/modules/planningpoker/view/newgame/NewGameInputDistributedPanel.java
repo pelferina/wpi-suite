@@ -27,6 +27,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  * This is the window for the user to create a planning poker session
@@ -116,10 +118,18 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		
 		deckBox.addItem("Default Deck");
 		
-		nameTextField.addActionListener(new ActionListener() {
+		nameTextField.getDocument().addDocumentListener(new DocumentListener(){
 			@Override
-			public void actionPerformed(ActionEvent e){
-				isNew = false;
+			public void changedUpdate(DocumentEvent e){
+				newGameP.isNew = false;
+			}
+			@Override
+			public void removeUpdate(DocumentEvent e){
+				newGameP.isNew = false;
+			}
+			@Override 
+			public void insertUpdate(DocumentEvent e){
+				newGameP.isNew = false;
 			}
 		});
 		

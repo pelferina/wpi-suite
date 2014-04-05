@@ -103,20 +103,19 @@ public class MainView extends JTabbedPane {
 	    public void actionPerformed(ActionEvent evt) {
 
 	        if (index >= 0) {
-	        	if (ngdp.isNew){
-	        		JOptionPane toClose = new JOptionPane("Game Created and Activated");
-					JOptionPane.showMessageDialog(ngdp, "Discard unsaved changes and close tab?", "Discard changes?", JOptionPane.INFORMATION_MESSAGE);
+	        	if (!ngdp.isNew){
+					int option = JOptionPane.showOptionDialog(ngdp, "Discard unsaved changes and close tab?", "Discard changes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+					if (option == 0){
+						removeTabAt(index);
+					}
 	        	}
-	            removeTabAt(index);
+	        	else{
+	        		removeTabAt(index);
+	        	}
+	        }
 	            // It would probably be worthwhile getting the source
 	            // casting it back to a JButton and removing
 	            // the action handler reference ;)
-
-	        }
-
 	    }
-
 	}   
-
-
 }
