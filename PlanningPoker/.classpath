@@ -8,6 +8,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/WPISuite-Interfaces"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/RequirementManager"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="/Core/WPISuite/WebContent/WEB-INF/lib/javax.mail.jar"/>
+	<classpathentry kind="lib" path="../Core/WPISuite/WebContent/WEB-INF/lib/javax.mail.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
