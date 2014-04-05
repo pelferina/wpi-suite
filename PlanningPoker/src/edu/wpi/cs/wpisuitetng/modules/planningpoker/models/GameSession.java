@@ -43,26 +43,12 @@ public class GameSession extends AbstractModel {
 	
 	private GameStatus gameStatus;
 	/** The date-time stamp of the creation */
-	private List<Requirement> gameReqs;
+	private List<Integer> gameReqs;
 	private final Date creationdate;
 	/** The date that the game will end, if there is no end time then this value is null*/
-	private Calendar endDate;
-
-	/**
-	 * Constructs a GameSession for the given string game
-	 * @param game the name of the game
-	 * @param ownerID the user ID of the logged in user who created the game
-	 * @param gameID the next ID in the list of game IDs
-	 */
-	public GameSession(String game, int ownerID, int gameID) {
-		this.gameName = game;
-		this.ownerID = ownerID;
-		this.gameID = gameID;
-		creationdate = new Date();
-		this.gameStatus = GameStatus.DRAFT;
-	}
+	private Date endDate;
 	
-	public GameSession(String game, int ownerID, int gameID, Calendar deadline, List<Requirement> gameReqs){
+	public GameSession(String game, int ownerID, int gameID, Date deadline, List<Integer> gameReqs){
 		this.gameName = game;
 		this.ownerID = ownerID;
 		this.gameID = gameID;
@@ -115,9 +101,9 @@ public class GameSession extends AbstractModel {
 		String returnStr = new String();
 		returnStr = gameName + "	";
 		if(creationdate != null)
-		returnStr = returnStr + "     " + "	Start: " + dateFormat1.format(creationdate);
+			returnStr = returnStr + "     " + "	Start: " + dateFormat1.format(creationdate);
 		if(endDate != null){
-			returnStr = returnStr + "    " +  "	    End: " + endDate.get(Calendar.MONTH) + "/" + endDate.get(Calendar.DAY_OF_MONTH) + "/" + endDate.get(Calendar.YEAR);
+			returnStr = returnStr + "      " + "End:" + dateFormat2.format(endDate);
 		}	
 		//if(endDate != null)
 		//	returnStr = returnStr + "	End: " + endDate.get(Calendar.MONTH) + '/'+ endDate.get(Calendar.DAY_OF_MONTH) + '/' + endDate.get(Calendar.YEAR);
@@ -126,7 +112,7 @@ public class GameSession extends AbstractModel {
 		if(gameReqs != null){
 			returnStr = returnStr +"      Requirements:";
 			for(int i = 0; i < gameReqs.size(); i++){
-			returnStr =  returnStr + gameReqs.get(i).getName() + ';';
+			returnStr =  returnStr + gameReqs.get(i) + ';';
 			}
 		}
 		System.out.println(returnStr);
@@ -156,11 +142,11 @@ public class GameSession extends AbstractModel {
 		return gameID;
 	}
 
-	public Calendar getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Calendar endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 
@@ -172,11 +158,11 @@ public class GameSession extends AbstractModel {
 		this.gameStatus = gameStatus;
 	}
 
-	public List<Requirement> getGameReqs() {
+	public List<Integer> getGameReqs() {
 		return gameReqs;
 	}
 
-	public void setGameReqs(List<Requirement> gameReqs) {
+	public void setGameReqs(List<Integer> gameReqs) {
 		this.gameReqs = gameReqs;
 	}
 	public String getGameName() {

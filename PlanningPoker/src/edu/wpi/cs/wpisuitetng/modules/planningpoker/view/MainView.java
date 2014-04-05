@@ -8,6 +8,14 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
@@ -15,9 +23,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame.CurrentGamePanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameMainPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 
 /**
  * Description
@@ -27,25 +33,82 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequireme
  */
 @SuppressWarnings("serial")
 public class MainView extends JTabbedPane {
-
-	private NewGameMainPanel newGame;
 	private final JPanel currentGame;
 	private final JPanel pastGames;
 	private final JPanel deckPanel;
+	private GameModel gameModel;
 	
 
 	public MainView(GameModel gameModel, DeckModel deckModel, boolean hasNewGame) {
-		newGame = new NewGameMainPanel(gameModel);
+		this.gameModel = gameModel;
 		currentGame = new CurrentGamePanel(gameModel);
 		pastGames = new JPanel();
 		deckPanel = new DeckPanel(deckModel);
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-		if (hasNewGame == true){
-			addTab("New Game", newGame);
-		}
+//		if (hasNewGame == true){
+//			addTab("New Game", newGame);
+//		}
 		addTab("Current Game", currentGame);
 		addTab("Past Game", pastGames);
 		addTab("Deck", deckPanel);
 	}
+	
+	public void addNewGameTab()
+	{
+		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler("New Game");
+		NewGameMainPanel newGame = new NewGameMainPanel(gameModel);
+		add(newGame, 0);
+		JPanel pnlTab = new JPanel(new GridBagLayout());
+		pnlTab.setOpaque(false);
+		JLabel lblTitle = new JLabel("New Game");
+		JButton btnClose = new JButton("x");
+		btnClose.setMargin(new Insets(0, 0, 0, 0));
+		btnClose.setFont(btnClose.getFont().deriveFont((float) 8));
+		GridBagConstraints gbc = new GridBagConstraints();
+		
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.weightx = 1;
+		
+		pnlTab.add(lblTitle, gbc);
+
+		gbc.gridx++;
+		gbc.weightx = 0;
+		pnlTab.add(btnClose, gbc);
+
+		setTabComponentAt(0, pnlTab);
+
+		btnClose.addActionListener(myCloseActionHandler);
+		setSelectedIndex(0);
+	}
+	
+	public class MyCloseActionHandler implements ActionListener {
+
+	    private String tabName;
+	    
+	    public MyCloseActionHandler(String tabName) {
+	        this.tabName = tabName;
+	    }
+
+	    public String getTabName() {
+	        return tabName;
+	    }
+
+	    public void actionPerformed(ActionEvent evt) {
+
+	        int index = getSelectedIndex();
+	        if (index >= 0) {
+
+	            removeTabAt(index);
+	            // It would probably be worthwhile getting the source
+	            // casting it back to a JButton and removing
+	            // the action handler reference ;)
+
+	        }
+
+	    }
+
+	}   
+
 
 }

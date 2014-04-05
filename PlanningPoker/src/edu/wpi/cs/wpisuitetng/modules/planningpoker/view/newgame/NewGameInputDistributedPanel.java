@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 //import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
@@ -34,9 +35,10 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	
-	private Requirement reqSelection; 
-	private String[] yearString = {"2014", "2015","2016","2017","2018","2019","2020","2021","2022","2030"}; //TODO
+	private int reqSelection; 
+	private String[] yearString = {"2014", "2015","2016","2017","2018","2019","2020","2021","2022"}; //TODO
 	private String[] monthString = {"Jan", "Feb", "Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec" }; //TODO
+	private String[] ampmString = {"AM", "PM"};
 	//private Calendar selectedDeadline;
 	private Calendar currentDate;
 	private int[] deckCards;
@@ -45,6 +47,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private int deadlineMonth = 1;
 	private int deadlineYear = 2014;
 	private final JLabel nameLabel = new JLabel("Game Name:");
+	private final JLabel timeLabel = new JLabel ("Deadline Time:");
 	//private final JLabel descriptionLabel = new JLabel("Game Description:");
 	private final JLabel requirementLabel = new JLabel("Game Requirements");
 	//private final JLabel userStoryLabel = new JLabel("User Story:");
@@ -54,6 +57,11 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	//private JButton backButton  = new JButton("Back");
 	private JButton activateButton = new JButton("Activate Game");
 	private JTextField nameTextField = new JTextField();
+	private JComboBox<String> hourComboBox = new JComboBox<String>();
+	private JComboBox<String> minuteComboBox = new JComboBox<String>();
+	private JComboBox<String> ampmBox = new JComboBox<String>(ampmString);
+	private int hourTime = -1;
+	private int minuteTime = -1;
 	//private final JTextArea userStoryTextArea = new JTextArea();
 	//private final JTextField descriptionTextField = new JTextField();
 	private AbsNewGamePanel newGameP;
@@ -64,9 +72,11 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private JComboBox<String> monthBox = new JComboBox<String>(monthString);
 	private JComboBox<Integer> dayBox = new JComboBox<Integer>();
 	private JComboBox deckBox = new JComboBox();
-	private List<Requirement> selectionsMade = new ArrayList<Requirement>();
+	private List<Integer> selectionsMade = new ArrayList<Integer>();
 	private List<Requirement> requirements;
 	private final JButton addNewButton = new JButton("Create New");
+	private boolean isAM = true;
+	//private boolean isNew = true;
 
 	/**
 	 * The constructor for the NewGameInputPanel
@@ -87,7 +97,24 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		//initialize dayBox to 31 days (as in January)
 		for (int i=0; i<31; i++){
 			dayBox.addItem(i+1);
-		}	
+		}
+		
+		//Initialize hour and minute combo boxes
+		hourComboBox.addItem("");
+		minuteComboBox.addItem("");
+		for (int j=0; j<12; j++){
+			hourComboBox.addItem(j+1 + "");
+		}
+		
+		for (int i=0; i<60; i++){
+			if (i < 10){
+				minuteComboBox.addItem("0" + i);
+			}
+			else{
+				minuteComboBox.addItem("" + i);
+			}
+		}
+		
 		deckBox.addItem("Default Deck");
 		
 		deckBox.addActionListener(new ActionListener() {
@@ -100,13 +127,55 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 			}
 		});
 		
+		ampmBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e){
+				if (ampmBox.getSelectedIndex() == 0){
+					isAM = true;
+				}
+				else {
+					isAM = false;
+				}
+			}
+		});
+		
+		minuteComboBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e){
+				minuteTime = minuteComboBox.getSelectedIndex() - 1;
+			}
+		});
+		
+		hourComboBox.addActionListener(new ActionListener() {
+			@Override 
+			public void actionPerformed(ActionEvent e){
+				int hourIndex = hourComboBox.getSelectedIndex();
+				if (hourIndex != 12 && hourIndex != 0){
+					hourTime = hourComboBox.getSelectedIndex();
+				}
+				else{
+					hourTime = 0;
+				}
+			}
+		});
+		
 		yearBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				int year = yearBox.getSelectedIndex();
+				if ((deadlineYear == 2016 || deadlineYear == 2020) && (year + 2014 != 2016 || year + 2014 != 2020)){
+					dayBox.removeAllItems();
+					for (int i=0; i<28; i++){
+						dayBox.addItem(i+1);
+					}
+				}
 				deadlineYear = year + 2014;
-				System.out.println(deadlineYear);
-				//selectedDeadline.set(Calendar.YEAR, year + 2014);
+				if ((deadlineYear == 2016 || deadlineYear == 2020) && deadlineMonth == 2){
+					dayBox.removeAllItems();
+					for (int j=0; j<29; j++){
+						dayBox.addItem(j+1);
+					}
+				}
 			}
 			
 		});
@@ -120,9 +189,10 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				for (int i=0; i<daysInMonth[days]; i++){
 					dayBox.addItem(i+1);
 				}	
+				if ((deadlineYear == 2016 || deadlineYear == 2020) && days == 1){
+					dayBox.addItem(29);
+				}
 				deadlineMonth = days + 1;
-				System.out.println(deadlineMonth);
-				//selectedDeadline.set(Calendar.MONTH, days + 1);
 			}	
 		});
 		
@@ -131,8 +201,6 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 			public void actionPerformed(ActionEvent e){
 				int day = dayBox.getSelectedIndex();
 				deadlineDay = day + 1;
-				System.out.println(deadlineDay);
-				//selectedDeadline.set(selectedDeadline.DAY_OF_MONTH, day + 1);
 			}
 			
 		});
@@ -150,11 +218,11 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				NewGameImportWindow importWindow = new NewGameImportWindow(requirements, parentFrame);
 				if (importWindow.currentSelectedReq !=null && !selectionsMade.contains(importWindow.currentSelectedReq))
 				{
-					reqSelection = importWindow.currentSelectedReq;
+					reqSelection = importWindow.currentSelectedReq.getId();
 					/**TODO selections made persist when switching modules, but selectionsmade does nto persist*/
-					newGameP.updatePanels(reqSelection);
+					newGameP.updatePanels(importWindow.currentSelectedReq);
 					selectionsMade.add(reqSelection);
-					requirements.remove(reqSelection);
+					requirements.remove(importWindow.currentSelectedReq);
 				}
 
 			}
@@ -164,7 +232,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 			public void actionPerformed(ActionEvent e){
 				Requirement removed = newGameP.getSelectedRequirement();
 				if( removed != null){
-					selectionsMade.remove(removed);
+					selectionsMade.remove(removed.getId());
 					requirements.add(removed);
 				}
 			}
@@ -172,12 +240,18 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		
 		activateButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				currentDate = Calendar.getInstance();
-				currentDate.set(Calendar.MONTH, currentDate.get(Calendar.MONTH) + 1);
 				String name = nameTextField.getText();
 				Calendar selectedDeadline = Calendar.getInstance();
-				selectedDeadline.set(deadlineYear, deadlineMonth, deadlineDay);
-				if(!selectedDeadline.after(currentDate)){
+				currentDate = Calendar.getInstance();
+				currentDate.set(Calendar.MONTH, currentDate.get(Calendar.MONTH) + 1);
+				selectedDeadline.set(deadlineYear, deadlineMonth, deadlineDay, getHour(hourTime), minuteTime);
+				if (hourComboBox.getSelectedIndex() == 0){
+					System.out.println("Please choose an hour for deadline");
+				}
+				else if (minuteComboBox.getSelectedIndex() == 0){
+					System.out.println("Please choose a minute for deadline");
+				}
+				else if(!selectedDeadline.after(currentDate)){
 					System.out.println("Cannot have a deadline in the past");
 					JOptionPane deadlineError = new JOptionPane("Deadline error");
 					JOptionPane.showMessageDialog(deadlineError, "Can not have a deadline in the past", "Deadline error", JOptionPane.ERROR_MESSAGE);
@@ -193,7 +267,8 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				}
 				else{
 					System.out.println("Valid date selected and requirements were selected");
-					GameSession newGame = new GameSession(name, 0 , -1, selectedDeadline, selectionsMade); 
+					Date deadlineDate = new Date(deadlineYear, deadlineMonth, deadlineDay, getHour(hourTime), minuteTime);
+					GameSession newGame = new GameSession(name, 0 , -1, deadlineDate, selectionsMade); 
 					GameModel model = new GameModel();
 					AddGameController msgr = new AddGameController(model);
 					msgr.sendMessage(newGame);	
@@ -209,6 +284,16 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	 * a lot of Window Builder generated UI
 	 * for setting the NewGameInputPage
 	 */
+	
+	private int getHour(int hour){
+		if (isAM == true){
+			return hour;
+		}
+		else {
+			return hour + 12;
+		}
+	}
+	
 	private void setPanel(){
 //		userList.setListData(listValue);
 		SpringLayout springLayout = new SpringLayout();
@@ -330,12 +415,29 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		springLayout.putConstraint(SpringLayout.EAST, deckLabel, 250, SpringLayout.EAST, deadlineLabel);
 		springLayout.putConstraint(SpringLayout.NORTH, deckLabel, 0, SpringLayout.NORTH, deadlineLabel);		
 		
+		//Spring layout for timeLabel
+		springLayout.putConstraint(SpringLayout.SOUTH, timeLabel, 50, SpringLayout.SOUTH, dayLabel);
+		springLayout.putConstraint(SpringLayout.WEST, timeLabel, 0, SpringLayout.WEST, dayLabel);
+		
+		//Spring layout for hourComboBox
+		springLayout.putConstraint(SpringLayout.SOUTH, hourComboBox, 0, SpringLayout.SOUTH, timeLabel);
+		springLayout.putConstraint(SpringLayout.WEST, hourComboBox, 10, SpringLayout.EAST, timeLabel);
+		
+		//Spring layout for minuteComboBox
+		springLayout.putConstraint(SpringLayout.NORTH, minuteComboBox, 0, SpringLayout.NORTH, hourComboBox);
+		springLayout.putConstraint(SpringLayout.WEST, minuteComboBox, 10, SpringLayout.EAST, hourComboBox);
+		
+		//Spring layout for ampmBox
+		springLayout.putConstraint(SpringLayout.NORTH, ampmBox, 0, SpringLayout.NORTH, minuteComboBox);
+		springLayout.putConstraint(SpringLayout.WEST, ampmBox, 10, SpringLayout.EAST, minuteComboBox);
+		
+		
+		
 		setLayout(springLayout);
 		
 		nameTextField.setColumns(10);
 		//userStoryTextArea.setColumns(10);
 
-		
 		add(importButton);
 		add(removeButton);
 		add(nameLabel);
@@ -362,6 +464,10 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		add(deckLabel);
 		add(deckBox);
 		add(requirementLabel);
+		add(timeLabel);
+		add(hourComboBox);
+		add(minuteComboBox);
+		add(ampmBox);
 	}
 	
 	//Added by Ruofan.

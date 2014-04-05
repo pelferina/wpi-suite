@@ -1,6 +1,8 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker;
 
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +40,12 @@ public class PlanningPoker implements IJanewayModule{
 		JButton newGameButton = new JButton("New Game");
 		buttonPanel.add(newGameButton);
 		buttonPanel.add(new JButton("Options"));
+		
+		newGameButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				mainPanel.addNewGameTab();
+			}
+		});
 		
 		// Setup the main panel
 		/*
