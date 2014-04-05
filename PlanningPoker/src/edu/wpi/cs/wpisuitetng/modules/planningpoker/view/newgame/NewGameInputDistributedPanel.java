@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 //import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
@@ -266,7 +267,8 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				}
 				else{
 					System.out.println("Valid date selected and requirements were selected");
-					GameSession newGame = new GameSession(name, 0 , -1, selectedDeadline, selectionsMade); 
+					Date deadlineDate = new Date(deadlineYear, deadlineMonth, deadlineDay, getHour(hourTime), minuteTime);
+					GameSession newGame = new GameSession(name, 0 , -1, deadlineDate, selectionsMade); 
 					GameModel model = new GameModel();
 					AddGameController msgr = new AddGameController(model);
 					msgr.sendMessage(newGame);	
