@@ -29,6 +29,7 @@ import java.util.Properties;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -175,30 +176,43 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 	}
 	/**
 	 * Sends a email message to the users in given session.
-	 * @param message the message to be sent
+	 * @param  textToSend the message to be sent
 	 * @throws UnsupportedEncodingException 
 	 */
-	public void sendUserEmails(String subject, String message) throws UnsupportedEncodingException
+	public void sendUserEmails(String subject, String textToSend) throws UnsupportedEncodingException
 	{
-        Properties props = new Properties();
-        javax.mail.Session session = javax.mail.Session.getDefaultInstance(props, null); //TODO this is messy.  namespace properly
-
-        String msgBody = message;
-
-        try {
-            Message msg = new MimeMessage(session);
-            msg.setFrom(new InternetAddress("admin@example.com", "Example.com Admin"));
-            msg.addRecipient(Message.RecipientType.TO,
-                             new InternetAddress("user@example.com", "Mr. User"));
-            msg.setSubject("Planning Poker ");
-            msg.setText(msgBody);
-            Transport.send(msg);
-
-        } catch (AddressException e) {
-            System.out.println("AddressException");
-        } catch (MessagingException e) {
-        	System.out.println("MessagingException");
-        }
+		final String username = "fff8e7.email@gmail.com";
+		final String password = "fff8e7team5";
+ 
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
+ 
+		javax.mail.Session session = javax.mail.Session.getInstance(props,
+		  new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		  });
+ 
+		try {
+ 
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress("fff8e7.email@gmail.com"));
+			message.setRecipients(Message.RecipientType.TO,
+				InternetAddress.parse("rding318@gmail.com"));
+			message.setSubject("Testing Subject");
+			message.setText("Hello world");
+ 
+			Transport.send(message);
+ 
+			System.out.println("Done");
+ 
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/*
