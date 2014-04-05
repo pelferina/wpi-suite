@@ -5,10 +5,6 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Chris Casola
- *    Andrew Hurle
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
@@ -25,11 +21,8 @@ import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
 
 /**
- * This is the entity manager for the PostBoardMessage in the
- * PostBoard module.
- * 
- * @author Chris Casola
- *
+ * This is the entity manager for the GameSession and GameModel in the
+ * PlanningPoker module.
  */
 public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 
@@ -50,7 +43,7 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 	}
 
 	/*
-	 * Saves a PostBoardMessage when it is received from a client
+	 * Saves a GameSession when it is received from a client
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#makeEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
@@ -89,7 +82,7 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 	public GameSession[] getEntity(Session s, String id)
 			throws NotFoundException, WPISuiteException {
 		// Throw an exception if an ID was specified, as this module does not support
-		// retrieving specific PostBoardMessages.
+		// retrieving specific GameSessions.
 		try{
 			int ID = Integer.parseInt(id);
 			GameSession aSample = new GameSession(null, 0, ID);
@@ -107,8 +100,8 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 	 */
 	@Override
 	public GameSession[] getAll(Session s) throws WPISuiteException {
-		// Ask the database to retrieve all objects of the type PostBoardMessage.
-		// Passing a dummy PostBoardMessage lets the db know what type of object to retrieve
+		// Ask the database to retrieve all objects of the type GameSession.
+		// Passing a dummy GameSession lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
 		List<Model> messages = db.retrieveAll(new GameSession(null, 0, 0, null, null), s.getProject());
 		System.out.println(messages);
@@ -131,7 +124,7 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 		db.update(GameSession.class, "GameID", importedGame.getGameID(), "GameReqs", importedGame.getGameReqs());
 		db.update(GameSession.class, "GameID", importedGame.getGameID(), "EndDate", importedGame.getEndDate());
 		db.update(GameSession.class, "GameID", importedGame.getGameID(), "GameName", importedGame.getGameName());
-		// This module does not allow PostBoardMessages to be modified, so throw an exception
+		// This module does not allow GameSessions to be modified, so throw an exception
 		throw new WPISuiteException();
 	}
 
@@ -154,7 +147,7 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
 
-		// This module does not allow PostBoardMessages to be deleted, so throw an exception
+		// This module does not allow GameSessions to be deleted, so throw an exception
 		throw new WPISuiteException();
 	}
 
@@ -166,7 +159,7 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 	@Override
 	public void deleteAll(Session s) throws WPISuiteException {
 
-		// This module does not allow PostBoardMessages to be deleted, so throw an exception
+		// This module does not allow GameSessions to be deleted, so throw an exception
 		throw new WPISuiteException();
 	}
 
@@ -175,7 +168,7 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 	 */
 	@Override
 	public int Count() throws WPISuiteException {
-		// Return the number of PostBoardMessages currently in the database
+		// Return the number of GameSessions currently in the database
 		return db.retrieveAll(new GameSession(null, 0, 0, null, null)).size();
 	}
 

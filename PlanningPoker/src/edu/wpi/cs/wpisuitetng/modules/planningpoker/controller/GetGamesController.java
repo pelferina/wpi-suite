@@ -59,7 +59,7 @@ public class GetGamesController implements ActionListener {
 		if (messages != null) {
 			
 			// add the messages to the local model
-			model.addMessages(messages);
+			model.addGames(messages);
 		}
 	}
 }

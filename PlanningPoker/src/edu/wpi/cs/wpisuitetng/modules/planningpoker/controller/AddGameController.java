@@ -67,6 +67,6 @@ public class AddGameController implements ActionListener {
 	 * @param message
 	 */
 	public void addMessageToModel(GameSession message) {
-		model.addMessage(message);
+		model.addGame(message);
 	}
 }

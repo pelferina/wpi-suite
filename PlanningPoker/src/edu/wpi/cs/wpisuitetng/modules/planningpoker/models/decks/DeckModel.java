@@ -73,7 +73,7 @@ public class DeckModel extends AbstractListModel {
 		try {
 			AddDeckController.getInstance().addDeck(newDeck);
 		} catch (Exception e) {
-
+			//TODO: Error catching 
 		}
 		//TODO:Change to Deck View
 		ViewEventController.getInstance().refreshTree();
