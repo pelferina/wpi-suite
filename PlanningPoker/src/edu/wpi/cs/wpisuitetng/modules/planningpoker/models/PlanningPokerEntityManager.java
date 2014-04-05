@@ -13,6 +13,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.Session;
@@ -23,6 +24,16 @@ import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
+
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
 
 /**
  * This is the entity manager for the PostBoardMessage in the
@@ -144,6 +155,50 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 
 		// Save the given defect in the database
 		db.save(model);
+	}
+	/**
+	 * Ends a game
+	 * @param gameID the game to be ended
+	 * @param s  	 the session info from which this was called
+	 * @throws WPISuiteException 
+	 * @throws  
+	 */
+	public void endGame(int gameID, Session s) throws WPISuiteException{
+		db.update(GameSession.class, "GameID", gameID, "Status", 3);
+		try {
+			sendUserEmails("Planning Poker Alert","Planning Poker voting has ended for game: "+gameID);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			throw new WPISuiteException(e.toString()); 
+		}
+		
+	}
+	/**
+	 * Sends a email message to the users in given session.
+	 * @param message the message to be sent
+	 * @throws UnsupportedEncodingException 
+	 */
+	public void sendUserEmails(String subject, String message) throws UnsupportedEncodingException
+	{
+        Properties props = new Properties();
+        javax.mail.Session session = javax.mail.Session.getDefaultInstance(props, null); //TODO this is messy.  namespace properly
+
+        String msgBody = message;
+
+        try {
+            Message msg = new MimeMessage(session);
+            msg.setFrom(new InternetAddress("admin@example.com", "Example.com Admin"));
+            msg.addRecipient(Message.RecipientType.TO,
+                             new InternetAddress("user@example.com", "Mr. User"));
+            msg.setSubject("Planning Poker ");
+            msg.setText(msgBody);
+            Transport.send(msg);
+
+        } catch (AddressException e) {
+            System.out.println("AddressException");
+        } catch (MessagingException e) {
+        	System.out.println("MessagingException");
+        }
 	}
 
 	/*
