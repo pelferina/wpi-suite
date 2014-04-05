@@ -24,6 +24,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame.CurrentGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameMainPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
 
 /**
  * Description
@@ -33,26 +34,38 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameMainPane
  */
 @SuppressWarnings("serial")
 public class MainView extends JTabbedPane {
+	private static MainView instance = null;
 	private final JPanel currentGame;
 	private final JPanel pastGames;
 	private final JPanel deckPanel;
 	private GameModel gameModel;
 	
-
-	public MainView(GameModel gameModel, DeckModel deckModel, boolean hasNewGame) {
+	private MainView()
+	{
+	
+	}
+	public MainView(GameModel gameModel, DeckModel deckModel) {
 		this.gameModel = gameModel;
 		currentGame = new CurrentGamePanel(gameModel);
 		pastGames = new JPanel();
 		deckPanel = new DeckPanel(deckModel);
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-//		if (hasNewGame == true){
-//			addTab("New Game", newGame);
-//		}
+
 		addTab("Current Game", currentGame);
 		addTab("Past Game", pastGames);
 		addTab("Deck", deckPanel);
 	}
 	
+	/**
+	 * Returns the singleton instance of the vieweventcontroller.
+	
+	 * @return The instance of this controller. */
+	public static MainView getInstance() {
+		if (instance == null) {
+			instance = new MainView();
+		}
+		return instance;
+	}
 	public void addNewGameTab()
 	{
 		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler("New Game");
