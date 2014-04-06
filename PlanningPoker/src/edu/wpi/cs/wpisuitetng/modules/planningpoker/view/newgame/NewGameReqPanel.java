@@ -7,7 +7,6 @@ import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -209,6 +208,7 @@ public class NewGameReqPanel extends JPanel {
 	
 	public List<Requirement> getSelected(){
 		return selected;
+
 	}
 	
 	/**
@@ -219,7 +219,7 @@ public class NewGameReqPanel extends JPanel {
 		selected.add(req);
 		listValue.addElement(req.getName());
 	}
-	
+
 	public Requirement removeSelected(){
 		int tempIndex = reqList.getSelectedIndex();
 		if (tempIndex == -1)
@@ -228,6 +228,6 @@ public class NewGameReqPanel extends JPanel {
 		listValue.remove(tempIndex);
 		selected.remove(tempIndex);
 		return tempReq;
-		
+
 	}
 }

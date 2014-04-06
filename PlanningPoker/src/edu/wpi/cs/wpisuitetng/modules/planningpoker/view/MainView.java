@@ -32,6 +32,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameMainPane
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
 
 /**
  * Description
@@ -49,7 +50,7 @@ public class MainView extends JTabbedPane {
 	private int j = 0;
 	private List<Integer> openTabs = new ArrayList<Integer>();
 
-	public MainView(GameModel gameModel, DeckModel deckModel, boolean hasNewGame) {
+	public MainView(GameModel gameModel, DeckModel deckModel) {
 		this.gameModel = gameModel;
 		currentGame = new CurrentGamePanel(gameModel);
 		pastGames = new JPanel();
@@ -67,14 +68,14 @@ public class MainView extends JTabbedPane {
 	{
 		openTabs.add(newGameTabs, j);
 		GetRequirementsController.getInstance().retrieveRequirements();
+		JButton btnClose = new JButton("x");
 		List<Requirement> reqs = RequirementModel.getInstance().getRequirements();
-		NewGameDistributedPanel newGame = new NewGameDistributedPanel(gameModel, reqs);
+		NewGameDistributedPanel newGame = new NewGameDistributedPanel(gameModel, reqs, btnClose);
 		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler("New Game", j, newGame);
 		add(newGame, newGameTabs + 3);
 		JPanel pnlTab = new JPanel(new GridBagLayout());
 		pnlTab.setOpaque(false);
 		JLabel lblTitle = new JLabel("New Game");
-		JButton btnClose = new JButton("x");
 		btnClose.setMargin(new Insets(0, 0, 0, 0));
 		btnClose.setFont(btnClose.getFont().deriveFont((float) 8));
 		GridBagConstraints gbc = new GridBagConstraints();
