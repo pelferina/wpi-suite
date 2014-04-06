@@ -392,8 +392,8 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 		springLayout.putConstraint(SpringLayout.WEST, ampmBox, 10, SpringLayout.EAST, minuteComboBox);
 
 		//Spring layout for the addNewButton
-		springLayout.putConstraint(SpringLayout.NORTH, addNewButton, 0, SpringLayout.NORTH, importButton);
-		springLayout.putConstraint(SpringLayout.EAST, addNewButton, 150, SpringLayout.EAST, importButton);
+		springLayout.putConstraint(SpringLayout.NORTH, addNewButton, 30, SpringLayout.NORTH, descriptionLabel);
+		springLayout.putConstraint(SpringLayout.WEST, addNewButton, 0, SpringLayout.WEST, descriptionLabel);
 		
 		setLayout(springLayout);
 	
@@ -402,6 +402,9 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 		add(nameTextField);
 		add(descriptionLabel);
 		add(descTextArea);
+		
+		//Adds button for Requirement Creation
+		add(addNewButton);
 		
 		// Adds label for Deadline and date related labels and boxes
 		add(deadlineLabel);
