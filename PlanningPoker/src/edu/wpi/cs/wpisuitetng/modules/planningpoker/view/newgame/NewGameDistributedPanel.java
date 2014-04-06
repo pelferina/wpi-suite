@@ -9,10 +9,13 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
 import java.awt.Dimension;
+import java.util.List;
 
 import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 /**
  * The panel for creating a new live Planning Poker game, along with fields
@@ -28,9 +31,10 @@ public class NewGameDistributedPanel extends AbsNewGamePanel {
 	public boolean isNew = true;
 	public NewGameInputDistributedPanel newGameInputPanel = new NewGameInputDistributedPanel(this);
 	public NewGameReqPanel newGameReqPanel;
+	private List<Requirement> reqs = RequirementModel.getInstance().getRequirements();
 	
 	public NewGameDistributedPanel(GameModel gameModel) {
-		newGameReqPanel = new NewGameReqPanel();
+		newGameReqPanel = new NewGameReqPanel(reqs);
 		setPanel();
 	}
 	/**
