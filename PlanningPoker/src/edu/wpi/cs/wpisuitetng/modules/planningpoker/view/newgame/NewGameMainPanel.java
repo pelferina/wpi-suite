@@ -33,7 +33,7 @@ public class NewGameMainPanel extends JPanel{
 
 	public NewGameMainPanel(GameModel gameModel){
 		livePanel = new NewGameLivePanel(gameModel);
-		distributedPanel = new NewGameDistributedPanel(gameModel, true); //TODO check whether it should be in edit mode or not
+		distributedPanel = new NewGameDistributedPanel(); //TODO check whether it should be in edit mode or not
 		setupInitialPanel();
 		nextInitialButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){

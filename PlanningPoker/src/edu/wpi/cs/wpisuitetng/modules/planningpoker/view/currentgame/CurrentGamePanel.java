@@ -11,6 +11,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -21,8 +23,9 @@ import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * Description
@@ -35,16 +38,12 @@ public class CurrentGamePanel extends JPanel {
 
 	private JButton btnRefresh;
 	private JButton btnEdit;
-	private JList<String> List = new JList<String>(); 
 	private final JList activeGameList;
-	private final GameModel allGameModel;
-	private GameModel activeModel = GameModel.getInstance();
-
-
-	public CurrentGamePanel(GameModel gameModel) {
+	private List<GameSession> listOfGames = new ArrayList<GameSession>();
+	public CurrentGamePanel() {
 		// Construct the list box model
-		allGameModel = gameModel;
-		activeGameList = new JList(allGameModel);
+		activeGameList = new JList( GameModel.getInstance());
+		listOfGames = GameModel.getInstance().getGames();
 		// Change the font of the JList
 		activeGameList.setFont(activeGameList.getFont().deriveFont(11));
 
@@ -62,10 +61,14 @@ public class CurrentGamePanel extends JPanel {
 		{
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					ViewEventController.getInstance().createNewGameTab(true);
+				int tempIndex = activeGameList.getSelectedIndex();
+				if (tempIndex == -1)
+					return;
+				GameSession tempGame = listOfGames.get(tempIndex);		
+				ViewEventController.getInstance().editGameTab(tempGame);
 			}	
 		});
-		btnRefresh.addActionListener(new GetGamesController(allGameModel));
+		btnRefresh.addActionListener(new GetGamesController( GameModel.getInstance()));
 		add(Box.createVerticalStrut(20)); // leave a 20 pixel gap
 		add(activeLstScrollPane);
 		add(Box.createVerticalStrut(20)); // leave a 20 pixel gap

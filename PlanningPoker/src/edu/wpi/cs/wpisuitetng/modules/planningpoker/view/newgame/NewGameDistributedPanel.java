@@ -13,6 +13,7 @@ import java.awt.Dimension;
 import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 
 /**
  * The panel for creating a new live Planning Poker game, along with fields
@@ -30,10 +31,15 @@ public class NewGameDistributedPanel extends AbsNewGamePanel {
 	public NewGameReqPanel newGameReqPanel;
 	private boolean editMode;
 	
-	public NewGameDistributedPanel(GameModel gameModel, boolean editMode) {
+	public NewGameDistributedPanel(GameSession gameSession)
+	{
 		newGameReqPanel = new NewGameReqPanel();
-		this.editMode = editMode;
-		this.newGameInputPanel = new NewGameInputDistributedPanel(this, this.editMode);
+		this.newGameInputPanel = new NewGameInputDistributedPanel(this, gameSession);
+		setPanel();
+	}
+	public NewGameDistributedPanel() {
+		newGameReqPanel = new NewGameReqPanel();
+		this.newGameInputPanel = new NewGameInputDistributedPanel(this);
 		setPanel();
 	}
 	/**

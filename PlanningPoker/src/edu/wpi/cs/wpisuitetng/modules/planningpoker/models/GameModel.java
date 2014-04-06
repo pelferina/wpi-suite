@@ -36,6 +36,13 @@ public class GameModel extends AbstractListModel {
 	private List<GameSession> games;
 	
 	/**
+	 * @return the games
+	 */
+	public List<GameSession> getGames() {
+		return games;
+	}
+
+	/**
 	 * Constructs a new board with no games.
 	 */
 	public GameModel() {

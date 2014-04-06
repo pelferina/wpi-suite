@@ -77,13 +77,23 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	public boolean isNew = true;
 	private boolean editMode = false;
 
+	public NewGameInputDistributedPanel(NewGameDistributedPanel ngdp, GameSession gameSession)
+	{
+		this.editMode = true;
+		init(ngdp);
+		System.out.println("Editing Game: "+ gameSession.getGameName());
+	}
 	/**
 	 * The constructor for the NewGameInputPanel
 	 * has void parameters
 	 * @param nglp, The NewGameLivePanel that it was added from
 	 */
-	public NewGameInputDistributedPanel(NewGameDistributedPanel ngdp, boolean editMode) {
-		this.editMode = editMode;
+	public NewGameInputDistributedPanel(NewGameDistributedPanel ngdp) {
+		init(ngdp);
+	}
+	
+	private void init(NewGameDistributedPanel ngdp)
+	{
 		currentDate = Calendar.getInstance();
 		//selectedDeadline = Calendar.getInstance();
 		//selectedDeadline.set(2014, 1, 1);
