@@ -22,7 +22,7 @@ import java.util.List;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -36,46 +36,43 @@ import javax.swing.event.DocumentListener;
  */
 @SuppressWarnings("serial")
 public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
+private Calendar currentDate; // TODO get rid of this, switch to GregorianCalendar data type
 	
-	private int reqSelection; 
-	private String[] yearString = {"2014", "2015","2016","2017","2018","2019","2020","2021","2022"}; //TODO
-	private String[] monthString = {"Jan", "Feb", "Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec" }; //TODO
-	private String[] ampmString = {"AM", "PM"};
-	private Calendar currentDate;
-	private int[] deckCards;
-	private int[] defaultDeck = {1, 1, 2, 3, 5, 8, 13, -1};
+	private NewGameDistributedPanel newGameP;
+	
+	private int hourTime = -1;
+	private int minuteTime = -1; 
 	private int deadlineDay = 1;
 	private int deadlineMonth = 1;
 	private int deadlineYear = 2014;
-	private final JLabel nameLabel = new JLabel("Game Name:");
-	private final JLabel timeLabel = new JLabel ("Deadline Time:");
-	private final JLabel descriptionLabel = new JLabel("Game Description:");
-	private final JTextArea descriptionTextArea = new JTextArea();
-	private final JLabel requirementLabel = new JLabel("Game Requirements");
-	//private final JLabel userStoryLabel = new JLabel("User Story:");
-	//private JButton addNewButton = new JButton("Add New");
-	private final JLabel deadlineLabel = new JLabel("Deadline");
-	private final JLabel deckLabel = new JLabel("Choose a deck");
-	private JButton activateButton = new JButton("Activate Game");
-	private JTextField nameTextField = new JTextField();
+	private int[] deckCards;
+	private int[] defaultDeck = {1, 1, 2, 3, 5, 8, 13, -1};
+	private boolean isAM = true;
+	public boolean isNew = true;
+	private final String[] yearString = {"2014", "2015","2016","2017","2018","2019","2020","2021","2022"}; 
+	private final String[] monthString = {"Jan", "Feb", "Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec" }; 
+	private final String[] ampmString = {"AM", "PM"};
+	private List<Integer> selectionsMade = new ArrayList<Integer>();
+	
+	private final JButton activateButton = new JButton("Activate Game");
+	private final JButton addNewButton = new JButton("Create New");
+	private JComboBox deckBox = new JComboBox(); // Implement Decks
+	private JComboBox<Integer> dayBox = new JComboBox<Integer>();
 	private JComboBox<String> hourComboBox = new JComboBox<String>();
 	private JComboBox<String> minuteComboBox = new JComboBox<String>();
 	private JComboBox<String> ampmBox = new JComboBox<String>(ampmString);
-	private int hourTime = -1;
-	private int minuteTime = -1;
-	private NewGameDistributedPanel newGameP;
+	private JComboBox<String> yearBox = new JComboBox<String>(yearString);
+	private JComboBox<String> monthBox = new JComboBox<String>(monthString);
+	private final JLabel nameLabel = new JLabel("Game Name:");
+	private final JLabel timeLabel = new JLabel ("Deadline Time:");
+	private final JLabel descriptionLabel = new JLabel("Description:");
+	private final JLabel deadlineLabel = new JLabel("Deadline");
+	private final JLabel deckLabel = new JLabel("Choose a deck");
 	private JLabel yearLabel = new JLabel("Year: ");
 	private JLabel monthLabel = new JLabel("Month: ");
 	private JLabel dayLabel = new JLabel("Day: ");
-	private JComboBox<String> yearBox = new JComboBox<String>(yearString);
-	private JComboBox<String> monthBox = new JComboBox<String>(monthString);
-	private JComboBox<Integer> dayBox = new JComboBox<Integer>();
-	private JComboBox deckBox = new JComboBox();
-	private List<Integer> selectionsMade = new ArrayList<Integer>();
-	private List<Requirement> requirements;
-	private final JButton addNewButton = new JButton("Create New");
-	private boolean isAM = true;
-	public boolean isNew = true;
+	private JTextField nameTextField = new JTextField();
+	private JTextArea descTextArea = new JTextArea();
 	private boolean editMode = false;
 
 	/**
@@ -86,9 +83,6 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	public NewGameInputDistributedPanel(NewGameDistributedPanel ngdp, boolean editMode) {
 		this.editMode = editMode;
 		currentDate = Calendar.getInstance();
-		requirements = RequirementModel.getInstance().getRequirements();
-		//selectedDeadline = Calendar.getInstance();
-		//selectedDeadline.set(2014, 1, 1);
 		newGameP = ngdp;
 		//descriptionTextField.setColumns(10);
 		setPanel();
@@ -132,6 +126,23 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				newGameP.isNew = false;
 			}
 		});
+		
+		//Adds a documentlistener to the description text area so that way if the text is changed, the pop-up will 
+				// appear is the new game tab is close
+				descTextArea.getDocument().addDocumentListener(new DocumentListener(){
+					@Override
+					public void changedUpdate(DocumentEvent e){
+						newGameP.isNew = false;
+					}
+					@Override
+					public void removeUpdate(DocumentEvent e){
+						newGameP.isNew = false;
+					}
+					@Override 
+					public void insertUpdate(DocumentEvent e){
+						newGameP.isNew = false;
+					}
+				});
 		
 		deckBox.addActionListener(new ActionListener() {
 			
@@ -235,42 +246,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 			}
 			
 		});
-		
-		importButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				newGameP.isNew = false;
-				JPanel panel = new JPanel();
-				Window parentWindow = SwingUtilities.windowForComponent(panel); 
-				// or pass 'this' if you are inside the panel
-				Frame parentFrame = null;
-				if (parentWindow instanceof Frame) {
-				    parentFrame = (Frame)parentWindow;
-				}
-				NewGameImportWindow importWindow = new NewGameImportWindow(requirements, parentFrame);
-				if (importWindow.currentSelectedReq !=null && !selectionsMade.contains(importWindow.currentSelectedReq))
-				{
-					reqSelection = importWindow.currentSelectedReq.getId();
-					/**TODO selections made persist when switching modules, but selectionsmade does nto persist*/
-					//newGameP.updatePanels(importWindow.currentSelectedReq);
-					selectionsMade.add(reqSelection);
-					requirements.remove(importWindow.currentSelectedReq);
-				}
-
-			}
-		});
-		
-		removeButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				newGameP.isNew = false;
-				Requirement removed = newGameP.getSelectedRequirement();
-				if( removed != null){
-					selectionsMade.remove(removed.getId());
-					requirements.add(removed);
-				}
-			}
-		});
-		
-		//Checks to see if all the fields are properly filled, and then sends the game object to the database if done.
+				//Checks to see if all the fields are properly filled, and then sends the game object to the database if done.
 		
 		activateButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -343,42 +319,26 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		springLayout.putConstraint(SpringLayout.WEST, nameLabel, 23, SpringLayout.WEST, this);
 		
 		//Spring layout for the nameTextField
-		springLayout.putConstraint(SpringLayout.WEST, nameTextField, 43, SpringLayout.EAST, nameLabel);
+		springLayout.putConstraint(SpringLayout.WEST, nameTextField, 100, SpringLayout.WEST, nameLabel);
 		springLayout.putConstraint(SpringLayout.EAST, nameTextField, 200, SpringLayout.EAST, nameLabel);
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameTextField, 0, SpringLayout.VERTICAL_CENTER, nameLabel);
 		
 		//Spring layout for the descriptionLabel
-		springLayout.putConstraint(SpringLayout.NORTH, descriptionLabel, 18, SpringLayout.SOUTH, nameLabel);
-		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 0, SpringLayout.WEST, nameLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, descriptionLabel, 30, SpringLayout.NORTH, nameLabel);
+		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 23, SpringLayout.WEST, this);
 		
-		//Spring layout for the descriptionTextField
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, descriptionTextArea, 0, SpringLayout.VERTICAL_CENTER, descriptionLabel);
-		springLayout.putConstraint(SpringLayout.WEST, descriptionTextArea, 0, SpringLayout.WEST, nameTextField);
-		springLayout.putConstraint(SpringLayout.EAST, descriptionTextArea, -23, SpringLayout.EAST, this);
+		//Spring layout for the descTextArea
+		springLayout.putConstraint(SpringLayout.WEST, descTextArea, 100, SpringLayout.WEST, descriptionLabel);
+		springLayout.putConstraint(SpringLayout.EAST, descTextArea, 400, SpringLayout.EAST, descriptionLabel);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, descTextArea, 0, SpringLayout.VERTICAL_CENTER, descriptionLabel);
 		
-		//Spring layout for the timeLabel
+		//Spring layout for the deadlineLabel
 		springLayout.putConstraint(SpringLayout.SOUTH, deadlineLabel, -237, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, deadlineLabel, 0, SpringLayout.WEST, nameLabel);
 		
 		//Spring layout for the activateButton
 		springLayout.putConstraint(SpringLayout.SOUTH, activateButton, -10, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, activateButton, 180, SpringLayout.WEST, this);
-		
-		//Spring layout for the requirementLabel
-		springLayout.putConstraint(SpringLayout.WEST, requirementLabel, 0, SpringLayout.WEST, nameLabel);
-		springLayout.putConstraint(SpringLayout.SOUTH, requirementLabel, 75, SpringLayout.SOUTH, nameTextField);
-		
-		//Spring layout for the importButton
-		springLayout.putConstraint(SpringLayout.SOUTH, importButton, 50, SpringLayout.SOUTH, requirementLabel);
-		springLayout.putConstraint(SpringLayout.WEST, importButton, 0, SpringLayout.WEST, requirementLabel);
-				
-		//Spring layout for the addNewButton
-		springLayout.putConstraint(SpringLayout.NORTH, addNewButton, 0, SpringLayout.NORTH, importButton);
-		springLayout.putConstraint(SpringLayout.EAST, addNewButton, 150, SpringLayout.EAST, importButton);
-		
-		//Spring layout for the removeButton
-		springLayout.putConstraint(SpringLayout.NORTH, removeButton, 0, SpringLayout.NORTH, importButton);
-		springLayout.putConstraint(SpringLayout.EAST, removeButton, 300, SpringLayout.EAST, importButton);
 		
 		//Spring layout for the yearLabel
 		springLayout.putConstraint(SpringLayout.WEST, yearLabel, 0, SpringLayout.WEST, deadlineLabel);
@@ -388,7 +348,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		springLayout.putConstraint(SpringLayout.WEST, monthLabel, 0, SpringLayout.WEST, yearLabel);
 		springLayout.putConstraint(SpringLayout.NORTH, monthLabel, 18, SpringLayout.SOUTH, yearLabel);
 		
-		//Spring layout for the monthLabel
+		//Spring layout for the dayLabel
 		springLayout.putConstraint(SpringLayout.WEST, dayLabel, 0, SpringLayout.WEST, monthLabel);
 		springLayout.putConstraint(SpringLayout.NORTH, dayLabel, 18, SpringLayout.SOUTH, monthLabel);
 		
@@ -430,45 +390,38 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		//Spring layout for ampmBox
 		springLayout.putConstraint(SpringLayout.NORTH, ampmBox, 0, SpringLayout.NORTH, minuteComboBox);
 		springLayout.putConstraint(SpringLayout.WEST, ampmBox, 10, SpringLayout.EAST, minuteComboBox);
-		
-		
+
+		//Spring layout for the addNewButton
+		springLayout.putConstraint(SpringLayout.NORTH, addNewButton, 0, SpringLayout.NORTH, importButton);
+		springLayout.putConstraint(SpringLayout.EAST, addNewButton, 150, SpringLayout.EAST, importButton);
 		
 		setLayout(springLayout);
-		
-		nameTextField.setColumns(10);
-		descriptionTextArea.setColumns(15);
-
-		add(importButton);
-		add(removeButton);
+	
+		// Adds name and description labels and text fields
 		add(nameLabel);
-		add(descriptionLabel);
-		add(descriptionTextArea);
-		//add(userStoryLabel);
-		//add(addNewButton);
-		add(deadlineLabel);
-//		add(userLabel);
-//		add(addButton);
-//		add(deleteButton);
-		//add(backButton);
-		add(activateButton);
-		add(addNewButton);
-//		add(userList);
 		add(nameTextField);
-		//add(userStoryTextArea);
-		//add(descriptionTextField);
-		add(yearBox);
-		add(monthBox);
-		add(dayBox);
+		add(descriptionLabel);
+		add(descTextArea);
+		
+		// Adds label for Deadline and date related labels and boxes
+		add(deadlineLabel);
 		add(yearLabel);
 		add(monthLabel);
 		add(dayLabel);
-		add(deckLabel);
-		add(deckBox);
-		add(requirementLabel);
+		add(yearBox);
+		add(monthBox);
+		add(dayBox);
 		add(timeLabel);
 		add(hourComboBox);
 		add(minuteComboBox);
 		add(ampmBox);
+		
+		// Adds deck GUI objects
+		add(deckLabel);
+		add(deckBox);
+		
+		// Adds buttons at the bottom end of the GUI
+		add(activateButton);
 	}
 	
 	//Added by Ruofan.
