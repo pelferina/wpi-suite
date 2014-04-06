@@ -251,7 +251,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				{
 					reqSelection = importWindow.currentSelectedReq.getId();
 					/**TODO selections made persist when switching modules, but selectionsmade does nto persist*/
-					newGameP.updatePanels(importWindow.currentSelectedReq);
+//					newGameP.updatePanels(importWindow.currentSelectedReq);
 					selectionsMade.add(reqSelection);
 					requirements.remove(importWindow.currentSelectedReq);
 				}
@@ -303,8 +303,8 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 					newGameP.isNew = true;
 					System.out.println("Valid date selected and requirements were selected");
 					Date deadlineDate = new Date(deadlineYear, deadlineMonth, deadlineDay, getHour(hourTime), minuteTime);
-					GameSession newGame = new GameSession(name, 0 , -1, deadlineDate, selectionsMade); 
-					GameModel model = new GameModel();
+					GameSession newGame = new GameSession(name, 0 , GameModel.getInstance().getSize()+1, deadlineDate, selectionsMade); 
+					GameModel model = GameModel.getInstance();
 					AddGameController msgr = new AddGameController(model);
 					msgr.sendMessage(newGame);	
 					System.out.println(selectedDeadline.get(Calendar.MONTH) + "/" + selectedDeadline.get(Calendar.DAY_OF_MONTH) + "/" + selectedDeadline.get(Calendar.YEAR));

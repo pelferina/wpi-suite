@@ -38,7 +38,7 @@ public class CurrentGamePanel extends JPanel {
 	private JList<String> List = new JList<String>(); 
 	private final JList activeGameList;
 	private final GameModel allGameModel;
-	private GameModel activeModel = new GameModel();
+	private GameModel activeModel = GameModel.getInstance();
 
 
 	public CurrentGamePanel(GameModel gameModel) {
