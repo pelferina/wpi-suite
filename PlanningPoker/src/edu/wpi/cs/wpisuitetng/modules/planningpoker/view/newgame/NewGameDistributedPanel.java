@@ -9,11 +9,17 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
 import java.awt.Dimension;
+import java.util.List;
 
 import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+
 
 /**
  * The panel for creating a new live Planning Poker game, along with fields
@@ -30,16 +36,19 @@ public class NewGameDistributedPanel extends AbsNewGamePanel {
 	public NewGameInputDistributedPanel newGameInputPanel;
 	public NewGameReqPanel newGameReqPanel;
 	private boolean editMode;
+	public JButton close;
 	
-	public NewGameDistributedPanel(GameSession gameSession)
+	public NewGameDistributedPanel(JButton close, GameSession gameSession)
 	{
+		this.close = close;
 		newGameReqPanel = new NewGameReqPanel();
 		this.newGameInputPanel = new NewGameInputDistributedPanel(this, gameSession);
 		setPanel();
 	}
-	public NewGameDistributedPanel() {
+	public NewGameDistributedPanel(JButton close) {
 		newGameReqPanel = new NewGameReqPanel();
 		this.newGameInputPanel = new NewGameInputDistributedPanel(this);
+		this.close = close;
 		setPanel();
 	}
 	/**
@@ -60,6 +69,10 @@ public class NewGameDistributedPanel extends AbsNewGamePanel {
 	//Added by Ruofan 
 	public void setGameName(String gameName){
 		newGameInputPanel.setGameName(gameName);
+	}
+	
+	public List<Requirement> getSelected(){
+		return newGameReqPanel.getSelected();
 	}
 	/**
 	 * Takes in a requirement from the NewGameInputPanel

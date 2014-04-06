@@ -29,6 +29,12 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame.CurrentGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameInputDistributedPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameMainPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
+
 
 
 /**
@@ -46,6 +52,7 @@ public class MainView extends JTabbedPane {
 	private int j = 0;
 	private List<Integer> openTabs = new ArrayList<Integer>();
 	final int PERMANANT_TABS = 3;
+
 	
 	public MainView(DeckModel deckModel) {
 		currentGame = new CurrentGamePanel();
@@ -61,13 +68,13 @@ public class MainView extends JTabbedPane {
 	public void addNewGameTab()
 	{
 		openTabs.add(newGameTabs, j);
-		NewGameDistributedPanel newGame = new NewGameDistributedPanel();
+		JButton btnClose = new JButton("x");
+		NewGameDistributedPanel newGame = new NewGameDistributedPanel(btnClose);
 		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler("New Game", j, newGame);
 		add(newGame, newGameTabs + PERMANANT_TABS);
 		JPanel pnlTab = new JPanel(new GridBagLayout());
 		pnlTab.setOpaque(false);
 		JLabel lblTitle = new JLabel("New Game");
-		JButton btnClose = new JButton("x");
 		btnClose.setMargin(new Insets(0, 0, 0, 0));
 		btnClose.setFont(btnClose.getFont().deriveFont((float) 8));
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -92,13 +99,13 @@ public class MainView extends JTabbedPane {
 	public void addEditGameTab(GameSession gameSession)
 	{
 		openTabs.add(newGameTabs, j);
-		NewGameDistributedPanel newGame = new NewGameDistributedPanel(gameSession);
+		JButton btnClose = new JButton("x");
+		NewGameDistributedPanel newGame = new NewGameDistributedPanel(btnClose,gameSession);
 		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler("New Game", j, newGame);
 		add(newGame, newGameTabs + PERMANANT_TABS);
 		JPanel pnlTab = new JPanel(new GridBagLayout());
 		pnlTab.setOpaque(false);
 		JLabel lblTitle = new JLabel("New Game");
-		JButton btnClose = new JButton("x");
 		btnClose.setMargin(new Insets(0, 0, 0, 0));
 		btnClose.setFont(btnClose.getFont().deriveFont((float) 8));
 		GridBagConstraints gbc = new GridBagConstraints();

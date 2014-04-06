@@ -26,7 +26,7 @@ public class NewGameLivePanel extends AbsNewGamePanel {
 	
 	public NewGameLivePanel(GameModel gameModel) {
 		newGameInputPanel = new NewGameInputLivePanel(this);
-		newGameReqPanel = new NewGameReqPanel();
+		//newGameReqPanel = new NewGameReqPanel();
 		setPanel();
 	}
 	/**
