@@ -30,8 +30,8 @@ public class NewGameReqPanel extends JPanel {
 	private final JLabel gameReqs = new JLabel("Requirements in the game");
 	private List<Requirement> selected = new ArrayList<Requirement>();
 	private String[] columnName = {"Name", "Description"};
-	private JTable table;
-	private JTable table_1;
+	private JTable unselectedTable;
+	private JTable selectedTable;
 	private List<Requirement> reqs;
 	
 	public NewGameReqPanel(List<Requirement> requirements) {
@@ -66,14 +66,14 @@ public class NewGameReqPanel extends JPanel {
 		btnV.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
-				if (table.getSelectedRow() != -1){
-					int index = table.getSelectedRow();
+				if (unselectedTable.getSelectedRow() != -1){
+					int index = unselectedTable.getSelectedRow();
 					Requirement selectedReq = reqs.get(index);
 					selected.add(selectedReq);
 					reqs.remove(index);
 					String[] data = {selectedReq.getName(), selectedReq.getDescription()};
-					DefaultTableModel dtm = (DefaultTableModel)table.getModel();
-					DefaultTableModel dtm_1 = (DefaultTableModel)table_1.getModel();
+					DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
+					DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
 					dtm.setRowCount(reqs.size());
 					for (int i = 0; i < reqs.size(); i++){
 						dtm.setValueAt(reqs.get(i).getName(), i, 0);
@@ -88,8 +88,8 @@ public class NewGameReqPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				if(reqs.size() != 0){
-					DefaultTableModel dtm_1 = (DefaultTableModel)table_1.getModel();
-					DefaultTableModel dtm = (DefaultTableModel)table.getModel();
+					DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
+					DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
 					int size = reqs.size();
 					for(int i=0; i < size; i++){
 						String[] data = {reqs.get(i).getName(), reqs.get(i).getDescription()};
@@ -105,14 +105,14 @@ public class NewGameReqPanel extends JPanel {
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
-				if (table_1.getSelectedRow() != -1){
-					int index = table_1.getSelectedRow();
+				if (selectedTable.getSelectedRow() != -1){
+					int index = selectedTable.getSelectedRow();
 					Requirement selectedReq = selected.get(index);
 					selected.remove(index);
 					reqs.add(selectedReq);
 					String[] data = {selectedReq.getName(), selectedReq.getDescription()};
-					DefaultTableModel dtm = (DefaultTableModel)table.getModel();
-					DefaultTableModel dtm_1 = (DefaultTableModel)table_1.getModel();
+					DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
+					DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
 					dtm_1.setRowCount(selected.size());
 					for (int i = 0; i < selected.size(); i++){
 						dtm_1.setValueAt(selected.get(i).getName(), i, 0);
@@ -127,8 +127,8 @@ public class NewGameReqPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				if (selected.size() != 0){
-					DefaultTableModel dtm_1 = (DefaultTableModel)table_1.getModel();
-					DefaultTableModel dtm = (DefaultTableModel)table.getModel();
+					DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
+					DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
 					int size = selected.size();
 					for(int i=0; i < size; i++){
 						String[] data = {selected.get(i).getName(), selected.get(i).getDescription()};
@@ -149,8 +149,8 @@ public class NewGameReqPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.NORTH, scrollPane, 31, SpringLayout.NORTH, this);
 		add(scrollPane);
 		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
+		unselectedTable = new JTable();
+		unselectedTable.setModel(new DefaultTableModel(
 			new Object[][] {
 				{null, null},
 				{null, null},
@@ -162,15 +162,21 @@ public class NewGameReqPanel extends JPanel {
 				"Name", "Description"
 			}
 		));
-		DefaultTableModel dtm = (DefaultTableModel)table.getModel();
+		
+		DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
 		dtm.setNumRows(reqs.size());
 		dtm.setColumnCount(2);
+		
+		unselectedTable.getColumnModel().getColumn(0).setMinWidth(100);
+		unselectedTable.getColumnModel().getColumn(0).setMaxWidth(200);
+		unselectedTable.getColumnModel().getColumn(0).setPreferredWidth(150);
+		
 		for (int i = 0; i < reqs.size(); i++){
 			dtm.setValueAt(reqs.get(i).getName(), i, 0);
 			dtm.setValueAt(reqs.get(i).getDescription(), i, 1);
 		}
-		scrollPane.setViewportView(table);
-		//table.getColumnModel().getColumn(0).setPreferredWidth(50);
+		scrollPane.setViewportView(unselectedTable);
+		//unselectedTable.getColumnModel().getColumn(0).setPreferredWidth(50);
 		
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
@@ -181,8 +187,8 @@ public class NewGameReqPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.SOUTH, button, -3, SpringLayout.NORTH, scrollPane_1);
 		add(scrollPane_1);
 		
-		table_1 = new JTable();
-		table_1.setModel(new DefaultTableModel(
+		selectedTable = new JTable();
+		selectedTable.setModel(new DefaultTableModel(
 			new Object[][] {
 				{null, null},
 				{null, null},
@@ -194,11 +200,15 @@ public class NewGameReqPanel extends JPanel {
 				"Name", "Description"
 			}
 		));
-		DefaultTableModel dtm_1 = (DefaultTableModel)table_1.getModel();
+		DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
 		dtm_1.setNumRows(0);
 		dtm_1.setColumnCount(2);
-		scrollPane_1.setViewportView(table_1);
-		//table.getColumnModel().getColumn(0).setPreferredWidth(50);
+		scrollPane_1.setViewportView(selectedTable);
+		//unselectedTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+		
+		selectedTable.getColumnModel().getColumn(0).setMinWidth(100);
+		selectedTable.getColumnModel().getColumn(0).setMaxWidth(200);
+		selectedTable.getColumnModel().getColumn(0).setPreferredWidth(150);
 		
 		JLabel lblRequirementsSelected = new JLabel("Requirements Selected");
 		springLayout.putConstraint(SpringLayout.NORTH, lblRequirementsSelected, 5, SpringLayout.NORTH, button);
