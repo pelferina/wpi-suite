@@ -29,6 +29,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame.CurrentGame
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameInputDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameMainPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
 
 /**
  * Description
@@ -46,7 +47,7 @@ public class MainView extends JTabbedPane {
 	private int j = 0;
 	private List<Integer> openTabs = new ArrayList<Integer>();
 
-	public MainView(GameModel gameModel, DeckModel deckModel, boolean hasNewGame) {
+	public MainView(GameModel gameModel, DeckModel deckModel) {
 		this.gameModel = gameModel;
 		currentGame = new CurrentGamePanel(gameModel);
 		pastGames = new JPanel();
@@ -63,13 +64,13 @@ public class MainView extends JTabbedPane {
 	public void addNewGameTab()
 	{
 		openTabs.add(newGameTabs, j);
-		NewGameDistributedPanel newGame = new NewGameDistributedPanel(gameModel);
+		JButton btnClose = new JButton("x");
+		NewGameDistributedPanel newGame = new NewGameDistributedPanel(gameModel, btnClose);
 		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler("New Game", j, newGame);
 		add(newGame, newGameTabs + 3);
 		JPanel pnlTab = new JPanel(new GridBagLayout());
 		pnlTab.setOpaque(false);
 		JLabel lblTitle = new JLabel("New Game");
-		JButton btnClose = new JButton("x");
 		btnClose.setMargin(new Insets(0, 0, 0, 0));
 		btnClose.setFont(btnClose.getFont().deriveFont((float) 8));
 		GridBagConstraints gbc = new GridBagConstraints();

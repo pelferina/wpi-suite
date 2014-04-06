@@ -33,7 +33,7 @@ public class PlanningPoker implements IJanewayModule{
 		// Setup button panel
 		final GameModel gameModel = new GameModel();
 		DeckModel deckModel = new DeckModel();
-		mainPanel = new MainView(gameModel, deckModel, true);
+		mainPanel = new MainView(gameModel, deckModel);
 		buttonPanel = new JPanel();
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());

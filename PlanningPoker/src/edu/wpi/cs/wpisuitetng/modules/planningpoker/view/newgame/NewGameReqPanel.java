@@ -6,7 +6,6 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
@@ -18,30 +17,25 @@ import java.util.List;
  * @version March 23, 2014
  */
 @SuppressWarnings("serial")
-public class NewGameReqPanel extends JTabbedPane {
+public class NewGameReqPanel extends JPanel {
 
-	DefaultListModel<String> listValue;
-	private final JList reqList;
+	DefaultListModel<String> listValue; //= {"Requirement One", "Requirement Two", "Requirement Three"};
+	private final JList<String> reqList;// = new JList<String>();
 	private final JPanel listPanel = new JPanel();
 	private final JLabel gameReqs = new JLabel("Requirements in the game");
 	private List<Requirement> selected = new ArrayList<Requirement>();
-	private List<Requirement> reqs = new ArrayList<Requirement>();
-	private String[] columnName = {"Name", "Description"};
-	
+
 	public NewGameReqPanel()
 	{
-		reqs = RequirementModel.getInstance().getRequirements();
 		listValue = new DefaultListModel<String>();
-		reqList = new JList();
+		reqList = new JList<String>(listValue);
 		setupPanel();
 	}
-	
+
 	private void setupPanel()
 	{
 		//reqList.setListData(listValue);
-		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		listPanel.add(reqList);
-		addTab("Game Requirements", listPanel);
 	}
 	/**
 	 * Takes a requirement and adds it to its reqList
@@ -51,7 +45,7 @@ public class NewGameReqPanel extends JTabbedPane {
 		selected.add(req);
 		listValue.addElement(req.getName());
 	}
-	
+
 	public Requirement removeSelected(){
 		int tempIndex = reqList.getSelectedIndex();
 		if (tempIndex == -1)
@@ -60,6 +54,6 @@ public class NewGameReqPanel extends JTabbedPane {
 		listValue.remove(tempIndex);
 		selected.remove(tempIndex);
 		return tempReq;
-		
+
 	}
 }

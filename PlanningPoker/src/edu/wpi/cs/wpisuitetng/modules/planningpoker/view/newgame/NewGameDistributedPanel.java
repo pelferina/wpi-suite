@@ -28,9 +28,11 @@ public class NewGameDistributedPanel extends AbsNewGamePanel {
 	public boolean isNew = true;
 	public NewGameInputDistributedPanel newGameInputPanel = new NewGameInputDistributedPanel(this);
 	public NewGameReqPanel newGameReqPanel;
+	public JButton close;
 	
-	public NewGameDistributedPanel(GameModel gameModel) {
+	public NewGameDistributedPanel(GameModel gameModel, JButton close) {
 		newGameReqPanel = new NewGameReqPanel();
+		this.close = close;
 		setPanel();
 	}
 	/**
