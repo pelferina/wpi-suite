@@ -17,6 +17,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame.CurrentGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameMainPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 
 /**
@@ -32,6 +33,7 @@ public class MainView extends JTabbedPane {
 	private final JPanel currentGame;
 	private final JPanel pastGames;
 	private final JPanel deckPanel;
+	private final JPanel overviewPanel;
 	
 
 	public MainView(GameModel gameModel, DeckModel deckModel, boolean hasNewGame) {
@@ -39,10 +41,12 @@ public class MainView extends JTabbedPane {
 		currentGame = new CurrentGamePanel(gameModel);
 		pastGames = new JPanel();
 		deckPanel = new DeckPanel(deckModel);
+		overviewPanel = new OverviewPanel();
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		if (hasNewGame == true){
 			addTab("New Game", newGame);
 		}
+		addTab("Overview", overviewPanel);
 		addTab("Current Game", currentGame);
 		addTab("Past Game", pastGames);
 		addTab("Deck", deckPanel);
