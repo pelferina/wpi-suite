@@ -77,9 +77,10 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private boolean isAM = true;
 	public boolean isNew = true;
 	private boolean editMode = false;
-
+	private GameSession gameSession = null;
 	public NewGameInputDistributedPanel(NewGameDistributedPanel ngdp, GameSession gameSession)
 	{
+		this.gameSession = gameSession;
 		this.editMode = true;
 		init(ngdp);
 		System.out.println("Editing Game: "+ gameSession.getGameName());
@@ -97,10 +98,8 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	{
 		currentDate = Calendar.getInstance();
 		requirements = RequirementModel.getInstance().getRequirements();
-		//selectedDeadline = Calendar.getInstance();
-		//selectedDeadline.set(2014, 1, 1);
 		newGameP = ngdp;
-		//descriptionTextField.setColumns(10);
+
 		setPanel();
 		
 		//initialize dayBox to 31 days (as in January)
@@ -123,7 +122,6 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				minuteComboBox.addItem("" + i);
 			}
 		}
-		
 		deckBox.addItem("Default Deck");
 		
 		//Adds a documentlistener to the name text field so that way if the text is changed, the pop-up will appear if 
@@ -280,6 +278,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 			}
 		});
 		
+		
 		//Checks to see if all the fields are properly filled, and then sends the game object to the database if done.
 		
 		activateButton.addActionListener(new ActionListener(){
@@ -329,6 +328,14 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				}
 			}
 		});
+		if(editMode)
+		{
+			System.out.print("Setting default date: " + gameSession.getEndDate().getDay() + " "+ gameSession.getEndDate().getHours() + " " + gameSession.getEndDate().getMinutes());
+			nameTextField.setText(gameSession.getGameName());
+//			dayBox.setSelectedIndex(gameSession.getEndDate().getDay());
+//			hourComboBox.setSelectedIndex(gameSession.getEndDate().getHours()+1);
+//			minuteComboBox.setSelectedIndex(gameSession.getEndDate().getMinutes()+1);
+		}
 	}
 	/**
 	 * a lot of Window Builder generated UI
@@ -343,6 +350,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 			return hour + 12;
 		}
 	}
+	
 	
 	private void setPanel(){
 //		userList.setListData(listValue);
