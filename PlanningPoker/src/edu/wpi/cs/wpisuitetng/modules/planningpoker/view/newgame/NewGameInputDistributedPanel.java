@@ -75,13 +75,15 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private final JButton addNewButton = new JButton("Create New");
 	private boolean isAM = true;
 	public boolean isNew = true;
+	private boolean editMode = false;
 
 	/**
 	 * The constructor for the NewGameInputPanel
 	 * has void parameters
 	 * @param nglp, The NewGameLivePanel that it was added from
 	 */
-	public NewGameInputDistributedPanel(NewGameDistributedPanel ngdp) {
+	public NewGameInputDistributedPanel(NewGameDistributedPanel ngdp, boolean editMode) {
+		this.editMode = editMode;
 		currentDate = Calendar.getInstance();
 		//selectedDeadline = Calendar.getInstance();
 		//selectedDeadline.set(2014, 1, 1);

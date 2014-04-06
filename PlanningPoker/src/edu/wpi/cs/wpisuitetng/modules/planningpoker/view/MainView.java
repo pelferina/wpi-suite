@@ -28,7 +28,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame.CurrentGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameInputDistributedPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameMainPanel;
 
 
 /**
@@ -47,6 +46,7 @@ public class MainView extends JTabbedPane {
 	private int newGameTabs = 0;
 	private int j = 0;
 	private List<Integer> openTabs = new ArrayList<Integer>();
+	final int PERMANANT_TABS = 3;
 	
 	private MainView()
 	{	
@@ -73,12 +73,12 @@ public class MainView extends JTabbedPane {
 		}
 		return instance;
 	}
-	public void addNewGameTab()
+	public void addNewGameTab(boolean editMode)
 	{
 		openTabs.add(newGameTabs, j);
-		NewGameDistributedPanel newGame = new NewGameDistributedPanel(gameModel);
+		NewGameDistributedPanel newGame = new NewGameDistributedPanel(gameModel, editMode);
 		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler("New Game", j, newGame);
-		add(newGame, newGameTabs + 3);
+		add(newGame, newGameTabs + PERMANANT_TABS);
 		JPanel pnlTab = new JPanel(new GridBagLayout());
 		pnlTab.setOpaque(false);
 		JLabel lblTitle = new JLabel("New Game");
@@ -97,10 +97,10 @@ public class MainView extends JTabbedPane {
 		gbc.weightx = 0;
 		pnlTab.add(btnClose, gbc);
 
-		setTabComponentAt(newGameTabs + 3, pnlTab);
+		setTabComponentAt(newGameTabs + PERMANANT_TABS, pnlTab);
 
 		btnClose.addActionListener(myCloseActionHandler);
-		setSelectedIndex(newGameTabs+3);
+		setSelectedIndex(newGameTabs+PERMANANT_TABS);
 		newGameTabs++;
 		j++;
 	}

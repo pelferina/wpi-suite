@@ -26,11 +26,14 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 public class NewGameDistributedPanel extends AbsNewGamePanel {
 	
 	public boolean isNew = true;
-	public NewGameInputDistributedPanel newGameInputPanel = new NewGameInputDistributedPanel(this);
+	public NewGameInputDistributedPanel newGameInputPanel;
 	public NewGameReqPanel newGameReqPanel;
+	private boolean editMode;
 	
-	public NewGameDistributedPanel(GameModel gameModel) {
+	public NewGameDistributedPanel(GameModel gameModel, boolean editMode) {
 		newGameReqPanel = new NewGameReqPanel();
+		this.editMode = editMode;
+		this.newGameInputPanel = new NewGameInputDistributedPanel(this, this.editMode);
 		setPanel();
 	}
 	/**

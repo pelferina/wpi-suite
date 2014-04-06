@@ -80,10 +80,10 @@ public class ViewEventController {
 	/**
 	 * Opens a new tab for the creation of a requirement.
 	 */
-	public void createNewGameTab() {
+	public void createNewGameTab(boolean editMode) {
 //		RequirementPanel newReq = new RequirementPanel(-1);
 		
-		main.addNewGameTab();
+		main.addNewGameTab(editMode);
 	}
 //	
 //	/**

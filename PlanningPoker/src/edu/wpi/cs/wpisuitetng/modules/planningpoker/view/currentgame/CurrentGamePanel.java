@@ -62,7 +62,7 @@ public class CurrentGamePanel extends JPanel {
 		{
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					ViewEventController.getInstance().createNewGameTab();
+					ViewEventController.getInstance().createNewGameTab(true);
 			}	
 		});
 		btnRefresh.addActionListener(new GetGamesController(allGameModel));
