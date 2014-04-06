@@ -27,6 +27,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  * This is the window for the user to create a planning poker session
@@ -39,7 +41,6 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private String[] yearString = {"2014", "2015","2016","2017","2018","2019","2020","2021","2022"}; //TODO
 	private String[] monthString = {"Jan", "Feb", "Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec" }; //TODO
 	private String[] ampmString = {"AM", "PM"};
-	//private Calendar selectedDeadline;
 	private Calendar currentDate;
 	private int[] deckCards;
 	private int[] defaultDeck = {1, 1, 2, 3, 5, 8, 13, -1};
@@ -54,7 +55,6 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	//private JButton addNewButton = new JButton("Add New");
 	private final JLabel deadlineLabel = new JLabel("Deadline");
 	private final JLabel deckLabel = new JLabel("Choose a deck");
-	//private JButton backButton  = new JButton("Back");
 	private JButton activateButton = new JButton("Activate Game");
 	private JTextField nameTextField = new JTextField();
 	private JComboBox<String> hourComboBox = new JComboBox<String>();
@@ -62,9 +62,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private JComboBox<String> ampmBox = new JComboBox<String>(ampmString);
 	private int hourTime = -1;
 	private int minuteTime = -1;
-	//private final JTextArea userStoryTextArea = new JTextArea();
-	//private final JTextField descriptionTextField = new JTextField();
-	private AbsNewGamePanel newGameP;
+	private NewGameDistributedPanel newGameP;
 	private JLabel yearLabel = new JLabel("Year: ");
 	private JLabel monthLabel = new JLabel("Month: ");
 	private JLabel dayLabel = new JLabel("Day: ");
@@ -76,19 +74,18 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private List<Requirement> requirements;
 	private final JButton addNewButton = new JButton("Create New");
 	private boolean isAM = true;
-	//private boolean isNew = true;
+	public boolean isNew = true;
 
 	/**
 	 * The constructor for the NewGameInputPanel
 	 * has void parameters
 	 * @param nglp, The NewGameLivePanel that it was added from
 	 */
-	public NewGameInputDistributedPanel(AbsNewGamePanel nglp, String name) {
+	public NewGameInputDistributedPanel(NewGameDistributedPanel ngdp) {
 		currentDate = Calendar.getInstance();
 		//selectedDeadline = Calendar.getInstance();
 		//selectedDeadline.set(2014, 1, 1);
-		newGameP = nglp;
-		nameTextField.setText(name);
+		newGameP = ngdp;
 		//descriptionTextField.setColumns(10);
 		setPanel();
 		
@@ -117,6 +114,23 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		
 		deckBox.addItem("Default Deck");
 		
+		//Adds a documentlistener to the name text field so that way if the text is changed, the pop-up will appear if 
+		//the new game tab is closed.
+		nameTextField.getDocument().addDocumentListener(new DocumentListener(){
+			@Override
+			public void changedUpdate(DocumentEvent e){
+				newGameP.isNew = false;
+			}
+			@Override
+			public void removeUpdate(DocumentEvent e){
+				newGameP.isNew = false;
+			}
+			@Override 
+			public void insertUpdate(DocumentEvent e){
+				newGameP.isNew = false;
+			}
+		});
+		
 		deckBox.addActionListener(new ActionListener() {
 			
 			@Override
@@ -124,9 +138,11 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				if (deckBox.getSelectedIndex() == 0){
 					deckCards = defaultDeck;
 				}
+				newGameP.isNew = false;
 			}
 		});
 		
+		//Sets isNew to false, and sets isAM to true if AM is selected, or false if PM is selected
 		ampmBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
@@ -136,16 +152,20 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				else {
 					isAM = false;
 				}
+				newGameP.isNew = false;
 			}
 		});
 		
+		//Sets isNew to false, and sets minuteTime to the selected minute.
 		minuteComboBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				minuteTime = minuteComboBox.getSelectedIndex() - 1;
+				newGameP.isNew = false;
 			}
 		});
 		
+		//Sets isNew to false and sets hourtime to the hour selected. It is set to 0 if 12 is selected.
 		hourComboBox.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed(ActionEvent e){
@@ -156,12 +176,16 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				else{
 					hourTime = 0;
 				}
+				newGameP.isNew = false;
 			}
 		});
 		
+		//Sets isNew to false, deadlineYear to the selected year, and rebuilds what is in the dayBox if a leap year is deselected or selected
+		//and the deadline month is February
 		yearBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
+				newGameP.isNew = false;
 				int year = yearBox.getSelectedIndex();
 				if ((deadlineYear == 2016 || deadlineYear == 2020) && (year + 2014 != 2016 || year + 2014 != 2020)){
 					dayBox.removeAllItems();
@@ -180,10 +204,13 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 			
 		});
 		
+		//Adds an action listener to the month selection combo box, which sets isNew to false and rebuilds what is inside the 
+		//dayBox based on the month selected. Also sets deadlineMonth to the chosen month.
 		monthBox.addActionListener(new ActionListener() {
 			int[] daysInMonth = {31,28,31,30,31,30,31,31,30,31,30,31};
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				newGameP.isNew = false;
 				dayBox.removeAllItems();
 				int days = monthBox.getSelectedIndex();
 				for (int i=0; i<daysInMonth[days]; i++){
@@ -196,9 +223,11 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 			}	
 		});
 		
+		//Adds an action listener to the day of month selection combo box, and sets isNew to false, and changes the deadlineDay
 		dayBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
+				newGameP.isNew = false;
 				int day = dayBox.getSelectedIndex();
 				deadlineDay = day + 1;
 			}
@@ -207,7 +236,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		
 		importButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				
+				newGameP.isNew = false;
 				JPanel panel = new JPanel();
 				Window parentWindow = SwingUtilities.windowForComponent(panel); 
 				// or pass 'this' if you are inside the panel
@@ -230,6 +259,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		
 		removeButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				newGameP.isNew = false;
 				Requirement removed = newGameP.getSelectedRequirement();
 				if( removed != null){
 					selectionsMade.remove(removed.getId());
@@ -237,6 +267,8 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				}
 			}
 		});
+		
+		//Checks to see if all the fields are properly filled, and then sends the game object to the database if done.
 		
 		activateButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -266,6 +298,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 					JOptionPane.showMessageDialog(deadlineError, "Please input a name for the game", "Name error", JOptionPane.ERROR_MESSAGE);
 				}
 				else{
+					newGameP.isNew = true;
 					System.out.println("Valid date selected and requirements were selected");
 					Date deadlineDate = new Date(deadlineYear, deadlineMonth, deadlineDay, getHour(hourTime), minuteTime);
 					GameSession newGame = new GameSession(name, 0 , -1, deadlineDate, selectionsMade); 

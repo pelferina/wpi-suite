@@ -9,6 +9,8 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -19,6 +21,8 @@ import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
  * Description
@@ -54,6 +58,13 @@ public class CurrentGamePanel extends JPanel {
 		btnEdit = new JButton("Edit");
 		btnRefresh = new JButton("Refresh");
 		springLayout.putConstraint(SpringLayout.SOUTH, btnEdit, 30, SpringLayout.SOUTH, btnRefresh);
+		btnEdit.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) {
+					ViewEventController.getInstance().createNewGameTab();
+			}	
+		});
 		btnRefresh.addActionListener(new GetGamesController(allGameModel));
 		add(Box.createVerticalStrut(20)); // leave a 20 pixel gap
 		add(activeLstScrollPane);

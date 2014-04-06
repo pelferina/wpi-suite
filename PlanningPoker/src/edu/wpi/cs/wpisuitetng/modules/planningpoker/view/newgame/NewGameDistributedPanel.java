@@ -22,9 +22,14 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
  * @version Mar 24, 2014
  */
 @SuppressWarnings("serial")
+
 public class NewGameDistributedPanel extends AbsNewGamePanel {
+	
+	public boolean isNew = true;
+	public NewGameInputDistributedPanel newGameInputPanel = new NewGameInputDistributedPanel(this);
+	public NewGameReqPanel newGameReqPanel;
+	
 	public NewGameDistributedPanel(GameModel gameModel) {
-		newGameInputPanel = new NewGameInputDistributedPanel(this, "Test");
 		newGameReqPanel = new NewGameReqPanel();
 		setPanel();
 	}
@@ -43,7 +48,7 @@ public class NewGameDistributedPanel extends AbsNewGamePanel {
 		setDividerLocation(500);
 	}
 	
-	//Added by Ruofan
+	//Added by Ruofan 
 	public void setGameName(String gameName){
 		newGameInputPanel.setGameName(gameName);
 	}

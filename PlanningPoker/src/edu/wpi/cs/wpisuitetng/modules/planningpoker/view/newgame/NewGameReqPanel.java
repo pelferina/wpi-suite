@@ -6,6 +6,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
@@ -19,16 +20,19 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class NewGameReqPanel extends JTabbedPane {
 
-	DefaultListModel<String> listValue; //= {"Requirement One", "Requirement Two", "Requirement Three"};
-	private final JList<String> reqList;// = new JList<String>();
+	DefaultListModel<String> listValue;
+	private final JList reqList;
 	private final JPanel listPanel = new JPanel();
 	private final JLabel gameReqs = new JLabel("Requirements in the game");
 	private List<Requirement> selected = new ArrayList<Requirement>();
+	private List<Requirement> reqs = new ArrayList<Requirement>();
+	private String[] columnName = {"Name", "Description"};
 	
 	public NewGameReqPanel()
 	{
+		reqs = RequirementModel.getInstance().getRequirements();
 		listValue = new DefaultListModel<String>();
-		reqList = new JList<String>(listValue);
+		reqList = new JList();
 		setupPanel();
 	}
 	
