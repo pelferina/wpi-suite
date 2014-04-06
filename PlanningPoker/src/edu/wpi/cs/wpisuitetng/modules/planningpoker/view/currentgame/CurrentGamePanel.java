@@ -9,15 +9,20 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
  * Description
@@ -29,10 +34,11 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 public class CurrentGamePanel extends JPanel {
 
 	private JButton btnRefresh;
+	private JButton btnEdit;
 	private JList<String> List = new JList<String>(); 
 	private final JList activeGameList;
 	private final GameModel allGameModel;
-	private GameModel activeModel = new GameModel();
+	private GameModel activeModel = GameModel.getInstance();
 
 
 	public CurrentGamePanel(GameModel gameModel) {
@@ -45,16 +51,26 @@ public class CurrentGamePanel extends JPanel {
 		setPanel();
 	}
 	private void setPanel(){
+		SpringLayout springLayout = new SpringLayout();
 		JScrollPane activeLstScrollPane = new JScrollPane(activeGameList);
-
+		
 		activeLstScrollPane.setPreferredSize(new Dimension(1000,300));
-
+		btnEdit = new JButton("Edit");
 		btnRefresh = new JButton("Refresh");
+		springLayout.putConstraint(SpringLayout.SOUTH, btnEdit, 30, SpringLayout.SOUTH, btnRefresh);
+		btnEdit.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) {
+					ViewEventController.getInstance().createNewGameTab(true);
+			}	
+		});
 		btnRefresh.addActionListener(new GetGamesController(allGameModel));
 		add(Box.createVerticalStrut(20)); // leave a 20 pixel gap
 		add(activeLstScrollPane);
 		add(Box.createVerticalStrut(20)); // leave a 20 pixel gap
 		add(btnRefresh);
+		add(btnEdit);
 	}
 
 }

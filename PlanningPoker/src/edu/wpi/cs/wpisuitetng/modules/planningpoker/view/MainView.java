@@ -34,6 +34,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
 
+
+
 /**
  * Description
  *
@@ -42,13 +44,14 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventControlle
  */
 @SuppressWarnings("serial")
 public class MainView extends JTabbedPane {
-	private final JPanel currentGame;
-	private final JPanel pastGames;
-	private final JPanel deckPanel;
+	private JPanel currentGame;
+	private JPanel pastGames;
+	private JPanel deckPanel;
 	private GameModel gameModel;
 	private int newGameTabs = 0;
 	private int j = 0;
 	private List<Integer> openTabs = new ArrayList<Integer>();
+	final int PERMANANT_TABS = 3;
 
 	public MainView(GameModel gameModel, DeckModel deckModel) {
 		this.gameModel = gameModel;
@@ -56,23 +59,21 @@ public class MainView extends JTabbedPane {
 		pastGames = new JPanel();
 		deckPanel = new DeckPanel(deckModel);
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-//		if (hasNewGame == true){
-//			addTab("New Game", newGame);
-//		}
+
 		addTab("Current Game", currentGame);
 		addTab("Past Game", pastGames);
 		addTab("Deck", deckPanel);
 	}
-	
-	public void addNewGameTab()
+
+	public void addNewGameTab(boolean editMode)
 	{
 		openTabs.add(newGameTabs, j);
 		GetRequirementsController.getInstance().retrieveRequirements();
 		JButton btnClose = new JButton("x");
 		List<Requirement> reqs = RequirementModel.getInstance().getRequirements();
-		NewGameDistributedPanel newGame = new NewGameDistributedPanel(gameModel, reqs, btnClose);
+		NewGameDistributedPanel newGame = new NewGameDistributedPanel(gameModel, editMode, reqs, btnClose);
 		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler("New Game", j, newGame);
-		add(newGame, newGameTabs + 3);
+		add(newGame, newGameTabs + PERMANANT_TABS);
 		JPanel pnlTab = new JPanel(new GridBagLayout());
 		pnlTab.setOpaque(false);
 		JLabel lblTitle = new JLabel("New Game");
@@ -90,10 +91,10 @@ public class MainView extends JTabbedPane {
 		gbc.weightx = 0;
 		pnlTab.add(btnClose, gbc);
 
-		setTabComponentAt(newGameTabs + 3, pnlTab);
+		setTabComponentAt(newGameTabs + PERMANANT_TABS, pnlTab);
 
 		btnClose.addActionListener(myCloseActionHandler);
-		setSelectedIndex(newGameTabs+3);
+		setSelectedIndex(newGameTabs+PERMANANT_TABS);
 		newGameTabs++;
 		j++;
 	}

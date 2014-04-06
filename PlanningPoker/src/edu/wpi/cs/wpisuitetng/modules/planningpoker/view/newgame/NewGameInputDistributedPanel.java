@@ -76,13 +76,15 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 	private final JButton addNewButton = new JButton("Create New");
 	private boolean isAM = true;
 	public boolean isNew = true;
+	private boolean editMode = false;
 
 	/**
 	 * The constructor for the NewGameInputPanel
 	 * has void parameters
 	 * @param nglp, The NewGameLivePanel that it was added from
 	 */
-	public NewGameInputDistributedPanel(NewGameDistributedPanel ngdp) {
+	public NewGameInputDistributedPanel(NewGameDistributedPanel ngdp, boolean editMode) {
+		this.editMode = editMode;
 		currentDate = Calendar.getInstance();
 		requirements = RequirementModel.getInstance().getRequirements();
 		//selectedDeadline = Calendar.getInstance();
@@ -305,8 +307,8 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 					newGameP.isNew = true;
 					System.out.println("Valid date selected and requirements were selected");
 					Date deadlineDate = new Date(deadlineYear, deadlineMonth, deadlineDay, getHour(hourTime), minuteTime);
-					GameSession newGame = new GameSession(name, 0 , -1, deadlineDate, selectionsMade); 
-					GameModel model = new GameModel();
+					GameSession newGame = new GameSession(name, 0 , GameModel.getInstance().getSize()+1, deadlineDate, selectionsMade); 
+					GameModel model = GameModel.getInstance();
 					AddGameController msgr = new AddGameController(model);
 					msgr.sendMessage(newGame);	
 					System.out.println(selectedDeadline.get(Calendar.MONTH) + "/" + selectedDeadline.get(Calendar.DAY_OF_MONTH) + "/" + selectedDeadline.get(Calendar.YEAR));

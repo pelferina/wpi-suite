@@ -65,14 +65,9 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 		// Parse the message from JSON
 		final GameSession importedGame = GameSession.fromJson(content);
 		System.out.println("Adding: " + content);
-		int nextID = 0;
 		GameSession[] games = getAll(s);
-		for(GameSession Game: games)
-		{
-			if(Game.getGameID() >= nextID) nextID = Game.getGameID();
-		}
-		nextID++;
-		GameSession newGame = new GameSession(importedGame.getGameName(), importedGame.getOwnerID(), nextID, importedGame.getEndDate(), importedGame.getGameReqs());
+	
+		GameSession newGame = new GameSession(importedGame.getGameName(), importedGame.getOwnerID(), importedGame.getGameID(), importedGame.getEndDate(), importedGame.getGameReqs());
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
 		if (!db.save(newGame, s.getProject())) {
@@ -114,6 +109,7 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 		// Ask the database to retrieve all objects of the type PostBoardMessage.
 		// Passing a dummy PostBoardMessage lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
+
 		GameSession[] messages = db.retrieveAll(new GameSession(new String(), 0 , 0, new Date(), new ArrayList<Integer>()), s.getProject()).toArray(new GameSession[0]);
 		                                        //GameSession(String game, int OwnerID, int GameID, Date date, List<> gameReqs)
 		// Return the list of messages as an array

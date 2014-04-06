@@ -18,6 +18,8 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+
 /**
  * This is a model for the game model. It contains all of the games
  * to be displayed on the board. It extends AbstractListModel so that
@@ -28,6 +30,7 @@ import javax.swing.AbstractListModel;
  */
 @SuppressWarnings({"serial"})
 public class GameModel extends AbstractListModel {
+	private static GameModel instance = null;
 	
 	/** The list of games on the board */
 	private List<GameSession> games;
@@ -39,6 +42,18 @@ public class GameModel extends AbstractListModel {
 		games = new ArrayList<GameSession>();
 	}
 
+	/**
+	
+	 * @return the instance of the requirement model singleton. */
+	public static GameModel getInstance()
+	{
+		if(instance == null)
+		{
+			instance = new GameModel();
+		}
+		
+		return instance;
+	}
 	/**
 	 * Adds the given message to the board
 	 * 

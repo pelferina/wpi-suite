@@ -30,13 +30,16 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 public class NewGameDistributedPanel extends AbsNewGamePanel {
 	
 	public boolean isNew = true;
-	public NewGameInputDistributedPanel newGameInputPanel = new NewGameInputDistributedPanel(this);
+	public NewGameInputDistributedPanel newGameInputPanel;
 	public NewGameReqPanel newGameReqPanel;
+	private boolean editMode;
 	public JButton close;
 	
-	public NewGameDistributedPanel(GameModel gameModel, List<Requirement> requirements, JButton close) {
+	public NewGameDistributedPanel(GameModel gameModel, boolean editMode, List<Requirement> requirements, JButton close) {
 		newGameReqPanel = new NewGameReqPanel(requirements);
+		this.editMode = editMode;
 		this.close = close;
+		this.newGameInputPanel = new NewGameInputDistributedPanel(this, this.editMode);
 		setPanel();
 	}
 	/**
