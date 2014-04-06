@@ -33,7 +33,7 @@ public class NewGameMainPanel extends JPanel{
 
 	public NewGameMainPanel(GameModel gameModel){
 		livePanel = new NewGameLivePanel(gameModel);
-		distributedPanel = new NewGameDistributedPanel(gameModel);
+		//distributedPanel = new NewGameDistributedPanel(gameModel);
 		setupInitialPanel();
 		nextInitialButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){

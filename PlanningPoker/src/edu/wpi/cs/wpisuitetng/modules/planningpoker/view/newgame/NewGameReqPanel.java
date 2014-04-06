@@ -5,6 +5,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
 import javax.swing.*;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -66,26 +67,78 @@ public class NewGameReqPanel extends JPanel {
 		btnV.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
-				int index = table.getSelectedRow();
-				Requirement selected = reqs.get(index);
-				reqs.remove(index);
-				String[] data = {selected.getName(), selected.getDescription()};
-				DefaultTableModel dtm = (DefaultTableModel)table.getModel();
-				DefaultTableModel dtm_1 = (DefaultTableModel)table_1.getModel();
-				dtm.setRowCount(reqs.size());
-				for (int i = 0; i < reqs.size(); i++){
-					dtm.setValueAt(reqs.get(i).getName(), i, 0);
-					dtm.setValueAt(reqs.get(i).getDescription(), i, 1);
+				if (table.getSelectedRow() != -1){
+					int index = table.getSelectedRow();
+					Requirement selectedReq = reqs.get(index);
+					selected.add(selectedReq);
+					reqs.remove(index);
+					String[] data = {selectedReq.getName(), selectedReq.getDescription()};
+					DefaultTableModel dtm = (DefaultTableModel)table.getModel();
+					DefaultTableModel dtm_1 = (DefaultTableModel)table_1.getModel();
+					dtm.setRowCount(reqs.size());
+					for (int i = 0; i < reqs.size(); i++){
+						dtm.setValueAt(reqs.get(i).getName(), i, 0);
+						dtm.setValueAt(reqs.get(i).getDescription(), i, 1);
+					}
+					dtm_1.addRow(data);
 				}
-				dtm_1.addRow(data);
-				//dtm.removeRow(index);
-				//dtm.fireTableStructureChanged();
-				//table.repaint();
-/*				for (int j = index; j <= dtm.getRowCount(); j++){
-					dtm.setValueAt(reqs.get(j + 1).getName(), j, 0);
-					dtm.setValueAt(reqs.get(j + 1).getDescription(), j, 1);
+			}
+		});
+		
+		btnVv.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e){
+				if(reqs.size() != 0){
+					DefaultTableModel dtm_1 = (DefaultTableModel)table_1.getModel();
+					DefaultTableModel dtm = (DefaultTableModel)table.getModel();
+					int size = reqs.size();
+					for(int i=0; i < size; i++){
+						String[] data = {reqs.get(i).getName(), reqs.get(i).getDescription()};
+						dtm_1.addRow(data);
+						selected.add(reqs.get(i));
+					}
+					reqs = new ArrayList<Requirement>();
+					dtm.setRowCount(0);
 				}
-*/
+			}
+		});
+		
+		button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e){
+				if (table_1.getSelectedRow() != -1){
+					int index = table_1.getSelectedRow();
+					Requirement selectedReq = selected.get(index);
+					selected.remove(index);
+					reqs.add(selectedReq);
+					String[] data = {selectedReq.getName(), selectedReq.getDescription()};
+					DefaultTableModel dtm = (DefaultTableModel)table.getModel();
+					DefaultTableModel dtm_1 = (DefaultTableModel)table_1.getModel();
+					dtm_1.setRowCount(selected.size());
+					for (int i = 0; i < selected.size(); i++){
+						dtm_1.setValueAt(selected.get(i).getName(), i, 0);
+						dtm_1.setValueAt(selected.get(i).getDescription(), i, 1);
+					}
+					dtm.addRow(data);
+				}
+			}
+		});
+		
+		button_1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e){
+				if (selected.size() != 0){
+					DefaultTableModel dtm_1 = (DefaultTableModel)table_1.getModel();
+					DefaultTableModel dtm = (DefaultTableModel)table.getModel();
+					int size = selected.size();
+					for(int i=0; i < size; i++){
+						String[] data = {selected.get(i).getName(), selected.get(i).getDescription()};
+						dtm.addRow(data);
+						reqs.add(selected.get(i));
+					}
+					selected = new ArrayList<Requirement>();
+					dtm_1.setRowCount(0);
+				}
 			}
 		});
 		
@@ -152,6 +205,10 @@ public class NewGameReqPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.NORTH, lblRequirementsSelected, 5, SpringLayout.NORTH, button);
 		springLayout.putConstraint(SpringLayout.WEST, lblRequirementsSelected, 0, SpringLayout.WEST, lblRequirementsAvailable);
 		add(lblRequirementsSelected);
+	}
+	
+	public List<Requirement> getSelected(){
+		return selected;
 	}
 	
 	/**

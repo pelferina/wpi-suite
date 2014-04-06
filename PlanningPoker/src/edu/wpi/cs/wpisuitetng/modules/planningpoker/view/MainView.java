@@ -29,6 +29,9 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame.CurrentGame
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameInputDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameMainPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 /**
  * Description
@@ -63,7 +66,9 @@ public class MainView extends JTabbedPane {
 	public void addNewGameTab()
 	{
 		openTabs.add(newGameTabs, j);
-		NewGameDistributedPanel newGame = new NewGameDistributedPanel(gameModel);
+		GetRequirementsController.getInstance().retrieveRequirements();
+		List<Requirement> reqs = RequirementModel.getInstance().getRequirements();
+		NewGameDistributedPanel newGame = new NewGameDistributedPanel(gameModel, reqs);
 		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler("New Game", j, newGame);
 		add(newGame, newGameTabs + 3);
 		JPanel pnlTab = new JPanel(new GridBagLayout());

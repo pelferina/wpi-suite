@@ -249,7 +249,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				{
 					reqSelection = importWindow.currentSelectedReq.getId();
 					/**TODO selections made persist when switching modules, but selectionsmade does nto persist*/
-					newGameP.updatePanels(importWindow.currentSelectedReq);
+					//newGameP.updatePanels(importWindow.currentSelectedReq);
 					selectionsMade.add(reqSelection);
 					requirements.remove(importWindow.currentSelectedReq);
 				}
@@ -277,6 +277,10 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				currentDate = Calendar.getInstance();
 				currentDate.set(Calendar.MONTH, currentDate.get(Calendar.MONTH) + 1);
 				selectedDeadline.set(deadlineYear, deadlineMonth, deadlineDay, getHour(hourTime), minuteTime);
+				List<Requirement> reqsSelected = newGameP.getSelected();
+				for (int i=0; i<reqsSelected.size(); i++){
+					selectionsMade.add(reqsSelected.get(i).getId());
+				}
 				if (hourComboBox.getSelectedIndex() == 0){
 					System.out.println("Please choose an hour for deadline");
 				}

@@ -14,6 +14,7 @@ import java.util.List;
 import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -31,10 +32,9 @@ public class NewGameDistributedPanel extends AbsNewGamePanel {
 	public boolean isNew = true;
 	public NewGameInputDistributedPanel newGameInputPanel = new NewGameInputDistributedPanel(this);
 	public NewGameReqPanel newGameReqPanel;
-	private List<Requirement> reqs = RequirementModel.getInstance().getRequirements();
 	
-	public NewGameDistributedPanel(GameModel gameModel) {
-		newGameReqPanel = new NewGameReqPanel(reqs);
+	public NewGameDistributedPanel(GameModel gameModel, List<Requirement> requirements) {
+		newGameReqPanel = new NewGameReqPanel(requirements);
 		setPanel();
 	}
 	/**
@@ -55,6 +55,10 @@ public class NewGameDistributedPanel extends AbsNewGamePanel {
 	//Added by Ruofan 
 	public void setGameName(String gameName){
 		newGameInputPanel.setGameName(gameName);
+	}
+	
+	public List<Requirement> getSelected(){
+		return newGameReqPanel.getSelected();
 	}
 	/**
 	 * Takes in a requirement from the NewGameInputPanel
