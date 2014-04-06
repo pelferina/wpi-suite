@@ -167,7 +167,7 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 	public void endGame(int gameID, Session s) throws WPISuiteException{
 		db.update(GameSession.class, "GameID", gameID, "Status", 3);
 		try {
-			sendUserEmails("Planning Poker Alert","Planning Poker voting has ended for game: "+gameID);
+			sendUserEmails("Planning Poker Alert","Planning Poker voting has ended for game: "+gameID,s);
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			throw new WPISuiteException(e.toString()); 
@@ -179,7 +179,7 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 	 * @param  textToSend the message to be sent
 	 * @throws UnsupportedEncodingException 
 	 */
-	public void sendUserEmails(String subject, String textToSend) throws UnsupportedEncodingException
+	public void sendUserEmails(String subject, String textToSend, Session s) throws UnsupportedEncodingException
 	{
 		final String username = "fff8e7.email@gmail.com";
 		final String password = "fff8e7team5";
@@ -198,13 +198,23 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 		  });
  
 		try {
- 
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("fff8e7.email@gmail.com"));
-			message.setRecipients(Message.RecipientType.TO,
-				InternetAddress.parse("rding318@gmail.com"));
-			message.setSubject("Testing Subject");
-			message.setText("Hello world");
+			
+			List<Model> model_emails = db.retrieveAll(EmailAddressModel.class, s.getProject());
+			EmailAddressModel[] emails = model_emails.toArray(new EmailAddressModel[0]);
+			
+			message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(username)); /** TODO find a more elegent solution can't send only bcc's */
+			
+			System.out.println(emails.length);
+			
+			for (EmailAddressModel email : emails)
+			{
+				message.addRecipients(Message.RecipientType.BCC, InternetAddress.parse(email.getAddress()));
+			}
+			
+			message.setSubject(subject);
+			message.setText(textToSend);
  
 			Transport.send(message);
  

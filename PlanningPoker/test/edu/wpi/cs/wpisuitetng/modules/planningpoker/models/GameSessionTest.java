@@ -43,13 +43,5 @@ public class GameSessionTest {
 		
 		gs.setEndDate(deadline);
 		assertTrue(gs.getEndDate().equals(deadline));
-	}
-	
-	@Test
-	public void testSendEmail() throws UnsupportedEncodingException{
-		PlanningPokerEntityManager manager = new PlanningPokerEntityManager(null);
-		manager.sendUserEmails(" ", " ");
-	}
-	
-	
+	}	
 }

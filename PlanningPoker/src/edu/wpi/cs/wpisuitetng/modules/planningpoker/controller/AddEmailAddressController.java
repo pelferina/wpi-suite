@@ -80,7 +80,7 @@ public class AddEmailAddressController implements ActionListener {
 //		}
 	}
 
-	public void sendEmail(String address)
+	public void saveEmail(String address)
 	{
 		// Send a request to the core to save this message
 		final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.PUT); // PUT == create

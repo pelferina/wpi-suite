@@ -88,7 +88,7 @@ public class EmailAddressModel extends AbstractModel {
 	}
 
 	/**
-	 * Returns an instance of PostBoardMessage constructed using the given
+	 * Returns an instance of EmailAddressMessage constructed using the given
 	 * PostBoardMessage encoded as a JSON string.
 	 * 
 	 * @param json the json-encoded EmailModel to deserialize
