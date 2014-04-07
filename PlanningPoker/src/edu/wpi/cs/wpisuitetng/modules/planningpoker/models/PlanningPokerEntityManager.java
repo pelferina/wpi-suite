@@ -201,12 +201,10 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("fff8e7.email@gmail.com"));
 			
-			List<Model> model_emails = db.retrieveAll(EmailAddressModel.class, s.getProject());
+			List<Model> model_emails = db.retrieveAll(new EmailAddressModel(""), s.getProject());
 			EmailAddressModel[] emails = model_emails.toArray(new EmailAddressModel[0]);
 			
 			message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(username)); /** TODO find a more elegent solution can't send only bcc's */
-			
-			System.out.println(emails.length);
 			
 			for (EmailAddressModel email : emails)
 			{
