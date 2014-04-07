@@ -1,7 +1,7 @@
 /**
  * 
  */
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 import javax.swing.tree.*;
 
 /**
