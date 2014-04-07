@@ -38,7 +38,7 @@ public class OverviewPanel extends JPanel {
 		
 		//Get the sessions
 		//table = new JTable(new JTableModel(SESSIONS));
-		GameSession gs = new GameSession("Test", 0, 1, Calendar.getInstance(), new ArrayList<Requirement>());
+		GameSession gs = new GameSession("Test", 0, 1, Calendar.getInstance().getTime(), new ArrayList<Integer>());
 		GameSession[] sessions = {gs};
 		
 		table = new JTable(new JTableModel(sessions));
@@ -71,7 +71,7 @@ public class OverviewPanel extends JPanel {
 	}
 	
 	public void updatetableView(){
-		GameSession gs = new GameSession("Test", 0, 1, Calendar.getInstance(), new ArrayList<Requirement>());
+		GameSession gs = new GameSession("Test", 0, 1, Calendar.getInstance().getTime(), new ArrayList<Integer>());
 		GameSession[] sessions = {gs};
 		
 		

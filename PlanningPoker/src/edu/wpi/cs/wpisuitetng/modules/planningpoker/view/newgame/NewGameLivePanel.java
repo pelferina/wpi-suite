@@ -39,7 +39,7 @@ public class NewGameLivePanel extends AbsNewGamePanel {
 		addImpl(newGameInputPanel, JSplitPane.LEFT, 1);
 		Dimension minimumSize = new Dimension(600, 200);
 		leftComponent.setMinimumSize(minimumSize);
-		addImpl(newGameReqPanel, JSplitPane.RIGHT, 2);
+		//addImpl(newGameReqPanel, JSplitPane.RIGHT, 2);
 		
 		setDividerLocation(500);
 	}

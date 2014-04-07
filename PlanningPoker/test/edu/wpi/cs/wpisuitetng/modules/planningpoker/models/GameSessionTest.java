@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import org.junit.*;
 
@@ -25,7 +26,7 @@ public class GameSessionTest {
 	// Tests whether a gamesession can be created successfully.
 	@Test
 	public void testGameSessionCreate(){
-		GameSession gs = new GameSession("Test Game", 0, 1, Calendar.getInstance(), new ArrayList<Requirement>());
+		GameSession gs = new GameSession("Test Game", 0, 1, Calendar.getInstance().getTime(), new ArrayList<Integer>());
 		assertNotNull(gs);
 		assertEquals("Test Game", gs.getGameName());
 		assertEquals(0,gs.getOwnerID());
@@ -36,9 +37,8 @@ public class GameSessionTest {
 	
 	@Test
 	public void testSetDeadline(){
-		GameSession gs = new GameSession("Test Game", 0, 1, Calendar.getInstance(), new ArrayList<Requirement>());
-		Calendar deadline = Calendar.getInstance();
-		deadline.set(2014, 1, 1);
+		GameSession gs = new GameSession("Test Game", 0, 1, Calendar.getInstance().getTime(), new ArrayList<Integer>());
+		Date deadline = Calendar.getInstance().getTime();
 		
 		gs.setEndDate(deadline);
 		assertTrue(gs.getEndDate().equals(deadline));
