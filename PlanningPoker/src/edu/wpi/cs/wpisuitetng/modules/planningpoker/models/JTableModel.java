@@ -3,6 +3,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.swing.JButton;
@@ -17,9 +18,13 @@ public class JTableModel extends AbstractTableModel {
 								// and the "Y" as each Table spot
 	protected int size =0;
     protected static final String[] COLUMN_NAMES = new String[] {"ID", "Name", "Deadline", "Owner", "Progress", "Status"};
-    protected static final Class<?>[] COLUMN_TYPES = new Class<?>[] {Integer.class, String.class, Calendar.class, String.class, String.class, String.class};
+    protected static final Class<?>[] COLUMN_TYPES = new Class<?>[] {Integer.class, String.class, Date.class, String.class, String.class, String.class};
     
-    public JTableModel(GameSession[] sessions){
+    public JTableModel(ArrayList<GameSession> sessions){
+    	this(sessions.toArray(new GameSession[0]));
+    }
+
+	public JTableModel(GameSession[] sessions){
     	
     	Data = new Object[COLUMN_NAMES.length][sessions.length];
     	size = sessions.length;
@@ -34,6 +39,7 @@ public class JTableModel extends AbstractTableModel {
     	}
     	
     }
+    
 
     @Override public int getColumnCount() {
         return COLUMN_NAMES.length;
