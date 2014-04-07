@@ -5,6 +5,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameTree;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.JTableModel;
@@ -30,8 +31,7 @@ public class OverviewPanel extends JPanel {
 	JSplitPane splitPane;
 	GameTree gameTreeModel;
 	JTree gameTree;
-	
-	public OverviewPanel(){
+	public OverviewPanel(GameModel gameModel){
 		
 		
 		//Get the sessions
@@ -43,7 +43,7 @@ public class OverviewPanel extends JPanel {
 		tableView = new JScrollPane(table);
 		setLayout(new BorderLayout(0, 0));
 		
-		gameTreeModel = new GameTree(new DefaultMutableTreeNode("Planning Poker"));
+		gameTreeModel = new GameTree(new DefaultMutableTreeNode("Planning Poker"), gameModel);
 		gameTree = new JTree(gameTreeModel.getTop());
 		treeView = new JScrollPane(gameTree);
 		

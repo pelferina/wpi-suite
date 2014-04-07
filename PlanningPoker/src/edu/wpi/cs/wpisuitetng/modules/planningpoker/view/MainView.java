@@ -41,7 +41,7 @@ public class MainView extends JTabbedPane {
 		currentGame = new CurrentGamePanel(gameModel);
 		pastGames = new JPanel();
 		deckPanel = new DeckPanel(deckModel);
-		overviewPanel = new OverviewPanel();
+		overviewPanel = new OverviewPanel(gameModel);
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		if (hasNewGame == true){
 			addTab("New Game", newGame);

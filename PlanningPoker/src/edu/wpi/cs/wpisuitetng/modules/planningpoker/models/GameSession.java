@@ -34,9 +34,6 @@ public class GameSession extends AbstractModel {
 
 	/** The game */
 	private String gameName;
-
-
-
 	private final int ownerID;
 	private final int gameID;
 	/** game status indicator 
@@ -72,6 +69,7 @@ public class GameSession extends AbstractModel {
 		this.endDate = deadline;
 		this.gameReqs = gameReqs;
 		creationdate = new Date();
+		this.gameStatus = 0;
 	}
 
 	/**

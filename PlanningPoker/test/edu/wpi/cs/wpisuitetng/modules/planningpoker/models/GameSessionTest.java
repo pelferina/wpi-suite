@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import org.junit.*;
 
@@ -44,6 +45,77 @@ public class GameSessionTest {
 		assertTrue(gs.getEndDate().equals(deadline));
 	}
 	
+	
+	
+	@Test
+	public void testDefaultGameStatus(){
+		GameSession gs = new GameSession("Test Game", 0, 1, Calendar.getInstance(), new ArrayList<Requirement>());
+		assertEquals(0, gs.getGameStatus());
+	}
+	
+	@Test
+	public void testGetDraftGameSessionList(){
+		GameModel gm = new GameModel();
+		GameSession gs1 = new GameSession("Test Game1", 0, 1, Calendar.getInstance(), new ArrayList<Requirement>());
+		GameSession gs2 = new GameSession("Test Game2", 0, 2, Calendar.getInstance(), new ArrayList<Requirement>());
+		GameSession gs3 = new GameSession("Test Game3", 0, 3, Calendar.getInstance(), new ArrayList<Requirement>());
+		gs2.setGameStatus(1);
+		gs3.setGameStatus(2);
+		gm.addMessage(gs1);
+		gm.addMessage(gs2);
+		gm.addMessage(gs3);
+		List<GameSession> draftGameSessionList = new ArrayList<GameSession>();
+		draftGameSessionList.add(gs1);
+		int i = 0;
+		for (GameSession expectedGameSession: draftGameSessionList){
+			assertTrue(expectedGameSession.equals(gm.getDraftGameSessions().get(i)));
+			i++;
+		}
+		System.out.println(gm.getDraftGameSessions().toString());
+		System.out.println(gm.getActiveGameSessions().toString());
+	}
+	
+	@Test
+	public void testGetActiveGameSessionList(){
+		GameModel gm = new GameModel();
+		GameSession gs1 = new GameSession("Test Game1", 0, 1, Calendar.getInstance(), new ArrayList<Requirement>());
+		GameSession gs2 = new GameSession("Test Game2", 0, 2, Calendar.getInstance(), new ArrayList<Requirement>());
+		GameSession gs3 = new GameSession("Test Game3", 0, 3, Calendar.getInstance(), new ArrayList<Requirement>());
+		gs2.setGameStatus(1);
+		gs3.setGameStatus(2);
+		gm.addMessage(gs1);
+		gm.addMessage(gs2);
+		gm.addMessage(gs3);
+		List<GameSession> activeGameSessionList = new ArrayList<GameSession>();
+		activeGameSessionList.add(gs2);
+		int i = 0;
+		for (GameSession expectedGameSession: activeGameSessionList){
+			assertTrue(expectedGameSession.equals(gm.getActiveGameSessions().get(i)));
+			i++;
+		}
+		System.out.println(gm.getActiveGameSessions().toString());
+	}
+	
+	@Test
+	public void testGetPastGameSessionList(){
+		GameModel gm = new GameModel();
+		GameSession gs1 = new GameSession("Test Game1", 0, 1, Calendar.getInstance(), new ArrayList<Requirement>());
+		GameSession gs2 = new GameSession("Test Game2", 0, 2, Calendar.getInstance(), new ArrayList<Requirement>());
+		GameSession gs3 = new GameSession("Test Game3", 0, 3, Calendar.getInstance(), new ArrayList<Requirement>());
+		gs2.setGameStatus(1);
+		gs3.setGameStatus(2);
+		gm.addMessage(gs1);
+		gm.addMessage(gs2);
+		gm.addMessage(gs3);
+		List<GameSession> pastGameSessionList = new ArrayList<GameSession>();
+		pastGameSessionList.add(gs3);
+		int i = 0;
+		for (GameSession expectedGameSession: pastGameSessionList){
+			assertTrue(expectedGameSession.equals(gm.getPastGameSessions().get(i)));
+			i++;
+		}
+		System.out.println(gm.getPastGameSessions().toString());
+	}
 	
 	
 }

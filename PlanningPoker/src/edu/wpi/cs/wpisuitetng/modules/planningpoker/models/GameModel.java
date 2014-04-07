@@ -82,6 +82,51 @@ public class GameModel extends AbstractListModel {
 		this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
 	}
 	
+	/**
+	 * 
+	 * Return a list of all draft game sessions in this game model
+	 *
+	 * @return List<GameSession> List of draft games
+	 */
+	public List<GameSession> getDraftGameSessions(){
+		List<GameSession> draftGames = new ArrayList<GameSession>();
+		for (GameSession possibleDraft: games){
+			if (possibleDraft.getGameStatus() == 0)
+				draftGames.add(possibleDraft);
+		}
+		return draftGames;
+	}
+	
+	/**
+	 * 
+	 * Return a list of all active game sessions in this game model
+	 *
+	 * @return List<GameSession> List of active games
+	 */
+	public List<GameSession> getActiveGameSessions(){
+		List<GameSession> activeGames = new ArrayList<GameSession>();
+		for (GameSession possibleActive: games){
+			if (possibleActive.getGameStatus() == 1)
+				activeGames.add(possibleActive);
+		}
+		return activeGames;
+	}
+	
+	/**
+	 * 
+	 * Return a list of all past game sessions in this game model
+	 *
+	 * @return List<GameSession> List of past games
+	 */
+	public List<GameSession> getPastGameSessions(){
+		List<GameSession> pastGames = new ArrayList<GameSession>();
+		for (GameSession possiblePast: games){
+			if (possiblePast.getGameStatus() == 2)
+				pastGames.add(possiblePast);
+		}
+		return pastGames;
+	}
+	
 	/* 
 	 * Returns the message at the given index. This method is called
 	 * internally by the JList in BoardPanel. Note this method returns
