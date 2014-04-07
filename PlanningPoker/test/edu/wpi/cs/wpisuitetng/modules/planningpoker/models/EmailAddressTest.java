@@ -82,30 +82,30 @@ public class EmailAddressTest {
 //		newEmailAddress.setUserID(27);
 //		db.save(newEmailAddress, testProject);
 		
-		//eController.saveEmail("rhhayne@wpi.edu");
+		eController.saveEmail("rhhayne@wpi.edu");
 		
 		//Fixed accordin to http://stackoverflow.com/questions/10944448/instanceof-vs-isinstance
 		
 		
-		try {
-			try {
-				e_manager.makeEntity(adminSession, "email1@localhost");
-				e_manager.makeEntity(bobSession, "email2@localhost");
-				
-			} catch (BadRequestException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (ConflictException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (WPISuiteException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+//		try {
+//			try {
+//				e_manager.makeEntity(adminSession, "email1@localhost");
+//				e_manager.makeEntity(bobSession, "email2@localhost");
+//				
+//			} catch (BadRequestException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			} catch (ConflictException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			} catch (WPISuiteException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+//		} catch (Exception e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
 		
 		try {
 			p_manager.endGame(gs.getGameID(), adminSession);

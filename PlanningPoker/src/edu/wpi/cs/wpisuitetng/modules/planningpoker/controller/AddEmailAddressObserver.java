@@ -13,6 +13,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddressModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
@@ -37,6 +38,13 @@ public class AddEmailAddressObserver implements RequestObserver {
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
+		// Get the response to the given request
+		final ResponseModel response = iReq.getResponse();
+		
+		// Parse the message out of the response body
+		final EmailAddressModel email = EmailAddressModel.fromJson(response.getBody());
+		System.out.println(email.getAddress()+"added successfully");
+		
 		return;
 	}
 
