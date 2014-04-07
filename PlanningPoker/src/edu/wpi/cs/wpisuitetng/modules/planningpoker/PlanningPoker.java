@@ -1,6 +1,8 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker;
 
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,7 @@ import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 public class PlanningPoker implements IJanewayModule{
 
@@ -29,15 +32,23 @@ public class PlanningPoker implements IJanewayModule{
 	public PlanningPoker() {
 		
 		// Setup button panel
-		final GameModel gameModel = new GameModel();
+		final GameModel gameModel = GameModel.getInstance();
 		DeckModel deckModel = new DeckModel();
-		mainPanel = new MainView(gameModel, deckModel, true);
+		mainPanel = new MainView(gameModel, deckModel);
 		buttonPanel = new JPanel();
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
 		JButton newGameButton = new JButton("New Game");
 		buttonPanel.add(newGameButton);
 		buttonPanel.add(new JButton("Options"));
+		
+		ViewEventController.getInstance().setMainView(mainPanel);
+		
+		newGameButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				mainPanel.addNewGameTab(false);
+			}
+		});
 		
 		// Setup the main panel
 		/*

@@ -13,6 +13,9 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.Session;
@@ -23,6 +26,7 @@ import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * This is the entity manager for the PostBoardMessage in the
@@ -61,14 +65,9 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 		// Parse the message from JSON
 		final GameSession importedGame = GameSession.fromJson(content);
 		System.out.println("Adding: " + content);
-		int nextID = 0;
 		GameSession[] games = getAll(s);
-		for(GameSession Game: games)
-		{
-			if(Game.getGameID() >= nextID) nextID = Game.getGameID();
-		}
-		nextID++;
-		GameSession newGame = new GameSession(importedGame.getGameName(), importedGame.getOwnerID(), nextID, importedGame.getEndDate(), importedGame.getGameReqs());
+	
+		GameSession newGame = new GameSession(importedGame.getGameName(), importedGame.getOwnerID(), importedGame.getGameID(), importedGame.getEndDate(), importedGame.getGameReqs());
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
 		if (!db.save(newGame, s.getProject())) {
@@ -92,7 +91,7 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 		// retrieving specific PostBoardMessages.
 		try{
 			int ID = Integer.parseInt(id);
-			GameSession aSample = new GameSession(null, 0, ID);
+			GameSession aSample = new GameSession(null, 0, 0, null, null);
 			return (GameSession[]) db.retrieveAll(aSample).toArray();
 		}catch(NumberFormatException e)
 		{
@@ -110,11 +109,11 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 		// Ask the database to retrieve all objects of the type PostBoardMessage.
 		// Passing a dummy PostBoardMessage lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
-		List<Model> messages = db.retrieveAll(new GameSession(null, 0, 0, null, null), s.getProject());
-		System.out.println(messages);
-		
+
+		GameSession[] messages = db.retrieveAll(new GameSession(new String(), 0 , 0, new Date(), new ArrayList<Integer>()), s.getProject()).toArray(new GameSession[0]);
+		                                        //GameSession(String game, int OwnerID, int GameID, Date date, List<> gameReqs)
 		// Return the list of messages as an array
-		return messages.toArray(new GameSession[0]);
+		return (messages);
 	}
 
 	/*

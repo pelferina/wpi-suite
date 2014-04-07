@@ -92,14 +92,14 @@ public class NewGameInputLivePanel extends AbsNewGameInputPanel {
 				newGameP.updatePanels(reqSelection);
 			}
 		});
-		nextButton.addActionListener(new ActionListener(){
+/*		nextButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				GameSession newGame = new GameSession(nameTextField.getText(), 0 , -1); //TODO Import name from previous panel
 				GameModel model = new GameModel();
 				AddGameController msgr = new AddGameController(model);
 				msgr.sendMessage(newGame);
 			}
-		});
+		});*/
 	}
 	/**
 	 * a lot of Window Builder generated UI

@@ -22,6 +22,7 @@ import java.util.List;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
@@ -39,39 +40,22 @@ public class GameSession extends AbstractModel {
 
 	private final int ownerID;
 	private final int gameID;
-	/** game status indicator 
-	 * 0  = game is in draft mode
-	 * 1  = game is in progress
-	 * 2  = game is finished.
-	 * */
 	
-	private int gameStatus;
+	private GameStatus gameStatus;
 	/** The date-time stamp of the creation */
-	private List<Requirement> gameReqs;
+	private List<Integer> gameReqs;
 	private final Date creationdate;
 	/** The date that the game will end, if there is no end time then this value is null*/
-	private Calendar endDate;
-
-	/**
-	 * Constructs a PostBoardMessage for the given string game
-	 * @param game the name of the game
-	 * @param ownerID the user ID of the logged in user who created the game
-	 * @param gameID the next ID in the list of game IDs
-	 */
-	public GameSession(String game, int ownerID, int gameID) {
-		this.gameName = game;
-		this.ownerID = ownerID;
-		this.gameID = gameID;
-		creationdate = new Date();
-	}
+	private Date endDate;
 	
-	public GameSession(String game, int ownerID, int gameID, Calendar deadline, List<Requirement> gameReqs){
+	public GameSession(String game, int ownerID, int gameID, Date deadline, List<Integer> gameReqs){
 		this.gameName = game;
 		this.ownerID = ownerID;
 		this.gameID = gameID;
 		this.endDate = deadline;
 		this.gameReqs = gameReqs;
 		creationdate = new Date();
+		this.gameStatus = GameStatus.DRAFT;
 	}
 
 	/**
@@ -83,11 +67,11 @@ public class GameSession extends AbstractModel {
 	}
 
 	/**
-	 * Returns an instance of PostBoardMessage constructed using the given
-	 * PostBoardMessage encoded as a JSON string.
+	 * Returns an instance of GameSession constructed using the given
+	 * GameSession encoded as a JSON string.
 	 * 
-	 * @param json the json-encoded PostBoardMessage to deserialize
-	 * @return the PostBoardMessage contained in the given JSON
+	 * @param json the json-encoded GameSession to deserialize
+	 * @return the GameSession contained in the given JSON
 	 */
 	public static GameSession fromJson(String json) {
 		final Gson parser = new Gson();
@@ -95,11 +79,11 @@ public class GameSession extends AbstractModel {
 	}
 	
 	/**
-	 * Returns an array of PostBoardMessage parsed from the given JSON-encoded
+	 * Returns an array of GameSession parsed from the given JSON-encoded
 	 * string.
 	 * 
-	 * @param json a string containing a JSON-encoded array of PostBoardMessage
-	 * @return an array of PostBoardMessage deserialzied from the given json string
+	 * @param json a string containing a JSON-encoded array of GameSession
+	 * @return an array of GameSession deserialzied from the given json string
 	 */
 	public static GameSession[] fromJsonArray(String json) {
 		final Gson parser = new Gson();
@@ -117,9 +101,9 @@ public class GameSession extends AbstractModel {
 		String returnStr = new String();
 		returnStr = gameName + "	";
 		if(creationdate != null)
-		returnStr = returnStr + "     " + "	Start: " + dateFormat1.format(creationdate);
+			returnStr = returnStr + "     " + "	Start: " + dateFormat1.format(creationdate);
 		if(endDate != null){
-			returnStr = returnStr + "    " +  "	    End: " + endDate.get(Calendar.MONTH) + "/" + endDate.get(Calendar.DAY_OF_MONTH) + "/" + endDate.get(Calendar.YEAR);
+			returnStr = returnStr + "      " + "End:" + dateFormat2.format(endDate);
 		}	
 		//if(endDate != null)
 		//	returnStr = returnStr + "	End: " + endDate.get(Calendar.MONTH) + '/'+ endDate.get(Calendar.DAY_OF_MONTH) + '/' + endDate.get(Calendar.YEAR);
@@ -128,7 +112,7 @@ public class GameSession extends AbstractModel {
 		if(gameReqs != null){
 			returnStr = returnStr +"      Requirements:";
 			for(int i = 0; i < gameReqs.size(); i++){
-			returnStr =  returnStr + gameReqs.get(i).getName() + ';';
+			returnStr =  returnStr + gameReqs.get(i) + ';';
 			}
 		}
 		System.out.println(returnStr);
@@ -138,7 +122,7 @@ public class GameSession extends AbstractModel {
 
 	/*
 	 * The methods below are required by the model interface, however they
-	 * do not need to be implemented for a basic model like PostBoardMessage. 
+	 * do not need to be implemented for a basic model like GameSession. 
 	 */
 
 	@Override
@@ -158,27 +142,27 @@ public class GameSession extends AbstractModel {
 		return gameID;
 	}
 
-	public Calendar getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Calendar endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 
-	public int getGameStatus() {
+	public GameStatus getGameStatus() {
 		return gameStatus;
 	}
 
-	public void setGameStatus(int gameStatus) {
+	public void setGameStatus(GameStatus gameStatus) {
 		this.gameStatus = gameStatus;
 	}
 
-	public List<Requirement> getGameReqs() {
+	public List<Integer> getGameReqs() {
 		return gameReqs;
 	}
 
-	public void setGameReqs(List<Requirement> gameReqs) {
+	public void setGameReqs(List<Integer> gameReqs) {
 		this.gameReqs = gameReqs;
 	}
 	public String getGameName() {

@@ -39,6 +39,7 @@ public class GetGamesController implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		// TODO: Fix refresh function, possibly database calls having issues
 		// Send a request to the core to save this message
 		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.GET); // GET == read
 		request.addObserver(new GetGamesRequestObserver(this)); // add an observer to process the response
