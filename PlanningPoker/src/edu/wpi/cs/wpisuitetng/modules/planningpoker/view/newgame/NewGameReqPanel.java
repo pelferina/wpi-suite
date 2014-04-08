@@ -37,19 +37,23 @@ public class NewGameReqPanel extends JPanel {
 	private List<Requirement> reqs;
 	private boolean editMode = false;
 	
-	public NewGameReqPanel(GameSession gameSession) {
+	public NewGameReqPanel(List<Requirement> requirements) {
+		reqs = requirements;
+		System.out.println(reqs.size());
+		init();
+	}
+
+	public NewGameReqPanel(List<Requirement> requirements, GameSession gameSession) {
 		this.editMode  = true;
+		reqs = requirements;
+		System.out.println(reqs.size());
 		init();
 	}
-	public NewGameReqPanel() {
-		init();
-	}
+	
 	private void init()
 	{
-		reqs = RequirementModel.getInstance().getRequirements();
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
-		
 		JLabel lblRequirementsAvailable = new JLabel("Requirements Available");
 		springLayout.putConstraint(SpringLayout.WEST, lblRequirementsAvailable, 318, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.EAST, lblRequirementsAvailable, -108, SpringLayout.EAST, this);
@@ -238,6 +242,5 @@ public class NewGameReqPanel extends JPanel {
 		listValue.remove(tempIndex);
 		selected.remove(tempIndex);
 		return tempReq;
-
 	}
 }

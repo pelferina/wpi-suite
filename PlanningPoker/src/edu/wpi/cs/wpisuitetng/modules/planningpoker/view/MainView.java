@@ -67,9 +67,11 @@ public class MainView extends JTabbedPane {
 	
 	public void addNewGameTab()
 	{
+		GetRequirementsController.getInstance().retrieveRequirements();
 		openTabs.add(newGameTabs, j);
 		JButton btnClose = new JButton("x");
-		NewGameDistributedPanel newGame = new NewGameDistributedPanel(btnClose);
+		List<Requirement> reqs = RequirementModel.getInstance().getRequirements();
+		NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose);
 		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler("New Game", j, newGame);
 		add(newGame, newGameTabs + PERMANANT_TABS);
 		JPanel pnlTab = new JPanel(new GridBagLayout());
@@ -98,9 +100,11 @@ public class MainView extends JTabbedPane {
 	}
 	public void addEditGameTab(GameSession gameSession)
 	{
+		GetRequirementsController.getInstance().retrieveRequirements();
 		openTabs.add(newGameTabs, j);
 		JButton btnClose = new JButton("x");
-		NewGameDistributedPanel newGame = new NewGameDistributedPanel(btnClose,gameSession);
+		List<Requirement> reqs = RequirementModel.getInstance().getRequirements();
+		NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose,gameSession);
 		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler("New Game", j, newGame);
 		add(newGame, newGameTabs + PERMANANT_TABS);
 		JPanel pnlTab = new JPanel(new GridBagLayout());

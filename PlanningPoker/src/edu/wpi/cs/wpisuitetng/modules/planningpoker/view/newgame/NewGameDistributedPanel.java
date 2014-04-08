@@ -37,15 +37,15 @@ public class NewGameDistributedPanel extends AbsNewGamePanel {
 	public NewGameReqPanel newGameReqPanel;
 	public JButton close;
 	
-	public NewGameDistributedPanel(JButton close, GameSession gameSession)
+	public NewGameDistributedPanel(List<Requirement> reqs, JButton close, GameSession gameSession)
 	{
 		this.close = close;
-		newGameReqPanel = new NewGameReqPanel(gameSession);
+		this.newGameReqPanel = new NewGameReqPanel(reqs, gameSession);
 		this.newGameInputPanel = new NewGameInputDistributedPanel(this, gameSession);
 		setPanel();
 	}
-	public NewGameDistributedPanel(JButton close) {
-		newGameReqPanel = new NewGameReqPanel();
+	public NewGameDistributedPanel(List<Requirement> reqs, JButton close) {
+		newGameReqPanel = new NewGameReqPanel(reqs);
 		this.newGameInputPanel = new NewGameInputDistributedPanel(this);
 		this.close = close;
 		setPanel();
