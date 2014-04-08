@@ -18,6 +18,7 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 /**
@@ -103,6 +104,84 @@ public class GameModel extends AbstractListModel {
 		}
 		this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
 	}
+	
+	/**
+	 * 
+	 * Return a list of all draft game sessions in this game model
+	 *
+	 * @return List<GameSession> List of draft games
+	 */
+	public List<GameSession> getDraftGameSessions(){
+		List<GameSession> draftGames = new ArrayList<GameSession>();
+		for (GameSession possibleDraft: games){
+			if (possibleDraft.getGameStatus() == GameStatus.DRAFT)
+				draftGames.add(possibleDraft);
+		}
+		return draftGames;
+	}
+	
+	/**
+	 * 
+	 * Return a list of all active game sessions in this game model
+	 *
+	 * @return List<GameSession> List of active games
+	 */
+	public List<GameSession> getActiveGameSessions(){
+		List<GameSession> activeGames = new ArrayList<GameSession>();
+		for (GameSession possibleActive: games){
+			if (possibleActive.getGameStatus() == GameStatus.ACTIVE)
+				activeGames.add(possibleActive);
+		}
+		return activeGames;
+	}
+	
+	/**
+	 * 
+	 * Return a list of all past game sessions in this game model
+	 *
+	 * @return List<GameSession> List of past games
+	 */
+	public List<GameSession> getInProgressGameSessions(){
+		List<GameSession> inProgressGames = new ArrayList<GameSession>();
+		for (GameSession possibleInProgress: games){
+			if (possibleInProgress.getGameStatus() == GameStatus.INPROGRESS)
+				inProgressGames.add(possibleInProgress);
+		}
+		return inProgressGames;
+	}
+	
+	/**
+	 * 
+	 * Return a list of all past game sessions in this game model
+	 *
+	 * @return List<GameSession> List of past games
+	 */
+	public List<GameSession> getCompletedGameSessions(){
+		List<GameSession> completedGames = new ArrayList<GameSession>();
+		for (GameSession possibleCompleted: games){
+			if (possibleCompleted.getGameStatus() == GameStatus.COMPLETED)
+				completedGames.add(possibleCompleted);
+		}
+		return completedGames;
+	}
+	
+	/**
+	 * 
+	 * Return a list of all past game sessions in this game model
+	 *
+	 * @return List<GameSession> List of past games
+	 */
+	public List<GameSession> getArchivedGameSessions(){
+		List<GameSession> archivedGames = new ArrayList<GameSession>();
+		for (GameSession possibleArchived: games){
+			if (possibleArchived.getGameStatus() == GameStatus.ARCHIVED)
+				archivedGames.add(possibleArchived);
+		}
+		return archivedGames;
+	}
+	
+	
+	
 	
 	/* 
 	 * Returns the message at the given index. This method is called

@@ -35,9 +35,6 @@ public class GameSession extends AbstractModel {
 
 	/** The game */
 	private String gameName;
-
-
-
 	private final int ownerID;
 	private final int gameID;
 	

@@ -30,6 +30,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame.CurrentGame
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameInputDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameMainPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
@@ -48,18 +49,22 @@ public class MainView extends JTabbedPane {
 	private JPanel currentGame;
 	private JPanel pastGames;
 	private JPanel deckPanel;
+	private JPanel overviewPanel;
+	private JPanel newGame;
+	private GameModel gameModel;
 	private int newGameTabs = 0;
 	private int j = 0;
 	private List<Integer> openTabs = new ArrayList<Integer>();
 	final int PERMANANT_TABS = 3;
-
 	
 	public MainView(DeckModel deckModel) {
 		currentGame = new CurrentGamePanel();
 		pastGames = new JPanel();
 		deckPanel = new DeckPanel(deckModel);
+		overviewPanel = new OverviewPanel(gameModel);
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
+		addTab("Overview", overviewPanel);
 		addTab("Current Game", currentGame);
 		addTab("Past Game", pastGames);
 		addTab("Deck", deckPanel);
