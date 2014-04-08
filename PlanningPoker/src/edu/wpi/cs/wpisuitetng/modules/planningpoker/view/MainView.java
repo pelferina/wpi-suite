@@ -32,6 +32,7 @@ public class MainView extends JTabbedPane {
 	private final JPanel currentGame;
 	private final JPanel pastGames;
 	private final JPanel deckPanel;
+	private final AddEmailPanel addEmailPanel;
 	
 
 	public MainView(GameModel gameModel, DeckModel deckModel, boolean hasNewGame) {
@@ -39,6 +40,7 @@ public class MainView extends JTabbedPane {
 		currentGame = new CurrentGamePanel(gameModel);
 		pastGames = new JPanel();
 		deckPanel = new DeckPanel(deckModel);
+		addEmailPanel = new AddEmailPanel();
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		if (hasNewGame == true){
 			addTab("New Game", newGame);
@@ -46,6 +48,7 @@ public class MainView extends JTabbedPane {
 		addTab("Current Game", currentGame);
 		addTab("Past Game", pastGames);
 		addTab("Deck", deckPanel);
+		addTab("Add Email", addEmailPanel);
 	}
 
 }
