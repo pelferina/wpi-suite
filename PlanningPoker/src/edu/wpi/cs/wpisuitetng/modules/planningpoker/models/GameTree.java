@@ -46,37 +46,47 @@ public class GameTree extends DefaultMutableTreeNode {
 		//build tree for active games
 		DefaultMutableTreeNode activeGames = new DefaultMutableTreeNode("Active Games");
 		List<GameSession> activeGameSessionList = new ArrayList<GameSession>();
-		List<GameSession> inProgressGameSessionList = new ArrayList<GameSession>();
 		if (gameModel != null){
 			activeGameSessionList = gameModel.getActiveGameSessions();
-			inProgressGameSessionList = gameModel.getActiveGameSessions();
 			for (GameSession activeGameSession: activeGameSessionList){
 				activeGames.add(new DefaultMutableTreeNode(activeGameSession));
 			}
+		}
+		
+		DefaultMutableTreeNode inProgressGames = new DefaultMutableTreeNode("In Progress Games");
+		List<GameSession> inProgressGameSessionList = new ArrayList<GameSession>();
+		if (gameModel != null){
+			inProgressGameSessionList = gameModel.getActiveGameSessions();
 			for (GameSession inProgressGameSession: inProgressGameSessionList){
 				activeGames.add(new DefaultMutableTreeNode(inProgressGameSession));
 			}
 		}
 		
 		//build tree for past games
-		DefaultMutableTreeNode pastGames = new DefaultMutableTreeNode("Past Games");
+		DefaultMutableTreeNode completedGames = new DefaultMutableTreeNode("Completed Games");
 		List<GameSession> CompletedGameSessionList  = new ArrayList<GameSession>();
-		List<GameSession> ArchivedGameSessionList  = new ArrayList<GameSession>();
 		if (gameModel != null){
 			CompletedGameSessionList = gameModel.getCompletedGameSessions();
-			ArchivedGameSessionList = gameModel.getArchivedGameSessions();
 			for (GameSession completedGameSession: CompletedGameSessionList){
-				pastGames.add(new DefaultMutableTreeNode(completedGameSession));
+				completedGames.add(new DefaultMutableTreeNode(completedGameSession));
 			}
+		}
+		
+		DefaultMutableTreeNode archivedGames = new DefaultMutableTreeNode("Archived Games");
+		List<GameSession> ArchivedGameSessionList  = new ArrayList<GameSession>();
+		if (gameModel != null){
+			ArchivedGameSessionList = gameModel.getArchivedGameSessions();
 			for (GameSession archivedGameSession: ArchivedGameSessionList){
-				pastGames.add(new DefaultMutableTreeNode(archivedGameSession));
+				archivedGames.add(new DefaultMutableTreeNode(archivedGameSession));
 			}
 		}
 		
 		
 		top.add(drafts);
 		top.add(activeGames);
-		top.add(pastGames);
+		top.add(inProgressGames);
+		top.add(completedGames);
+		top.add(archivedGames);
 	}
 	
 	public DefaultMutableTreeNode getTop(){
