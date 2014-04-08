@@ -29,8 +29,8 @@ public class GameTree extends DefaultMutableTreeNode {
 
 	public GameTree(DefaultMutableTreeNode top, GameModel gameModel) {
         this.top = top;
-        createNodes(top);
         this.gameModel = gameModel;
+        createNodes(top);
 	}
 
 	private void createNodes(DefaultMutableTreeNode top) {
@@ -91,5 +91,10 @@ public class GameTree extends DefaultMutableTreeNode {
 	
 	public DefaultMutableTreeNode getTop(){
 		return top;
+	}
+	
+	public void update(){
+		top.removeAllChildren();
+		createNodes(top);
 	}
 }

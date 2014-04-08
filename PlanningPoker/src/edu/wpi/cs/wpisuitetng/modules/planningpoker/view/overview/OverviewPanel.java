@@ -19,9 +19,13 @@ import javax.swing.SpringLayout;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -73,8 +77,8 @@ public class OverviewPanel extends JPanel {
 		gameTree = new JTree(gameTreeModel.getTop());
 		gameTree.addTreeSelectionListener(    new TreeSelectionListener(){
 			public void valueChanged(TreeSelectionEvent e) {
-	            DefaultMutableTreeNode node = (DefaultMutableTreeNode)gameTree.getLastSelectedPathComponent();
-
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode)gameTree.getLastSelectedPathComponent();
+	            
 	            if (node == null)
 	            return;
 
@@ -82,6 +86,24 @@ public class OverviewPanel extends JPanel {
 	            updateTable((String)nodeInfo);
 	    }});
 		
+		gameTree.addFocusListener(new FocusListener(){
+
+			@Override
+			public void focusGained(FocusEvent e) {
+	            gameTreeModel.update();
+	            DefaultTreeModel model = (DefaultTreeModel) gameTree.getModel();
+	            model.setRoot(gameTreeModel.getTop());
+	            model.reload();
+				
+				
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				System.out.println("Focus Lost");
+			}
+			
+		});
 		// Refreshes the gamemodel every time you mouse over the JTree. crude but effective.
 		gameTree.addMouseMotionListener(new MouseMotionListener() {
 
