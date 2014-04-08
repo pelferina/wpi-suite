@@ -27,7 +27,7 @@ public class PlanningPoker implements IJanewayModule{
 	
 	
 	/**
-	 * Construct a new DummyModule for demonstration purposes
+	 * Construct a new PlanningPoker module
 	 */
 	public PlanningPoker() {
 		
