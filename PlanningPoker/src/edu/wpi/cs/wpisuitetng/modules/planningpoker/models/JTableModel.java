@@ -25,8 +25,12 @@ public class JTableModel extends AbstractTableModel {
     }
 
 	public JTableModel(GameSession[] sessions){
-    	
-    	Data = new Object[COLUMN_NAMES.length][sessions.length];
+    	setUpTable(sessions);
+    }
+	
+	private void setUpTable(GameSession[] sessions){
+		
+		Data = new Object[COLUMN_NAMES.length][sessions.length];
     	size = sessions.length;
     	for (int i=0; i<sessions.length; i++){
     		Object[] curRow = {sessions[i].getGameID(), sessions[i].getGameName(),
@@ -37,8 +41,8 @@ public class JTableModel extends AbstractTableModel {
     		
     		Data[i] = curRow;
     	}
-    	
-    }
+		
+	}
     
 
     @Override public int getColumnCount() {
@@ -71,19 +75,14 @@ public class JTableModel extends AbstractTableModel {
             case 5:
             	return Data[rowIndex][columnIndex];
             	
-            case 6: JButton button = new JButton(COLUMN_NAMES[columnIndex]);
-                    button.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent arg0) {
-                            ButtonAction();
-                        }
-                    });
-                    return button;
             default: return "Error";
         }
     }
 
-	protected Object ButtonAction() {
-		// TODO Auto-generated method stub
-		return null;
-	}   
+	public void update(GameSession[] sessions){
+		setUpTable(sessions);
+	}
+	public void update(ArrayList<GameSession> sessions){
+		setUpTable(sessions.toArray(new GameSession[0]));
+	}
 }
