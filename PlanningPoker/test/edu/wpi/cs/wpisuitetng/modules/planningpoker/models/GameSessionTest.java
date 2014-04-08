@@ -51,7 +51,7 @@ public class GameSessionTest {
 	@Test
 	public void testDefaultGameStatus(){
 		GameSession gs = new GameSession("Test Game", 0, 1, new Date(), new ArrayList<Integer>());
-		assertEquals(0, gs.getGameStatus());
+		assertEquals(GameStatus.DRAFT, gs.getGameStatus());
 	}
 	
 	@Test

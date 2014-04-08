@@ -24,6 +24,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -57,8 +58,9 @@ public class OverviewPanel extends JPanel {
 				      int row = target.getSelectedRow();
 				      int column = target.getSelectedColumn();
 				      
+				      int gameID = (Integer)target.getModel().getValueAt(row, 0);
+				      System.out.println("You just double clicked on game "+gameID); // Make this edit instead
 				      
-				      // Open an appropriate page TODO
 				    }
 				  }
 				});
@@ -79,6 +81,23 @@ public class OverviewPanel extends JPanel {
 	            Object nodeInfo = node.getUserObject();
 	            updateTable((String)nodeInfo);
 	    }});
+		
+		// Refreshes the gamemodel every time you mouse over the JTree. crude but effective.
+		gameTree.addMouseMotionListener(new MouseMotionListener() {
+
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				ggc.actionPerformed(new ActionEvent(new Object(), 5, "Go"));
+			}
+
+		
+		});
 
 		
 		treeView = new JScrollPane(gameTree);
@@ -93,8 +112,7 @@ public class OverviewPanel extends JPanel {
 	public void updateTable(String s){
 		
 		List<GameSession> sessions = new ArrayList<GameSession>();
-		ggc.actionPerformed(new ActionEvent(new Object(), 5, "Go"));
-
+		
 		if (s.equals("Drafts")){
 			sessions = (ArrayList<GameSession>) gameModel.getDraftGameSessions();
 		} else if (s.equals("Active Games")){
