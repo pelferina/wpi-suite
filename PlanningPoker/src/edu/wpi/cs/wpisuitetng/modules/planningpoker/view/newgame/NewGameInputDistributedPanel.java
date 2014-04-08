@@ -12,6 +12,8 @@ import java.awt.Frame;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 //import java.awt.event.MouseAdapter;
 //import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -101,7 +103,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		newGameP = ngdp;
 
 		setPanel();
-		
+				
 		//initialize dayBox to 31 days (as in January)
 		for (int i=0; i<31; i++){
 			dayBox.addItem(i+1);
@@ -124,6 +126,35 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 		}
 		deckBox.addItem("Default Deck");
 		
+		if(editMode)
+		{
+			DateFormat dayFormat = new SimpleDateFormat("dd");
+			DateFormat monthFormat = new SimpleDateFormat("mm");
+			
+			DateFormat yearFormat = new SimpleDateFormat("yy");
+
+			int year_index = Integer.parseInt(yearFormat.format(gameSession.getEndDate()))-14;
+			
+
+			int day_index = Integer.parseInt(dayFormat.format(gameSession.getEndDate()))-1;
+			
+			
+			int month_index = Integer.parseInt(monthFormat.format(gameSession.getEndDate()));
+			
+			dayBox.setSelectedIndex(day_index);
+			monthBox.setSelectedIndex(month_index);
+
+//			System.out.print("Setting default date: " + day_index + " "+ month_index + " " + year_index);
+			
+			nameTextField.setText(gameSession.getGameName());
+			nameTextField.setEditable(false);
+			
+			yearBox.setSelectedIndex(year_index);
+			
+			hourComboBox.setSelectedIndex(gameSession.getEndDate().getHours());
+			minuteComboBox.setSelectedIndex(gameSession.getEndDate().getMinutes()+1);
+			
+		}
 		//Adds a documentlistener to the name text field so that way if the text is changed, the pop-up will appear if 
 		//the new game tab is closed.
 		nameTextField.getDocument().addDocumentListener(new DocumentListener(){
@@ -286,7 +317,7 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				String name = nameTextField.getText();
 				Calendar selectedDeadline = Calendar.getInstance();
 				currentDate = Calendar.getInstance();
-				currentDate.set(Calendar.MONTH, currentDate.get(Calendar.MONTH) + 1);
+				currentDate.set(Calendar.MONTH, currentDate.get(Calendar.MONTH));
 				selectedDeadline.set(deadlineYear, deadlineMonth, deadlineDay, getHour(hourTime), minuteTime);
 				List<Requirement> reqsSelected = newGameP.getSelected();
 				for (int i=0; i<reqsSelected.size(); i++){
@@ -328,14 +359,6 @@ public class NewGameInputDistributedPanel extends AbsNewGameInputPanel {
 				}
 			}
 		});
-		if(editMode)
-		{
-			System.out.print("Setting default date: " + gameSession.getEndDate().getDay() + " "+ gameSession.getEndDate().getHours() + " " + gameSession.getEndDate().getMinutes());
-			nameTextField.setText(gameSession.getGameName());
-//			dayBox.setSelectedIndex(gameSession.getEndDate().getDay());
-//			hourComboBox.setSelectedIndex(gameSession.getEndDate().getHours()+1);
-//			minuteComboBox.setSelectedIndex(gameSession.getEndDate().getMinutes()+1);
-		}
 	}
 	/**
 	 * a lot of Window Builder generated UI

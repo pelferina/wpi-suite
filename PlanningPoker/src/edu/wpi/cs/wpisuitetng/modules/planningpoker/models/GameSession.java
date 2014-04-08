@@ -97,13 +97,12 @@ public class GameSession extends AbstractModel {
 	public String toString() {
 		// Format the date-time stamp
 		DateFormat dateFormat1 = new SimpleDateFormat("MM/dd/yy hh:mm a");
-		DateFormat dateFormat2 = new SimpleDateFormat("MM/dd/yy");
 		String returnStr = new String();
 		returnStr = gameName + "	";
 		if(creationdate != null)
 			returnStr = returnStr + "     " + "	Start: " + dateFormat1.format(creationdate);
 		if(endDate != null){
-			returnStr = returnStr + "      " + "End:" + dateFormat2.format(endDate);
+			returnStr = returnStr + "      " + "End:" + dateFormat1.format(endDate);
 		}	
 		//if(endDate != null)
 		//	returnStr = returnStr + "	End: " + endDate.get(Calendar.MONTH) + '/'+ endDate.get(Calendar.DAY_OF_MONTH) + '/' + endDate.get(Calendar.YEAR);

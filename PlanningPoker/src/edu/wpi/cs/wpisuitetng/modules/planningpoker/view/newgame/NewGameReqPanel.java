@@ -5,6 +5,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
 import javax.swing.*;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
@@ -34,8 +35,17 @@ public class NewGameReqPanel extends JPanel {
 	private JTable table;
 	private JTable table_1;
 	private List<Requirement> reqs;
+	private boolean editMode = false;
 	
+	public NewGameReqPanel(GameSession gameSession) {
+		this.editMode  = true;
+		init();
+	}
 	public NewGameReqPanel() {
+		init();
+	}
+	private void init()
+	{
 		reqs = RequirementModel.getInstance().getRequirements();
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
@@ -206,7 +216,6 @@ public class NewGameReqPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, lblRequirementsSelected, 0, SpringLayout.WEST, lblRequirementsAvailable);
 		add(lblRequirementsSelected);
 	}
-	
 	public List<Requirement> getSelected(){
 		return selected;
 
