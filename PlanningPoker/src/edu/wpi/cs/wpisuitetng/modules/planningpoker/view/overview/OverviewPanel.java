@@ -11,6 +11,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameTree;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.JTableModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame.JTableView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
@@ -45,9 +46,9 @@ public class OverviewPanel extends JPanel {
 	GameTree gameTreeModel;
 	JTree gameTree;
 	TableRowSorter<JTableModel> sorter;
-	public OverviewPanel(GameModel gameModel){
+	public OverviewPanel(){
 		
-		this.gameModel = gameModel;
+		this.gameModel = GameModel.getInstance();
 		ggc = new GetGamesController(gameModel);
 		GameSession[] sessions = {};
 		
@@ -63,8 +64,16 @@ public class OverviewPanel extends JPanel {
 				      int column = target.getSelectedColumn();
 				      
 				      int gameID = (Integer)((JTableModel)target.getModel()).getIDFromRow(row);
-				      System.out.println("You just double clicked on game "+gameID); // Make this edit insteadS
-				      
+				      List<GameSession> games = gameModel.getGames();
+				      GameSession clickedGame = null;
+				      for (GameSession gm: games){
+				    	  if (gm.getGameID() == gameID){
+				    		  clickedGame = gm;
+				    	  }
+				      }
+				      if (clickedGame != null){
+				    	  ViewEventController.getInstance().editGameTab(clickedGame);; // Make this edit insteadS
+				      }
 				    }
 				  }
 				});
@@ -73,7 +82,7 @@ public class OverviewPanel extends JPanel {
 		tableView = new JScrollPane(table);
 		setLayout(new BorderLayout(0, 0));
 		
-		gameTreeModel = new GameTree(new DefaultMutableTreeNode("Planning Poker"), gameModel);
+		gameTreeModel = new GameTree(new DefaultMutableTreeNode("Planning Poker"));
 		gameTree = new JTree(gameTreeModel.getTop());
 		gameTree.addTreeSelectionListener(    new TreeSelectionListener(){
 			public void valueChanged(TreeSelectionEvent e) {

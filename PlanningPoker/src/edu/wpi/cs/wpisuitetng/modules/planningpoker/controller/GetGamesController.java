@@ -34,7 +34,7 @@ public class GetGamesController implements ActionListener {
 	private final GameModel model;
 
 	public GetGamesController(GameModel model) {
-		this.model = model;
+		this.model = model.getInstance();
 	}
 
 	@Override

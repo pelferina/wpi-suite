@@ -17,8 +17,7 @@ public class OverviewPanelTest {
 
 	@Test
 	public void test() {
-		GameModel gm = new GameModel();
-		OverviewPanel op = new OverviewPanel(gm);
+		OverviewPanel op = new OverviewPanel();
 		op.updateTable("Drafts");
 		assertNotNull(op);
 	}

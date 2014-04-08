@@ -148,15 +148,17 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 			
 			DateFormat yearFormat = new SimpleDateFormat("yy");
 
-			int year_index = gameSession.getEndDate().getYear();
+			//int year_index = gameSession.getEndDate().getYear();
+			int year_index = 2014;
 			
 			//int year_index = Integer.parseInt(yearFormat.format(gameSession.getEndDate()))-14;
 			
-			int day_index = gameSession.getEndDate().getDay();
-			
+			//int day_index = gameSession.getEndDate().getDay();
+			int day_index = 1;
 			//int day_index = Integer.parseInt(dayFormat.format(gameSession.getEndDate()))-1;
 			
-			int month_index = gameSession.getEndDate().getMonth();
+			int month_index = 1;
+			//int month_index = gameSession.getEndDate().getMonth();
 			
 			//int month_index = Integer.parseInt(monthFormat.format(gameSession.getEndDate()));
 			

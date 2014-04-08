@@ -65,7 +65,7 @@ public class MainView extends JTabbedPane {
 		currentGame = new CurrentGamePanel();
 		pastGames = new JPanel();
 		deckPanel = new DeckPanel(deckModel);
-		overviewPanel = new OverviewPanel(gameModel);
+		overviewPanel = new OverviewPanel();
 		addEmailPanel = new AddEmailPanel();
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 

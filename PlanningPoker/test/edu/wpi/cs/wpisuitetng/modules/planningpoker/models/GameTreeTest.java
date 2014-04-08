@@ -18,9 +18,8 @@ public class GameTreeTest {
 	@Test
 	public void createGameTreeTest() {
 		DefaultMutableTreeNode topNode = new DefaultMutableTreeNode("Test Top");
-		GameModel gm = new GameModel();
-		assertNotNull(new GameTree(topNode, gm));
-		assertNotNull((new GameTree(topNode, gm)).getTop());
+		assertNotNull(new GameTree(topNode));
+		assertNotNull((new GameTree(topNode)).getTop());
 	}
 
 }

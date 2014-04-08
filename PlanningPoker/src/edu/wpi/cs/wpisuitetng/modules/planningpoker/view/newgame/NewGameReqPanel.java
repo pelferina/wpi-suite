@@ -34,7 +34,7 @@ public class NewGameReqPanel extends JPanel {
 	private String[] columnName = {"Name", "Description"};
 	private JTable unselectedTable;
 	private JTable selectedTable;
-	private List<Requirement> reqs;
+	private List<Requirement> reqs = new ArrayList<Requirement>();
 	private boolean editMode = false;
 	private Timer refresh;
 	
