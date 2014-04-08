@@ -10,36 +10,68 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersController;
 import edu.wpi.cs.wpisuitetng.network.Network;
 
 public class JTableModel extends AbstractTableModel {
 
 	protected Object[][] Data; 	// Create new data array with the "X" position as each sessionData
 								// and the "Y" as each Table spot
+	protected Integer[] gameIDs;
+	protected GetUsersController guc;
+	protected User[] users;
 	protected int size =0;
-    protected static final String[] COLUMN_NAMES = new String[] {"ID", "Name", "Deadline", "Owner", "Progress", "Status"};
-    protected static final Class<?>[] COLUMN_TYPES = new Class<?>[] {Integer.class, String.class, Date.class, String.class, String.class, String.class};
+    protected static final String[] COLUMN_NAMES = new String[] {"Name", "Deadline", "Owner", "Progress", "Status"};
+    protected static final Class<?>[] COLUMN_TYPES = new Class<?>[] {String.class, Date.class, String.class, String.class, String.class};
     
     public JTableModel(ArrayList<GameSession> sessions){
     	this(sessions.toArray(new GameSession[0]));
     }
 
 	public JTableModel(GameSession[] sessions){
-    	
-    	Data = new Object[COLUMN_NAMES.length][sessions.length];
+		users = null;
+		guc = new GetUsersController(users);
+    	setUpTable(sessions);
+    }
+	
+	private void setUpTable(GameSession[] sessions){
+		
+		Data = new Object[COLUMN_NAMES.length][sessions.length];
+		gameIDs = new Integer[sessions.length];
     	size = sessions.length;
     	for (int i=0; i<sessions.length; i++){
-    		Object[] curRow = {sessions[i].getGameID(), sessions[i].getGameName(),
-    							sessions[i].getEndDate(), ""+sessions[i].getOwnerID(), 
+    		Object[] curRow = {sessions[i].getGameName(),
+    							sessions[i].getEndDate(), 
+    							getUserFromID(sessions[i].getOwnerID()), 
     							"To Be Implemented", // Progress
     							sessions[i].getGameStatus()
     							};
     		
     		Data[i] = curRow;
+    		gameIDs[i] = sessions[i].getGameID();
     	}
-    	
-    }
+		
+	}
     
+	private String getUserFromID(int userID){
+		guc.actionPerformed();
+		while (guc.getUsers() == null){
+			try{
+				Thread.sleep(10);
+			}
+			catch(Exception e){
+				
+			}
+		}
+		users = guc.getUsers();
+		for (User u : users){
+			if (u.getIdNum() == userID){
+				return u.getName();
+			}
+		}
+		return "";
+	}
 
     @Override public int getColumnCount() {
         return COLUMN_NAMES.length;
@@ -71,19 +103,18 @@ public class JTableModel extends AbstractTableModel {
             case 5:
             	return Data[rowIndex][columnIndex];
             	
-            case 6: JButton button = new JButton(COLUMN_NAMES[columnIndex]);
-                    button.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent arg0) {
-                            ButtonAction();
-                        }
-                    });
-                    return button;
             default: return "Error";
         }
     }
 
-	protected Object ButtonAction() {
-		// TODO Auto-generated method stub
-		return null;
-	}   
+	public void update(GameSession[] sessions){
+		setUpTable(sessions);
+	}
+	public void update(ArrayList<GameSession> sessions){
+		setUpTable(sessions.toArray(new GameSession[0]));
+	}
+	
+	public int getIDFromRow(int row){
+		return gameIDs[row];
+	}
 }
