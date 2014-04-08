@@ -274,7 +274,14 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 				String name = nameTextField.getText();
 				Calendar selectedDeadline = Calendar.getInstance();
 				currentDate = Calendar.getInstance();
+				if (datePicker.getModel().isSelected() == false){
+					datePicker.getModel().setDate(currentDate.get(Calendar.YEAR), 
+							currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DAY_OF_MONTH) - 1);
+				}
 				currentDate.set(Calendar.MONTH, currentDate.get(Calendar.MONTH) + 1);
+				deadlineYear = datePicker.getModel().getYear();
+				deadlineMonth = datePicker.getModel().getMonth() + 1;
+				deadlineDay = datePicker.getModel().getDay();
 				selectedDeadline.set(deadlineYear, deadlineMonth, deadlineDay, getHour(hourTime), minuteTime);
 				List<Requirement> reqsSelected = newGameP.getSelected();
 				for (int i=0; i<reqsSelected.size(); i++){
