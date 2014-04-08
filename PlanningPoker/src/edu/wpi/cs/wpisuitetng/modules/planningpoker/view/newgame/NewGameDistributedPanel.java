@@ -14,9 +14,12 @@ import java.util.List;
 import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+
 
 /**
  * The panel for creating a new live Planning Poker game, along with fields
@@ -32,14 +35,21 @@ public class NewGameDistributedPanel extends AbsNewGamePanel {
 	public boolean isNew = true;
 	public NewGameInputDistributedPanel newGameInputPanel;
 	public NewGameReqPanel newGameReqPanel;
-	private boolean editMode;
 	public JButton close;
+	private GameSession editMode;
 	
-	public NewGameDistributedPanel(GameModel gameModel, boolean editMode, List<Requirement> reqs, JButton close) {
-		newGameReqPanel = new NewGameReqPanel(reqs);
-		this.editMode = editMode;
+	public NewGameDistributedPanel(List<Requirement> reqs, JButton close, GameSession gameSession)
+	{
 		this.close = close;
-		this.newGameInputPanel = new NewGameInputDistributedPanel(this, this.editMode);
+		this.newGameReqPanel = new NewGameReqPanel(reqs, gameSession);
+		this.newGameInputPanel = new NewGameInputDistributedPanel(this, gameSession);
+		setPanel();
+	}
+	public NewGameDistributedPanel(List<Requirement> reqs, JButton close) {
+		newGameReqPanel = new NewGameReqPanel(reqs);
+		this.newGameInputPanel = new NewGameInputDistributedPanel(this);
+		this.close = close;
+		
 		setEnabled(false);
 		setPanel();
 	}

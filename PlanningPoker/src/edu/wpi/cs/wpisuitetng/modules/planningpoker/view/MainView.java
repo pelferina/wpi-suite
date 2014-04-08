@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame.CurrentGamePanel;
@@ -47,15 +48,14 @@ public class MainView extends JTabbedPane {
 	private JPanel currentGame;
 	private JPanel pastGames;
 	private JPanel deckPanel;
-	private GameModel gameModel;
 	private int newGameTabs = 0;
 	private int j = 0;
 	private List<Integer> openTabs = new ArrayList<Integer>();
 	final int PERMANANT_TABS = 3;
 
-	public MainView(GameModel gameModel, DeckModel deckModel) {
-		this.gameModel = gameModel;
-		currentGame = new CurrentGamePanel(gameModel);
+	
+	public MainView(DeckModel deckModel) {
+		currentGame = new CurrentGamePanel();
 		pastGames = new JPanel();
 		deckPanel = new DeckPanel(deckModel);
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -64,13 +64,14 @@ public class MainView extends JTabbedPane {
 		addTab("Past Game", pastGames);
 		addTab("Deck", deckPanel);
 	}
-
-	public void addNewGameTab(boolean editMode){
+	
+	public void addNewGameTab()
+	{
 		GetRequirementsController.getInstance().retrieveRequirements();
 		openTabs.add(newGameTabs, j);
 		JButton btnClose = new JButton("x");
 		List<Requirement> reqs = RequirementModel.getInstance().getRequirements();
-		NewGameDistributedPanel newGame = new NewGameDistributedPanel(gameModel, editMode, reqs, btnClose);
+		NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose);
 		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler("New Game", j, newGame);
 		add(newGame, newGameTabs + PERMANANT_TABS);
 		JPanel pnlTab = new JPanel(new GridBagLayout());
@@ -97,7 +98,39 @@ public class MainView extends JTabbedPane {
 		newGameTabs++;
 		j++;
 	}
-	
+	public void addEditGameTab(GameSession gameSession)
+	{
+		GetRequirementsController.getInstance().retrieveRequirements();
+		openTabs.add(newGameTabs, j);
+		JButton btnClose = new JButton("x");
+		List<Requirement> reqs = RequirementModel.getInstance().getRequirements();
+		NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose,gameSession);
+		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler("New Game", j, newGame);
+		add(newGame, newGameTabs + PERMANANT_TABS);
+		JPanel pnlTab = new JPanel(new GridBagLayout());
+		pnlTab.setOpaque(false);
+		JLabel lblTitle = new JLabel("New Game");
+		btnClose.setMargin(new Insets(0, 0, 0, 0));
+		btnClose.setFont(btnClose.getFont().deriveFont((float) 8));
+		GridBagConstraints gbc = new GridBagConstraints();
+		
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.weightx = 1;
+		
+		pnlTab.add(lblTitle, gbc);
+
+		gbc.gridx++;
+		gbc.weightx = 0;
+		pnlTab.add(btnClose, gbc);
+
+		setTabComponentAt(newGameTabs + PERMANANT_TABS, pnlTab);
+
+		btnClose.addActionListener(myCloseActionHandler);
+		setSelectedIndex(newGameTabs+PERMANANT_TABS);
+		newGameTabs++;
+		j++;
+	}
 	public class MyCloseActionHandler implements ActionListener {
 
 	    private String tabName;

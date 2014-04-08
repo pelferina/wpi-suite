@@ -16,6 +16,9 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanel;
@@ -83,9 +86,11 @@ public class ViewEventController {
 	/**
 	 * Opens a new tab for the creation of a requirement.
 	 */
-	public void createNewGameTab(boolean editMode) {
+	public void editGameTab(GameSession gameSession) {
 //		RequirementPanel newReq = new RequirementPanel(-1);
-		main.addNewGameTab(editMode);
+
+		
+		main.addEditGameTab(gameSession);
 	}
 //	
 //	/**

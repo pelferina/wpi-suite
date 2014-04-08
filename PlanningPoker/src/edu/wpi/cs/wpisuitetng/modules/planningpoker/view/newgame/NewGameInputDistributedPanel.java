@@ -13,6 +13,8 @@ import java.awt.Frame;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 //import java.awt.event.MouseAdapter;
 //import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -79,6 +81,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 	private JTextField nameTextField = new JTextField();
 	private JTextArea descTextArea = new JTextArea();
 	private boolean editMode = false;
+	private GameSession gameSession = null;
 	private final JLabel hourError = new JLabel("Select an hour for deadline");
 	private final JLabel minuteError = new JLabel("Select a minute for deadline");
 	private final JLabel deadlineError = new JLabel("Can not have a deadline in the past");
@@ -90,19 +93,32 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 	private UtilDateModel model = new UtilDateModel();
 	private JDatePanelImpl datePanel = new JDatePanelImpl(model);
 	private JDatePickerImpl datePicker = new JDatePickerImpl(datePanel);
+
+	public NewGameInputDistributedPanel(NewGameDistributedPanel ngdp, GameSession gameSession)
+	{
+		this.gameSession = gameSession;
+		this.editMode = true;
+		init(ngdp);
+		System.out.println("Editing Game: "+ gameSession.getGameName());
+	}
 	
 	/**
 	 * The constructor for the NewGameInputPanel
 	 * has void parameters
 	 * @param nglp, The NewGameLivePanel that it was added from
 	 */
-	public NewGameInputDistributedPanel(NewGameDistributedPanel ngdp, boolean editMode) {
-		this.editMode = editMode;
+	public NewGameInputDistributedPanel(NewGameDistributedPanel ngdp) {
+		init(ngdp);
+	}
+	
+	private void init(NewGameDistributedPanel ngdp)
+	{
 		currentDate = Calendar.getInstance();
+
 		newGameP = ngdp;
-		//descriptionTextField.setColumns(10);
+
 		setPanel();
-		
+				
 		//initialize dayBox to 31 days (as in January)
 		for (int i=0; i<31; i++){
 			dayBox.addItem(i+1);
@@ -123,9 +139,36 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 				minuteComboBox.addItem("" + i);
 			}
 		}
-		
 		deckBox.addItem("Default Deck");
 		
+		if(editMode)
+		{
+			DateFormat dayFormat = new SimpleDateFormat("dd");
+			DateFormat monthFormat = new SimpleDateFormat("mm");
+			
+			DateFormat yearFormat = new SimpleDateFormat("yy");
+
+			int year_index = gameSession.getEndDate().getYear();
+			
+			//int year_index = Integer.parseInt(yearFormat.format(gameSession.getEndDate()))-14;
+			
+			int day_index = gameSession.getEndDate().getDay();
+			
+			//int day_index = Integer.parseInt(dayFormat.format(gameSession.getEndDate()))-1;
+			
+			int month_index = gameSession.getEndDate().getMonth();
+			
+			//int month_index = Integer.parseInt(monthFormat.format(gameSession.getEndDate()));
+			
+			datePicker.getModel().setDate(year_index, month_index, day_index);
+			monthBox.setSelectedIndex(month_index);
+
+//			System.out.print("Setting default date: " + day_index + " "+ month_index + " " + year_index);
+			
+			nameTextField.setText(gameSession.getGameName());
+			nameTextField.setEditable(false);
+			
+		}
 		//Adds a documentlistener to the name text field so that way if the text is changed, the pop-up will appear if 
 		//the new game tab is closed.
 		nameTextField.getDocument().addDocumentListener(new DocumentListener(){
@@ -142,7 +185,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 				newGameP.isNew = false;
 			}
 		});
-		
+
 		//Adds a documentlistener to the description text area so that way if the text is changed, the pop-up will 
 				// appear is the new game tab is close
 				descTextArea.getDocument().addDocumentListener(new DocumentListener(){
@@ -159,9 +202,9 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 						newGameP.isNew = false;
 					}
 				});
-		
+
 		deckBox.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (deckBox.getSelectedIndex() == 0){
@@ -170,7 +213,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 				newGameP.isNew = false;
 			}
 		});
-		
+
 		//Sets isNew to false, and sets isAM to true if AM is selected, or false if PM is selected
 		ampmBox.addActionListener(new ActionListener() {
 			@Override
@@ -184,7 +227,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 				newGameP.isNew = false;
 			}
 		});
-		
+
 		//Sets isNew to false, and sets minuteTime to the selected minute.
 		minuteComboBox.addActionListener(new ActionListener() {
 			@Override
@@ -193,7 +236,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 				newGameP.isNew = false;
 			}
 		});
-		
+
 		//Sets isNew to false and sets hourtime to the hour selected. It is set to 0 if 12 is selected.
 		hourComboBox.addActionListener(new ActionListener() {
 			@Override 
@@ -208,7 +251,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 				newGameP.isNew = false;
 			}
 		});
-		
+
 		//Sets isNew to false, deadlineYear to the selected year, and rebuilds what is in the dayBox if a leap year is deselected or selected
 		//and the deadline month is February
 		yearBox.addActionListener(new ActionListener() {
@@ -230,9 +273,9 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 					}
 				}
 			}
-			
+
 		});
-		
+
 		//Adds an action listener to the month selection combo box, which sets isNew to false and rebuilds what is inside the 
 		//dayBox based on the month selected. Also sets deadlineMonth to the chosen month.
 		monthBox.addActionListener(new ActionListener() {
@@ -251,7 +294,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 				deadlineMonth = days + 1;
 			}	
 		});
-		
+
 		//Adds an action listener to the day of month selection combo box, and sets isNew to false, and changes the deadlineDay
 		dayBox.addActionListener(new ActionListener() {
 			@Override
@@ -260,10 +303,10 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 				int day = dayBox.getSelectedIndex();
 				deadlineDay = day + 1;
 			}
-			
+
 		});
 				//Checks to see if all the fields are properly filled, and then sends the game object to the database if done.
-		
+
 		activateButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				hourError.setVisible(false);
@@ -332,6 +375,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 			return hour + 12;
 		}
 	}
+	
 	
 	private void setPanel(){
 //		userList.setListData(listValue);

@@ -5,6 +5,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
 import javax.swing.*;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
@@ -34,10 +35,23 @@ public class NewGameReqPanel extends JPanel {
 	private JTable unselectedTable;
 	private JTable selectedTable;
 	private List<Requirement> reqs;
+	private boolean editMode = false;
 	
 	public NewGameReqPanel(List<Requirement> requirements) {
 		reqs = requirements;
 		System.out.println(reqs.size());
+		init();
+	}
+
+	public NewGameReqPanel(List<Requirement> requirements, GameSession gameSession) {
+		this.editMode  = true;
+		reqs = requirements;
+		System.out.println(reqs.size());
+		init();
+	}
+	
+	private void init()
+	{
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 		JLabel lblRequirementsAvailable = new JLabel("Requirements Available");
@@ -216,7 +230,6 @@ public class NewGameReqPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, lblRequirementsSelected, 0, SpringLayout.WEST, lblRequirementsAvailable);
 		add(lblRequirementsSelected);
 	}
-	
 	public List<Requirement> getSelected(){
 		return selected;
 
@@ -239,6 +252,5 @@ public class NewGameReqPanel extends JPanel {
 		listValue.remove(tempIndex);
 		selected.remove(tempIndex);
 		return tempReq;
-
 	}
 }
