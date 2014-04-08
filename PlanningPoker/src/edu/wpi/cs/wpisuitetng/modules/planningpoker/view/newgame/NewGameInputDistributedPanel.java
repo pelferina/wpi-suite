@@ -8,6 +8,7 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
+import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -25,6 +26,10 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController
 //import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+import net.sourceforge.jdatepicker.*;
+import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
+import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
+import net.sourceforge.jdatepicker.impl.UtilDateModel;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -66,8 +71,8 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 	private final JLabel nameLabel = new JLabel("Game Name:");
 	private final JLabel timeLabel = new JLabel ("Deadline Time:");
 	private final JLabel descriptionLabel = new JLabel("Description:");
-	private final JLabel deadlineLabel = new JLabel("Deadline");
-	private final JLabel deckLabel = new JLabel("Choose a deck");
+	private final JLabel deadlineLabel = new JLabel("Deadline:");
+	private final JLabel deckLabel = new JLabel("Choosen deck:");
 	private JLabel yearLabel = new JLabel("Year: ");
 	private JLabel monthLabel = new JLabel("Month: ");
 	private JLabel dayLabel = new JLabel("Day: ");
@@ -75,6 +80,12 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 	private JTextArea descTextArea = new JTextArea();
 	private boolean editMode = false;
 
+	// Date Picker declarations
+	private JPanel frame = new JPanel();
+	private UtilDateModel model = new UtilDateModel();
+	private JDatePanelImpl datePanel = new JDatePanelImpl(model);
+	private JDatePickerImpl datePicker = new JDatePickerImpl(datePanel);
+	
 	/**
 	 * The constructor for the NewGameInputPanel
 	 * has void parameters
@@ -313,7 +324,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 	private void setPanel(){
 //		userList.setListData(listValue);
 		SpringLayout springLayout = new SpringLayout();
-				
+		
 		//Spring layout for the nameLabel
 		springLayout.putConstraint(SpringLayout.NORTH, nameLabel, 34, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, nameLabel, 23, SpringLayout.WEST, this);
@@ -328,72 +339,47 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 23, SpringLayout.WEST, this);
 		
 		//Spring layout for the descTextArea
+		descTextArea.setRows(3);
+		descTextArea.setLineWrap(true);
+		springLayout.putConstraint(SpringLayout.NORTH, descTextArea, 0, SpringLayout.NORTH, descriptionLabel);
 		springLayout.putConstraint(SpringLayout.WEST, descTextArea, 100, SpringLayout.WEST, descriptionLabel);
 		springLayout.putConstraint(SpringLayout.EAST, descTextArea, 400, SpringLayout.EAST, descriptionLabel);
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, descTextArea, 0, SpringLayout.VERTICAL_CENTER, descriptionLabel);
 		
 		//Spring layout for the deadlineLabel
-		springLayout.putConstraint(SpringLayout.SOUTH, deadlineLabel, -237, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, deadlineLabel, -250, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, deadlineLabel, 0, SpringLayout.WEST, nameLabel);
+
+		//Spring layout for the datePicker
+		springLayout.putConstraint(SpringLayout.WEST, datePicker, 150, SpringLayout.WEST, deadlineLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, datePicker, 0, SpringLayout.NORTH, deadlineLabel);
+		
+		//Spring layout for timeLabel
+    	springLayout.putConstraint(SpringLayout.NORTH, timeLabel, 25, SpringLayout.SOUTH, deadlineLabel);
+        springLayout.putConstraint(SpringLayout.WEST, timeLabel, 0, SpringLayout.WEST, nameLabel);
+		    
+		//Spring layout for hourComboBox
+        springLayout.putConstraint(SpringLayout.NORTH, hourComboBox, 0, SpringLayout.NORTH, timeLabel);
+        springLayout.putConstraint(SpringLayout.WEST, hourComboBox, 150, SpringLayout.WEST, timeLabel);
+        
+        //Spring layout for minuteComboBox
+        springLayout.putConstraint(SpringLayout.NORTH, minuteComboBox, 0, SpringLayout.NORTH, hourComboBox);
+        springLayout.putConstraint(SpringLayout.WEST, minuteComboBox, 10, SpringLayout.EAST, hourComboBox);
+        
+        //Spring layout for ampmBox
+        springLayout.putConstraint(SpringLayout.NORTH, ampmBox, 0, SpringLayout.NORTH, minuteComboBox);
+        springLayout.putConstraint(SpringLayout.WEST, ampmBox, 10, SpringLayout.EAST, minuteComboBox);
+		
+		//Spring layout for the deckLabel
+		springLayout.putConstraint(SpringLayout.NORTH, deckLabel, 25, SpringLayout.SOUTH, timeLabel);
+		springLayout.putConstraint(SpringLayout.WEST, deckLabel, 0, SpringLayout.WEST, nameLabel);		
+		
+		//Spring layout for the deckBox
+		springLayout.putConstraint(SpringLayout.WEST, deckBox, 150, SpringLayout.WEST, deckLabel);
+		springLayout.putConstraint(SpringLayout.SOUTH, deckBox, 0, SpringLayout.SOUTH, deckLabel);
 		
 		//Spring layout for the activateButton
 		springLayout.putConstraint(SpringLayout.SOUTH, activateButton, -10, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, activateButton, 180, SpringLayout.WEST, this);
-		
-		//Spring layout for the yearLabel
-		springLayout.putConstraint(SpringLayout.WEST, yearLabel, 0, SpringLayout.WEST, deadlineLabel);
-		springLayout.putConstraint(SpringLayout.NORTH, yearLabel, 18, SpringLayout.SOUTH, deadlineLabel);
-		
-		//Spring layout for the monthLabel
-		springLayout.putConstraint(SpringLayout.WEST, monthLabel, 0, SpringLayout.WEST, yearLabel);
-		springLayout.putConstraint(SpringLayout.NORTH, monthLabel, 18, SpringLayout.SOUTH, yearLabel);
-		
-		//Spring layout for the dayLabel
-		springLayout.putConstraint(SpringLayout.WEST, dayLabel, 0, SpringLayout.WEST, monthLabel);
-		springLayout.putConstraint(SpringLayout.NORTH, dayLabel, 18, SpringLayout.SOUTH, monthLabel);
-		
-		//Spring layout for the yearBox
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, yearBox, 0, SpringLayout.VERTICAL_CENTER, yearLabel);
-		springLayout.putConstraint(SpringLayout.WEST, yearBox, 50, SpringLayout.WEST, yearLabel);
-		springLayout.putConstraint(SpringLayout.EAST, yearBox, 100, SpringLayout.WEST, yearBox);
-		
-		//Spring layout for the monthBox
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, monthBox, 0, SpringLayout.VERTICAL_CENTER, monthLabel);
-		springLayout.putConstraint(SpringLayout.WEST, monthBox, 0, SpringLayout.WEST, yearBox);
-		springLayout.putConstraint(SpringLayout.EAST, monthBox, 100, SpringLayout.WEST, monthBox);
-		
-		//Spring layout for the dayBox
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, dayBox, 0, SpringLayout.VERTICAL_CENTER, dayLabel);
-		springLayout.putConstraint(SpringLayout.WEST, dayBox, 0, SpringLayout.WEST, monthBox);
-		springLayout.putConstraint(SpringLayout.EAST, dayBox, 100, SpringLayout.WEST, dayBox);
-		
-		//Spring layout for the deckBox
-		springLayout.putConstraint(SpringLayout.EAST, deckBox, 150, SpringLayout.EAST, yearBox);
-		springLayout.putConstraint(SpringLayout.SOUTH, deckBox, 0, SpringLayout.SOUTH, yearBox);
-		
-		//Spring layout for the deckLabel
-		springLayout.putConstraint(SpringLayout.EAST, deckLabel, 250, SpringLayout.EAST, deadlineLabel);
-		springLayout.putConstraint(SpringLayout.NORTH, deckLabel, 0, SpringLayout.NORTH, deadlineLabel);		
-		
-		//Spring layout for timeLabel
-		springLayout.putConstraint(SpringLayout.SOUTH, timeLabel, 50, SpringLayout.SOUTH, dayLabel);
-		springLayout.putConstraint(SpringLayout.WEST, timeLabel, 0, SpringLayout.WEST, dayLabel);
-		
-		//Spring layout for hourComboBox
-		springLayout.putConstraint(SpringLayout.SOUTH, hourComboBox, 0, SpringLayout.SOUTH, timeLabel);
-		springLayout.putConstraint(SpringLayout.WEST, hourComboBox, 10, SpringLayout.EAST, timeLabel);
-		
-		//Spring layout for minuteComboBox
-		springLayout.putConstraint(SpringLayout.NORTH, minuteComboBox, 0, SpringLayout.NORTH, hourComboBox);
-		springLayout.putConstraint(SpringLayout.WEST, minuteComboBox, 10, SpringLayout.EAST, hourComboBox);
-		
-		//Spring layout for ampmBox
-		springLayout.putConstraint(SpringLayout.NORTH, ampmBox, 0, SpringLayout.NORTH, minuteComboBox);
-		springLayout.putConstraint(SpringLayout.WEST, ampmBox, 10, SpringLayout.EAST, minuteComboBox);
-
-		//Spring layout for the addNewButton
-		springLayout.putConstraint(SpringLayout.NORTH, addNewButton, 30, SpringLayout.NORTH, descriptionLabel);
-		springLayout.putConstraint(SpringLayout.WEST, addNewButton, 0, SpringLayout.WEST, descriptionLabel);
 		
 		setLayout(springLayout);
 	
@@ -403,21 +389,15 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 		add(descriptionLabel);
 		add(descTextArea);
 		
-		//Adds button for Requirement Creation
-		add(addNewButton);
-		
-		// Adds label for Deadline and date related labels and boxes
-		add(deadlineLabel);
-		add(yearLabel);
-		add(monthLabel);
-		add(dayLabel);
-		add(yearBox);
-		add(monthBox);
-		add(dayBox);
+		//Adds time related components
 		add(timeLabel);
 		add(hourComboBox);
 		add(minuteComboBox);
 		add(ampmBox);
+		
+		// Adds label for Deadline and date related labels and boxes
+		add(deadlineLabel);
+		add(datePicker);
 		
 		// Adds deck GUI objects
 		add(deckLabel);

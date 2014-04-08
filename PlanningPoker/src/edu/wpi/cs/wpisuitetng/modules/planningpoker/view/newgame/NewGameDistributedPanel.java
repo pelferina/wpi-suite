@@ -40,6 +40,7 @@ public class NewGameDistributedPanel extends AbsNewGamePanel {
 		this.editMode = editMode;
 		this.close = close;
 		this.newGameInputPanel = new NewGameInputDistributedPanel(this, this.editMode);
+		setEnabled(false);
 		setPanel();
 	}
 	/**
