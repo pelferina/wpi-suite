@@ -81,4 +81,8 @@ public class NewGameDistributedPanel extends AbsNewGamePanel {
 	 * and sets it into the newGameReqPanel
 	 * @param requirment
 	 */
+	public void refresh() {
+		// TODO Auto-generated method stub
+		newGameReqPanel.refresh();
+	}
 }

@@ -36,15 +36,30 @@ public class NewGameReqPanel extends JPanel {
 	private JTable selectedTable;
 	private List<Requirement> reqs;
 	private boolean editMode = false;
+	private Timer refresh;
 	
 	public NewGameReqPanel(List<Requirement> requirements) {
 		reqs = requirements;
 		System.out.println(reqs.size());
+		unselectedTable = new JTable();
+		selectedTable = new JTable();
 		init();
 	}
 
 	public NewGameReqPanel(List<Requirement> requirements, GameSession gameSession) {
+		unselectedTable = new JTable();
+		selectedTable = new JTable();
 		this.editMode  = true;
+		reqs = new ArrayList<Requirement>(requirements);
+		List<Integer> selectedIDs = gameSession.getGameReqs();
+		for (Requirement req: reqs){
+			for (int selectedReqID: selectedIDs) {
+				if (req.getId() == selectedReqID) {
+					this.selected.add(requirements.remove(selectedReqID));
+					System.out.println(selected.get(0));
+				}
+			}	
+		}
 		reqs = requirements;
 		System.out.println(reqs.size());
 		init();
@@ -52,6 +67,27 @@ public class NewGameReqPanel extends JPanel {
 	
 	private void init()
 	{
+/*		refresh = new Timer(3000, new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				GetRequirementsController.getInstance().retrieveRequirements();
+				updateReqs = RequirementModel.getInstance().getRequirements();
+				for (int i = 0; i < selected.size(); i++){
+					updateReqs.remove(selected.get(i).getId());
+				}
+				DefaultTableModel dtm = (DefaultTableModel) unselectedTable.getModel();
+				dtm.setRowCount(reqs.size());
+				for (int i = 0; i < reqs.size(); i++){
+					dtm.setValueAt(reqs.get(i).getName(), i, 0);
+					dtm.setValueAt(reqs.get(i).getDescription(), i, 1);
+				}
+				unselectedTable.repaint();
+				reqs = updateReqs;
+			}
+			
+		});
+		refresh.start();
+*/
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 		JLabel lblRequirementsAvailable = new JLabel("Requirements Available");
@@ -164,7 +200,6 @@ public class NewGameReqPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.NORTH, scrollPane, 31, SpringLayout.NORTH, this);
 		add(scrollPane);
 		
-		unselectedTable = new JTable();
 		unselectedTable.setModel(new DefaultTableModel(
 			new Object[][] {
 				{null, null},
@@ -202,7 +237,6 @@ public class NewGameReqPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.SOUTH, button, -3, SpringLayout.NORTH, scrollPane_1);
 		add(scrollPane_1);
 		
-		selectedTable = new JTable();
 		selectedTable.setModel(new DefaultTableModel(
 			new Object[][] {
 				{null, null},
@@ -216,7 +250,7 @@ public class NewGameReqPanel extends JPanel {
 			}
 		));
 		DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
-		dtm_1.setNumRows(0);
+		dtm_1.setNumRows(selected.size());
 		dtm_1.setColumnCount(2);
 		scrollPane_1.setViewportView(selectedTable);
 		//unselectedTable.getColumnModel().getColumn(0).setPreferredWidth(50);
@@ -224,6 +258,11 @@ public class NewGameReqPanel extends JPanel {
 		selectedTable.getColumnModel().getColumn(0).setMinWidth(100);
 		selectedTable.getColumnModel().getColumn(0).setMaxWidth(200);
 		selectedTable.getColumnModel().getColumn(0).setPreferredWidth(150);
+		
+		for (int i = 0; i < selected.size(); i++){
+			dtm_1.setValueAt(selected.get(i).getName(), i, 0);
+			dtm_1.setValueAt(selected.get(i).getDescription(), i, 1);
+		}
 		
 		JLabel lblRequirementsSelected = new JLabel("Requirements Selected");
 		springLayout.putConstraint(SpringLayout.NORTH, lblRequirementsSelected, 5, SpringLayout.NORTH, button);
@@ -253,4 +292,19 @@ public class NewGameReqPanel extends JPanel {
 		selected.remove(tempIndex);
 		return tempReq;
 	}
+
+	public void refresh() {
+		reqs = RequirementModel.getInstance().getRequirements();
+		for (int i = 0; i < selected.size(); i++){
+			reqs.remove(selected.get(i));
+		}
+		DefaultTableModel dtm = (DefaultTableModel) unselectedTable.getModel();
+		dtm.setRowCount(reqs.size());
+		for (int i = 0; i < reqs.size(); i++){
+			dtm.setValueAt(reqs.get(i).getName(), i, 0);
+			dtm.setValueAt(reqs.get(i).getDescription(), i, 1);
+		}
+		unselectedTable.repaint();
+	}
 }
+

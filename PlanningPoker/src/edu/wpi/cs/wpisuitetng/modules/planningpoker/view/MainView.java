@@ -21,6 +21,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
@@ -55,6 +57,7 @@ public class MainView extends JTabbedPane {
 	private int newGameTabs = 0;
 	private int j = 0;
 	private List<Integer> openTabs = new ArrayList<Integer>();
+	private List<NewGameDistributedPanel> newGames = new ArrayList<NewGameDistributedPanel>();
 	final int PERMANANT_TABS = 3;
 	
 	public MainView(DeckModel deckModel) {
@@ -68,6 +71,16 @@ public class MainView extends JTabbedPane {
 		addTab("Current Game", currentGame);
 		addTab("Past Game", pastGames);
 		addTab("Deck", deckPanel);
+		this.addChangeListener(new ChangeListener(){
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				for (int i = 0; i<newGames.size(); i++){
+					GetRequirementsController.getInstance().retrieveRequirements();
+					newGames.get(i).refresh();
+				}
+			}
+		});
 	}
 	
 	public void addNewGameTab()
@@ -77,6 +90,7 @@ public class MainView extends JTabbedPane {
 		JButton btnClose = new JButton("x");
 		List<Requirement> reqs = RequirementModel.getInstance().getRequirements();
 		NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose);
+		newGames.add(newGame);
 		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler("New Game", j, newGame);
 		add(newGame, newGameTabs + PERMANANT_TABS);
 		JPanel pnlTab = new JPanel(new GridBagLayout());
