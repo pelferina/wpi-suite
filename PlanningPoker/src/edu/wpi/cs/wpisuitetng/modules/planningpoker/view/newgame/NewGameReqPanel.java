@@ -7,6 +7,7 @@ import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -36,9 +37,9 @@ public class NewGameReqPanel extends JPanel {
 	
 	public NewGameReqPanel(List<Requirement> requirements) {
 		reqs = requirements;
+		System.out.println(reqs.size());
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
-		
 		JLabel lblRequirementsAvailable = new JLabel("Requirements Available");
 		springLayout.putConstraint(SpringLayout.WEST, lblRequirementsAvailable, 318, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.EAST, lblRequirementsAvailable, -108, SpringLayout.EAST, this);

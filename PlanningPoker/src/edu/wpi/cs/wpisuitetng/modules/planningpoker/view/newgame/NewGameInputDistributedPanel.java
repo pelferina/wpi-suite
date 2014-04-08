@@ -63,7 +63,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 	private JComboBox<String> ampmBox = new JComboBox<String>(ampmString);
 	private JComboBox<String> yearBox = new JComboBox<String>(yearString);
 	private JComboBox<String> monthBox = new JComboBox<String>(monthString);
-	private final JLabel nameLabel = new JLabel("Game Name:");
+	private final JLabel nameLabel = new JLabel("Game Name*:");
 	private final JLabel timeLabel = new JLabel ("Deadline Time:");
 	private final JLabel descriptionLabel = new JLabel("Description:");
 	private final JLabel deadlineLabel = new JLabel("Deadline");
@@ -74,7 +74,12 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 	private JTextField nameTextField = new JTextField();
 	private JTextArea descTextArea = new JTextArea();
 	private boolean editMode = false;
-
+	private final JLabel hourError = new JLabel("Select an hour for deadline");
+	private final JLabel minuteError = new JLabel("Select a minute for deadline");
+	private final JLabel deadlineError = new JLabel("Can not have a deadline in the past");
+	private final JLabel nameError = new JLabel("Enter a name for the game");
+	private final JLabel reqError = new JLabel("Can not have a game with no requirements");
+	
 	/**
 	 * The constructor for the NewGameInputPanel
 	 * has void parameters
@@ -250,6 +255,11 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 		
 		activateButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				hourError.setVisible(false);
+				minuteError.setVisible(false);
+				deadlineError.setVisible(false);
+				nameError.setVisible(false);
+				reqError.setVisible(false);
 				String name = nameTextField.getText();
 				Calendar selectedDeadline = Calendar.getInstance();
 				currentDate = Calendar.getInstance();
@@ -260,28 +270,23 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 					selectionsMade.add(reqsSelected.get(i).getId());
 				}
 				if (hourComboBox.getSelectedIndex() == 0){
-					System.out.println("Please choose an hour for deadline");
+					hourError.setVisible(true);
 				}
 				else if (minuteComboBox.getSelectedIndex() == 0){
-					System.out.println("Please choose a minute for deadline");
+					minuteError.setVisible(true);
 				}
 				else if(!selectedDeadline.after(currentDate)){
-					System.out.println("Cannot have a deadline in the past");
-					JOptionPane deadlineError = new JOptionPane("Deadline error");
-					JOptionPane.showMessageDialog(deadlineError, "Can not have a deadline in the past", "Deadline error", JOptionPane.ERROR_MESSAGE);
+					deadlineError.setVisible(true);
 				}
 				else if (selectionsMade.isEmpty()){
-					System.out.println("Can not have a game with no requirements");
-					JOptionPane deadlineError = new JOptionPane("No requirements selected");
-					JOptionPane.showMessageDialog(newGameP, "Can not have a game with no requirements", "No requirements selected", JOptionPane.ERROR_MESSAGE);
+					reqError.setVisible(true);
 				}
 				else if (name.length() < 1){
-					JOptionPane deadlineError = new JOptionPane("No name inputted");
-					JOptionPane.showMessageDialog(deadlineError, "Please input a name for the game", "Name error", JOptionPane.ERROR_MESSAGE);
+					nameError.setVisible(true);
 				}
 				else{
 					newGameP.isNew = true;
-					System.out.println("Valid date selected and requirements were selected");
+					System.out.println("Valid date selected an-d requirements were selected");
 					Date deadlineDate = new Date(deadlineYear, deadlineMonth, deadlineDay, getHour(hourTime), minuteTime);
 					GameSession newGame = new GameSession(name, 0 , GameModel.getInstance().getSize()+1, deadlineDate, selectionsMade); 
 					GameModel model = GameModel.getInstance();
@@ -328,9 +333,11 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 23, SpringLayout.WEST, this);
 		
 		//Spring layout for the descTextArea
+		descTextArea.setRows(3);
+		descTextArea.setLineWrap(true);
 		springLayout.putConstraint(SpringLayout.WEST, descTextArea, 100, SpringLayout.WEST, descriptionLabel);
 		springLayout.putConstraint(SpringLayout.EAST, descTextArea, 400, SpringLayout.EAST, descriptionLabel);
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, descTextArea, 0, SpringLayout.VERTICAL_CENTER, descriptionLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, descTextArea, 0, SpringLayout.NORTH, descriptionLabel);
 		
 		//Spring layout for the deadlineLabel
 		springLayout.putConstraint(SpringLayout.SOUTH, deadlineLabel, -237, SpringLayout.SOUTH, this);
@@ -339,6 +346,32 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 		//Spring layout for the activateButton
 		springLayout.putConstraint(SpringLayout.SOUTH, activateButton, -10, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, activateButton, 180, SpringLayout.WEST, this);
+		
+		//Spring layout for the deadlineError
+		springLayout.putConstraint(SpringLayout.WEST, deadlineError, 0, SpringLayout.WEST, activateButton);
+		springLayout.putConstraint(SpringLayout.NORTH, deadlineError, -20, SpringLayout.NORTH, activateButton);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameTextField, 0, SpringLayout.VERTICAL_CENTER, nameLabel);
+		deadlineError.setVisible(false);
+		
+		//Spring layout for the minuteError
+		springLayout.putConstraint(SpringLayout.WEST, minuteError, 0, SpringLayout.WEST, deadlineError);
+		springLayout.putConstraint(SpringLayout.NORTH, minuteError, 0, SpringLayout.NORTH, deadlineError);
+		minuteError.setVisible(false);
+		
+		//Spring layout for the hourError
+		springLayout.putConstraint(SpringLayout.WEST, hourError, 0, SpringLayout.WEST, deadlineError);
+		springLayout.putConstraint(SpringLayout.NORTH, hourError, 0, SpringLayout.NORTH, deadlineError);
+		hourError.setVisible(false);
+		
+		//Spring layout for the nameError
+		springLayout.putConstraint(SpringLayout.WEST, nameError, 0, SpringLayout.WEST, deadlineError);
+		springLayout.putConstraint(SpringLayout.NORTH, nameError, 0, SpringLayout.NORTH, deadlineError);
+		nameError.setVisible(false);
+		
+		//Spring layout for the reqError
+		springLayout.putConstraint(SpringLayout.WEST, reqError, 0, SpringLayout.WEST, deadlineError);
+		springLayout.putConstraint(SpringLayout.NORTH, reqError, 0, SpringLayout.NORTH, deadlineError);
+		reqError.setVisible(false);
 		
 		//Spring layout for the yearLabel
 		springLayout.putConstraint(SpringLayout.WEST, yearLabel, 0, SpringLayout.WEST, deadlineLabel);
@@ -425,6 +458,12 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 		
 		// Adds buttons at the bottom end of the GUI
 		add(activateButton);
+		
+		add(deadlineError);
+		add(hourError);
+		add(minuteError);
+		add(nameError);
+		add(reqError);
 	}
 	
 	//Added by Ruofan.

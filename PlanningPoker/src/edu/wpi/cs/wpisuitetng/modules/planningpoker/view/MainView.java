@@ -65,10 +65,9 @@ public class MainView extends JTabbedPane {
 		addTab("Deck", deckPanel);
 	}
 
-	public void addNewGameTab(boolean editMode)
-	{
-		openTabs.add(newGameTabs, j);
+	public void addNewGameTab(boolean editMode){
 		GetRequirementsController.getInstance().retrieveRequirements();
+		openTabs.add(newGameTabs, j);
 		JButton btnClose = new JButton("x");
 		List<Requirement> reqs = RequirementModel.getInstance().getRequirements();
 		NewGameDistributedPanel newGame = new NewGameDistributedPanel(gameModel, editMode, reqs, btnClose);

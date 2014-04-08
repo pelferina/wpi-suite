@@ -35,8 +35,8 @@ public class NewGameDistributedPanel extends AbsNewGamePanel {
 	private boolean editMode;
 	public JButton close;
 	
-	public NewGameDistributedPanel(GameModel gameModel, boolean editMode, List<Requirement> requirements, JButton close) {
-		newGameReqPanel = new NewGameReqPanel(requirements);
+	public NewGameDistributedPanel(GameModel gameModel, boolean editMode, List<Requirement> reqs, JButton close) {
+		newGameReqPanel = new NewGameReqPanel(reqs);
 		this.editMode = editMode;
 		this.close = close;
 		this.newGameInputPanel = new NewGameInputDistributedPanel(this, this.editMode);
