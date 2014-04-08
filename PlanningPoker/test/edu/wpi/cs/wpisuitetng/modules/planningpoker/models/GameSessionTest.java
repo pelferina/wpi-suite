@@ -1,19 +1,21 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Date;
 
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.mock.MockNetwork;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.network.Network;
-import edu.wpi.cs.wpisuitetng.network.configuration.NetworkConfiguration;
 
 public class GameSessionTest {
 
@@ -116,7 +118,6 @@ public class GameSessionTest {
 			i++;
 		}
 		System.out.println(gm.getCompletedGameSessions().toString());
-	}
-	
-	
-}
+	}	
+}	
+

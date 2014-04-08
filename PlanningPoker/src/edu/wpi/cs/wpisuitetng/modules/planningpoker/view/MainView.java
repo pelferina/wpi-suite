@@ -58,13 +58,15 @@ public class MainView extends JTabbedPane {
 	private int j = 0;
 	private List<Integer> openTabs = new ArrayList<Integer>();
 	private List<NewGameDistributedPanel> newGames = new ArrayList<NewGameDistributedPanel>();
-	final int PERMANANT_TABS = 3;
+	final int PERMANANT_TABS = 4;
+	private final AddEmailPanel addEmailPanel;
 	
 	public MainView(DeckModel deckModel) {
 		currentGame = new CurrentGamePanel();
 		pastGames = new JPanel();
 		deckPanel = new DeckPanel(deckModel);
 		overviewPanel = new OverviewPanel(gameModel);
+		addEmailPanel = new AddEmailPanel();
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
 		addTab("Overview", overviewPanel);
@@ -81,6 +83,7 @@ public class MainView extends JTabbedPane {
 				}
 			}
 		});
+		addTab("Add Email", addEmailPanel);
 	}
 	
 	public void addNewGameTab()
@@ -171,7 +174,7 @@ public class MainView extends JTabbedPane {
 	    public void removeTab(int index){
 	    	for(int i=0; i<newGameTabs; i++){
 				if (openTabs.get(i) == index){
-					removeTabAt(i + 3);
+					removeTabAt(i + PERMANANT_TABS);
 					openTabs.remove(i);
 					newGameTabs--;
 				}

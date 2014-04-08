@@ -13,9 +13,13 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+import java.io.UnsupportedEncodingException;
+
 import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.Session;
@@ -27,6 +31,17 @@ import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
 
 /**
  * This is the entity manager for the PostBoardMessage in the
@@ -143,6 +158,71 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 
 		// Save the given defect in the database
 		db.save(model);
+	}
+	/**
+	 * Ends a game
+	 * @param gameID the game to be ended
+	 * @param s  	 the session info from which this was called
+	 * @throws WPISuiteException 
+	 * @throws  
+	 */
+	public void endGame(int gameID, Session s) throws WPISuiteException{
+		db.update(GameSession.class, "GameID", gameID, "Status", 3);
+		try {
+			sendUserEmails("Planning Poker Alert","Planning Poker voting has ended for game: "+gameID,s);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			throw new WPISuiteException(e.toString()); 
+		}
+		
+	}
+	/**
+	 * Sends a email message to the users in given session.
+	 * @param  textToSend the message to be sent
+	 * @throws UnsupportedEncodingException 
+	 */
+	public void sendUserEmails(String subject, String textToSend, Session s) throws UnsupportedEncodingException
+	{
+		final String username = "fff8e7.email@gmail.com";
+		final String password = "fff8e7team5";
+ 
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
+ 
+		javax.mail.Session session = javax.mail.Session.getInstance(props,
+		  new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		  });
+ 
+		try {
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress("fff8e7.email@gmail.com"));
+			
+			List<Model> model_emails = db.retrieveAll(new EmailAddressModel(""), s.getProject());
+			EmailAddressModel[] emails = model_emails.toArray(new EmailAddressModel[0]);
+			
+			message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(username)); /** TODO find a more elegent solution can't send only bcc's */
+			
+			for (EmailAddressModel email : emails)
+			{
+				message.addRecipients(Message.RecipientType.BCC, InternetAddress.parse(email.getAddress()));
+			}
+			
+			message.setSubject(subject);
+			message.setText(textToSend);
+ 
+			Transport.send(message);
+ 
+			System.out.println("Done");
+ 
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/*

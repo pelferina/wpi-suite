@@ -12,6 +12,7 @@
 		<pathelement path="../RequirementManager/build"/>
 		<fileset dir="${core-lib}">
 			<include name="gson-*.jar"/>
+			<include name="javax.mail.jar"/>
 		</fileset>
 		<pathelement path="build"/>
 	</path>
