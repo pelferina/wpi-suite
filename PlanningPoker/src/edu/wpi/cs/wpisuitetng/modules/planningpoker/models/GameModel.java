@@ -18,6 +18,9 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+
 /**
  * This is a model for the game model. It contains all of the games
  * to be displayed on the board. It extends AbstractListModel so that
@@ -28,6 +31,7 @@ import javax.swing.AbstractListModel;
  */
 @SuppressWarnings({"serial"})
 public class GameModel extends AbstractListModel {
+	private static GameModel instance = null;
 	
 	/** The list of games on the board */
 	private List<GameSession> games;
@@ -39,6 +43,18 @@ public class GameModel extends AbstractListModel {
 		games = new ArrayList<GameSession>();
 	}
 
+	/**
+	
+	 * @return the instance of the requirement model singleton. */
+	public static GameModel getInstance()
+	{
+		if(instance == null)
+		{
+			instance = new GameModel();
+		}
+		
+		return instance;
+	}
 	/**
 	 * Adds the given message to the board
 	 * 
@@ -91,7 +107,7 @@ public class GameModel extends AbstractListModel {
 	public List<GameSession> getDraftGameSessions(){
 		List<GameSession> draftGames = new ArrayList<GameSession>();
 		for (GameSession possibleDraft: games){
-			if (possibleDraft.getGameStatus() == 0)
+			if (possibleDraft.getGameStatus() == GameStatus.DRAFT)
 				draftGames.add(possibleDraft);
 		}
 		return draftGames;
@@ -106,7 +122,7 @@ public class GameModel extends AbstractListModel {
 	public List<GameSession> getActiveGameSessions(){
 		List<GameSession> activeGames = new ArrayList<GameSession>();
 		for (GameSession possibleActive: games){
-			if (possibleActive.getGameStatus() == 1)
+			if (possibleActive.getGameStatus() == GameStatus.ACTIVE)
 				activeGames.add(possibleActive);
 		}
 		return activeGames;
@@ -118,14 +134,47 @@ public class GameModel extends AbstractListModel {
 	 *
 	 * @return List<GameSession> List of past games
 	 */
-	public List<GameSession> getPastGameSessions(){
-		List<GameSession> pastGames = new ArrayList<GameSession>();
-		for (GameSession possiblePast: games){
-			if (possiblePast.getGameStatus() == 2)
-				pastGames.add(possiblePast);
+	public List<GameSession> getInProgressGameSessions(){
+		List<GameSession> inProgressGames = new ArrayList<GameSession>();
+		for (GameSession possibleInProgress: games){
+			if (possibleInProgress.getGameStatus() == GameStatus.INPROGRESS)
+				inProgressGames.add(possibleInProgress);
 		}
-		return pastGames;
+		return inProgressGames;
 	}
+	
+	/**
+	 * 
+	 * Return a list of all past game sessions in this game model
+	 *
+	 * @return List<GameSession> List of past games
+	 */
+	public List<GameSession> getCompletedGameSessions(){
+		List<GameSession> completedGames = new ArrayList<GameSession>();
+		for (GameSession possibleCompleted: games){
+			if (possibleCompleted.getGameStatus() == GameStatus.COMPLETED)
+				completedGames.add(possibleCompleted);
+		}
+		return completedGames;
+	}
+	
+	/**
+	 * 
+	 * Return a list of all past game sessions in this game model
+	 *
+	 * @return List<GameSession> List of past games
+	 */
+	public List<GameSession> getArchivedGameSessions(){
+		List<GameSession> archivedGames = new ArrayList<GameSession>();
+		for (GameSession possibleArchived: games){
+			if (possibleArchived.getGameStatus() == GameStatus.ARCHIVED)
+				archivedGames.add(possibleArchived);
+		}
+		return archivedGames;
+	}
+	
+	
+	
 	
 	/* 
 	 * Returns the message at the given index. This method is called

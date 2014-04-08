@@ -5,10 +5,12 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Date;
 
 import org.junit.*;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.mock.MockNetwork;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.configuration.NetworkConfiguration;
@@ -26,7 +28,7 @@ public class GameSessionTest {
 	// Tests whether a gamesession can be created successfully.
 	@Test
 	public void testGameSessionCreate(){
-		GameSession gs = new GameSession("Test Game", 0, 1, Calendar.getInstance(), new ArrayList<Requirement>());
+		GameSession gs = new GameSession("Test Game", 0, 1, Calendar.getInstance().getTime(), new ArrayList<Integer>());
 		assertNotNull(gs);
 		assertEquals("Test Game", gs.getGameName());
 		assertEquals(0,gs.getOwnerID());
@@ -37,9 +39,8 @@ public class GameSessionTest {
 	
 	@Test
 	public void testSetDeadline(){
-		GameSession gs = new GameSession("Test Game", 0, 1, Calendar.getInstance(), new ArrayList<Requirement>());
-		Calendar deadline = Calendar.getInstance();
-		deadline.set(2014, 1, 1);
+		GameSession gs = new GameSession("Test Game", 0, 1, Calendar.getInstance().getTime(), new ArrayList<Integer>());
+		Date deadline = Calendar.getInstance().getTime();
 		
 		gs.setEndDate(deadline);
 		assertTrue(gs.getEndDate().equals(deadline));
@@ -49,18 +50,18 @@ public class GameSessionTest {
 	
 	@Test
 	public void testDefaultGameStatus(){
-		GameSession gs = new GameSession("Test Game", 0, 1, Calendar.getInstance(), new ArrayList<Requirement>());
+		GameSession gs = new GameSession("Test Game", 0, 1, new Date(), new ArrayList<Integer>());
 		assertEquals(0, gs.getGameStatus());
 	}
 	
 	@Test
 	public void testGetDraftGameSessionList(){
 		GameModel gm = new GameModel();
-		GameSession gs1 = new GameSession("Test Game1", 0, 1, Calendar.getInstance(), new ArrayList<Requirement>());
-		GameSession gs2 = new GameSession("Test Game2", 0, 2, Calendar.getInstance(), new ArrayList<Requirement>());
-		GameSession gs3 = new GameSession("Test Game3", 0, 3, Calendar.getInstance(), new ArrayList<Requirement>());
-		gs2.setGameStatus(1);
-		gs3.setGameStatus(2);
+		GameSession gs1 = new GameSession("Test Game1", 0, 1, new Date(), new ArrayList<Integer>());
+		GameSession gs2 = new GameSession("Test Game2", 0, 2, new Date(), new ArrayList<Integer>());
+		GameSession gs3 = new GameSession("Test Game3", 0, 3, new Date(), new ArrayList<Integer>());
+		gs2.setGameStatus(GameStatus.ACTIVE);
+		gs3.setGameStatus(GameStatus.COMPLETED);
 		gm.addMessage(gs1);
 		gm.addMessage(gs2);
 		gm.addMessage(gs3);
@@ -78,11 +79,11 @@ public class GameSessionTest {
 	@Test
 	public void testGetActiveGameSessionList(){
 		GameModel gm = new GameModel();
-		GameSession gs1 = new GameSession("Test Game1", 0, 1, Calendar.getInstance(), new ArrayList<Requirement>());
-		GameSession gs2 = new GameSession("Test Game2", 0, 2, Calendar.getInstance(), new ArrayList<Requirement>());
-		GameSession gs3 = new GameSession("Test Game3", 0, 3, Calendar.getInstance(), new ArrayList<Requirement>());
-		gs2.setGameStatus(1);
-		gs3.setGameStatus(2);
+		GameSession gs1 = new GameSession("Test Game1", 0, 1, new Date(), new ArrayList<Integer>());
+		GameSession gs2 = new GameSession("Test Game2", 0, 2, new Date(), new ArrayList<Integer>());
+		GameSession gs3 = new GameSession("Test Game3", 0, 3, new Date(), new ArrayList<Integer>());
+		gs2.setGameStatus(GameStatus.ACTIVE);
+		gs3.setGameStatus(GameStatus.COMPLETED);
 		gm.addMessage(gs1);
 		gm.addMessage(gs2);
 		gm.addMessage(gs3);
@@ -99,11 +100,11 @@ public class GameSessionTest {
 	@Test
 	public void testGetPastGameSessionList(){
 		GameModel gm = new GameModel();
-		GameSession gs1 = new GameSession("Test Game1", 0, 1, Calendar.getInstance(), new ArrayList<Requirement>());
-		GameSession gs2 = new GameSession("Test Game2", 0, 2, Calendar.getInstance(), new ArrayList<Requirement>());
-		GameSession gs3 = new GameSession("Test Game3", 0, 3, Calendar.getInstance(), new ArrayList<Requirement>());
-		gs2.setGameStatus(1);
-		gs3.setGameStatus(2);
+		GameSession gs1 = new GameSession("Test Game1", 0, 1, new Date(), new ArrayList<Integer>());
+		GameSession gs2 = new GameSession("Test Game2", 0, 2, new Date(), new ArrayList<Integer>());
+		GameSession gs3 = new GameSession("Test Game3", 0, 3, new Date(), new ArrayList<Integer>());
+		gs2.setGameStatus(GameStatus.ACTIVE);
+		gs3.setGameStatus(GameStatus.COMPLETED);
 		gm.addMessage(gs1);
 		gm.addMessage(gs2);
 		gm.addMessage(gs3);
@@ -111,10 +112,10 @@ public class GameSessionTest {
 		pastGameSessionList.add(gs3);
 		int i = 0;
 		for (GameSession expectedGameSession: pastGameSessionList){
-			assertTrue(expectedGameSession.equals(gm.getPastGameSessions().get(i)));
+			assertTrue(expectedGameSession.equals(gm.getCompletedGameSessions().get(i)));
 			i++;
 		}
-		System.out.println(gm.getPastGameSessions().toString());
+		System.out.println(gm.getCompletedGameSessions().toString());
 	}
 	
 	

@@ -3,6 +3,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.swing.JButton;
@@ -16,10 +17,14 @@ public class JTableModel extends AbstractTableModel {
 	protected Object[][] Data; 	// Create new data array with the "X" position as each sessionData
 								// and the "Y" as each Table spot
 	protected int size =0;
-    protected static final String[] COLUMN_NAMES = new String[] {"ID", "Name", "Deadline", "Owner", "Progress", "Status", "Action"};
-    protected static final Class<?>[] COLUMN_TYPES = new Class<?>[] {Integer.class, String.class, Calendar.class, String.class, String.class, String.class,  JButton.class};
+    protected static final String[] COLUMN_NAMES = new String[] {"ID", "Name", "Deadline", "Owner", "Progress", "Status"};
+    protected static final Class<?>[] COLUMN_TYPES = new Class<?>[] {Integer.class, String.class, Date.class, String.class, String.class, String.class};
     
-    public JTableModel(GameSession[] sessions){
+    public JTableModel(ArrayList<GameSession> sessions){
+    	this(sessions.toArray(new GameSession[0]));
+    }
+
+	public JTableModel(GameSession[] sessions){
     	
     	Data = new Object[COLUMN_NAMES.length][sessions.length];
     	size = sessions.length;
@@ -27,13 +32,14 @@ public class JTableModel extends AbstractTableModel {
     		Object[] curRow = {sessions[i].getGameID(), sessions[i].getGameName(),
     							sessions[i].getEndDate(), ""+sessions[i].getOwnerID(), 
     							"To Be Implemented", // Progress
-    							sessions[i].getGameStatus(),
-    							new JButton()};
+    							sessions[i].getGameStatus()
+    							};
     		
     		Data[i] = curRow;
     	}
     	
     }
+    
 
     @Override public int getColumnCount() {
         return COLUMN_NAMES.length;
@@ -52,9 +58,7 @@ public class JTableModel extends AbstractTableModel {
     }
 
     @Override public Object getValueAt(final int rowIndex, final int columnIndex) {
-    	
-    	System.out.println("Querying "+rowIndex +", "+columnIndex);
-    	if (rowIndex>=size)
+       	if (rowIndex>=size)
     		return "";
     	
             /*Adding components*/

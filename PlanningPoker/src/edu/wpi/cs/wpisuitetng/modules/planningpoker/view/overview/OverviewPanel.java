@@ -17,6 +17,8 @@ import javax.swing.SpringLayout;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -36,10 +38,24 @@ public class OverviewPanel extends JPanel {
 		
 		//Get the sessions
 		//table = new JTable(new JTableModel(SESSIONS));
-		GameSession gs = new GameSession("Test", 0, 1, Calendar.getInstance(), new ArrayList<Requirement>());
+		GameSession gs = new GameSession("Test", 0, 1, Calendar.getInstance().getTime(), new ArrayList<Integer>());
 		GameSession[] sessions = {gs};
 		
 		table = new JTable(new JTableModel(sessions));
+		table.addMouseListener(new MouseAdapter() {
+			  public void mouseClicked(MouseEvent e) {
+				    if (e.getClickCount() == 2) {
+				      JTable target = (JTable)e.getSource();
+				      int row = target.getSelectedRow();
+				      int column = target.getSelectedColumn();
+				      
+				      
+				      // Open an appropriate page TODO
+				    }
+				  }
+				});
+		
+		
 		tableView = new JScrollPane(table);
 		setLayout(new BorderLayout(0, 0));
 		
@@ -52,6 +68,16 @@ public class OverviewPanel extends JPanel {
 		
 		
 		
+	}
+	
+	public void updatetableView(){
+		GameSession gs = new GameSession("Test", 0, 1, Calendar.getInstance().getTime(), new ArrayList<Integer>());
+		GameSession[] sessions = {gs};
+		
+		
+		// UPDATE THIS TODO
+		table.setModel(new JTableModel(sessions));
+		table.repaint();
 	}
 
 }
