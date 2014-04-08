@@ -33,6 +33,10 @@ public class GetUsersController {
 	public GetUsersController(User[] userList) {
 		this.userList = userList;
 	}
+	
+	public User[] getUsers(){
+		return userList;
+	}
 
 
 	public void actionPerformed() {
@@ -49,6 +53,7 @@ public class GetUsersController {
 																// process the
 																// response
 		request.send(); // send the request
+		
 	}
 
 	/**

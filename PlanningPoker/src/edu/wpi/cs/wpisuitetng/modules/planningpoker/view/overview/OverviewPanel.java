@@ -62,13 +62,13 @@ public class OverviewPanel extends JPanel {
 				      int row = target.getSelectedRow();
 				      int column = target.getSelectedColumn();
 				      
-				      int gameID = (Integer)target.getModel().getValueAt(row, 0);
-				      System.out.println("You just double clicked on game "+gameID); // Make this edit instead
+				      int gameID = (Integer)((JTableModel)target.getModel()).getIDFromRow(row);
+				      System.out.println("You just double clicked on game "+gameID); // Make this edit insteadS
 				      
 				    }
 				  }
 				});
-		
+		table.setToolTipText("Double Click to Edit");
 		
 		tableView = new JScrollPane(table);
 		setLayout(new BorderLayout(0, 0));
