@@ -61,7 +61,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 	private final String[] ampmString = {"AM", "PM"};
 	private List<Integer> selectionsMade = new ArrayList<Integer>();
 	
-	private final JButton activateButton = new JButton("Activate Game");
+	private JButton activateButton;
 	private final JButton addNewButton = new JButton("Create New");
 	private JComboBox deckBox = new JComboBox(); // Implement Decks
 	private JComboBox<Integer> dayBox = new JComboBox<Integer>();
@@ -98,6 +98,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 	{
 		this.gameSession = gameSession;
 		this.editMode = true;
+		activateButton = new JButton("Update Game");
 		init(ngdp);
 		System.out.println("Editing Game: "+ gameSession.getGameName());
 	}
@@ -108,6 +109,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 	 * @param nglp, The NewGameLivePanel that it was added from
 	 */
 	public NewGameInputDistributedPanel(NewGameDistributedPanel ngdp) {
+		activateButton = new JButton("Create Game");
 		init(ngdp);
 	}
 	

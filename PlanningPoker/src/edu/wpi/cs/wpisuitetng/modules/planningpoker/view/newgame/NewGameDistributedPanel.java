@@ -9,12 +9,13 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
 import java.awt.Dimension;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.List;
 
 import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -60,6 +61,20 @@ public class NewGameDistributedPanel extends AbsNewGamePanel {
 	 * <3
 	 */
 	private void setPanel(){
+		this.addFocusListener(new FocusListener(){
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				GetRequirementsController.getInstance().retrieveRequirements();
+				refresh();
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				GetRequirementsController.getInstance().retrieveRequirements();
+				refresh();
+			}
+		});
 		addImpl(newGameInputPanel, JSplitPane.LEFT, 1);
 		Dimension minimumSize = new Dimension(600, 200);
 		leftComponent.setMinimumSize(minimumSize);

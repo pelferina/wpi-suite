@@ -15,6 +15,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -39,7 +41,7 @@ public class NewGameReqPanel extends JPanel {
 	private Timer refresh;
 	
 	public NewGameReqPanel(List<Requirement> requirements) {
-		reqs = requirements;
+		reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
 		System.out.println(reqs.size());
 		unselectedTable = new JTable();
 		selectedTable = new JTable();
@@ -50,44 +52,27 @@ public class NewGameReqPanel extends JPanel {
 		unselectedTable = new JTable();
 		selectedTable = new JTable();
 		this.editMode  = true;
-		reqs = new ArrayList<Requirement>(requirements);
+		List<Requirement> reqList = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
+		reqs = new ArrayList<Requirement>(reqList);
 		List<Integer> selectedIDs = gameSession.getGameReqs();
 		for (Requirement req: reqs){
 			for (int selectedReqID: selectedIDs) {
 				if (req.getId() == selectedReqID) {
-					this.selected.add(requirements.remove(selectedReqID));
+					this.selected.add(reqList.remove(selectedReqID));
 					System.out.println(selected.get(0));
 				}
 			}	
 		}
-		reqs = requirements;
+		reqs = reqList;
 		System.out.println(reqs.size());
 		init();
 	}
 	
 	private void init()
 	{
-/*		refresh = new Timer(3000, new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				GetRequirementsController.getInstance().retrieveRequirements();
-				updateReqs = RequirementModel.getInstance().getRequirements();
-				for (int i = 0; i < selected.size(); i++){
-					updateReqs.remove(selected.get(i).getId());
-				}
-				DefaultTableModel dtm = (DefaultTableModel) unselectedTable.getModel();
-				dtm.setRowCount(reqs.size());
-				for (int i = 0; i < reqs.size(); i++){
-					dtm.setValueAt(reqs.get(i).getName(), i, 0);
-					dtm.setValueAt(reqs.get(i).getDescription(), i, 1);
-				}
-				unselectedTable.repaint();
-				reqs = updateReqs;
-			}
-			
-		});
-		refresh.start();
-*/
+		refresh = new Timer();
+		TimerTask initialize = new RefreshTask(refresh, this);
+		refresh.schedule(initialize, 500);
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 		JLabel lblRequirementsAvailable = new JLabel("Requirements Available");
@@ -294,9 +279,9 @@ public class NewGameReqPanel extends JPanel {
 	}
 
 	public void refresh() {
-		reqs = RequirementModel.getInstance().getRequirements();
+		reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
 		for (int i = 0; i < selected.size(); i++){
-			reqs.remove(selected.get(i));
+			reqs.remove(selected.get(i).getId());
 		}
 		DefaultTableModel dtm = (DefaultTableModel) unselectedTable.getModel();
 		dtm.setRowCount(reqs.size());
@@ -307,4 +292,22 @@ public class NewGameReqPanel extends JPanel {
 		unselectedTable.repaint();
 	}
 }
+
+class RefreshTask extends TimerTask {
+
+	Timer timer;
+	NewGameReqPanel ngrp;
+	
+	public RefreshTask(Timer timer, NewGameReqPanel ngrp){
+		this.timer = timer;
+		this.ngrp = ngrp;
+	}
+	
+    @Override
+    public void run() {
+        ngrp.refresh();
+    }
+}
+
+
 

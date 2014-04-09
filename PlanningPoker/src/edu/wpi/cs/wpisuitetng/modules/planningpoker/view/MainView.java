@@ -34,6 +34,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameInputDis
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameMainPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
@@ -55,10 +56,11 @@ public class MainView extends JTabbedPane {
 	private JPanel newGame;
 	private GameModel gameModel;
 	private int newGameTabs = 0;
+	private GetRequirementsRequestObserver refresher;
 	private int j = 0;
 	private List<Integer> openTabs = new ArrayList<Integer>();
 	private List<NewGameDistributedPanel> newGames = new ArrayList<NewGameDistributedPanel>();
-	final int PERMANANT_TABS = 4;
+	final int PERMANANT_TABS = 2;
 	private final AddEmailPanel addEmailPanel;
 	
 	public MainView(DeckModel deckModel) {
@@ -70,9 +72,7 @@ public class MainView extends JTabbedPane {
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
 		addTab("Overview", overviewPanel);
-		addTab("Current Game", currentGame);
-		addTab("Past Game", pastGames);
-		addTab("Deck", deckPanel);
+		
 		this.addChangeListener(new ChangeListener(){
 
 			@Override
@@ -127,11 +127,11 @@ public class MainView extends JTabbedPane {
 		JButton btnClose = new JButton("x");
 		List<Requirement> reqs = RequirementModel.getInstance().getRequirements();
 		NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose,gameSession);
-		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler("New Game", j, newGame);
+		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler(gameSession.getGameName(), j, newGame);
 		add(newGame, newGameTabs + PERMANANT_TABS);
 		JPanel pnlTab = new JPanel(new GridBagLayout());
 		pnlTab.setOpaque(false);
-		JLabel lblTitle = new JLabel("New Game");
+		JLabel lblTitle = new JLabel(gameSession.getGameName());
 		btnClose.setMargin(new Insets(0, 0, 0, 0));
 		btnClose.setFont(btnClose.getFont().deriveFont((float) 8));
 		GridBagConstraints gbc = new GridBagConstraints();
