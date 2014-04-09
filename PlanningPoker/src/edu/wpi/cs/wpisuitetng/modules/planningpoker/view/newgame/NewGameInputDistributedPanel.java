@@ -74,7 +74,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 	private final JLabel timeLabel = new JLabel ("Deadline Time:");
 	private final JLabel descriptionLabel = new JLabel("Description:");
 	private final JLabel deadlineLabel = new JLabel("Deadline:");
-	private final JLabel deckLabel = new JLabel("Choosen deck:");
+	private final JLabel deckLabel = new JLabel("Chosen deck:");
 	private JLabel yearLabel = new JLabel("Year: ");
 	private JLabel monthLabel = new JLabel("Month: ");
 	private JLabel dayLabel = new JLabel("Day: ");
@@ -141,6 +141,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 				minuteComboBox.addItem("" + i);
 			}
 		}
+		deckBox.addItem("No Deck");
 		deckBox.addItem("Default Deck");
 		
 		if(editMode)
@@ -301,7 +302,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 				}
 				else{
 					newGameP.isNew = true;
-					System.out.println("Valid date selected an-d requirements were selected");
+					System.out.println("Valid date selected and requirements were selected");
 					Date deadlineDate = new Date(deadlineYear - 1900, deadlineMonth - 1, deadlineDay, getHour(hourTime), minuteTime);
 					GameSession newGame = new GameSession(name, 0 , GameModel.getInstance().getSize()+1, deadlineDate, selectionsMade); 
 					GameModel model = GameModel.getInstance();

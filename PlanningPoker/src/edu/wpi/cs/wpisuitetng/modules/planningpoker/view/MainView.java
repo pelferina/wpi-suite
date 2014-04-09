@@ -128,7 +128,7 @@ public class MainView extends JTabbedPane {
 		openTabs.add(newGameTabs, j);
 		JButton btnClose = new JButton("x");
 		List<Requirement> reqs = RequirementModel.getInstance().getRequirements();
-		NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose,gameSession);
+		NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose, gameSession);
 		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler(gameSession.getGameName(), j, newGame);
 		add(newGame, newGameTabs + PERMANANT_TABS);
 		JPanel pnlTab = new JPanel(new GridBagLayout());

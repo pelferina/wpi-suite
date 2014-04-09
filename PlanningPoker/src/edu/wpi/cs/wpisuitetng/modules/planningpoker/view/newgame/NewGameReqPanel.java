@@ -27,7 +27,7 @@ import javax.swing.table.DefaultTableModel;
  */
 @SuppressWarnings("serial")
 public class NewGameReqPanel extends JPanel {
-	
+
 	DefaultListModel<String> listValue = new DefaultListModel<String>();
 	private final JList<String> reqList = new JList<String>(listValue);
 	private final JPanel listPanel = new JPanel();
@@ -39,7 +39,7 @@ public class NewGameReqPanel extends JPanel {
 	private List<Requirement> reqs = new ArrayList<Requirement>();
 	private boolean editMode = false;
 	private Timer refresh;
-	
+
 	/**
 	 * @wbp.parser.constructor
 	 */
@@ -55,11 +55,11 @@ public class NewGameReqPanel extends JPanel {
 		unselectedTable = new JTable();
 		selectedTable = new JTable();
 		this.editMode  = true;
-		List<Requirement> reqList = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
-		reqs = new ArrayList<Requirement>(reqList);
+		getReqs();
+		List<Requirement> reqList = new ArrayList<Requirement>(reqs);
 		List<Integer> selectedIDs = gameSession.getGameReqs();
-		for (int i = 0; i < requirements.size(); i++){
-			Requirement req = requirements.get(i);
+		for (int i = 0; i < reqList.size(); i++){
+			Requirement req = reqList.get(i);
 			for (int selectedReqID: selectedIDs) {
 				System.out.println(req.getName()+" "+selectedReqID);
 				if (req.getId() == selectedReqID) {
@@ -72,7 +72,7 @@ public class NewGameReqPanel extends JPanel {
 		reqs = reqList;
 		init();
 	}
-	
+
 	private void init()
 	{
 		refresh = new Timer();
@@ -81,7 +81,7 @@ public class NewGameReqPanel extends JPanel {
 		refresh.schedule(new RefreshTask(refresh, this), 1000);
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
-		
+
 		// Declarations and initializations
 		JLabel lblRequirementsAvailable = new JLabel("Requirements Available");
 		JButton btnAddReq = new JButton("Add New Requirement");
@@ -92,16 +92,16 @@ public class NewGameReqPanel extends JPanel {
 		JButton btnAddAll = new JButton("\u21ca");
 		JScrollPane unselected_table = new JScrollPane();
 		JScrollPane selected_table = new JScrollPane();
-		
+
 		// Observers
-		
+
 		btnAddReq.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
-				
+
 			}
 		});
-		
+
 		btnAddOne.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
@@ -122,7 +122,7 @@ public class NewGameReqPanel extends JPanel {
 				}
 			}
 		});
-		
+
 		btnAddAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
@@ -140,7 +140,7 @@ public class NewGameReqPanel extends JPanel {
 				}
 			}
 		});
-		
+
 		btnRemoveOne.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
@@ -161,7 +161,7 @@ public class NewGameReqPanel extends JPanel {
 				}
 			}
 		});
-		
+
 		btnRemoveAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
@@ -179,33 +179,33 @@ public class NewGameReqPanel extends JPanel {
 				}
 			}
 		});
-		
+
 		unselectedTable.setModel(new DefaultTableModel(
 				new Object[][] {
-					{null, null},
-					{null, null},
-					{null, null},
-					{null, null},
-					{null, null},
+						{null, null},
+						{null, null},
+						{null, null},
+						{null, null},
+						{null, null},
 				},
 				new String[] {
-					"Name", "Description"
+						"Name", "Description"
 				}
-			));
-			
-		
+				));
+
+
 		// Layout configuration
-		
+
 		// Spring Layout of lblRequirementsAvailable
 		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, lblRequirementsAvailable, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		springLayout.putConstraint(SpringLayout.NORTH, lblRequirementsAvailable, 10, SpringLayout.NORTH, this);
-		
+
 		// Spring Layout of unselected_table
 		springLayout.putConstraint(SpringLayout.WEST, unselected_table, 10, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, unselected_table, -10, SpringLayout.NORTH, btnAddReq);
 		springLayout.putConstraint(SpringLayout.EAST, unselected_table, -10, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, unselected_table, 10, SpringLayout.SOUTH, lblRequirementsAvailable);
-		
+
 		// Spring Layout of Buttons
 		//springLayout.putConstraint(SpringLayout.NORTH, btnAddReq, 10, SpringLayout.SOUTH, unselected_table);
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnAddReq, 0, SpringLayout.VERTICAL_CENTER, this);
@@ -218,17 +218,17 @@ public class NewGameReqPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.EAST, btnAddAll, -15, SpringLayout.WEST, btnAddReq);
 		springLayout.putConstraint(SpringLayout.NORTH, btnAddOne, 0, SpringLayout.NORTH, btnAddReq); // Move one down
 		springLayout.putConstraint(SpringLayout.EAST, btnAddOne, 0, SpringLayout.WEST, btnAddAll);
-		
+
 		// Spring Layout of lblRequirementsSelected
 		springLayout.putConstraint(SpringLayout.NORTH, lblRequirementsSelected, 10, SpringLayout.SOUTH, btnRemoveOne);
 		springLayout.putConstraint(SpringLayout.WEST, lblRequirementsSelected, 0, SpringLayout.WEST, lblRequirementsAvailable);
-		
+
 		// Spring Layout of selected_table
 		springLayout.putConstraint(SpringLayout.NORTH, selected_table, 10, SpringLayout.SOUTH, lblRequirementsSelected);
 		springLayout.putConstraint(SpringLayout.WEST, selected_table, 0, SpringLayout.WEST, unselected_table);
 		springLayout.putConstraint(SpringLayout.SOUTH, selected_table, -10, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, selected_table, -0, SpringLayout.EAST, unselected_table);
-		
+
 		// Adds elements to the panel
 		add(lblRequirementsAvailable);
 		add(unselected_table);
@@ -239,43 +239,43 @@ public class NewGameReqPanel extends JPanel {
 		add(btnAddOne);
 		add(lblRequirementsSelected);
 		add(selected_table);
-		
+
 		DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
 		dtm.setNumRows(reqs.size());
 		dtm.setColumnCount(2);
-		
+
 		unselectedTable.getColumnModel().getColumn(0).setMinWidth(100);
 		unselectedTable.getColumnModel().getColumn(0).setMaxWidth(200);
 		unselectedTable.getColumnModel().getColumn(0).setPreferredWidth(150);
-		
+
 		for (int i = 0; i < reqs.size(); i++){
 			dtm.setValueAt(reqs.get(i).getName(), i, 0);
 			dtm.setValueAt(reqs.get(i).getDescription(), i, 1);
 		}
 		unselected_table.setViewportView(unselectedTable);
-		
+
 		selectedTable.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-			},
-			new String[] {
-				"Name", "Description"
-			}
-		));
+				new Object[][] {
+						{null, null},
+						{null, null},
+						{null, null},
+						{null, null},
+						{null, null},
+				},
+				new String[] {
+						"Name", "Description"
+				}
+				));
 		DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
 		dtm_1.setNumRows(selected.size());
 		dtm_1.setColumnCount(2);
 		selected_table.setViewportView(selectedTable);
 		//unselectedTable.getColumnModel().getColumn(0).setPreferredWidth(50);
-		
+
 		selectedTable.getColumnModel().getColumn(0).setMinWidth(100);
 		selectedTable.getColumnModel().getColumn(0).setMaxWidth(200);
 		selectedTable.getColumnModel().getColumn(0).setPreferredWidth(150);
-		
+
 		for (int i = 0; i < selected.size(); i++){
 			dtm_1.setValueAt(selected.get(i).getName(), i, 0);
 			dtm_1.setValueAt(selected.get(i).getDescription(), i, 1);
@@ -286,7 +286,7 @@ public class NewGameReqPanel extends JPanel {
 		return selected;
 
 	}
-	
+
 	/**
 	 * Takes a requirement and adds it to its reqList
 	 * @param req
@@ -307,8 +307,7 @@ public class NewGameReqPanel extends JPanel {
 	}
 
 	public void refresh() {
-		GetRequirementsController.getInstance().retrieveRequirements();
-		reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
+		getReqs();
 		ArrayList<Requirement> addedReqs = new ArrayList<Requirement>();
 		for (int i = 0; i < selected.size(); i++){
 			reqs.remove(selected.get(i).getId());
@@ -324,22 +323,34 @@ public class NewGameReqPanel extends JPanel {
 		}
 		unselectedTable.repaint();
 	}
+
+	private void getReqs() {
+		GetRequirementsController.getInstance().retrieveRequirements();
+		reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
+		ArrayList<Requirement> reqsCopy = new ArrayList<Requirement>(reqs);
+		for (Requirement req : reqsCopy) {
+			System.out.println("Iteration: " + req.getIteration());
+			if (!req.getIteration().equals("Backlog")) reqs.remove(req);
+		}
+	}
 }
 
 class RefreshTask extends TimerTask {
 
 	Timer timer;
 	NewGameReqPanel ngrp;
-	
+
 	public RefreshTask(Timer timer, NewGameReqPanel ngrp){
 		this.timer = timer;
 		this.ngrp = ngrp;
 	}
-	
-    @Override
-    public void run() {
-        ngrp.refresh();
-    }
+
+	@Override
+	public void run() {
+		ngrp.refresh();
+	}
+
+
 }
 
 
