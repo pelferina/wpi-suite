@@ -68,9 +68,18 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 	@Override
 	public EmailAddressModel makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
-
+		
 		// Parse the message from JSON
 		final EmailAddressModel newEmailAddress = new EmailAddressModel(content);
+		
+		if(content.contains("endGame")){
+			System.err.println("Game Ended");
+			List<Model> emails = db.retrieveAll(newEmailAddress, s.getProject());
+			for(Model e: emails){
+				sendEmail(((EmailAddressModel)e).getAddress(), "A game ended", content.substring(7) + " just ended");
+			}
+			return newEmailAddress;
+		}
 
 		newEmailAddress.setUserID(s.getUser().getIdNum());
 		List<Model> emails = db.retrieveAll(newEmailAddress, s.getProject());

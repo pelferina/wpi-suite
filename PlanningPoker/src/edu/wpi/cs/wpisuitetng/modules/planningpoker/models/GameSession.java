@@ -44,12 +44,14 @@ public class GameSession extends AbstractModel {
 	private final Date creationdate;
 	/** The date that the game will end, if there is no end time then this value is null*/
 	private Date endDate;
+	public boolean emailSent = false;
 	
 	public GameSession(String game, int ownerID, int gameID, Date deadline, List<Integer> gameReqs){
 		this.gameName = game;
 		this.ownerID = ownerID;
 		this.gameID = gameID;
 		this.endDate = deadline;
+		this.endDate.setMonth(endDate.getMonth());
 		this.gameReqs = gameReqs;
 		creationdate = new Date();
 		this.gameStatus = GameStatus.DRAFT;

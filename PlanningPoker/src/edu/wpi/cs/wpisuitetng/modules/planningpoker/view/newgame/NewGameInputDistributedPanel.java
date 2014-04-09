@@ -161,7 +161,15 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 			
 			datePicker.getModel().setDate(year_index, month_index, day_index);
 			
-			hourComboBox.setSelectedIndex(gameSession.getEndDate().getHours());
+			if (gameSession.getEndDate().getHours() > 11){
+				hourComboBox.setSelectedIndex(gameSession.getEndDate().getHours() - 12);
+			}
+			else if (gameSession.getEndDate().getHours() == 0){
+				hourComboBox.setSelectedIndex(12);
+			}
+			else {
+				hourComboBox.setSelectedIndex(gameSession.getEndDate().getHours());
+			}
 			minuteComboBox.setSelectedIndex(gameSession.getEndDate().getMinutes()+1);
 			
 			nameTextField.setText(gameSession.getGameName());
@@ -251,60 +259,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 			}
 		});
 
-		//Sets isNew to false, deadlineYear to the selected year, and rebuilds what is in the dayBox if a leap year is deselected or selected
-		//and the deadline month is February
-		yearBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e){
-				newGameP.isNew = false;
-				int year = yearBox.getSelectedIndex();
-				if ((deadlineYear == 2016 || deadlineYear == 2020) && (year + 2014 != 2016 || year + 2014 != 2020)){
-					dayBox.removeAllItems();
-					for (int i=0; i<28; i++){
-						dayBox.addItem(i+1);
-					}
-				}
-				deadlineYear = year + 2014;
-				if ((deadlineYear == 2016 || deadlineYear == 2020) && deadlineMonth == 2){
-					dayBox.removeAllItems();
-					for (int j=0; j<29; j++){
-						dayBox.addItem(j+1);
-					}
-				}
-			}
-
-		});
-
-		//Adds an action listener to the month selection combo box, which sets isNew to false and rebuilds what is inside the 
-		//dayBox based on the month selected. Also sets deadlineMonth to the chosen month.
-		monthBox.addActionListener(new ActionListener() {
-			int[] daysInMonth = {31,28,31,30,31,30,31,31,30,31,30,31};
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				newGameP.isNew = false;
-				dayBox.removeAllItems();
-				int days = monthBox.getSelectedIndex();
-				for (int i=0; i<daysInMonth[days]; i++){
-					dayBox.addItem(i+1);
-				}	
-				if ((deadlineYear == 2016 || deadlineYear == 2020) && days == 1){
-					dayBox.addItem(29);
-				}
-				deadlineMonth = days + 1;
-			}	
-		});
-
-		//Adds an action listener to the day of month selection combo box, and sets isNew to false, and changes the deadlineDay
-		dayBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e){
-				newGameP.isNew = false;
-				int day = dayBox.getSelectedIndex();
-				deadlineDay = day + 1;
-			}
-
-		});
-				//Checks to see if all the fields are properly filled, and then sends the game object to the database if done.
+	//Checks to see if all the fields are properly filled, and then sends the game object to the database if done.
 
 		activateButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -347,7 +302,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 				else{
 					newGameP.isNew = true;
 					System.out.println("Valid date selected an-d requirements were selected");
-					Date deadlineDate = new Date(deadlineYear, deadlineMonth, deadlineDay, getHour(hourTime), minuteTime);
+					Date deadlineDate = new Date(deadlineYear - 1900, deadlineMonth - 1, deadlineDay, getHour(hourTime), minuteTime);
 					GameSession newGame = new GameSession(name, 0 , GameModel.getInstance().getSize()+1, deadlineDate, selectionsMade); 
 					GameModel model = GameModel.getInstance();
 					AddGameController msgr = new AddGameController(model);

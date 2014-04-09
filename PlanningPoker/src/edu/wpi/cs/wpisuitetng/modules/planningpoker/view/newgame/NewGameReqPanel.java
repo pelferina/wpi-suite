@@ -74,7 +74,7 @@ public class NewGameReqPanel extends JPanel {
 	{
 		refresh = new Timer();
 		TimerTask initialize = new RefreshTask(refresh, this);
-		refresh.schedule(initialize, 500);
+		refresh.schedule(initialize, 1000);
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 		JLabel lblRequirementsAvailable = new JLabel("Requirements Available");

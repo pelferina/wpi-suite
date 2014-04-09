@@ -3,9 +3,11 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
+import javax.swing.Timer;
 import javax.swing.table.TableRowSorter;
 import javax.swing.JTree;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailAddressObserver;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
@@ -14,6 +16,9 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.JTableModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame.JTableView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
@@ -25,6 +30,7 @@ import javax.swing.tree.TreeModel;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
@@ -32,6 +38,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -46,6 +53,8 @@ public class OverviewPanel extends JPanel {
 	GameTree gameTreeModel;
 	JTree gameTree;
 	TableRowSorter<JTableModel> sorter;
+	Timer deadlineCheck;
+	
 	public OverviewPanel(){
 		
 		this.gameModel = GameModel.getInstance();
@@ -56,6 +65,29 @@ public class OverviewPanel extends JPanel {
 		sorter = new TableRowSorter<JTableModel>((JTableModel)table.getModel());
 		table.setRowSorter(sorter);
 		
+		deadlineCheck = new Timer(1000, new ActionListener(){
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				List<GameSession> games = gameModel.getGames();
+				Date today = new Date();
+				for(int i=0; i<games.size(); i++){
+					System.out.println("Today" + today.toString());
+					System.out.println("Deadline" + games.get(i).getEndDate().toString());
+					if (games.get(i).getEndDate().before(today) && !games.get(i).emailSent){
+						System.out.println("Deadline passed");
+						final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.PUT); // PUT == create
+						//request.setBody(new EmailAddressModel(address).toJSON()); // put the new message in the body of the request
+						request.setBody("endGame" + games.get(i).getGameName());
+						request.send(); // send the request
+						games.get(i).emailSent = true;
+					}
+				}
+			}
+			
+		});
+		
+		deadlineCheck.start();
 		table.addMouseListener(new MouseAdapter() {
 			  public void mouseClicked(MouseEvent e) {
 				    if (e.getClickCount() == 2) {
