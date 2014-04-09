@@ -151,21 +151,16 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 			//int year_index = gameSession.getEndDate().getYear();
 			int year_index = 2014;
 			
-			//int year_index = Integer.parseInt(yearFormat.format(gameSession.getEndDate()))-14;
 			
-			//int day_index = gameSession.getEndDate().getDay();
 			int day_index = 1;
-			//int day_index = Integer.parseInt(dayFormat.format(gameSession.getEndDate()))-1;
 			
 			int month_index = 1;
-			//int month_index = gameSession.getEndDate().getMonth();
 			
-			//int month_index = Integer.parseInt(monthFormat.format(gameSession.getEndDate()));
 			
 			datePicker.getModel().setDate(year_index, month_index, day_index);
-			monthBox.setSelectedIndex(month_index);
-
-//			System.out.print("Setting default date: " + day_index + " "+ month_index + " " + year_index);
+			
+			hourComboBox.setSelectedIndex(gameSession.getEndDate().getHours());
+			minuteComboBox.setSelectedIndex(gameSession.getEndDate().getMinutes()+1);
 			
 			nameTextField.setText(gameSession.getGameName());
 			nameTextField.setEditable(false);
