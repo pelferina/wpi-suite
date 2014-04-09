@@ -55,16 +55,18 @@ public class NewGameReqPanel extends JPanel {
 		List<Requirement> reqList = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
 		reqs = new ArrayList<Requirement>(reqList);
 		List<Integer> selectedIDs = gameSession.getGameReqs();
-		for (Requirement req: reqs){
+		for (int i = 0; i < requirements.size(); i++){
+			Requirement req = requirements.get(i);
 			for (int selectedReqID: selectedIDs) {
+				System.out.println(req.getName()+" "+selectedReqID);
 				if (req.getId() == selectedReqID) {
-					this.selected.add(reqList.remove(selectedReqID));
-					System.out.println(selected.get(0));
+					int index = reqList.indexOf(req);
+					Requirement temp_req = reqList.remove(index); 
+					this.selected.add(temp_req);
 				}
 			}	
 		}
 		reqs = reqList;
-		System.out.println(reqs.size());
 		init();
 	}
 	
