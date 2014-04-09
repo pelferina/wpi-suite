@@ -15,7 +15,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddressModel;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -31,14 +31,14 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  *
  */
 public class AddEmailAddressController implements ActionListener {
-	private final JPanel view;
+	private final JTextField view;
 	
 	/**
 	 * Construct an AddEmailAddressController for the given model, view pair
 	 * @param model the model containing the messages
 	 * @param view the view where the user enters new messages
 	 */
-	public AddEmailAddressController(JPanel view) {
+	public AddEmailAddressController(JTextField view) {
 		this.view = view;
 	}
 	
@@ -59,6 +59,7 @@ public class AddEmailAddressController implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
+		System.out.println("Submit been pressed");
 		if (view == null)
 		{
 			return;
@@ -78,13 +79,16 @@ public class AddEmailAddressController implements ActionListener {
 //			request.addObserver(new AddMessageRequestObserver(this)); // add an observer to process the response
 //			request.send(); // send the request
 //		}
+		
+		saveEmail(view.getText());
 	}
 
 	public void saveEmail(String address)
 	{
 		// Send a request to the core to save this message
 		final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.PUT); // PUT == create
-		request.setBody(new EmailAddressModel(address).toJSON()); // put the new message in the body of the request
+		//request.setBody(new EmailAddressModel(address).toJSON()); // put the new message in the body of the request
+		request.setBody(address);
 		request.addObserver(new AddEmailAddressObserver(this)); // add an observer to process the response
 		request.send(); // send the request
 	}

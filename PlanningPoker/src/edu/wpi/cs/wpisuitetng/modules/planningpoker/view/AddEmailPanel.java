@@ -6,6 +6,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailAddressController;
+
 @SuppressWarnings("serial")
 public class AddEmailPanel extends JPanel {
 	
@@ -30,6 +32,8 @@ public class AddEmailPanel extends JPanel {
 		add(emailLabel);
 		add(emailField);
 		add(submitButton);
+		
+		submitButton.addActionListener(new AddEmailAddressController(emailField));
 	}
 
 }

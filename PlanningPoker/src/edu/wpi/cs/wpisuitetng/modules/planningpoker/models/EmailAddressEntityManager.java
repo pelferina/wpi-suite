@@ -13,7 +13,16 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
@@ -53,16 +62,20 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#makeEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
+	
+	
+	
 	@Override
 	public EmailAddressModel makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
 
 		// Parse the message from JSON
 		final EmailAddressModel newEmailAddress = new EmailAddressModel(content);
-		
+
 		newEmailAddress.setUserID(s.getUser().getIdNum());
 		
 		List<Model> emails = db.retrieveAll(EmailAddressModel.class, s.getProject());
+
 		
 		if (!emails.contains(newEmailAddress))
 		{
@@ -71,7 +84,32 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 			if (!db.save(newEmailAddress, s.getProject())) {
 				throw new WPISuiteException();
 			}
+			
+			
 		}
+
+		sendEmail(content, "Update Email", "You just set your notification email address!");
+		/*
+		try {
+			sendUserEmails("Update your email address", "Hi, you just set your email notification.", s);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		
+		/*
+		for(Model e: emails){
+			if(((EmailAddressModel)e).getUserID() == s.getUser().getIdNum()){
+				db.update(EmailAddressModel.class, "UserID", s.getUser().getIdNum(), "Address", newEmailAddress.getAddress());
+				return newEmailAddress;
+			}
+		}
+		
+		
+		if (!db.save(newEmailAddress, s.getProject())) {
+			throw new WPISuiteException();
+		}
+		*/
 
 		// Return the newly created email (this gets passed back to the client)
 		return newEmailAddress;
@@ -173,5 +211,43 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
+	public void sendEmail(String sent_to, String send_subject, String send_text) {
+		 
+		final String username = "fff8e7.email@gmail.com";
+		final String password = "fff8e7team5";
+ 
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
+ 
+		javax.mail.Session session = javax.mail.Session.getInstance(props,
+		  new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		  });
+ 
+		try {
+ 
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress("fff8e7.email@gmail.com"));
+			message.setRecipients(Message.RecipientType.TO,
+				InternetAddress.parse(sent_to));
+			message.setSubject(send_subject);
+			message.setText(send_text);
+ 
+			Transport.send(message);
+ 
+			System.out.println("Done");
+ 
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 
 }
