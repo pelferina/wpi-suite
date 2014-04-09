@@ -80,7 +80,7 @@ public class MainView extends JTabbedPane {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				for (int i = 0; i<newGames.size(); i++){
-					GetRequirementsController.getInstance().retrieveRequirements();
+					//GetRequirementsController.getInstance().retrieveRequirements();
 					newGames.get(i).refresh();
 				}
 			}
@@ -93,7 +93,7 @@ public class MainView extends JTabbedPane {
 		GetRequirementsController.getInstance().retrieveRequirements();
 		openTabs.add(newGameTabs, j);
 		JButton btnClose = new JButton("x");
-		List<Requirement> reqs = RequirementModel.getInstance().getRequirements();
+		List<Requirement> reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
 		NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose);
 		newGames.add(newGame);
 		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler("New Game", j, newGame);

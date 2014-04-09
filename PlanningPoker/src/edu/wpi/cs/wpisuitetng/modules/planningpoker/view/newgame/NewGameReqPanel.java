@@ -40,8 +40,11 @@ public class NewGameReqPanel extends JPanel {
 	private boolean editMode = false;
 	private Timer refresh;
 	
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public NewGameReqPanel(List<Requirement> requirements) {
-		reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
+		reqs = new ArrayList<Requirement>(requirements);
 		System.out.println(reqs.size());
 		unselectedTable = new JTable();
 		selectedTable = new JTable();
@@ -74,34 +77,32 @@ public class NewGameReqPanel extends JPanel {
 	{
 		refresh = new Timer();
 		TimerTask initialize = new RefreshTask(refresh, this);
-		refresh.schedule(initialize, 1000);
+		refresh.schedule(initialize, 500);
+		refresh.schedule(new RefreshTask(refresh, this), 1000);
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
+		
+		// Declarations and initializations
 		JLabel lblRequirementsAvailable = new JLabel("Requirements Available");
-		springLayout.putConstraint(SpringLayout.WEST, lblRequirementsAvailable, 318, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.EAST, lblRequirementsAvailable, -108, SpringLayout.EAST, this);
-		add(lblRequirementsAvailable);
+		JButton btnAddReq = new JButton("Add New Requirement");
+		JButton btnRemoveOne = new JButton("\u2191");
+		JLabel lblRequirementsSelected = new JLabel("Requirements Selected");
+		JButton btnAddOne = new JButton("\u2193");
+		JButton btnRemoveAll = new JButton("\u21c8");
+		JButton btnAddAll = new JButton("\u21ca");
+		JScrollPane unselected_table = new JScrollPane();
+		JScrollPane selected_table = new JScrollPane();
 		
-		JButton button = new JButton("^");
-		springLayout.putConstraint(SpringLayout.WEST, button, 10, SpringLayout.WEST, this);
-		add(button);
+		// Observers
 		
-		JButton btnV = new JButton("v");
-		springLayout.putConstraint(SpringLayout.NORTH, btnV, 0, SpringLayout.NORTH, button);
-		add(btnV);
+		btnAddReq.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				
+			}
+		});
 		
-		JButton button_1 = new JButton("^^");
-		springLayout.putConstraint(SpringLayout.NORTH, button_1, 0, SpringLayout.NORTH, button);
-		springLayout.putConstraint(SpringLayout.WEST, button_1, 6, SpringLayout.EAST, button);
-		add(button_1);
-		
-		JButton btnVv = new JButton("vv");
-		springLayout.putConstraint(SpringLayout.WEST, btnV, 6, SpringLayout.EAST, btnVv);
-		springLayout.putConstraint(SpringLayout.NORTH, btnVv, 0, SpringLayout.NORTH, button);
-		springLayout.putConstraint(SpringLayout.EAST, btnVv, -57, SpringLayout.EAST, this);
-		add(btnVv);
-		
-		btnV.addActionListener(new ActionListener() {
+		btnAddOne.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				if (unselectedTable.getSelectedRow() != -1){
@@ -122,7 +123,7 @@ public class NewGameReqPanel extends JPanel {
 			}
 		});
 		
-		btnVv.addActionListener(new ActionListener() {
+		btnAddAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				if(reqs.size() != 0){
@@ -140,7 +141,7 @@ public class NewGameReqPanel extends JPanel {
 			}
 		});
 		
-		button.addActionListener(new ActionListener() {
+		btnRemoveOne.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				if (selectedTable.getSelectedRow() != -1){
@@ -161,7 +162,7 @@ public class NewGameReqPanel extends JPanel {
 			}
 		});
 		
-		button_1.addActionListener(new ActionListener() {
+		btnRemoveAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				if (selected.size() != 0){
@@ -179,26 +180,65 @@ public class NewGameReqPanel extends JPanel {
 			}
 		});
 		
-		JScrollPane scrollPane = new JScrollPane();
-		springLayout.putConstraint(SpringLayout.SOUTH, lblRequirementsAvailable, -6, SpringLayout.NORTH, scrollPane);
-		springLayout.putConstraint(SpringLayout.WEST, scrollPane, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, -6, SpringLayout.NORTH, button);
-		springLayout.putConstraint(SpringLayout.EAST, scrollPane, -10, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, scrollPane, 31, SpringLayout.NORTH, this);
-		add(scrollPane);
-		
 		unselectedTable.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-				{null, null},
-			},
-			new String[] {
-				"Name", "Description"
-			}
-		));
+				new Object[][] {
+					{null, null},
+					{null, null},
+					{null, null},
+					{null, null},
+					{null, null},
+				},
+				new String[] {
+					"Name", "Description"
+				}
+			));
+			
+		
+		// Layout configuration
+		
+		// Spring Layout of lblRequirementsAvailable
+		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, lblRequirementsAvailable, 0, SpringLayout.HORIZONTAL_CENTER, this);
+		springLayout.putConstraint(SpringLayout.NORTH, lblRequirementsAvailable, 10, SpringLayout.NORTH, this);
+		
+		// Spring Layout of unselected_table
+		springLayout.putConstraint(SpringLayout.WEST, unselected_table, 10, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, unselected_table, -10, SpringLayout.NORTH, btnAddReq);
+		springLayout.putConstraint(SpringLayout.EAST, unselected_table, -10, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, unselected_table, 10, SpringLayout.SOUTH, lblRequirementsAvailable);
+		
+		// Spring Layout of Buttons
+		//springLayout.putConstraint(SpringLayout.NORTH, btnAddReq, 10, SpringLayout.SOUTH, unselected_table);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnAddReq, 0, SpringLayout.VERTICAL_CENTER, this);
+		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, btnAddReq, 0, SpringLayout.HORIZONTAL_CENTER, this);
+		springLayout.putConstraint(SpringLayout.NORTH, btnRemoveOne, 0, SpringLayout.NORTH, btnAddReq); // Move one up
+		springLayout.putConstraint(SpringLayout.WEST, btnRemoveOne, 15, SpringLayout.EAST, btnAddReq); 
+		springLayout.putConstraint(SpringLayout.NORTH, btnRemoveAll, 0, SpringLayout.NORTH, btnRemoveOne); // Move all up
+		springLayout.putConstraint(SpringLayout.WEST, btnRemoveAll, 0, SpringLayout.EAST, btnRemoveOne);
+		springLayout.putConstraint(SpringLayout.NORTH, btnAddAll, 0, SpringLayout.NORTH, btnAddReq); // Move all down
+		springLayout.putConstraint(SpringLayout.EAST, btnAddAll, -15, SpringLayout.WEST, btnAddReq);
+		springLayout.putConstraint(SpringLayout.NORTH, btnAddOne, 0, SpringLayout.NORTH, btnAddReq); // Move one down
+		springLayout.putConstraint(SpringLayout.EAST, btnAddOne, 0, SpringLayout.WEST, btnAddAll);
+		
+		// Spring Layout of lblRequirementsSelected
+		springLayout.putConstraint(SpringLayout.NORTH, lblRequirementsSelected, 10, SpringLayout.SOUTH, btnRemoveOne);
+		springLayout.putConstraint(SpringLayout.WEST, lblRequirementsSelected, 0, SpringLayout.WEST, lblRequirementsAvailable);
+		
+		// Spring Layout of selected_table
+		springLayout.putConstraint(SpringLayout.NORTH, selected_table, 10, SpringLayout.SOUTH, lblRequirementsSelected);
+		springLayout.putConstraint(SpringLayout.WEST, selected_table, 0, SpringLayout.WEST, unselected_table);
+		springLayout.putConstraint(SpringLayout.SOUTH, selected_table, -10, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, selected_table, -0, SpringLayout.EAST, unselected_table);
+		
+		// Adds elements to the panel
+		add(lblRequirementsAvailable);
+		add(unselected_table);
+		add(btnAddReq);
+		add(btnRemoveOne);
+		add(btnRemoveAll);
+		add(btnAddAll);
+		add(btnAddOne);
+		add(lblRequirementsSelected);
+		add(selected_table);
 		
 		DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
 		dtm.setNumRows(reqs.size());
@@ -212,17 +252,7 @@ public class NewGameReqPanel extends JPanel {
 			dtm.setValueAt(reqs.get(i).getName(), i, 0);
 			dtm.setValueAt(reqs.get(i).getDescription(), i, 1);
 		}
-		scrollPane.setViewportView(unselectedTable);
-		//unselectedTable.getColumnModel().getColumn(0).setPreferredWidth(50);
-		
-		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		springLayout.putConstraint(SpringLayout.NORTH, scrollPane_1, 269, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, scrollPane_1, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane_1, -10, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, scrollPane_1, -10, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, button, -3, SpringLayout.NORTH, scrollPane_1);
-		add(scrollPane_1);
+		unselected_table.setViewportView(unselectedTable);
 		
 		selectedTable.setModel(new DefaultTableModel(
 			new Object[][] {
@@ -239,7 +269,7 @@ public class NewGameReqPanel extends JPanel {
 		DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
 		dtm_1.setNumRows(selected.size());
 		dtm_1.setColumnCount(2);
-		scrollPane_1.setViewportView(selectedTable);
+		selected_table.setViewportView(selectedTable);
 		//unselectedTable.getColumnModel().getColumn(0).setPreferredWidth(50);
 		
 		selectedTable.getColumnModel().getColumn(0).setMinWidth(100);
@@ -250,11 +280,7 @@ public class NewGameReqPanel extends JPanel {
 			dtm_1.setValueAt(selected.get(i).getName(), i, 0);
 			dtm_1.setValueAt(selected.get(i).getDescription(), i, 1);
 		}
-		
-		JLabel lblRequirementsSelected = new JLabel("Requirements Selected");
-		springLayout.putConstraint(SpringLayout.NORTH, lblRequirementsSelected, 5, SpringLayout.NORTH, button);
-		springLayout.putConstraint(SpringLayout.WEST, lblRequirementsSelected, 0, SpringLayout.WEST, lblRequirementsAvailable);
-		add(lblRequirementsSelected);
+		unselectedTable.repaint();
 	}
 	public List<Requirement> getSelected(){
 		return selected;
@@ -281,15 +307,20 @@ public class NewGameReqPanel extends JPanel {
 	}
 
 	public void refresh() {
+		GetRequirementsController.getInstance().retrieveRequirements();
 		reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
+		ArrayList<Requirement> addedReqs = new ArrayList<Requirement>();
 		for (int i = 0; i < selected.size(); i++){
 			reqs.remove(selected.get(i).getId());
 		}
 		DefaultTableModel dtm = (DefaultTableModel) unselectedTable.getModel();
 		dtm.setRowCount(reqs.size());
 		for (int i = 0; i < reqs.size(); i++){
-			dtm.setValueAt(reqs.get(i).getName(), i, 0);
-			dtm.setValueAt(reqs.get(i).getDescription(), i, 1);
+			if (!addedReqs.contains(reqs.get(i))){
+				dtm.setValueAt(reqs.get(i).getName(), i, 0);
+				dtm.setValueAt(reqs.get(i).getDescription(), i, 1);
+				addedReqs.add(reqs.get(i));
+			}
 		}
 		unselectedTable.repaint();
 	}
