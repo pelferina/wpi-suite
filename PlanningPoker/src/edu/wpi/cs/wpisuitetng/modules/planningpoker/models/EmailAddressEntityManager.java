@@ -64,7 +64,7 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 	 */
 	
 	
-	
+	// content is not a json string, is just the address for the user.
 	@Override
 	public EmailAddressModel makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
@@ -73,43 +73,27 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 		final EmailAddressModel newEmailAddress = new EmailAddressModel(content);
 
 		newEmailAddress.setUserID(s.getUser().getIdNum());
-		
-		List<Model> emails = db.retrieveAll(EmailAddressModel.class, s.getProject());
+		List<Model> emails = db.retrieveAll(newEmailAddress, s.getProject());
 
-		
-		if (!emails.contains(newEmailAddress))
-		{
-			// Save the message in the database if possible, otherwise throw an exception
-			// We want the email to be associated with the project the user logged in to
-			if (!db.save(newEmailAddress, s.getProject())) {
-				throw new WPISuiteException();
-			}
-			
-			
-		}
-
-		sendEmail(content, "Update Email", "You just set your notification email address!");
-		/*
-		try {
-			sendUserEmails("Update your email address", "Hi, you just set your email notification.", s);
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		
-		/*
-		for(Model e: emails){
+		for(Model e: emails){			
 			if(((EmailAddressModel)e).getUserID() == s.getUser().getIdNum()){
-				db.update(EmailAddressModel.class, "UserID", s.getUser().getIdNum(), "Address", newEmailAddress.getAddress());
+				if(!((EmailAddressModel)e).getAddress().equals(content)){
+					db.update(EmailAddressModel.class, "UserID", s.getUser().getIdNum(), "Address", newEmailAddress.getAddress());
+					sendEmail(content, "Update Email", ("Hi " + s.getUser().getUsername() + ", You just updated your notification email address!"));
+					System.out.println("update your email");
+					return newEmailAddress;
+				}
+				System.out.println("not update your email because the email address is not changed");
 				return newEmailAddress;
 			}
 		}
 		
-		
+		System.out.println("set your email");
 		if (!db.save(newEmailAddress, s.getProject())) {
 			throw new WPISuiteException();
 		}
-		*/
+		sendEmail(content, "Set Email", ("Hi " + s.getUser().getUsername() + ", You just set your notification email address!"));
+
 
 		// Return the newly created email (this gets passed back to the client)
 		return newEmailAddress;

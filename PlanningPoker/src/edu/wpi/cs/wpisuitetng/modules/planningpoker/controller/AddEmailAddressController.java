@@ -79,7 +79,6 @@ public class AddEmailAddressController implements ActionListener {
 //			request.addObserver(new AddMessageRequestObserver(this)); // add an observer to process the response
 //			request.send(); // send the request
 //		}
-		
 		saveEmail(view.getText());
 	}
 
