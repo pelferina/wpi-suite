@@ -79,7 +79,7 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 			if(((EmailAddressModel)e).getUserID() == s.getUser().getIdNum()){
 				if(!((EmailAddressModel)e).getAddress().equals(content)){
 					db.update(EmailAddressModel.class, "UserID", s.getUser().getIdNum(), "Address", newEmailAddress.getAddress());
-					sendEmail(content, "Update Email", ("Hi " + s.getUser().getName() + ", You just updated your notification email address!"));
+					sendEmail(content, "Update Email", ("Hi " + s.getUser().getUsername() + ", You just updated your notification email address!"));
 					System.out.println("update your email");
 					return newEmailAddress;
 				}
@@ -92,7 +92,7 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 		if (!db.save(newEmailAddress, s.getProject())) {
 			throw new WPISuiteException();
 		}
-		sendEmail(content, "Set Email", ("Hi " + s.getUser().getName() + ", You just set your notification email address!"));
+		sendEmail(content, "Set Email", ("Hi " + s.getUser().getUsername() + ", You just set your notification email address!"));
 
 
 		// Return the newly created email (this gets passed back to the client)
