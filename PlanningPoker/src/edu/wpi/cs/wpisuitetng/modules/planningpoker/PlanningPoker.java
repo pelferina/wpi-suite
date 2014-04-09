@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2013 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: Team Cosmic Latte
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker;
 
 import java.awt.FlowLayout;
@@ -39,23 +48,9 @@ public class PlanningPoker implements IJanewayModule{
 		buttonPanel.add(newGameButton);
 		buttonPanel.add(new JButton("Options"));
 		
-		// Setup the main panel
-		/*
-		mainPanel.setLayout(new BorderLayout());
-		JLabel label = new JLabel("Planning Poker");
-		label.setVerticalAlignment(SwingConstants.TOP);
-		label.setHorizontalAlignment(SwingConstants.CENTER);
-		mainPanel.add(label, BorderLayout.PAGE_START);
-		mainPanel.add(new JTextField(), BorderLayout.CENTER);
-		mainPanel.add(new JTextField(), BorderLayout.CENTER);
-		JPanel newGamePanel = new NewGameMainPanel();
-		//mainPanel.add(newGamePanel);
-		*/
 		tabs = new ArrayList<JanewayTabModel>();
 		JanewayTabModel tab = new JanewayTabModel("PlanningPoker", new ImageIcon(), buttonPanel, mainPanel);
 		
-		//JLabel lblNewLabel = new JLabel("New label");
-		//mainPanel.add(lblNewLabel, BorderLayout.NORTH);
 		tabs.add(tab);
 	}
 	

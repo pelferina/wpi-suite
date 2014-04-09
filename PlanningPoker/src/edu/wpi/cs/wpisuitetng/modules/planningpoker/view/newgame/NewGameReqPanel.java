@@ -1,6 +1,12 @@
-/**
+/*******************************************************************************
+ * Copyright (c) 2013 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  * 
- */
+ * Contributors: Team Cosmic Latte
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
 import javax.swing.*;
@@ -19,8 +25,8 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class NewGameReqPanel extends JTabbedPane {
 
-	DefaultListModel<String> listValue; //= {"Requirement One", "Requirement Two", "Requirement Three"};
-	private final JList<String> reqList;// = new JList<String>();
+	DefaultListModel<String> listValue;
+	private final JList<String> reqList;
 	private final JPanel listPanel = new JPanel();
 	private final JLabel gameReqs = new JLabel("Requirements in the game");
 	private List<Requirement> selected = new ArrayList<Requirement>();
@@ -34,7 +40,6 @@ public class NewGameReqPanel extends JTabbedPane {
 	
 	private void setupPanel()
 	{
-		//reqList.setListData(listValue);
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		listPanel.add(reqList);
 		addTab("Game Requirements", listPanel);

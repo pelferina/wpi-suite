@@ -120,10 +120,7 @@ public class GameSession extends AbstractModel {
 		returnStr = returnStr + "     " + "	Start: " + dateFormat1.format(creationdate);
 		if(endDate != null){
 			returnStr = returnStr + "    " +  "	    End: " + endDate.get(Calendar.MONTH) + "/" + endDate.get(Calendar.DAY_OF_MONTH) + "/" + endDate.get(Calendar.YEAR);
-		}	
-		//if(endDate != null)
-		//	returnStr = returnStr + "	End: " + endDate.get(Calendar.MONTH) + '/'+ endDate.get(Calendar.DAY_OF_MONTH) + '/' + endDate.get(Calendar.YEAR);
-
+		}
 
 		if(gameReqs != null){
 			returnStr = returnStr +"      Requirements:";

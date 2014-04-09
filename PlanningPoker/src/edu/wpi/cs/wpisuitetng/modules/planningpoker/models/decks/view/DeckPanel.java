@@ -59,7 +59,6 @@ public class DeckPanel extends JPanel {
 		lstDeckModel = deckModel;
 		// Construct the decks to be displayed
 		deckList = new JList(lstDeckModel);
-		//deckDropdown = new JComboBox(deckModel);
 
 		//default deck of 1,1,2,3,5,8,13
 		testData = deckModel.getDeck(0).getCards();
@@ -80,7 +79,6 @@ public class DeckPanel extends JPanel {
 		prepareDropdown();
 
 		JButton submitButton = new JButton("Submit");
-		//submitButton.addActionListener(new deckController());
 	}
 
 	/**
