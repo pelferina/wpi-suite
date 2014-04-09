@@ -397,9 +397,10 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 		//Spring layout for the descTextArea
 		descTextArea.setRows(3);
 		descTextArea.setLineWrap(true);
-		springLayout.putConstraint(SpringLayout.NORTH, descTextArea, 0, SpringLayout.NORTH, descriptionLabel);
-		springLayout.putConstraint(SpringLayout.WEST, descTextArea, 100, SpringLayout.WEST, descriptionLabel);
-		springLayout.putConstraint(SpringLayout.EAST, descTextArea, 400, SpringLayout.EAST, descriptionLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, descTextArea, 10, SpringLayout.SOUTH, descriptionLabel);
+		springLayout.putConstraint(SpringLayout.WEST, descTextArea, 0, SpringLayout.WEST, descriptionLabel);
+		springLayout.putConstraint(SpringLayout.EAST, descTextArea, -10, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, descTextArea, -15, SpringLayout.NORTH, deadlineLabel);
 		
 		//Spring layout for the deadlineLabel
 		springLayout.putConstraint(SpringLayout.SOUTH, deadlineLabel, -250, SpringLayout.SOUTH, this);
