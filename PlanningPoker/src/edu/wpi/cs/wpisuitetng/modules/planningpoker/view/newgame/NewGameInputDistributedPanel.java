@@ -62,7 +62,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 	private final String[] ampmString = {"AM", "PM"};
 	private List<Integer> selectionsMade = new ArrayList<Integer>();
 	
-	private JButton activateButton;
+	private JButton saveButton;
 	private final JButton addNewButton = new JButton("Create New");
 	private JComboBox deckBox = new JComboBox(); // Implement Decks
 	private JComboBox<Integer> dayBox = new JComboBox<Integer>();
@@ -88,7 +88,9 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 	private final JLabel deadlineError = new JLabel("Can not have a deadline in the past");
 	private final JLabel nameError = new JLabel("Enter a name for the game");
 	private final JLabel reqError = new JLabel("Can not have a game with no requirements");
-
+	private final JButton activateButton = new JButton("Activate Game");
+	Timer canActivateChecker;
+	
 	// Date Picker declarations
 	private JPanel frame = new JPanel();
 	private UtilDateModel model = new UtilDateModel();
@@ -105,7 +107,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 	{
 		this.gameSession = gameSession;
 		this.editMode = true;
-		activateButton = new JButton("Update Game");
+		saveButton = new JButton("Update Game");
 		init(ngdp);
 		System.out.println("Editing Game: "+ gameSession.getGameName());
 	}
@@ -116,7 +118,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 	 * @param nglp, The NewGameLivePanel that it was added from
 	 */
 	public NewGameInputDistributedPanel(NewGameDistributedPanel ngdp) {
-		activateButton = new JButton("Create Game");
+		saveButton = new JButton("Create Game");
 		init(ngdp);
 	}
 	
@@ -124,6 +126,21 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 	
 	private void init(NewGameDistributedPanel ngdp)
 	{
+		// This timer is used to check if the game can be activated. If it can be activated, which means that all the necessary fields are filled,
+		// then the activate button will become enabled
+		canActivateChecker = new Timer(100, new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				if (canActivate()){
+					activateButton.setEnabled(true);
+				}
+				else {
+					activateButton.setEnabled(false);
+				}
+			}
+		});
+		canActivateChecker.start();
+		saveButton.setEnabled(false);
+		activateButton.setEnabled(false);
 		currentDate = Calendar.getInstance();
 
 		newGameP = ngdp;
@@ -164,32 +181,32 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 			DateFormat yearFormat = new SimpleDateFormat("yy");
 
 			//Gets the deadline from the game
+			if (gameSession.getEndDate() != null){
+				int year_index = gameSession.getEndDate().getYear();
 			
-			int year_index = gameSession.getEndDate().getYear();
+				int day_index = gameSession.getEndDate().getMonth() - 1;
 			
-			int day_index = gameSession.getEndDate().getMonth() - 1;
-			
-			int month_index = gameSession.getEndDate().getDay();
-			
-			datePicker.getModel().setDate(year_index, month_index, day_index);
+				int month_index = gameSession.getEndDate().getDay();
+				datePicker.getModel().setDate(year_index, month_index, day_index);
 			
 			//Sets the hour and minute combo boxes to the hour and minute in the game's deadline
 			
-			if (gameSession.getEndDate().getHours() > 11){
-				hourComboBox.setSelectedIndex(gameSession.getEndDate().getHours() - 12);
+				if (gameSession.getEndDate().getHours() > 11){
+					hourComboBox.setSelectedIndex(gameSession.getEndDate().getHours() - 12);
+				}
+				else if (gameSession.getEndDate().getHours() == 0){
+					hourComboBox.setSelectedIndex(12);
+				}
+				else {
+					hourComboBox.setSelectedIndex(gameSession.getEndDate().getHours());
+				}
+				minuteComboBox.setSelectedIndex(gameSession.getEndDate().getMinutes()+1);
 			}
-			else if (gameSession.getEndDate().getHours() == 0){
-				hourComboBox.setSelectedIndex(12);
-			}
-			else {
-				hourComboBox.setSelectedIndex(gameSession.getEndDate().getHours());
-			}
-			minuteComboBox.setSelectedIndex(gameSession.getEndDate().getMinutes()+1);
-			
 			//Puts the name of the game into the name text field, it can not be edited
 			
 			nameTextField.setText(gameSession.getGameName());
 			nameTextField.setEditable(false);
+			descTextArea.setText(gameSession.getGameDescription());
 			
 		}
 		//Adds a documentlistener to the name text field so that way if the text is changed, the pop-up will appear if 
@@ -198,14 +215,23 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 			@Override
 			public void changedUpdate(DocumentEvent e){
 				newGameP.isNew = false;
+				if (nameTextField.getText().length() != 0){
+					saveButton.setEnabled(true);
+				}
 			}
 			@Override
 			public void removeUpdate(DocumentEvent e){
 				newGameP.isNew = false;
+				if (nameTextField.getText().length() != 0){
+					saveButton.setEnabled(true);
+				}
 			}
 			@Override 
 			public void insertUpdate(DocumentEvent e){
 				newGameP.isNew = false;
+				if (nameTextField.getText().length() != 0){
+					saveButton.setEnabled(true);
+				}
 			}
 		});
 
@@ -280,6 +306,18 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 			}
 		});
 
+	//This button is for saving a game, and to do that, only the name is required
+		
+		saveButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				String name = nameTextField.getText();
+				GameModel model = GameModel.getInstance();
+				GameSession newGame = new GameSession(name, new String(), 0, model.getSize() + 1, new Date(), new ArrayList<Integer>()); 
+				AddGameController msgr = new AddGameController(model);
+				msgr.sendMessage(newGame);	
+			}
+		});
+		
 	//Checks to see if all the fields are properly filled, and then sends the game object to the database if done.
 
 		activateButton.addActionListener(new ActionListener(){
@@ -290,6 +328,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 				nameError.setVisible(false);
 				reqError.setVisible(false);
 				String name = nameTextField.getText();
+				String description = descTextArea.getText();
 				Calendar selectedDeadline = Calendar.getInstance();
 				currentDate = Calendar.getInstance();
 				if (datePicker.getModel().isSelected() == false){
@@ -325,12 +364,14 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 				else if (name.length() < 1){
 					nameError.setVisible(true);
 				}
+				else if (description.length() < 1){
+					nameError.setVisible(true);
+				}
 				//Sends the game to the database
 				else{
 					newGameP.isNew = true;
-					System.out.println("Valid date selected and requirements were selected");
 					Date deadlineDate = new Date(deadlineYear - 1900, deadlineMonth - 1, deadlineDay, getHour(hourTime), minuteTime);
-					GameSession newGame = new GameSession(name, 0 , GameModel.getInstance().getSize()+1, deadlineDate, selectionsMade); 
+					GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize()+1, deadlineDate, selectionsMade); 
 					GameModel model = GameModel.getInstance();
 					AddGameController msgr = new AddGameController(model);
 					msgr.sendMessage(newGame);	
@@ -350,6 +391,86 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 		}
 		else {
 			return hour + 12;
+		}
+	}
+	
+	//This function checks to see if everything necessary for activating a game has been entered by the user.
+	private boolean canActivate(){
+		if (nameInputted() && descInputted() && hourSelected() && minuteSelected() && hasReqs() && hasDeadline()){
+			return true;
+		}
+		return false;
+	}
+	
+	//Returns true if the name text field has text
+	private boolean nameInputted(){
+		if (nameTextField.getText().length() > 0){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	//Returns true if the description text field has text
+	private boolean descInputted(){
+		if (descTextArea.getText().length() > 0){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	//Returns true if an hour has been selected
+	private boolean hourSelected(){
+		if (hourComboBox.getSelectedIndex() != 0){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	//Returns true if a minute has been selected
+	private boolean minuteSelected(){
+		if (minuteComboBox.getSelectedIndex() != 0){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	//Returns true if requirements have been added to the game
+	private boolean hasReqs(){
+		List<Requirement> reqsSelected = newGameP.getSelected();
+		if (reqsSelected.size() > 0){
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	//Returns true if a deadline is in the future
+	private boolean hasDeadline(){
+		Calendar currentDate = Calendar.getInstance();
+		int year = datePicker.getModel().getYear();
+		int month = datePicker.getModel().getMonth();
+		int day = datePicker.getModel().getDay();
+		if (!hourSelected() && !minuteSelected()){
+			return false;
+		}
+		int hour = getHour(hourComboBox.getSelectedIndex());
+		int minute = minuteComboBox.getSelectedIndex();
+		Calendar deadline = Calendar.getInstance();
+		deadline.set(year, month, day, hour, minute);
+		if (deadline.after(currentDate)){
+			return true;
+		}
+		else {
+			return false;
 		}
 	}
 	
@@ -404,12 +525,12 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 		springLayout.putConstraint(SpringLayout.WEST, deadlineLabel, 0, SpringLayout.WEST, nameLabel);
 		
 		//Spring layout for the activateButton
-		springLayout.putConstraint(SpringLayout.SOUTH, activateButton, -10, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, activateButton, 180, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, saveButton, -10, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, saveButton, 180, SpringLayout.WEST, this);
 		
 		//Spring layout for the deadlineError
-		springLayout.putConstraint(SpringLayout.WEST, deadlineError, 0, SpringLayout.WEST, activateButton);
-		springLayout.putConstraint(SpringLayout.NORTH, deadlineError, -20, SpringLayout.NORTH, activateButton);
+		springLayout.putConstraint(SpringLayout.WEST, deadlineError, 0, SpringLayout.WEST, saveButton);
+		springLayout.putConstraint(SpringLayout.NORTH, deadlineError, -20, SpringLayout.NORTH, saveButton);
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameTextField, 0, SpringLayout.VERTICAL_CENTER, nameLabel);
 		deadlineError.setVisible(false);
 		
@@ -496,9 +617,13 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 		springLayout.putConstraint(SpringLayout.WEST, deckBox, 150, SpringLayout.WEST, deckLabel);
 		springLayout.putConstraint(SpringLayout.SOUTH, deckBox, 0, SpringLayout.SOUTH, deckLabel);
 		
-		//Spring layout for the activateButton
-		springLayout.putConstraint(SpringLayout.SOUTH, activateButton, -10, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, activateButton, 180, SpringLayout.WEST, this);
+		//Spring layout for the saveButton
+		springLayout.putConstraint(SpringLayout.SOUTH, saveButton, -10, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, saveButton, 180, SpringLayout.WEST, this);
+		
+		//Spring layout for activateButton
+		springLayout.putConstraint(SpringLayout.WEST, activateButton, 50, SpringLayout.EAST, saveButton);
+		springLayout.putConstraint(SpringLayout.NORTH, activateButton, 0, SpringLayout.NORTH, saveButton);
 		
 		setLayout(springLayout);
 	
@@ -523,13 +648,14 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 		add(deckBox);
 		
 		// Adds buttons at the bottom end of the GUI
-		add(activateButton);
+		add(saveButton);
 		
 		add(deadlineError);
 		add(hourError);
 		add(minuteError);
 		add(nameError);
 		add(reqError);
+		add(activateButton);
 	}
 
 }

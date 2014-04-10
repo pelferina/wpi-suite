@@ -34,11 +34,9 @@ public class NewGameReqPanel extends JPanel {
 
 	DefaultListModel<String> listValue = new DefaultListModel<String>();
 	private List<Requirement> selected = new ArrayList<Requirement>();
-	private String[] columnName = {"Name", "Description"};
 	private JTable unselectedTable;
 	private JTable selectedTable;
 	private List<Requirement> reqs = new ArrayList<Requirement>();
-	private boolean editMode = false;
 	private Timer refresh;
 
 	/**
@@ -63,7 +61,6 @@ public class NewGameReqPanel extends JPanel {
 	public NewGameReqPanel(List<Requirement> requirements, GameSession gameSession) {
 		unselectedTable = new JTable();
 		selectedTable = new JTable();
-		this.editMode  = true;
 		getReqs();
 		List<Requirement> reqList = new ArrayList<Requirement>(reqs);
 		List<Integer> selectedIDs = gameSession.getGameReqs();

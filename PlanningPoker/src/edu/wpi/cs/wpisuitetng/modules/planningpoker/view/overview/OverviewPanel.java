@@ -68,22 +68,21 @@ public class OverviewPanel extends JPanel {
 		//This timer checks the deadlines of all active games and sends an email to all users that have added an email
 		//saying that the game is complete. 
 		
-		deadlineCheck = new Timer(1000, new ActionListener(){
+		deadlineCheck = new Timer(60000, new ActionListener(){
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				List<GameSession> games = gameModel.getGames();
 				Date today = new Date();
 				for(int i=0; i<games.size(); i++){
-					System.out.println("Today" + today.toString());
-					System.out.println("Deadline" + games.get(i).getEndDate().toString());
-					if (games.get(i).getEndDate().before(today) && !games.get(i).emailSent){
-						System.out.println("Deadline passed");
-						final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.PUT); // PUT == create
-						//request.setBody(new EmailAddressModel(address).toJSON()); // put the new message in the body of the request
-						request.setBody("endGame" + games.get(i).getGameName());
-						request.send(); // send the request
-						games.get(i).emailSent = true;
+					if (games.get(i).getEndDate() != null){
+						if (games.get(i).getEndDate().before(today) && !games.get(i).emailSent){
+							final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.PUT); // PUT == create
+							//request.setBody(new EmailAddressModel(address).toJSON()); // put the new message in the body of the request
+							request.setBody("endGame" + games.get(i).getGameName());
+							request.send(); // send the request
+							games.get(i).emailSent = true;
+						}
 					}
 				}
 			}

@@ -38,23 +38,11 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequireme
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
-
-
-/**
- * Description
- *
- * @author Xi Wen; Anthony Dresser; Nathan Bryant
- * @version Mar 24, 2014
- */
 @SuppressWarnings("serial")
 public class MainView extends JTabbedPane {
-	private JPanel currentGame;
-	private JPanel pastGames;
-	private JPanel deckPanel;
 	private JPanel overviewPanel;
-	private JPanel newGame;
 	private GameModel gameModel;
 	private int newGameTabs = 0;
 	private GetRequirementsRequestObserver refresher;
@@ -65,9 +53,6 @@ public class MainView extends JTabbedPane {
 	private final AddEmailPanel addEmailPanel;
 	
 	public MainView(DeckModel deckModel) {
-		currentGame = new CurrentGamePanel();
-		pastGames = new JPanel();
-		deckPanel = new DeckPanel(deckModel);
 		overviewPanel = new OverviewPanel();
 		addEmailPanel = new AddEmailPanel();
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -85,6 +70,7 @@ public class MainView extends JTabbedPane {
 			}
 		});
 		addTab("Add Email", addEmailPanel);
+		ViewEventController.getInstance().setMainView(this);
 	}
 	
 	//The function to add a new game tab
