@@ -17,8 +17,6 @@ import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameInputLivePanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameMainPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -38,10 +36,7 @@ public class AddGameController implements ActionListener {
 	 * @param model the model containing the messages
 	 * @param view the view where the user enters new messages
 	 */
-	public AddGameController(GameModel model, NewGameMainPanel LOLNO ) {
-		this.model = model;
-		System.err.println("Depreciated Constructor");
-	}
+
 	public AddGameController(GameModel model) {
 		this.model = model;
 	}

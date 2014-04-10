@@ -33,7 +33,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame.CurrentGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameInputDistributedPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameMainPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsRequestObserver;
@@ -88,6 +87,8 @@ public class MainView extends JTabbedPane {
 		addTab("Add Email", addEmailPanel);
 	}
 	
+	//The function to add a new game tab
+	
 	public void addNewGameTab()
 	{
 		GetRequirementsController.getInstance().retrieveRequirements();
@@ -122,6 +123,8 @@ public class MainView extends JTabbedPane {
 		newGameTabs++;
 		j++;
 	}
+	
+	//Adds a new edit game tab
 	public void addEditGameTab(GameSession gameSession)
 	{
 		GetRequirementsController.getInstance().retrieveRequirements();
@@ -155,6 +158,9 @@ public class MainView extends JTabbedPane {
 		newGameTabs++;
 		j++;
 	}
+	
+	//The action listener for closing of tabs
+	
 	public class MyCloseActionHandler implements ActionListener {
 
 	    private String tabName;
@@ -182,6 +188,9 @@ public class MainView extends JTabbedPane {
 				}
 			}
 	    }
+	    
+	    //When the 'x' button is selected, it will prompt the user if they want to discard changes if the user has made inputs in any of the 
+	    //new game creation fields
 	    
 	    public void actionPerformed(ActionEvent evt) {
 

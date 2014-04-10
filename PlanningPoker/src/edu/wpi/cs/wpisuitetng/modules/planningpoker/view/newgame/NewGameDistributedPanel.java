@@ -5,6 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
+ * Contributors: Team Cosmic Latte
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
@@ -26,12 +27,11 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
  * The panel for creating a new live Planning Poker game, along with fields
  * that have the parameters for what a new game should have.
  *
- * @author Xi Wen; Anthony Dresser; Nathan Bryant
- * @version Mar 24, 2014
+ * 
  */
 @SuppressWarnings("serial")
 
-public class NewGameDistributedPanel extends AbsNewGamePanel {
+public class NewGameDistributedPanel extends JSplitPane {
 	
 	public boolean isNew = true;
 	public NewGameInputDistributedPanel newGameInputPanel;
@@ -81,11 +81,6 @@ public class NewGameDistributedPanel extends AbsNewGamePanel {
 		addImpl(newGameReqPanel, JSplitPane.RIGHT, 2);
 		
 		setDividerLocation(500);
-	}
-	
-	//Added by Ruofan 
-	public void setGameName(String gameName){
-		newGameInputPanel.setGameName(gameName);
 	}
 	
 	public List<Requirement> getSelected(){

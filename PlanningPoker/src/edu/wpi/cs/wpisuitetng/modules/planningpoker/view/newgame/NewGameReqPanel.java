@@ -1,6 +1,12 @@
-/**
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  * 
- */
+ * Contributors: Team Cosmic Latte
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
 import javax.swing.*;
@@ -10,7 +16,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequireme
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -22,16 +27,12 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  * This class shows the requirements that are currently in the game
- * @author Anthony Dresser
- * @version March 23, 2014
+ *
  */
 @SuppressWarnings("serial")
 public class NewGameReqPanel extends JPanel {
 
 	DefaultListModel<String> listValue = new DefaultListModel<String>();
-	private final JList<String> reqList = new JList<String>(listValue);
-	private final JPanel listPanel = new JPanel();
-	private final JLabel gameReqs = new JLabel("Requirements in the game");
 	private List<Requirement> selected = new ArrayList<Requirement>();
 	private String[] columnName = {"Name", "Description"};
 	private JTable unselectedTable;
@@ -41,8 +42,10 @@ public class NewGameReqPanel extends JPanel {
 	private Timer refresh;
 
 	/**
-	 * @wbp.parser.constructor
+	 * 
+	 * @param requirements, the current requirements in the database
 	 */
+	//Constructor for new game tab
 	public NewGameReqPanel(List<Requirement> requirements) {
 		reqs = new ArrayList<Requirement>(requirements);
 		System.out.println(reqs.size());
@@ -51,6 +54,12 @@ public class NewGameReqPanel extends JPanel {
 		init();
 	}
 
+	/**
+	 * 
+	 * @param requirements, the current requirements in the database
+	 * @param gameSession, the game to be edited
+	 */
+	//Constructor for edit games tab
 	public NewGameReqPanel(List<Requirement> requirements, GameSession gameSession) {
 		unselectedTable = new JTable();
 		selectedTable = new JTable();
@@ -58,6 +67,10 @@ public class NewGameReqPanel extends JPanel {
 		getReqs();
 		List<Requirement> reqList = new ArrayList<Requirement>(reqs);
 		List<Integer> selectedIDs = gameSession.getGameReqs();
+		
+		//Removes the selected reqs from the list of all the requirements. This is done to display only the requirements
+		//that are not in the game in the top table.
+		
 		for (int i = 0; i < reqList.size(); i++){
 			Requirement req = reqList.get(i);
 			for (int selectedReqID: selectedIDs) {
@@ -73,8 +86,11 @@ public class NewGameReqPanel extends JPanel {
 		init();
 	}
 
+	//Initializes the reqpanel
+	
 	private void init()
 	{
+		//Adds a timer to call refresh half a second after a new game tab is opened
 		refresh = new Timer();
 		TimerTask initialize = new RefreshTask(refresh, this);
 		refresh.schedule(initialize, 500);
@@ -82,7 +98,7 @@ public class NewGameReqPanel extends JPanel {
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 
-		// Declarations and initializations
+		// Declarations and initializations of GUI components
 		JLabel lblRequirementsAvailable = new JLabel("Requirements Available");
 		JButton btnAddReq = new JButton("Add New Requirement");
 		JButton btnRemoveOne = new JButton("\u2191");
@@ -95,6 +111,7 @@ public class NewGameReqPanel extends JPanel {
 
 		// Observers
 
+		//TODO This button will allow the user to create a new requirement upon clicking on it
 		btnAddReq.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
@@ -102,6 +119,8 @@ public class NewGameReqPanel extends JPanel {
 			}
 		});
 
+		//Adds the selected requirement in the unselected table and puts it into the selected table, as well as the list of 
+		//selected requirements.
 		btnAddOne.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
@@ -123,6 +142,7 @@ public class NewGameReqPanel extends JPanel {
 			}
 		});
 
+		//Adds all of the games in the unselected table to the selected table, and adds all the requirements to the list of selected requirements
 		btnAddAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
@@ -141,6 +161,7 @@ public class NewGameReqPanel extends JPanel {
 			}
 		});
 
+		//Removes the selected requirements from the selected table, as well as the list of selected requirements
 		btnRemoveOne.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
@@ -162,6 +183,7 @@ public class NewGameReqPanel extends JPanel {
 			}
 		});
 
+		//Removes all of the requirements that are currently in the game (table and list)
 		btnRemoveAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
@@ -180,6 +202,7 @@ public class NewGameReqPanel extends JPanel {
 			}
 		});
 
+		//Initializes the unselected requirements table
 		unselectedTable.setModel(new DefaultTableModel(
 				new Object[][] {
 						{null, null},
@@ -244,16 +267,21 @@ public class NewGameReqPanel extends JPanel {
 		dtm.setNumRows(reqs.size());
 		dtm.setColumnCount(2);
 
+		// Sets the column size of the unselected requirements table
 		unselectedTable.getColumnModel().getColumn(0).setMinWidth(100);
 		unselectedTable.getColumnModel().getColumn(0).setMaxWidth(200);
 		unselectedTable.getColumnModel().getColumn(0).setPreferredWidth(150);
 
+		//Puts the requirements from the requirement manager into the unselected requirements table
+		
 		for (int i = 0; i < reqs.size(); i++){
 			dtm.setValueAt(reqs.get(i).getName(), i, 0);
 			dtm.setValueAt(reqs.get(i).getDescription(), i, 1);
 		}
 		unselected_table.setViewportView(unselectedTable);
 
+		//Initializes the selected requirements table
+		
 		selectedTable.setModel(new DefaultTableModel(
 				new Object[][] {
 						{null, null},
@@ -270,42 +298,28 @@ public class NewGameReqPanel extends JPanel {
 		dtm_1.setNumRows(selected.size());
 		dtm_1.setColumnCount(2);
 		selected_table.setViewportView(selectedTable);
-		//unselectedTable.getColumnModel().getColumn(0).setPreferredWidth(50);
-
+		
+		//Sets the column widths of the selected requirements table
 		selectedTable.getColumnModel().getColumn(0).setMinWidth(100);
 		selectedTable.getColumnModel().getColumn(0).setMaxWidth(200);
 		selectedTable.getColumnModel().getColumn(0).setPreferredWidth(150);
 
+		//Puts the selected requirements into the selected requirements table. This is only applicable when an edit game tab is opened
+		
 		for (int i = 0; i < selected.size(); i++){
 			dtm_1.setValueAt(selected.get(i).getName(), i, 0);
 			dtm_1.setValueAt(selected.get(i).getDescription(), i, 1);
 		}
 		unselectedTable.repaint();
 	}
+	
+	//Getter for newGameInputDistributedPanel to get the selected requirements
 	public List<Requirement> getSelected(){
 		return selected;
-
 	}
 
-	/**
-	 * Takes a requirement and adds it to its reqList
-	 * @param req
-	 */
-	public void addReq(Requirement req){
-		selected.add(req);
-		listValue.addElement(req.getName());
-	}
-
-	public Requirement removeSelected(){
-		int tempIndex = reqList.getSelectedIndex();
-		if (tempIndex == -1)
-			return null;
-		Requirement tempReq = selected.get(tempIndex);
-		listValue.remove(tempIndex);
-		selected.remove(tempIndex);
-		return tempReq;
-	}
-
+	//Refreshes the requirements that are displayed in the unselected table. This is for when the user inputs a new requirement into requirement
+	//manager with a game tab open
 	public void refresh() {
 		getReqs();
 		ArrayList<Requirement> addedReqs = new ArrayList<Requirement>();
@@ -324,6 +338,8 @@ public class NewGameReqPanel extends JPanel {
 		unselectedTable.repaint();
 	}
 
+	//This gets only the requirements in the "Backlog" iteration from the requirements manager
+	
 	private void getReqs() {
 		GetRequirementsController.getInstance().retrieveRequirements();
 		reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
@@ -334,6 +350,8 @@ public class NewGameReqPanel extends JPanel {
 		}
 	}
 }
+
+//The timer task for scheduling the initial refresh of the page
 
 class RefreshTask extends TimerTask {
 
