@@ -234,6 +234,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 				}
 				newGameP.isNew = false;
 			}
+			
 		});
 
 		//Sets isNew to false, and sets minuteTime to the selected minute.
@@ -243,6 +244,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 				minuteTime = minuteComboBox.getSelectedIndex() - 1;
 				newGameP.isNew = false;
 			}
+			
 		});
 
 		//Sets isNew to false and sets hourtime to the hour selected. It is set to 0 if 12 is selected.
@@ -344,6 +346,22 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 		springLayout.putConstraint(SpringLayout.WEST, nameTextField, 100, SpringLayout.WEST, nameLabel);
 		springLayout.putConstraint(SpringLayout.EAST, nameTextField, 200, SpringLayout.EAST, nameLabel);
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameTextField, 0, SpringLayout.VERTICAL_CENTER, nameLabel);
+		
+		//Spring layout for the descriptionLabel
+		springLayout.putConstraint(SpringLayout.NORTH, descriptionLabel, 30, SpringLayout.NORTH, nameLabel);
+		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 23, SpringLayout.WEST, this);
+		
+		//Spring layout for the descTextArea
+		descTextArea.setRows(3);
+		descTextArea.setLineWrap(true);
+		springLayout.putConstraint(SpringLayout.NORTH, descTextArea, 10, SpringLayout.SOUTH, descriptionLabel);
+		springLayout.putConstraint(SpringLayout.WEST, descTextArea, 0, SpringLayout.WEST, descriptionLabel);
+		springLayout.putConstraint(SpringLayout.EAST, descTextArea, -10, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, descTextArea, -15, SpringLayout.NORTH, deadlineLabel);
+		
+		//Spring layout for the deadlineLabel
+		springLayout.putConstraint(SpringLayout.SOUTH, deadlineLabel, -250, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, deadlineLabel, 0, SpringLayout.WEST, nameLabel);
 		
 		//Spring layout for the descriptionLabel
 		springLayout.putConstraint(SpringLayout.NORTH, descriptionLabel, 30, SpringLayout.NORTH, nameLabel);

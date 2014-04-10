@@ -35,8 +35,16 @@ public class GameSession extends AbstractModel {
 
 	/** The game */
 	private String gameName;
+
+
+
 	private final int ownerID;
 	private final int gameID;
+	/** game status indicator 
+	 * 0  = game is in draft mode
+	 * 1  = game is in progress
+	 * 2  = game is finished.
+	 * */
 	
 	private GameStatus gameStatus;
 	/** The date-time stamp of the creation */
@@ -96,6 +104,7 @@ public class GameSession extends AbstractModel {
 	public String toString() {
 		// Format the date-time stamp
 		DateFormat dateFormat1 = new SimpleDateFormat("MM/dd/yy hh:mm a");
+		DateFormat dateFormat2 = new SimpleDateFormat("MM/dd/yy");
 		String returnStr = new String();
 		returnStr = gameName + "	";
 		if(creationdate != null)
