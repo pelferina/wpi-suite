@@ -77,7 +77,7 @@ public class EmailAddressTest {
 	
 	@Test
 	public void testSendEmail() throws UnsupportedEncodingException{
-		GameSession gs = new GameSession("Test Game", 0, 1, new Date(1, 1, 1), new ArrayList<Integer>());
+		GameSession gs = new GameSession("Test Game", "Test Description", 0, 1, new Date(1, 1, 1), new ArrayList<Integer>());
 		
 //		EmailAddressModel newEmailAddress = new EmailAddressModel("rhhayne@wpi.edu");
 //		newEmailAddress.setUserID(27);

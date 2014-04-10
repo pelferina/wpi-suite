@@ -33,29 +33,16 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame.CurrentGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameInputDistributedPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameMainPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
-
-
-/**
- * Description
- *
- * @author Xi Wen; Anthony Dresser; Nathan Bryant
- * @version Mar 24, 2014
- */
 @SuppressWarnings("serial")
 public class MainView extends JTabbedPane {
-	private JPanel currentGame;
-	private JPanel pastGames;
-	private JPanel deckPanel;
 	private JPanel overviewPanel;
-	private JPanel newGame;
 	private GameModel gameModel;
 	private int newGameTabs = 0;
 	private GetRequirementsRequestObserver refresher;
@@ -66,9 +53,6 @@ public class MainView extends JTabbedPane {
 	private final AddEmailPanel addEmailPanel;
 	
 	public MainView(DeckModel deckModel) {
-		currentGame = new CurrentGamePanel();
-		pastGames = new JPanel();
-		deckPanel = new DeckPanel(deckModel);
 		overviewPanel = new OverviewPanel();
 		addEmailPanel = new AddEmailPanel();
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -86,7 +70,10 @@ public class MainView extends JTabbedPane {
 			}
 		});
 		addTab("Add Email", addEmailPanel);
+		ViewEventController.getInstance().setMainView(this);
 	}
+	
+	//The function to add a new game tab
 	
 	public void addNewGameTab()
 	{
@@ -122,6 +109,8 @@ public class MainView extends JTabbedPane {
 		newGameTabs++;
 		j++;
 	}
+	
+	//Adds a new edit game tab
 	public void addEditGameTab(GameSession gameSession)
 	{
 		GetRequirementsController.getInstance().retrieveRequirements();
@@ -155,6 +144,9 @@ public class MainView extends JTabbedPane {
 		newGameTabs++;
 		j++;
 	}
+	
+	//The action listener for closing of tabs
+	
 	public class MyCloseActionHandler implements ActionListener {
 
 	    private String tabName;
@@ -182,6 +174,9 @@ public class MainView extends JTabbedPane {
 				}
 			}
 	    }
+	    
+	    //When the 'x' button is selected, it will prompt the user if they want to discard changes if the user has made inputs in any of the 
+	    //new game creation fields
 	    
 	    public void actionPerformed(ActionEvent evt) {
 

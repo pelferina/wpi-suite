@@ -64,23 +64,25 @@ public class OverviewPanel extends JPanel {
 		table = new JTable(new JTableModel(sessions));
 		sorter = new TableRowSorter<JTableModel>((JTableModel)table.getModel());
 		table.setRowSorter(sorter);
+	
+		//This timer checks the deadlines of all active games and sends an email to all users that have added an email
+		//saying that the game is complete. 
 		
-		deadlineCheck = new Timer(1000, new ActionListener(){
+		deadlineCheck = new Timer(60000, new ActionListener(){
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				List<GameSession> games = gameModel.getGames();
 				Date today = new Date();
 				for(int i=0; i<games.size(); i++){
-					System.out.println("Today" + today.toString());
-					System.out.println("Deadline" + games.get(i).getEndDate().toString());
-					if (games.get(i).getEndDate().before(today) && !games.get(i).emailSent){
-						System.out.println("Deadline passed");
-						final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.PUT); // PUT == create
-						//request.setBody(new EmailAddressModel(address).toJSON()); // put the new message in the body of the request
-						request.setBody("endGame" + games.get(i).getGameName());
-						request.send(); // send the request
-						games.get(i).emailSent = true;
+					if (games.get(i).getEndDate() != null){
+						if (games.get(i).getEndDate().before(today) && !games.get(i).emailSent){
+							final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.PUT); // PUT == create
+							//request.setBody(new EmailAddressModel(address).toJSON()); // put the new message in the body of the request
+							request.setBody("endGame" + games.get(i).getGameName());
+							request.send(); // send the request
+							games.get(i).emailSent = true;
+						}
 					}
 				}
 			}
@@ -88,6 +90,9 @@ public class OverviewPanel extends JPanel {
 		});
 		
 		deadlineCheck.start();
+		
+		//This is used to refresh the overview table
+		
 		table.addMouseListener(new MouseAdapter() {
 			  public void mouseClicked(MouseEvent e) {
 				    if (e.getClickCount() == 2) {
@@ -114,8 +119,13 @@ public class OverviewPanel extends JPanel {
 		tableView = new JScrollPane(table);
 		setLayout(new BorderLayout(0, 0));
 		
+		//Initializes the game tree
+		
 		gameTreeModel = new GameTree(new DefaultMutableTreeNode("Planning Poker"));
 		gameTree = new JTree(gameTreeModel.getTop());
+		
+		//Refreshes the table whenever the tree is selected
+		
 		gameTree.addTreeSelectionListener(    new TreeSelectionListener(){
 			public void valueChanged(TreeSelectionEvent e) {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode)gameTree.getLastSelectedPathComponent();
@@ -126,6 +136,8 @@ public class OverviewPanel extends JPanel {
 	            Object nodeInfo = node.getUserObject();
 	            updateTable((String)nodeInfo);
 	    }});
+		
+		//Refreshes the table when the focus is gained to the overview tab
 		
 		gameTree.addFocusListener(new FocusListener(){
 
@@ -171,6 +183,8 @@ public class OverviewPanel extends JPanel {
 		
 		
 	}
+	
+	// This is the function that updates the table with the current games that are stored in the database
 	
 	public void updateTable(String s){
 		

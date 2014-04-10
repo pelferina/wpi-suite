@@ -30,7 +30,7 @@ public class GameSessionTest {
 	// Tests whether a gamesession can be created successfully.
 	@Test
 	public void testGameSessionCreate(){
-		GameSession gs = new GameSession("Test Game", 0, 1, Calendar.getInstance().getTime(), new ArrayList<Integer>());
+		GameSession gs = new GameSession("Test Game", "Test Description", 0, 1, Calendar.getInstance().getTime(), new ArrayList<Integer>());
 		assertNotNull(gs);
 		assertEquals("Test Game", gs.getGameName());
 		assertEquals(0,gs.getOwnerID());
@@ -41,7 +41,7 @@ public class GameSessionTest {
 	
 	@Test
 	public void testSetDeadline(){
-		GameSession gs = new GameSession("Test Game", 0, 1, Calendar.getInstance().getTime(), new ArrayList<Integer>());
+		GameSession gs = new GameSession("Test Game", "Test Description", 0, 1, Calendar.getInstance().getTime(), new ArrayList<Integer>());
 		Date deadline = Calendar.getInstance().getTime();
 		
 		gs.setEndDate(deadline);
@@ -52,16 +52,16 @@ public class GameSessionTest {
 	
 	@Test
 	public void testDefaultGameStatus(){
-		GameSession gs = new GameSession("Test Game", 0, 1, new Date(), new ArrayList<Integer>());
+		GameSession gs = new GameSession("Test Game", "Test Description", 0, 1, new Date(), new ArrayList<Integer>());
 		assertEquals(GameStatus.DRAFT, gs.getGameStatus());
 	}
 	
 	@Test
 	public void testGetDraftGameSessionList(){
 		GameModel gm = new GameModel();
-		GameSession gs1 = new GameSession("Test Game1", 0, 1, new Date(), new ArrayList<Integer>());
-		GameSession gs2 = new GameSession("Test Game2", 0, 2, new Date(), new ArrayList<Integer>());
-		GameSession gs3 = new GameSession("Test Game3", 0, 3, new Date(), new ArrayList<Integer>());
+		GameSession gs1 = new GameSession("Test Game1", "Test Description", 0, 1, new Date(), new ArrayList<Integer>());
+		GameSession gs2 = new GameSession("Test Game2", "Test Description", 0, 2, new Date(), new ArrayList<Integer>());
+		GameSession gs3 = new GameSession("Test Game3", "Test Description", 0, 3, new Date(), new ArrayList<Integer>());
 		gs2.setGameStatus(GameStatus.ACTIVE);
 		gs3.setGameStatus(GameStatus.COMPLETED);
 		gm.addMessage(gs1);
@@ -81,9 +81,9 @@ public class GameSessionTest {
 	@Test
 	public void testGetActiveGameSessionList(){
 		GameModel gm = new GameModel();
-		GameSession gs1 = new GameSession("Test Game1", 0, 1, new Date(), new ArrayList<Integer>());
-		GameSession gs2 = new GameSession("Test Game2", 0, 2, new Date(), new ArrayList<Integer>());
-		GameSession gs3 = new GameSession("Test Game3", 0, 3, new Date(), new ArrayList<Integer>());
+		GameSession gs1 = new GameSession("Test Game1", "Test Description", 0, 1, new Date(), new ArrayList<Integer>());
+		GameSession gs2 = new GameSession("Test Game2", "Test Description", 0, 2, new Date(), new ArrayList<Integer>());
+		GameSession gs3 = new GameSession("Test Game3", "Test Description", 0, 3, new Date(), new ArrayList<Integer>());
 		gs2.setGameStatus(GameStatus.ACTIVE);
 		gs3.setGameStatus(GameStatus.COMPLETED);
 		gm.addMessage(gs1);
@@ -102,9 +102,9 @@ public class GameSessionTest {
 	@Test
 	public void testGetPastGameSessionList(){
 		GameModel gm = new GameModel();
-		GameSession gs1 = new GameSession("Test Game1", 0, 1, new Date(), new ArrayList<Integer>());
-		GameSession gs2 = new GameSession("Test Game2", 0, 2, new Date(), new ArrayList<Integer>());
-		GameSession gs3 = new GameSession("Test Game3", 0, 3, new Date(), new ArrayList<Integer>());
+		GameSession gs1 = new GameSession("Test Game1", "Test Description", 0, 1, new Date(), new ArrayList<Integer>());
+		GameSession gs2 = new GameSession("Test Game2", "Test Description", 0, 2, new Date(), new ArrayList<Integer>());
+		GameSession gs3 = new GameSession("Test Game3", "Test Description", 0, 3, new Date(), new ArrayList<Integer>());
 		gs2.setGameStatus(GameStatus.ACTIVE);
 		gs3.setGameStatus(GameStatus.COMPLETED);
 		gm.addMessage(gs1);

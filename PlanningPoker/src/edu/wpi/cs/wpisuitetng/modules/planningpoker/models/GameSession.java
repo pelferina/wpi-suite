@@ -35,7 +35,7 @@ public class GameSession extends AbstractModel {
 
 	/** The game */
 	private String gameName;
-
+	private String gameDescription;
 
 
 	private final int ownerID;
@@ -47,6 +47,7 @@ public class GameSession extends AbstractModel {
 	 * */
 	
 	private GameStatus gameStatus;
+	
 	/** The date-time stamp of the creation */
 	private List<Integer> gameReqs;
 	private final Date creationdate;
@@ -54,8 +55,9 @@ public class GameSession extends AbstractModel {
 	private Date endDate;
 	public boolean emailSent = false;
 	
-	public GameSession(String game, int ownerID, int gameID, Date deadline, List<Integer> gameReqs){
+	public GameSession(String game, String description, int ownerID, int gameID, Date deadline, List<Integer> gameReqs){
 		this.gameName = game;
+		this.gameDescription = description;
 		this.ownerID = ownerID;
 		this.gameID = gameID;
 		this.endDate = deadline;
@@ -174,6 +176,9 @@ public class GameSession extends AbstractModel {
 	}
 	public String getGameName() {
 		return gameName;
+	}
+	public String getGameDescription(){
+		return gameDescription;
 	}
 	public void setGameName(String gameName) {
 		this.gameName = gameName;
