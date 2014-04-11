@@ -110,7 +110,7 @@ public class OverviewPanel extends JPanel {
 				    	  }
 				      }
 				      if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.DRAFT){
-				    	  ViewEventController.getInstance().playGameTab(clickedGame); // Make this edit insteadS
+				    	  ViewEventController.getInstance().editGameTab(clickedGame); // Make this edit insteadS
 				      }
 				      else if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.ACTIVE){
 				    	  ViewEventController.getInstance().playGameTab(clickedGame);

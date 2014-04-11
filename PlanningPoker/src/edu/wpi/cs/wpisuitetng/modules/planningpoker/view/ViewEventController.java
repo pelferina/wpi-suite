@@ -80,4 +80,12 @@ public class ViewEventController {
 	public void playGameTab(GameSession clickedGame) {
 		main.addPlayGameTab(clickedGame);
 	}
+	
+	public MainView getMain(){
+		return main;
+	}
+
+	public void newGameTab() {
+		main.addNewGameTab();
+	}
 }

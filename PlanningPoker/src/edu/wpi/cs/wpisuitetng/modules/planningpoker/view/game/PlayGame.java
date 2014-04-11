@@ -32,19 +32,26 @@ public class PlayGame extends JPanel{
 	private GameView gv;
 	
 	public PlayGame(GameSession gameToPlay, GameView agv){
+		submit.setEnabled(false);
 		this.gameReqs = gameToPlay.getGameReqs();
 		this.gv = agv;
 		List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
+		
+		//Finds the requirement that is first in the to estimate table. The play game screen will default to displaying the first requirement
+		//in the estimates pending table
 		for (Requirement r: allReqs){
 			if (r.getId() == gameReqs.get(0)){
 				currentReq = r;
 			}
 		}
+		
+		//Sets the description and name text fields to the first requirement in the to estimate table
 		reqNameTextField.setText(currentReq.getName());
 		reqDescTextArea.setText(currentReq.getDescription());
 		reqNameTextField.setEditable(false);
 		reqDescTextArea.setEditable(false);
 		
+		//This document listener will enable the submit button when something is inputted into the estimate text field
 		estimateTextField.getDocument().addDocumentListener(new DocumentListener(){
 			@Override
 			public void changedUpdate(DocumentEvent e){
@@ -111,6 +118,8 @@ public class PlayGame extends JPanel{
 		add(reqDescTextArea);
 	}
 	
+	//This function is used when a requirement is double clicked in one of the two requirement tables, and it sets the name and description fields to the 
+	//selected requirement
 	public void chooseReq(Requirement reqToEstimate){
 		currentReq = reqToEstimate;
 		reqNameTextField.setText(reqToEstimate.getName());
@@ -118,6 +127,8 @@ public class PlayGame extends JPanel{
 		estimateTextField.setText("");
 	}
 	
+	//This function will be used when the user submits an estimate for a requirement, and it will notify GameRequirements to move the requirement from
+	//toestimate table to the completed estimates table
 	public void sendEstimatetoGameView(Requirement r){
 		gv.updateReqTables(r);
 	}

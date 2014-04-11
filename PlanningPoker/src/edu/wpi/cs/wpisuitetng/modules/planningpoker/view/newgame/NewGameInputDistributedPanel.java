@@ -319,7 +319,10 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 				GameSession newGame = new GameSession(name, new String(), 0, model.getSize() + 1, new Date(), new ArrayList<Integer>()); 
 				newGame.setGameStatus(GameStatus.DRAFT);
 				AddGameController msgr = new AddGameController(model);
-				msgr.sendMessage(newGame);	
+				msgr.sendMessage(newGame);
+				JOptionPane gameCreated = new JOptionPane("Game Created");
+				JOptionPane.showMessageDialog(gameCreated, "Game has been created", "Game created", JOptionPane.INFORMATION_MESSAGE);
+				newGameP.close.doClick();
 			}
 		});
 		
@@ -378,6 +381,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 					Date deadlineDate = new Date(deadlineYear - 1900, deadlineMonth - 1, deadlineDay, getHour(hourTime), minuteTime);
 					GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize()+1, deadlineDate, selectionsMade); 
 					newGame.setGameStatus(GameStatus.ACTIVE);
+					System.out.println(newGame.getGameStatus().name());
 					GameModel model = GameModel.getInstance();
 					AddGameController msgr = new AddGameController(model);
 					msgr.sendMessage(newGame);	
@@ -385,7 +389,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 					request.setBody("endGame" + newGame.getGameName());
 					request.send(); // send the request
 					JOptionPane gameCreated = new JOptionPane("Game Created and Activated");
-					JOptionPane.showMessageDialog(gameCreated, "Game has been created and activated", "Game created", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(gameCreated, "Game has been created and activated", "Game activated", JOptionPane.INFORMATION_MESSAGE);
 					newGameP.close.doClick();
 				}
 			}

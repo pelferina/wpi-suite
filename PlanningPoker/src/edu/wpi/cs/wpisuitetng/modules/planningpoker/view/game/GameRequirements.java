@@ -37,11 +37,14 @@ public class GameRequirements extends JPanel{
 		List<Requirement> allReqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
 		this.gameReqIDs = gameToPlay.getGameReqs();
 		this.gv = agv;
+		//Gets all the requirements and adds the requirements that are in the game to gameReqs
 		for (Requirement r: allReqs){
 			if (gameReqIDs.contains(r.getId())){
 				gameReqs.add(r);
 			}
 		}
+		
+		//Initializes the two JTables
 		estimatesPending = new JTable();
 		estimatesComplete = new JTable();
 		estimatesPending.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Description"}));
@@ -54,6 +57,8 @@ public class GameRequirements extends JPanel{
 		pendingModel.setNumRows(gameReqs.size());
 		pendingModel.setColumnCount(2);
 		setColumnWidth(estimatesPending);
+		
+		//Fills the pending table with the name and description of the requirements that are in the game
 		
 		for (int i = 0; i < gameReqs.size(); i++){
 			pendingModel.setValueAt(gameReqs.get(i).getName(), i, 0);
@@ -77,6 +82,7 @@ public class GameRequirements extends JPanel{
 	//This function will position all the GUI components
 	private void setPanel(){
 		SpringLayout springLayout = new SpringLayout();
+		springLayout.putConstraint(SpringLayout.SOUTH, reqsEstimated, -213, SpringLayout.SOUTH, this);
 		
 		//Spring layout for the completePane
 		springLayout.putConstraint(SpringLayout.NORTH, completePane, 243, SpringLayout.NORTH, this);
@@ -85,7 +91,6 @@ public class GameRequirements extends JPanel{
 		
 		//Spring layout for the reqsEstimated table
 		springLayout.putConstraint(SpringLayout.WEST, reqsEstimated, 0, SpringLayout.WEST, reqstoEstimate);
-		springLayout.putConstraint(SpringLayout.SOUTH, reqsEstimated, -6, SpringLayout.NORTH, completePane);
 		
 		//Spring layout for the pendingPane
 		springLayout.putConstraint(SpringLayout.SOUTH, pendingPane, 178, SpringLayout.NORTH, this);
@@ -119,6 +124,8 @@ public class GameRequirements extends JPanel{
 		gv.sendReqToPlay(r);
 	}
 
+	//This function is called when an estimate is completed, and it moves the requirement from the pending table to the completed table
+	
 	public void updateTables(Requirement r) {
 		DefaultTableModel reqNames = (DefaultTableModel) estimatesPending.getModel();
 		DefaultTableModel complete = (DefaultTableModel) estimatesComplete.getModel();
@@ -133,6 +140,8 @@ public class GameRequirements extends JPanel{
 		}
 	}
 	
+	
+	//This listener is used to select a requirement to estimate by double clicking on the estimate in the table
 	public class tableListener extends MouseAdapter{
 		
 		JTable tableClicked;
@@ -141,13 +150,15 @@ public class GameRequirements extends JPanel{
 			this.tableClicked = table;
 		}
 
-		public void mousClicked(MouseEvent e) {
+		public void mouseClicked(MouseEvent e) {
 			if (e.getClickCount() == 2){
-				int index = tableClicked.getSelectedRow();
+				JTable target = (JTable)e.getSource();
+			    int row = target.getSelectedRow();
+			    int column = target.getSelectedColumn();
 				List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
-				Requirement req;
+				Requirement req = null;
 				for (Requirement r: allReqs){
-					if (r.getName().equals(tableClicked.getValueAt(index, 0)){
+					if (r.getName().equals(tableClicked.getValueAt(row, 0))){
 						req = r;
 					}
 				}
