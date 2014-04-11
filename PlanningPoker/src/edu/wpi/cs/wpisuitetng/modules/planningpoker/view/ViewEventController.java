@@ -76,4 +76,8 @@ public class ViewEventController {
 	public void editGameTab(GameSession gameSession) {
 		main.addEditGameTab(gameSession);
 	}
+
+	public void playGameTab(GameSession clickedGame) {
+		main.addPlayGameTab(clickedGame);
+	}
 }

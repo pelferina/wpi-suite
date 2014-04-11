@@ -31,6 +31,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame.CurrentGamePanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameInputDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
@@ -77,15 +78,45 @@ public class MainView extends JTabbedPane {
 	
 	public void addNewGameTab()
 	{
+		addTab("New Game", new GameSession(new String(), new String(), 0, 0, new Date(), new ArrayList<Integer>()));
+	}
+	
+	//Adds a new edit game tab
+	public void addEditGameTab(GameSession gameSession)
+	{
+		addTab("Edit Game", gameSession);
+	}
+	
+	//Adds a new game view tab
+	public void addPlayGameTab(GameSession gametoPlay){
+		addTab("Play Game", gametoPlay);
+	}
+	
+	private void addTab(String tabType, GameSession game){
+		int open = this.getTabCount();
+		MyCloseActionHandler myCloseActionHandler = null;
 		overviewPanel.refresh();
 		GetRequirementsController.getInstance().retrieveRequirements();
 		openTabs.add(newGameTabs, j);
 		JButton btnClose = new JButton("x");
 		List<Requirement> reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
-		NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose);
-		newGames.add(newGame);
-		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler("New Game", j, newGame);
-		add(newGame, newGameTabs + PERMANANT_TABS);
+		if (tabType.equals("New Game")){
+			NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose);
+			myCloseActionHandler = new MyCloseActionHandler(tabType, j, newGame, 0);
+			newGames.add(newGame);
+			add(newGame, open);
+		}
+		else if (tabType.equals("Edit Game")){
+			NewGameDistributedPanel newEdit = new NewGameDistributedPanel(reqs, btnClose);
+			myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, newEdit, 1);
+			newGames.add(newEdit);
+			add(newEdit, open);
+		}
+		else if (tabType.equals("Play Game")){
+			GameView newGameView = new GameView(game);
+			myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, newGameView, 2);
+			add(newGameView, open);
+		}
 		JPanel pnlTab = new JPanel(new GridBagLayout());
 		pnlTab.setOpaque(false);
 		JLabel lblTitle = new JLabel("New Game");
@@ -103,45 +134,10 @@ public class MainView extends JTabbedPane {
 		gbc.weightx = 0;
 		pnlTab.add(btnClose, gbc);
 
-		setTabComponentAt(newGameTabs + PERMANANT_TABS, pnlTab);
+		setTabComponentAt(open, pnlTab);
 
 		btnClose.addActionListener(myCloseActionHandler);
-		setSelectedIndex(newGameTabs+PERMANANT_TABS);
-		newGameTabs++;
-		j++;
-	}
-	
-	//Adds a new edit game tab
-	public void addEditGameTab(GameSession gameSession)
-	{
-		GetRequirementsController.getInstance().retrieveRequirements();
-		openTabs.add(newGameTabs, j);
-		JButton btnClose = new JButton("x");
-		List<Requirement> reqs = RequirementModel.getInstance().getRequirements();
-		NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose, gameSession);
-		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler(gameSession.getGameName(), j, newGame);
-		add(newGame, newGameTabs + PERMANANT_TABS);
-		JPanel pnlTab = new JPanel(new GridBagLayout());
-		pnlTab.setOpaque(false);
-		JLabel lblTitle = new JLabel(gameSession.getGameName());
-		btnClose.setMargin(new Insets(0, 0, 0, 0));
-		btnClose.setFont(btnClose.getFont().deriveFont((float) 8));
-		GridBagConstraints gbc = new GridBagConstraints();
-		
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.weightx = 1;
-		
-		pnlTab.add(lblTitle, gbc);
-
-		gbc.gridx++;
-		gbc.weightx = 0;
-		pnlTab.add(btnClose, gbc);
-
-		setTabComponentAt(newGameTabs + PERMANANT_TABS, pnlTab);
-
-		btnClose.addActionListener(myCloseActionHandler);
-		setSelectedIndex(newGameTabs+PERMANANT_TABS);
+		setSelectedIndex(open);
 		newGameTabs++;
 		j++;
 	}
@@ -152,14 +148,28 @@ public class MainView extends JTabbedPane {
 
 	    private String tabName;
 	    private int index;
+	    //0 - New Game
+	    //1 - Edit Game
+	    //2 - Game View
+	    private int type;
 	    private NewGameDistributedPanel ngdp;
+	    private GameView gameView;
 	    
-	    public MyCloseActionHandler(String tabName, int index, NewGameDistributedPanel ngdp) {
+	    public MyCloseActionHandler(String tabName, int index, NewGameDistributedPanel ngdp, int type) {
 	        this.tabName = tabName;
 	        this.index = index;
 	        this.ngdp = ngdp;
+	        this.type = type;
 	    }
-
+	    
+	    public MyCloseActionHandler(String tabName, int index, GameView gv, int type){
+	    	this.tabName = tabName;
+	    	this.index = index;
+	    	this.gameView = gv;
+	    	this.type = type;
+	    }
+	    
+	    
 	    public String getTabName() {
 	        return tabName;
 	    }
@@ -171,9 +181,9 @@ public class MainView extends JTabbedPane {
 				if (openTabs.get(i) == index){
 					removeTabAt(i + PERMANANT_TABS);
 					openTabs.remove(i);
-					newGameTabs--;
 				}
 			}
+	    	newGameTabs--;
 	    }
 	    
 	    //When the 'x' button is selected, it will prompt the user if they want to discard changes if the user has made inputs in any of the 
@@ -181,7 +191,7 @@ public class MainView extends JTabbedPane {
 	    
 	    public void actionPerformed(ActionEvent evt) {
 
-	        if (index >= 0) {
+	        if (type == 0 || type == 1) {
 	        	if (!ngdp.isNew){
 					int option = JOptionPane.showOptionDialog(ngdp, "Discard unsaved changes and close tab?", "Discard changes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 					if (option == 0){
@@ -192,9 +202,14 @@ public class MainView extends JTabbedPane {
 	        		removeTab(index);
 	        	}
 	        }
-	            // It would probably be worthwhile getting the source
-	            // casting it back to a JButton and removing
-	            // the action handler reference ;)
+	        else if (type == 2){
+	        	//TODO check if the user has inputted an estimate 
+	        	removeTab(index);
+	        }
 	    }
-	}   
+	}
 }
+	
+
+	
+
