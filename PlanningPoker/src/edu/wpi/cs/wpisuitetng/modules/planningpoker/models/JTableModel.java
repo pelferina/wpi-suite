@@ -12,6 +12,7 @@ import javax.swing.table.AbstractTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.network.Network;
 
 public class JTableModel extends AbstractTableModel {
@@ -45,7 +46,7 @@ public class JTableModel extends AbstractTableModel {
     							sessions[i].getEndDate(), 
     							getUserFromID(sessions[i].getOwnerID()), 
     							"To Be Implemented", // Progress
-    							sessions[i].getGameStatus()
+    							gameStatus(sessions[i])
     							};
     		
     		Data[i] = curRow;
@@ -54,6 +55,24 @@ public class JTableModel extends AbstractTableModel {
 		
 	}
     
+	private String gameStatus(GameSession game){
+		if (game.getGameStatus() == GameStatus.DRAFT){
+			return "Draft";
+		}
+		else if (game.getGameStatus() == GameStatus.ACTIVE){
+			return "Active";
+		}
+		else if (game.getGameStatus() == GameStatus.INPROGRESS){
+			return "In Progress";
+		}
+		else if (game.getGameStatus() == GameStatus.COMPLETED){
+			return "Completed";
+		}
+		else {
+			return "Archived";
+		}
+	}
+	
 	private String getUserFromID(int userID){
 		guc.actionPerformed();
 		while (guc.getUsers() == null){

@@ -58,7 +58,7 @@ public class PlanningPoker implements IJanewayModule{
 		
 		newGameButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				mainPanel.addNewGameTab();
+				ViewEventController.getInstance().newGameTab();
 			}
 		});
 		

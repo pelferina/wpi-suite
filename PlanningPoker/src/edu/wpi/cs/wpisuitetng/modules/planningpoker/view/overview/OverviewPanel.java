@@ -13,6 +13,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameTree;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.JTableModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame.JTableView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -108,8 +109,11 @@ public class OverviewPanel extends JPanel {
 				    		  clickedGame = gm;
 				    	  }
 				      }
-				      if (clickedGame != null){
-				    	  ViewEventController.getInstance().editGameTab(clickedGame);; // Make this edit insteadS
+				      if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.DRAFT){
+				    	  ViewEventController.getInstance().editGameTab(clickedGame); // Make this edit insteadS
+				      }
+				      else if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.ACTIVE){
+				    	  ViewEventController.getInstance().playGameTab(clickedGame);
 				      }
 				    }
 				  }
@@ -215,4 +219,9 @@ public class OverviewPanel extends JPanel {
 		jModel.fireTableDataChanged();
 	}
 
+	//Refreshes the view event controller whenever a new game tab is created
+	public void refresh(){
+		ViewEventController.getInstance();
+	}
+	
 }
