@@ -14,13 +14,19 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-
 import java.io.UnsupportedEncodingException;
-
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.swing.Timer;
 
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
@@ -30,30 +36,17 @@ import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-
-import java.util.Properties;
-
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
 
 /**
- * This is the entity manager for the PostBoardMessage in the
- * PostBoard module.
+ * This is the entity manager for the Planning Poker Module.
  * 
- * @author Chris Casola
- *
  */
 public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 
 	/** The database */
 	Data db;
+	Timer deadlineCheck; // Timer for checking deadline
 
 	
 	/**
@@ -66,6 +59,10 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 	 */
 	public PlanningPokerEntityManager(Data db) {
 		this.db = db;
+		
+		//set up and start timer to check deadline every 30 seconds.
+		deadlineCheck = new Timer(30000, new DeadLineListener(db));
+		deadlineCheck.start();
 	}
 
 	/*
