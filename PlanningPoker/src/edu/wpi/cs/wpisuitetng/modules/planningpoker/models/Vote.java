@@ -5,14 +5,19 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import java.util.List;
 
+import com.google.gson.Gson;
+
+import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+
 /**
  * @author Team FFF8E7
  *
  */
-public class Vote {
+public class Vote extends AbstractModel{
 
 	private int gameID;
 	private int UID;
+	private int VoteID;
 	private List<Integer> vote;
 
 	/** Constructs a vote submission object.
@@ -69,5 +74,56 @@ public class Vote {
 	public void setVote(List<Integer> vote) {
 		this.vote = vote;
 	}
+	public String toJSON() {
+		return new Gson().toJson(this, Vote.class);
+	}
 
+	/**
+	 * Returns an instance of GameSession constructed using the given
+	 * GameSession encoded as a JSON string.
+	 * 
+	 * @param json the json-encoded GameSession to deserialize
+	 * @return the GameSession contained in the given JSON
+	 */
+	public static Vote fromJson(String json) {
+		final Gson parser = new Gson();
+		return parser.fromJson(json, Vote.class);
+	}
+
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see edu.wpi.cs.wpisuitetng.modules.Model#identify(java.lang.Object)
+	 */
+	@Override
+	public Boolean identify(Object o) {
+		if(o == null || o.getClass() != this.getClass()) return false;
+		Vote other = (Vote) o;
+		return (this.gameID == other.gameID && this.UID == other.UID);
+	}
+
+	/**
+	 * @return the voteID
+	 */
+	public int getVoteID() {
+		return VoteID;
+	}
+
+	/**
+	 * @param voteID the voteID to set
+	 */
+	public void setVoteID(int voteID) {
+		VoteID = voteID;
+	}
+	
 }
