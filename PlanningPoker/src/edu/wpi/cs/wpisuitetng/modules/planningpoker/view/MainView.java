@@ -71,7 +71,7 @@ public class MainView extends JTabbedPane {
 			}
 		});
 		addTab("Add Email", addEmailPanel);
-		ViewEventController.getInstance().setMainView(this);
+		refreshMain();
 	}
 	
 	//The function to add a new game tab
@@ -140,6 +140,11 @@ public class MainView extends JTabbedPane {
 		setSelectedIndex(open);
 		newGameTabs++;
 		j++;
+		refreshMain();
+	}
+	
+	public void refreshMain(){
+		ViewEventController.getInstance().setMainView(this);
 	}
 	
 	//The action listener for closing of tabs
@@ -184,6 +189,7 @@ public class MainView extends JTabbedPane {
 				}
 			}
 	    	newGameTabs--;
+	    	refreshMain();
 	    }
 	    
 	    //When the 'x' button is selected, it will prompt the user if they want to discard changes if the user has made inputs in any of the 
