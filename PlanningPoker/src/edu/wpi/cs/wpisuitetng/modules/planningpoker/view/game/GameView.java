@@ -20,6 +20,7 @@ public class GameView extends JSplitPane{
 		Dimension minimumSize = new Dimension(600, 200);
 		leftComponent.setMinimumSize(minimumSize);
 		addImpl(playGame, JSplitPane.RIGHT, 2);
+		setDividerLocation(400);
 	}
 
 	public void sendReqToPlay(Requirement r) {

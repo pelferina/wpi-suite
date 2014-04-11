@@ -82,36 +82,7 @@ public class GameRequirements extends JSplitPane{
 		estimatesPending.addMouseListener(new tableListener(estimatesPending));
 		estimatesComplete.addMouseListener(new tableListener(estimatesComplete));
 		
-		setDividerLocation(100);
-		
-		setPanel();
-	}
-	
-	//This function will position all the GUI components
-	private void setPanel(){
-//		SpringLayout springLayout = new SpringLayout();
-//		springLayout.putConstraint(SpringLayout.SOUTH, reqsEstimated, -213, SpringLayout.SOUTH, this);
-//		
-//		//Spring layout for the completePane
-////		springLayout.putConstraint(SpringLayout.NORTH, completePane, 243, SpringLayout.NORTH, this);
-////		springLayout.putConstraint(SpringLayout.SOUTH, completePane, -49, SpringLayout.SOUTH, this);
-////		springLayout.putConstraint(SpringLayout.WEST, completePane, 0, SpringLayout.WEST, pendingPane);
-//		
-//		//Spring layout for the reqsEstimated table
-//		springLayout.putConstraint(SpringLayout.WEST, reqsEstimated, 0, SpringLayout.WEST, reqstoEstimate);
-//		
-//		//Spring layout for the pendingPane
-////		springLayout.putConstraint(SpringLayout.SOUTH, pendingPane, 178, SpringLayout.NORTH, this);
-////		springLayout.putConstraint(SpringLayout.NORTH, pendingPane, 6, SpringLayout.SOUTH, reqstoEstimate);
-////		springLayout.putConstraint(SpringLayout.WEST, pendingPane, 20, SpringLayout.WEST, this);
-//		
-//		//Spring layout positioning for the reqstoEstimate label
-//		springLayout.putConstraint(SpringLayout.WEST, reqstoEstimate, 157, SpringLayout.WEST, this);
-//		springLayout.putConstraint(SpringLayout.SOUTH, reqstoEstimate, -436, SpringLayout.SOUTH, this);
-//		
-//		setLayout(springLayout);
-		
-		setEnabled(false);
+		setDividerLocation(250);
 	}
 	
 	//This function is used to set the preferred width of JTables
