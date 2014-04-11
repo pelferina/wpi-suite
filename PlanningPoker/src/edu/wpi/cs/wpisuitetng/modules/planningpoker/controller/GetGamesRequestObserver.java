@@ -18,7 +18,7 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 /**
  * This observer handles responses to requests for all
- * post board messages.
+ * post board games.
  * 
  * @author Chris Casola
  *
@@ -32,7 +32,7 @@ public class GetGamesRequestObserver implements RequestObserver {
 	}
 
 	/*
-	 * Parse the messages out of the response body and pass them to the controller
+	 * Parse the games out of the response body and pass them to the controller
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseSuccess(edu.wpi.cs.wpisuitetng.network.models.IRequest)
 	 */
@@ -40,7 +40,7 @@ public class GetGamesRequestObserver implements RequestObserver {
 	public void responseSuccess(IRequest iReq) {
 		GameSession[] games = GameSession.fromJsonArray(iReq.getResponse().getBody());
 //		System.out.println(games.length);
-		controller.receivedMessages(games);
+		controller.receivedGames(games);
 	}
 
 	/*
@@ -58,7 +58,7 @@ public class GetGamesRequestObserver implements RequestObserver {
 	 */
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		if(exception == null) System.err.println("FAILURE in GetGamesRequestObserver! What happened? IDK...");
+		if(exception == null) System.err.println("FAILURE in GetGamesRequestObserver!");
 		exception.printStackTrace();
 	}
 

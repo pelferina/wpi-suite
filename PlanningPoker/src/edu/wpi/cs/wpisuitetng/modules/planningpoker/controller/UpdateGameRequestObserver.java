@@ -32,11 +32,11 @@ public class UpdateGameRequestObserver implements RequestObserver {
 	public void responseSuccess(IRequest iReq) {
 		final ResponseModel response = iReq.getResponse();
 		
-		// Parse the message out of the response body
-		final GameSession message = GameSession.fromJson(response.getBody());
+		// Parse the game out of the response body
+		final GameSession game = GameSession.fromJson(response.getBody());
 		
-		// Pass the messages back to the controller
-		controller.addMessageToModel(message);
+		// Pass the games back to the controller
+		controller.addGameToModel(game);
 	}
 
 	/* (non-Javadoc)

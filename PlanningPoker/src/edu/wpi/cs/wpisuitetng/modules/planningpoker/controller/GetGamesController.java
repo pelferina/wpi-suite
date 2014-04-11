@@ -22,7 +22,7 @@ import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
- * This controller coordinates retrieving all of the messages
+ * This controller coordinates retrieving all of the games
  * from the server. This controller is called when the user
  * clicks the refresh button.
  * 
@@ -34,33 +34,31 @@ public class GetGamesController implements ActionListener {
 	private final GameModel model;
 
 	public GetGamesController(GameModel model) {
-		this.model = model.getInstance();
+		this.model = GameModel.getInstance();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO: Fix refresh function, possibly database calls having issues
-		// Send a request to the core to save this message
+		// Send a request to the core to save this game
 		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.GET); // GET == read
 		request.addObserver(new GetGamesRequestObserver(this)); // add an observer to process the response
 		request.send(); // send the request
 	}
 	
 	/**
-	 * Add the given messages to the local model (they were received from the core).
-	 * This method is called by the GetMessagesRequestObserver
+	 * Add the given games to the local model (they were received from the core).
+	 * This method is called by the GetGamesRequestObserver
 	 * 
-	 * @param messages an array of messages received from the server
+	 * @param games an array of games received from the server
 	 */
-	public void receivedMessages(GameSession[] messages) {
+	public void receivedGames(GameSession[] games) {
 		// Empty the local model to eliminate duplications
 		model.emptyModel();
-		System.out.println("Yo! " + messages);
 		// Make sure the response was not null
-		if (messages != null) {
-			
-			// add the messages to the local model
-			model.addMessages(messages);
+		if (games != null) {
+			// add the games to the local model
+			model.addGames(games);
 		}
 	}
 }

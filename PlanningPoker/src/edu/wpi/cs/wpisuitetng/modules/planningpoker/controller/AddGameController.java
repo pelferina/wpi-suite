@@ -23,8 +23,8 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
  * This controller responds when the user clicks the Submit button by
- * adding the contents of the message text field to the model as a new
- * message.
+ * adding the contents of the Game text field to the model as a new
+ * Game.
  *
  */
 public class AddGameController implements ActionListener {
@@ -32,15 +32,15 @@ public class AddGameController implements ActionListener {
 	private final GameModel model;
 	//TODO Remove depreciated methods once GUI is updated for new data definitions
 	/**
-	 * Construct an AddMessageController for the given model, view pair
-	 * @param model the model containing the messages
-	 * @param view the view where the user enters new messages
+	 * Construct an AddGameController for the given model, view pair
+	 * @param model the model containing the Games
+	 * @param view the view where the user enters new Games
 	 */
 
 	public AddGameController(GameModel model) {
 		this.model = model;
 	}
-	public void sendMessage(GameSession ToSend){
+	public void sendGame(GameSession ToSend){
 		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.PUT); // PUT == create
 		request.setBody(ToSend.toJSON()); // put the new session in the body of the request
 		request.addObserver(new AddGameRequestObserver(this)); // add an observer to process the response
@@ -58,10 +58,10 @@ public class AddGameController implements ActionListener {
 	}
 
 	/**
-	 * When the new message is received back from the server, add it to the local model.
-	 * @param message
+	 * When the new Game is received back from the server, add it to the local model.
+	 * @param Game
 	 */
-	public void addMessageToModel(GameSession message) {
-		model.addMessage(message);
+	public void addGameToModel(GameSession Game) {
+		model.addGame(Game);
 	}
 }

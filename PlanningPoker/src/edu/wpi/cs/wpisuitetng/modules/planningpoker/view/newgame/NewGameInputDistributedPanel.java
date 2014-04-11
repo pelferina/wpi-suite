@@ -317,7 +317,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 				GameModel model = GameModel.getInstance();
 				GameSession newGame = new GameSession(name, new String(), 0, model.getSize() + 1, new Date(), new ArrayList<Integer>()); 
 				AddGameController msgr = new AddGameController(model);
-				msgr.sendMessage(newGame);	
+				msgr.sendGame(newGame);	
 			}
 		});
 		
@@ -347,11 +347,11 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 				for (int i=0; i<reqsSelected.size(); i++){
 					selectionsMade.add(reqsSelected.get(i).getId());
 				}
-				//Displays the hour error message if no hour was chosen
+				//Displays the hour error game if no hour was chosen
 				if (hourComboBox.getSelectedIndex() == 0){
 					hourError.setVisible(true);
 				}
-				//Displays the minute error message if no minute was chosen
+				//Displays the minute error game if no minute was chosen
 				else if (minuteComboBox.getSelectedIndex() == 0){
 					minuteError.setVisible(true);
 				}
@@ -377,7 +377,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 					GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize()+1, deadlineDate, selectionsMade); 
 					GameModel model = GameModel.getInstance();
 					AddGameController msgr = new AddGameController(model);
-					msgr.sendMessage(newGame);	
+					msgr.sendGame(newGame);	
 					final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.PUT); // PUT == create
 					request.setBody("endGame" + newGame.getGameName());
 					request.send(); // send the request
