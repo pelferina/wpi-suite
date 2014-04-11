@@ -58,7 +58,7 @@ public class OverviewPanel extends JPanel {
 	public OverviewPanel(){
 		
 		this.gameModel = GameModel.getInstance();
-		ggc = new GetGamesController(gameModel);
+		ggc = GetGamesController.getInstance();
 		GameSession[] sessions = {};
 		
 		table = new JTable(new JTableModel(sessions));
@@ -157,22 +157,7 @@ public class OverviewPanel extends JPanel {
 			}
 			
 		});
-		// Refreshes the gamemodel every time you mouse over the JTree. crude but effective.
-		gameTree.addMouseMotionListener(new MouseMotionListener() {
-
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseMoved(MouseEvent e) {
-				ggc.actionPerformed(new ActionEvent(new Object(), 5, "Go"));
-			}
-
 		
-		});
 
 		
 		treeView = new JScrollPane(gameTree);

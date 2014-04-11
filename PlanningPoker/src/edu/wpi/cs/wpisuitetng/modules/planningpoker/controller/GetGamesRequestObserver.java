@@ -27,8 +27,8 @@ public class GetGamesRequestObserver implements RequestObserver {
 	
 	public GetGamesController controller;
 	
-	public GetGamesRequestObserver(GetGamesController controller) {
-		this.controller = controller;
+	public GetGamesRequestObserver() {
+		this.controller = GetGamesController.getInstance();
 	}
 
 	/*

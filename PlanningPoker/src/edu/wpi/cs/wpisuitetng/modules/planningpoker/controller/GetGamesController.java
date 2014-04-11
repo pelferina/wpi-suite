@@ -31,10 +31,18 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  */
 public class GetGamesController implements ActionListener {
 
+	private static GetGamesController instance = null;
 	private final GameModel model;
 
-	public GetGamesController(GameModel model) {
-		this.model = model.getInstance();
+	public GetGamesController() {
+		this.model = GameModel.getInstance();
+	}
+	
+	public static GetGamesController getInstance(){
+		if (instance==null)
+			instance = new GetGamesController();
+		
+		return instance;
 	}
 
 	@Override
@@ -42,7 +50,7 @@ public class GetGamesController implements ActionListener {
 		// TODO: Fix refresh function, possibly database calls having issues
 		// Send a request to the core to save this message
 		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.GET); // GET == read
-		request.addObserver(new GetGamesRequestObserver(this)); // add an observer to process the response
+		request.addObserver(new GetGamesRequestObserver()); // add an observer to process the response
 		request.send(); // send the request
 	}
 	
@@ -55,7 +63,7 @@ public class GetGamesController implements ActionListener {
 	public void receivedMessages(GameSession[] messages) {
 		// Empty the local model to eliminate duplications
 		model.emptyModel();
-		System.out.println("Yo! " + messages);
+
 		// Make sure the response was not null
 		if (messages != null) {
 			
