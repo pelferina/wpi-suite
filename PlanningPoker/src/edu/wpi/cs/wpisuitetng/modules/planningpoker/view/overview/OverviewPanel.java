@@ -215,4 +215,9 @@ public class OverviewPanel extends JPanel {
 		jModel.fireTableDataChanged();
 	}
 
+	//Refreshes the view event controller whenever a new game tab is created
+	public void refresh(){
+		ViewEventController.getInstance();
+	}
+	
 }

@@ -42,7 +42,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 @SuppressWarnings("serial")
 public class MainView extends JTabbedPane {
-	private JPanel overviewPanel;
+	private OverviewPanel overviewPanel;
 	private GameModel gameModel;
 	private int newGameTabs = 0;
 	private GetRequirementsRequestObserver refresher;
@@ -77,6 +77,7 @@ public class MainView extends JTabbedPane {
 	
 	public void addNewGameTab()
 	{
+		overviewPanel.refresh();
 		GetRequirementsController.getInstance().retrieveRequirements();
 		openTabs.add(newGameTabs, j);
 		JButton btnClose = new JButton("x");
