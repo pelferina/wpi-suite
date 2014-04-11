@@ -17,8 +17,10 @@ import javax.swing.JComponent;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ToolbarView;
 
 /**
  * Provides an interface for interaction with the main GUI elements
@@ -30,9 +32,11 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 public class ViewEventController {
 	private static ViewEventController instance = null;
 	private MainView main = null;
+	private ToolbarView toolbar = null;
+
 //	private OverviewTable overviewTable = null;
 //	private OverviewTreePanel overviewTree = null;
-//	private ArrayList<RequirementPanel> listOfEditingPanels = new ArrayList<RequirementPanel>();
+//	private ArrayList<GamePanel> listOfEditingPanels = new ArrayList<GamePanel>();
 //	private ArrayList<IterationPanel> listOfIterationPanels = new ArrayList<IterationPanel>();
 //	private IterationOverviewPanel iterationOverview;
 	
@@ -69,11 +73,26 @@ public class ViewEventController {
 		main = mainview;
 	}
 
-
 	/**
-	 * Opens a new tab for the creation of a requirement.
+	 * Sets the toolbarview to the given toolbar
+	 * @param tb the toolbar to be set as active.
+	 */
+	public void setToolBar(ToolbarView tb) {
+		toolbar = tb;
+		toolbar.repaint();
+	}
+	
+	/**
+	 * Opens a new tab for editing a game
 	 */
 	public void editGameTab(GameSession gameSession) {
 		main.addEditGameTab(gameSession);
+	}
+	
+	/**
+	 * Opens a new tab for the creation of a game.
+	 */
+	public void createGame() {
+		main.addNewGameTab();
 	}
 }

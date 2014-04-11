@@ -52,7 +52,7 @@ public class MainView extends JTabbedPane {
 	final int PERMANANT_TABS = 2;
 	private final AddEmailPanel addEmailPanel;
 	
-	public MainView(DeckModel deckModel) {
+	public MainView() {
 		overviewPanel = new OverviewPanel();
 		addEmailPanel = new AddEmailPanel();
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
