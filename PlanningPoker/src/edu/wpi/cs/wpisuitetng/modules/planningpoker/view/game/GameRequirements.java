@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -21,7 +22,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 
 import javax.swing.SpringLayout;
 
-public class GameRequirements extends JPanel{
+public class GameRequirements extends JSplitPane{
 	
 	private JTable estimatesPending;
 	private JTable estimatesComplete;
@@ -37,6 +38,8 @@ public class GameRequirements extends JPanel{
 		List<Requirement> allReqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
 		this.gameReqIDs = gameToPlay.getGameReqs();
 		this.gv = agv;
+		setTopComponent(new JScrollPane(estimatesPending));
+		setBottomComponent(new JScrollPane(estimatesComplete));
 		//Gets all the requirements and adds the requirements that are in the game to gameReqs
 		for (Requirement r: allReqs){
 			if (gameReqIDs.contains(r.getId())){
@@ -71,45 +74,44 @@ public class GameRequirements extends JPanel{
 		setColumnWidth(estimatesComplete);
 		this.pendingPane = new JScrollPane(estimatesPending);
 		this.completePane = new JScrollPane(estimatesComplete);
+		setOrientation(JSplitPane.VERTICAL_SPLIT);
+		addImpl(pendingPane, JSplitPane.TOP, 1);
+		addImpl(completePane, JSplitPane.BOTTOM, 1);
 		pendingPane.setViewportView(estimatesPending);
 		completePane.setViewportView(estimatesComplete);
 		estimatesPending.addMouseListener(new tableListener(estimatesPending));
 		estimatesComplete.addMouseListener(new tableListener(estimatesComplete));
+		
+		setDividerLocation(100);
 		
 		setPanel();
 	}
 	
 	//This function will position all the GUI components
 	private void setPanel(){
-		SpringLayout springLayout = new SpringLayout();
-		springLayout.putConstraint(SpringLayout.SOUTH, reqsEstimated, -213, SpringLayout.SOUTH, this);
-		
-		//Spring layout for the completePane
-		springLayout.putConstraint(SpringLayout.NORTH, completePane, 243, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, completePane, -49, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, completePane, 0, SpringLayout.WEST, pendingPane);
-		
-		//Spring layout for the reqsEstimated table
-		springLayout.putConstraint(SpringLayout.WEST, reqsEstimated, 0, SpringLayout.WEST, reqstoEstimate);
-		
-		//Spring layout for the pendingPane
-		springLayout.putConstraint(SpringLayout.SOUTH, pendingPane, 178, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.NORTH, pendingPane, 6, SpringLayout.SOUTH, reqstoEstimate);
-		springLayout.putConstraint(SpringLayout.WEST, pendingPane, 20, SpringLayout.WEST, this);
-		
-		//Spring layout positioning for the reqstoEstimate label
-		springLayout.putConstraint(SpringLayout.WEST, reqstoEstimate, 157, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, reqstoEstimate, -436, SpringLayout.SOUTH, this);
-		
-		setLayout(springLayout);
+//		SpringLayout springLayout = new SpringLayout();
+//		springLayout.putConstraint(SpringLayout.SOUTH, reqsEstimated, -213, SpringLayout.SOUTH, this);
+//		
+//		//Spring layout for the completePane
+////		springLayout.putConstraint(SpringLayout.NORTH, completePane, 243, SpringLayout.NORTH, this);
+////		springLayout.putConstraint(SpringLayout.SOUTH, completePane, -49, SpringLayout.SOUTH, this);
+////		springLayout.putConstraint(SpringLayout.WEST, completePane, 0, SpringLayout.WEST, pendingPane);
+//		
+//		//Spring layout for the reqsEstimated table
+//		springLayout.putConstraint(SpringLayout.WEST, reqsEstimated, 0, SpringLayout.WEST, reqstoEstimate);
+//		
+//		//Spring layout for the pendingPane
+////		springLayout.putConstraint(SpringLayout.SOUTH, pendingPane, 178, SpringLayout.NORTH, this);
+////		springLayout.putConstraint(SpringLayout.NORTH, pendingPane, 6, SpringLayout.SOUTH, reqstoEstimate);
+////		springLayout.putConstraint(SpringLayout.WEST, pendingPane, 20, SpringLayout.WEST, this);
+//		
+//		//Spring layout positioning for the reqstoEstimate label
+//		springLayout.putConstraint(SpringLayout.WEST, reqstoEstimate, 157, SpringLayout.WEST, this);
+//		springLayout.putConstraint(SpringLayout.SOUTH, reqstoEstimate, -436, SpringLayout.SOUTH, this);
+//		
+//		setLayout(springLayout);
 		
 		setEnabled(false);
-		
-		add(pendingPane);
-		add(completePane);
-		add(reqstoEstimate);
-		add(reqsEstimated);
-		
 	}
 	
 	//This function is used to set the preferred width of JTables
