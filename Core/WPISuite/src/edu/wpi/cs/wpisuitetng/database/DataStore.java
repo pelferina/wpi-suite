@@ -257,7 +257,7 @@ public class DataStore implements Data {
 		config.common().reflectWith(new JdkReflector(Thread.currentThread().getContextClassLoader()));
 
 		List<T> result = theDB.queryByExample(aSample.getClass());
-		System.out.println("retrievedAll: "+result);
+		//System.out.println("retrievedAll: "+result);
 		theDB.commit();
 
 		logger.log(Level.FINE, "Database RetrieveAll Performed");

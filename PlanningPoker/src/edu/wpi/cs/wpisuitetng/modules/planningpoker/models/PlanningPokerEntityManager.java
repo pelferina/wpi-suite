@@ -14,6 +14,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 
+import java.awt.event.ActionListener;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,9 +60,9 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 	 */
 	public PlanningPokerEntityManager(Data db) {
 		this.db = db;
-		
-		//set up and start timer to check deadline every 30 seconds.
-		deadlineCheck = new Timer(30000, new DeadLineListener(db));
+
+		//set up and start timer to check deadline every second.
+		deadlineCheck = new Timer(3000, new DeadLineListener(db));
 		deadlineCheck.start();
 	}
 

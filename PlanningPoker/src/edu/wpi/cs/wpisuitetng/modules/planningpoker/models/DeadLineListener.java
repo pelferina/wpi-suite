@@ -38,18 +38,21 @@ public class DeadLineListener implements ActionListener{
 	 */
 	public void actionPerformed(ActionEvent e) {
 		System.err.println("Refresh");
-		GameSession[] gameArray = db.retrieveAll(new GameSession(new String(), new String(), 0 , 0, new Date(), null)).toArray(new GameSession[0]);
+		GameSession[] gameArray = {};
+		
+		gameArray = db.retrieveAll(new GameSession(new String(), new String(), 0 , 0, new Date(), null)).toArray(new GameSession[0]);
 
 		Date today = new Date();
+		
 		for(int i=0; i<gameArray.length; i++){
 			//System.err.println("Name "+gameArray[i].getGameName() + " Deadline: " + gameArray[i].getEndDate() + " " +today.toString());
 			if (gameArray[i].getEndDate() != null){
-				if (gameArray[i].getEndDate().before(today) && gameArray[i].getGameStatus().compareTo(GameStatus.ARCHIVED) != 0){
-					
+				if (gameArray[i].getEndDate().before(today) && (gameArray[i].getGameStatus().compareTo(GameStatus.ARCHIVED) != 0)){
+					System.err.println("Name "+gameArray[i].getGameName() + " reaches deadline at" + today);
 					try {
 						db.update(GameSession.class, "GameID", gameArray[i].getGameID(), "GameStatus",  GameStatus.ARCHIVED);
 					} catch (WPISuiteException ex) {
-						System.err.println("fail to set the gameStatus of " + gameArray[i].getGameID() + gameArray[i].getGameName());
+						System.err.println("fail to set the gameStatus");
 						// TODO Auto-generated catch block
 						ex.printStackTrace();
 					}
