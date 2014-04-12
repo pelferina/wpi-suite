@@ -71,7 +71,11 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 	private JComboBox<Integer> dayBox = new JComboBox<Integer>();
 	private JComboBox<String> hourComboBox = new JComboBox<String>();
 	private JComboBox<String> minuteComboBox = new JComboBox<String>();
-	private JComboBox<String> ampmBox = new JComboBox<String>(ampmString);
+	private JCheckBox deadlineCheckbox = new JCheckBox("Add a deadline?"); 
+	private JRadioButton AMButton = new JRadioButton("AM");
+	private JRadioButton PMButton = new JRadioButton("PM");
+
+//	private JComboBox<String> ampmBox = new JComboBox<String>(ampmString);
 	private JComboBox<String> yearBox = new JComboBox<String>(yearString);
 	private JComboBox<String> monthBox = new JComboBox<String>(monthString);
 	private final JLabel nameLabel = new JLabel("Game Name*:");
@@ -210,6 +214,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 			nameTextField.setText(gameSession.getGameName());
 			nameTextField.setEditable(false);
 			descTextArea.setText(gameSession.getGameDescription());
+			nameTextField.setEditable(false);
 			
 		}
 		//Adds a documentlistener to the name text field so that way if the text is changed, the pop-up will appear if 
@@ -269,20 +274,28 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 			}
 		});
 
-		//Sets isNew to false, and sets isAM to true if AM is selected, or false if PM is selected
-		ampmBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e){
-				if (ampmBox.getSelectedIndex() == 0){
-					isAM = true;
-				}
-				else {
-					isAM = false;
-				}
-				newGameP.isNew = false;
-			}
-			
-		});
+		if(AMButton.isSelected())
+		{
+			isAM = true;
+		}
+		else if(PMButton.isSelected())
+		{
+			isAM = false;
+		}
+//		//Sets isNew to false, and sets isAM to true if AM is selected, or false if PM is selected
+//		ampmBox.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e){
+//				if (ampmBox.getSelectedIndex() == 0){
+//					isAM = true;
+//				}
+//				else {
+//					isAM = false;
+//				}
+//				newGameP.isNew = false;
+//			}
+//			
+//		});
 
 		//Sets isNew to false, and sets minuteTime to the selected minute.
 		minuteComboBox.addActionListener(new ActionListener() {
@@ -611,9 +624,11 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
         springLayout.putConstraint(SpringLayout.NORTH, minuteComboBox, 0, SpringLayout.NORTH, hourComboBox);
         springLayout.putConstraint(SpringLayout.WEST, minuteComboBox, 10, SpringLayout.EAST, hourComboBox);
         
-        //Spring layout for ampmBox
-        springLayout.putConstraint(SpringLayout.NORTH, ampmBox, 0, SpringLayout.NORTH, minuteComboBox);
-        springLayout.putConstraint(SpringLayout.WEST, ampmBox, 10, SpringLayout.EAST, minuteComboBox);
+        //Spring layout for ampmButton
+        springLayout.putConstraint(SpringLayout.NORTH, AMButton, 0, SpringLayout.NORTH, minuteComboBox);
+        springLayout.putConstraint(SpringLayout.WEST, AMButton, 10, SpringLayout.EAST, minuteComboBox);
+//        springLayout.putConstraint(SpringLayout.NORTH, PMButton, 10, SpringLayout.NORTH, minuteComboBox);
+//        springLayout.putConstraint(SpringLayout.WEST, PMButton, 20, SpringLayout.EAST, minuteComboBox);
 		
 		//Spring layout for the deckLabel
 		springLayout.putConstraint(SpringLayout.NORTH, deckLabel, 25, SpringLayout.SOUTH, timeLabel);
@@ -643,7 +658,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 		add(timeLabel);
 		add(hourComboBox);
 		add(minuteComboBox);
-		add(ampmBox);
+		add(AMButton);
 		
 		// Adds label for Deadline and date related labels and boxes
 		add(deadlineLabel);

@@ -19,6 +19,7 @@ import javax.swing.border.EtchedBorder;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.DefaultToolbarView;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.EditButtonsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerButtonsPanel;
 
 /**
@@ -31,7 +32,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerBu
 public class ToolbarView  extends DefaultToolbarView {
 
 //	TODO: Cancel Game
-//	public EditButtonsPanel editButton = new EditButtonsPanel();
+	public EditButtonsPanel editButton = new EditButtonsPanel();
 	public PlanningPokerButtonsPanel gameButton = new PlanningPokerButtonsPanel();
 	
 	/**
@@ -39,19 +40,20 @@ public class ToolbarView  extends DefaultToolbarView {
 	 * @param visible boolean
 	 */
 	public ToolbarView(boolean visible) {
-
 		this.addGroup(gameButton);
+		this.addGroup(editButton);
+		
 //		this.addGroup(editButton);
 
 	}
 	
-//	/**
-//	 * Method getEditButton.
-//	
-//	 * @return EditButtonsPanel */
-//	public EditButtonsPanel getEditButton(){
-//		return editButton;
-//	}
+	/**
+	 * Method getEditButton.
+	
+	 * @return EditButtonsPanel */
+	public EditButtonsPanel getEditButton(){
+		return editButton;
+	}
 	
 
 	/**

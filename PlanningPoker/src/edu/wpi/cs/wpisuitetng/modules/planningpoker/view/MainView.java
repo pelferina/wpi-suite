@@ -49,7 +49,7 @@ public class MainView extends JTabbedPane {
 	private int j = 0;
 	private List<Integer> openTabs = new ArrayList<Integer>();
 	private List<NewGameDistributedPanel> newGames = new ArrayList<NewGameDistributedPanel>();
-	final int PERMANANT_TABS = 2;
+	final int PERMANANT_TABS = 1;
 	private final AddEmailPanel addEmailPanel;
 	
 	public MainView() {
