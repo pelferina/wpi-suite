@@ -2,6 +2,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.swing.Timer;
@@ -34,9 +35,6 @@ import edu.wpi.cs.wpisuitetng.network.Network;
  *
  * 
  */
-
-
-
 
 public class RefreshManager {
 	
@@ -75,28 +73,32 @@ public class RefreshManager {
 	
 	private void updateAllControllers()
 	{
+		//Make a request to the database
 		gameController.actionPerformed(null);
 		reqController.actionPerformed(null);	
 		
-		diffRequirements();
-		
+		if ( differentList(gameCache, GameModel.getInstance().getGames()))
+			System.out.println("Difference found in game cache");
+		else if (differentList(reqCache, RequirementModel.getInstance().getRequirements())
+			System.out.println("Difference found in req cache");
+		else
+			System.out.println("Cache up to date");
 		
 		gameCache = GameModel.getInstance().getGames();
 		reqCache = RequirementModel.getInstance().getRequirements();
 		
 	}
 	
-	/**
-	 * 
-	 * @return true if changes have been made to the requirement model, false otherwise
-	 */
-	private boolean diffRequirements()
-	{
-		if (reqCache == null)
-			return false;
-		if (reqCache.size() != RequirementModel );
+	//Assumes list are in the same order
+	private boolean differentList(List<?> l1, List<?> l2) {
+		if (l1.size() != l2.size() )
+			return true;
+		
+	    for (int i = 0; i < l1.size(); i++) 
+	    	if ( l1.get(i) != l2.get(i) )
+	        	return true;
+	    
+	    return false;
 	}
-	
-
 
 }
