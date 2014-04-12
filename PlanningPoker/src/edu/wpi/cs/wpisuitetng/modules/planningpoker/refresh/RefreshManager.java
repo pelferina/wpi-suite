@@ -77,12 +77,23 @@ public class RefreshManager {
 		gameController.actionPerformed(null);
 		reqController.actionPerformed(null);	
 		
-		if ( differentList(gameCache, GameModel.getInstance().getGames()))
+		if ( differentList(gameCache, GameModel.getInstance().getGames())){
 			System.out.println("Difference found in game cache");
-		else if (differentList(reqCache, RequirementModel.getInstance().getRequirements())
+			gameController.getInstance().refresh();
+			
+			
+		}
+		else if (differentList(reqCache, RequirementModel.getInstance().getRequirements())){
 			System.out.println("Difference found in req cache");
-		else
+			reqController.refresh();
+			
+			
+		}	
+		else{
 			System.out.println("Cache up to date");
+			
+			
+		}
 		
 		gameCache = GameModel.getInstance().getGames();
 		reqCache = RequirementModel.getInstance().getRequirements();
@@ -95,7 +106,7 @@ public class RefreshManager {
 			return true;
 		
 	    for (int i = 0; i < l1.size(); i++) 
-	    	if ( l1.get(i) != l2.get(i) )
+	    	if ( ! l1.get(i).equals(l2.get(i) ))
 	        	return true;
 	    
 	    return false;

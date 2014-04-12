@@ -11,7 +11,10 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -26,6 +29,8 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * @author justinhess
  */
 public class GetRequirementsController implements ActionListener {
+	
+	List<Refreshable> refreshables = new ArrayList<Refreshable>();
 
 	private GetRequirementsRequestObserver observer;
 	private static GetRequirementsController instance;
@@ -90,6 +95,16 @@ public class GetRequirementsController implements ActionListener {
 			
 			// add the requirements to the local model
 			RequirementModel.getInstance().addRequirements(requirements);
+		}
+	}
+	
+	public void addRefreshable(Refreshable r){
+		refreshables.add(r);
+	}
+	
+	public void refresh() {
+		for (Refreshable r : refreshables){
+			r.refreshGames();
 		}
 	}
 }
