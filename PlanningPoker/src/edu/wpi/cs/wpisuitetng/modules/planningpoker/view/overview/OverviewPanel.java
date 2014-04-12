@@ -150,9 +150,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	public void updateTable(String s){
 		
 		List<GameSession> sessions = new ArrayList<GameSession>();
-		
-		System.out.println("Checking for " + s);
-		
+				
 		if (s.equals("Drafts")){
 			sessions = (ArrayList<GameSession>) gameModel.getDraftGameSessions();
 		} else if (s.equals("Active Games")){
@@ -178,9 +176,6 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		table.setModel(jModel);
 		jModel.fireTableDataChanged();
 		
-		System.out.println("Successfully made it through checking for " + s);
-
-		
 	}
 
 	@Override
@@ -194,6 +189,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
         DefaultTreeModel model = (DefaultTreeModel) gameTree.getModel();
         model.setRoot(gameTreeModel.getTop());
         model.reload();
+        updateTable("");
 		
 	}
 

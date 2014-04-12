@@ -342,7 +342,6 @@ public class NewGameReqPanel extends JPanel {
 		reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
 		ArrayList<Requirement> reqsCopy = new ArrayList<Requirement>(reqs);
 		for (Requirement req : reqsCopy) {
-			System.out.println("Iteration: " + req.getIteration());
 			if (!req.getIteration().equals("Backlog")) reqs.remove(req);
 		}
 	}
