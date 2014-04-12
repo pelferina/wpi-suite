@@ -58,7 +58,7 @@ public class GetGamesRequestObserver implements RequestObserver {
 	 */
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		if(exception == null) System.err.println("FAILURE in GetGamesRequestObserver! What happened? IDK...");
+		if(exception == null) System.err.println("FAILURE in GetGamesRequestObserver");
 		exception.printStackTrace();
 	}
 

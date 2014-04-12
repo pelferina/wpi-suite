@@ -184,8 +184,11 @@ public class OverviewPanel extends JPanel implements Refreshable {
         model.reload();
         updateTable("");
         
-        repaint();
-		
+        System.out.println("Updating: Games are now " + table.getModel().getRowCount());
+        
+        gameTree.repaint();
+        table.repaint();
+        		
 	}
 
 }

@@ -2,6 +2,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -40,15 +41,15 @@ public class RefreshManager {
 	
 	GetGamesController gameController;
 	GetRequirementsController reqController;
-	List<Requirement> reqCache;
-	List<GameSession> gameCache;
+	ArrayList<Requirement> reqCache;
+	ArrayList<GameSession> gameCache;
 	
 	public RefreshManager() {
 		gameController = GetGamesController.getInstance();
 		reqController = GetRequirementsController.getInstance();
 		
-		reqCache = RequirementModel.getInstance().getRequirements();
-		gameCache = GameModel.getInstance().getGames();
+		reqCache = new ArrayList<Requirement>();
+		gameCache =  new ArrayList<GameSession>();
 		
 		//Create action listener for timer
 		final ActionListener actionListener = new ActionListener() {
@@ -78,15 +79,15 @@ public class RefreshManager {
 		reqController.actionPerformed(null);	
 		
 		
-		System.out.println("RefreshManager polling for updates");
+		//System.out.println("RefreshManager polling for updates");
 		if ( differentList(gameCache, GameModel.getInstance().getGames())){
-			// GameController's reliant objects are out of date
+			System.out.println(" GameController\'s reliant objects are out of date");
 			gameController.refresh();
 			
 			
 		}
 		else if (differentList(reqCache, RequirementModel.getInstance().getRequirements())){
-			// RequirementController's reliant objects are out of date
+			System.out.println(" RequirementController\'s reliant objects are out of date");
 			reqController.refresh();
 			
 			
@@ -96,13 +97,16 @@ public class RefreshManager {
 			
 		}
 		
-		gameCache = GameModel.getInstance().getGames();
-		reqCache = RequirementModel.getInstance().getRequirements();
+		gameCache = new ArrayList<GameSession>(GameModel.getInstance().getGames());
+		reqCache = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
 		
 	}
 	
 	//Assumes list are in the same order
-	private boolean differentList(List<?> l1, List<?> l2) {
+	public boolean differentList(List<?> l1, List<?> l2) {
+		System.out.println(" Diffing "+l1.toString()+"\n"+l2.toString());
+
+		
 		if (l1.size() != l2.size() )
 			return true;
 		
