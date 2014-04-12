@@ -162,14 +162,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		} else if (s.equals("Archived Games")){
 			sessions = (ArrayList<GameSession>) gameModel.getArchivedGameSessions();
 		} else {
-			
-			//Get the sessions
-			HashSet<GameSession> allGames = new HashSet<GameSession>(gameModel.getDraftGameSessions());
-			allGames.addAll(gameModel.getActiveGameSessions());
-			allGames.addAll(gameModel.getInProgressGameSessions());
-			allGames.addAll(gameModel.getCompletedGameSessions());
-			allGames.addAll(gameModel.getArchivedGameSessions());
-			sessions.addAll(allGames);
+			sessions = (ArrayList<GameSession>) gameModel.getGames();
 		}
 		JTableModel jModel = (JTableModel)table.getModel();
 		jModel.update((ArrayList<GameSession>)sessions);
@@ -190,6 +183,8 @@ public class OverviewPanel extends JPanel implements Refreshable {
         model.setRoot(gameTreeModel.getTop());
         model.reload();
         updateTable("");
+        
+        repaint();
 		
 	}
 

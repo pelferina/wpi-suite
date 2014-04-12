@@ -78,22 +78,21 @@ public class RefreshManager {
 		reqController.actionPerformed(null);	
 		
 		
-		System.out.println("RefreshManager checking for updates");
+		System.out.println("RefreshManager polling for updates");
 		if ( differentList(gameCache, GameModel.getInstance().getGames())){
-			System.out.println("Difference found in game cache");
+			// GameController's reliant objects are out of date
 			gameController.refresh();
 			
 			
 		}
 		else if (differentList(reqCache, RequirementModel.getInstance().getRequirements())){
-			System.out.println("Difference found in req cache");
+			// RequirementController's reliant objects are out of date
 			reqController.refresh();
 			
 			
 		}	
-		else{
-			System.out.println("Cache up to date");
-			
+		else{			
+			// everything up to date!
 			
 		}
 		

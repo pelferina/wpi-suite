@@ -66,8 +66,6 @@ public class GetUsersController {
 	 */
 	public void receivedUserList(User[] userList) {
 
-		// Empty the local model to eliminate duplications
-		System.out.println(userList.length + " users returned back from server");
 		// Make sure the response was not null
 		this.userList = userList;
 	}
