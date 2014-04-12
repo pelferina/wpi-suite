@@ -64,34 +64,10 @@ public class OverviewPanel extends JPanel {
 		table = new JTable(new JTableModel(sessions));
 		sorter = new TableRowSorter<JTableModel>((JTableModel)table.getModel());
 		table.setRowSorter(sorter);
-	
-		//This timer checks the deadlines of all active games and sends an email to all users that have added an email
-		//saying that the game is complete. 
-		
-		deadlineCheck = new Timer(60000, new ActionListener(){
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				List<GameSession> games = gameModel.getGames();
-				Date today = new Date();
-				for(int i=0; i<games.size(); i++){
-					if (games.get(i).getEndDate() != null){
-						if (games.get(i).getEndDate().before(today) && !games.get(i).emailSent){
-							final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.PUT); // PUT == create
-							//request.setBody(new EmailAddressModel(address).toJSON()); // put the new message in the body of the request
-							request.setBody("endGame" + games.get(i).getGameName());
-							request.send(); // send the request
-							games.get(i).emailSent = true;
-						}
-					}
-				}
-			}
-			
-		});
-		
-		deadlineCheck.start();
+
 		
 		//This is used to refresh the overview table
+		
 		
 		table.addMouseListener(new MouseAdapter() {
 			  public void mouseClicked(MouseEvent e) {
