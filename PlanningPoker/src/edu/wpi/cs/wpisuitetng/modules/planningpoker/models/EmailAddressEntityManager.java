@@ -90,6 +90,7 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 			return newEmailAddress;
 		} 
 
+		
 		newEmailAddress.setUserID(s.getUser().getIdNum());
 		List<Model> emails = db.retrieveAll(newEmailAddress, s.getProject());
 
