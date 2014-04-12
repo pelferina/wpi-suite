@@ -43,7 +43,7 @@ public class RefreshManager {
 	List<Requirement> reqCache;
 	List<GameSession> gameCache;
 	
-	private RefreshManager() {
+	public RefreshManager() {
 		gameController = GetGamesController.getInstance();
 		reqController = GetRequirementsController.getInstance();
 		
@@ -77,9 +77,11 @@ public class RefreshManager {
 		gameController.actionPerformed(null);
 		reqController.actionPerformed(null);	
 		
+		
+		System.out.println("RefreshManager checking for updates");
 		if ( differentList(gameCache, GameModel.getInstance().getGames())){
 			System.out.println("Difference found in game cache");
-			gameController.getInstance().refresh();
+			gameController.refresh();
 			
 			
 		}
