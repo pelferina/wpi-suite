@@ -1,5 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game;
 
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -30,6 +31,7 @@ public class PlayGame extends JPanel{
 	private final JButton submit = new JButton("Submit Estimate");
 	private Requirement currentReq;
 	private GameView gv;
+	//private GameCard[] gameCards = {new GameCard(1), new GameCard(2), new GameCard(5)};
 	
 	public PlayGame(GameSession gameToPlay, GameView agv){
 		submit.setEnabled(false);
@@ -132,5 +134,11 @@ public class PlayGame extends JPanel{
 	public void sendEstimatetoGameView(Requirement r){
 		gv.updateReqTables(r);
 	}
+	
+	/*@Override
+    protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		//g.drawImage(, 0, 0, null);
+	}*/
 	
 }
