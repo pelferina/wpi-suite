@@ -3,10 +3,12 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-
 import org.junit.Test;
+
+import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 
 
 public class VoteTester {
@@ -33,6 +35,36 @@ public class VoteTester {
 		assertTrue(v.getVoteID() == 0);
 		v.save();
 		v.delete();
+		
+	}
+	@Test
+	public final void testNullManager() throws WPISuiteException{
+		VoteEntityManager nullManager = new VoteEntityManager(null);
+		try{
+			nullManager.makeEntity(null, (new Vote(null, 0, 0)).toJSON());
+		}catch(Exception E) {
+			assertTrue(true);
+		}
+		try{
+			nullManager.getAll(null);
+		}catch(Exception E) {
+			assertTrue(true);
+		}
+		try{
+			nullManager.update(null, (new Vote(null, 0, 0)).toJSON());
+		}catch(Exception E) {
+			assertTrue(true);
+		}
+		assertNull(nullManager.advancedGet(null, null));
+		assertNull(nullManager.advancedPost(null, null, null));
+		assertNull(nullManager.Count());
+		nullManager.deleteAll(null);
+		nullManager.deleteEntity(null, null);
+		try{
+			nullManager.save(null, null);
+		}catch(Exception E) {
+			assertTrue(true);
+		}
 		
 	}
 }
