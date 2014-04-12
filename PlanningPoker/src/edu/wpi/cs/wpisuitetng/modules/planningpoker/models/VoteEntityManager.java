@@ -27,10 +27,10 @@ public class VoteEntityManager implements EntityManager<Vote> {
 		//TODO Replace SHADY Hash function
 		if(v.getVoteID() == -1) v.setVoteID(v.getUID() + v.getGameID()*100000);
 		// Check for duplication
-		Vote[] vlist = (Vote[]) db.retrieve(Vote.class, "UID", v.getUID(), s.getProject()).toArray();
-		for(Vote vo : vlist) if (vo.identify(v)) return update(s, content);
-		// if no duplication, save the vote and return, if db.save fails throw exception.
-		if(!db.save(v, s.getProject())) throw new WPISuiteException();
+		GameSession[] session = (GameSession[]) db.retrieve(GameSession.class, "GameID", v.getGameID()).toArray();
+		if(session.length != 1) throw new WPISuiteException();
+		session[0].addVote(v);
+		db.update(GameSession.class, "GameID", session[0].getGameID(), "Votes", session[0].getVotes());
 		return v;
 	}
 
@@ -42,11 +42,11 @@ public class VoteEntityManager implements EntityManager<Vote> {
 	@Override
 	public Vote[] getEntity(Session s, String example) throws NotFoundException,
 			WPISuiteException {
-		Vote v = Vote.fromJson(example);
-		Vote[] vlist = (Vote[]) db.retrieve(Vote.class, "UID", v.getUID(), s.getProject()).toArray();
-		ArrayList<Vote> voteList = new ArrayList<Vote>();
-		for(Vote vo : vlist) if(v.getGameID() == vo.getGameID())  voteList.add(vo);
-		return (Vote[]) voteList.toArray();
+			Vote v = Vote.fromJson(example);
+			Vote[] vlist = (Vote[]) db.retrieve(Vote.class, "UID", v.getUID(), s.getProject()).toArray();
+			ArrayList<Vote> voteList = new ArrayList<Vote>();
+			for(Vote vo : vlist) if(v.getGameID() == vo.getGameID())  voteList.add(vo);
+			return (Vote[]) voteList.toArray();
 	}
 
 	@Override

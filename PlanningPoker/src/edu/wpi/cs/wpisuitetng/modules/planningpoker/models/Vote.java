@@ -13,7 +13,7 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
  * @author Team FFF8E7
  *
  */
-public class Vote extends AbstractModel{
+public class Vote extends AbstractModel implements Comparable<Vote>{
 
 	private int gameID;
 	private int UID;
@@ -124,6 +124,23 @@ public class Vote extends AbstractModel{
 	 */
 	public void setVoteID(int voteID) {
 		VoteID = voteID;
+	}
+	/** (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object other){
+		if(other.getClass() != Vote.class) return false;
+		return ((Vote) other).VoteID == this.VoteID;
+		
+	}
+	/**
+	 * Compares a vote to another vote
+	 * @param o the other vote
+	 */
+	@Override
+	public int compareTo(Vote o) {
+		return o.VoteID - this.VoteID;
 	}
 	
 }
