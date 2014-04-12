@@ -69,10 +69,14 @@ public class MainView extends JTabbedPane {
 				}
 			}
 		});
-		addTab("Add Email", addEmailPanel);
 		ViewEventController.getInstance().setMainView(this);
 	}
+	//The function to add an email address tab
 	
+	public void addEmailAddress()
+	{
+		addTab("Add Email", addEmailPanel);
+	}
 	//The function to add a new game tab
 	
 	public void addNewGameTab()

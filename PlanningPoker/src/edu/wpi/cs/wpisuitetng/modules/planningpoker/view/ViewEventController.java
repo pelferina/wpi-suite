@@ -95,4 +95,11 @@ public class ViewEventController {
 	public void createGame() {
 		main.addNewGameTab();
 	}
+	
+	/**
+	 * Opens a new tab for adding an email address
+	 */
+	public void options() {
+		main.addEmailAddress();
+	}
 }
