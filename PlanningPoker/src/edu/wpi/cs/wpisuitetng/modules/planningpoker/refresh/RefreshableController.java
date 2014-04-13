@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class RefreshableController {
-	List<Refreshable> refreshables = new ArrayList<Refreshable>();
+	protected List<Refreshable> refreshables = new ArrayList<Refreshable>();
 	
 	public void addRefreshable(Refreshable r){
 		refreshables.add(r);
@@ -14,9 +14,5 @@ public abstract class RefreshableController {
 		refreshables.remove(r);
 	}
 	
-	public void refresh() {
-		for (Refreshable r : refreshables){
-			r.refreshRequirements();
-		}
-	}
+	public abstract void refresh();
 }

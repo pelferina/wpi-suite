@@ -75,4 +75,11 @@ public class GetGamesController extends RefreshableController implements ActionL
 			model.addMessages(messages);
 		}
 	}
+
+	@Override
+	public void refresh() {
+		for (Refreshable r : refreshables){
+			r.refreshGames();
+		}
+	}
 }

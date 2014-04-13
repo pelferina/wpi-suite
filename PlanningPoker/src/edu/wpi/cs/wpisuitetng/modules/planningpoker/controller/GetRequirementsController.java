@@ -96,4 +96,11 @@ public class GetRequirementsController extends RefreshableController implements 
 			RequirementModel.getInstance().addRequirements(requirements);
 		}
 	}
+
+	@Override
+	public void refresh() {
+		for (Refreshable r : refreshables){
+			r.refreshRequirements();
+		}
+	}
 }
