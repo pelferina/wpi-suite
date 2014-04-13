@@ -14,6 +14,8 @@ import java.awt.Frame;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 //import java.awt.event.MouseAdapter;
@@ -26,9 +28,11 @@ import java.util.List;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 import net.sourceforge.jdatepicker.*;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
@@ -57,25 +61,28 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 	private int[] defaultDeck = {1, 1, 2, 3, 5, 8, 13, -1};
 	private boolean isAM = true;
 	public boolean isNew = true;
-	private final String[] yearString = {"2014", "2015","2016","2017","2018","2019","2020","2021","2022"}; 
-	private final String[] monthString = {"Jan", "Feb", "Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec" }; 
+//	private final String[] yearString = {"2014", "2015","2016","2017","2018","2019","2020","2021","2022"}; 
+//	private final String[] monthString = {"Jan", "Feb", "Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec" }; 
 	private final String[] ampmString = {"AM", "PM"};
 	private List<Integer> selectionsMade = new ArrayList<Integer>();
 	
 	private JButton saveButton;
 	private final JButton addNewButton = new JButton("Create New");
 	private JComboBox deckBox = new JComboBox(); // Implement Decks
-	private JComboBox<Integer> dayBox = new JComboBox<Integer>();
 	private JComboBox<String> hourComboBox = new JComboBox<String>();
 	private JComboBox<String> minuteComboBox = new JComboBox<String>();
-	private JComboBox<String> ampmBox = new JComboBox<String>(ampmString);
-	private JComboBox<String> yearBox = new JComboBox<String>(yearString);
-	private JComboBox<String> monthBox = new JComboBox<String>(monthString);
+	
+	private JCheckBox deadlineCheckBox = new JCheckBox("Set Deadline"); 
+	private JRadioButton AMButton = new JRadioButton("AM");
+	private JRadioButton PMButton = new JRadioButton("PM");
+
+	private JCheckBox deckCheckBox = new JCheckBox("Use Deck"); 
+
 	private final JLabel nameLabel = new JLabel("Game Name*:");
-	private final JLabel timeLabel = new JLabel ("Deadline Time:");
+	private final JLabel deadlineTime = new JLabel ("Deadline Time:");
 	private final JLabel descriptionLabel = new JLabel("Description:");
 	private final JLabel deadlineLabel = new JLabel("Deadline:");
-	private final JLabel deckLabel = new JLabel("Chosen deck:");
+	private final JLabel deckLabel = new JLabel("Choose a deck:");
 	private JLabel yearLabel = new JLabel("Year: ");
 	private JLabel monthLabel = new JLabel("Month: ");
 	private JLabel dayLabel = new JLabel("Day: ");
@@ -122,8 +129,31 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 		init(ngdp);
 	}
 	
-	//Initializes the NewGameDistributedPanel
 	
+	/** Sets deadline(datePicker and time) to either visible or not
+	 * @param isVisible
+	 */
+	private void setDeadlineVisible(boolean isVisible)
+	{
+		deadlineTime.setVisible(isVisible);
+		deadlineLabel.setVisible(isVisible);
+		datePicker.setVisible(isVisible);
+		hourComboBox.setVisible(isVisible);
+		minuteComboBox.setVisible(isVisible);
+		AMButton.setVisible(isVisible);
+		PMButton.setVisible(isVisible);
+	}
+	
+	/** Sets deadline(datePicker and time) to either visible or not
+	 * @param isVisible
+	 */
+	private void setDeckVisible(boolean isVisible)
+	{
+		deckLabel.setVisible(isVisible);
+		deckBox.setVisible(isVisible);
+	}
+
+	//Initializes the NewGameDistributedPanel
 	private void init(NewGameDistributedPanel ngdp)
 	{
 		// This timer is used to check if the game can be activated. If it can be activated, which means that all the necessary fields are filled,
@@ -143,22 +173,13 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 		activateButton.setEnabled(false);
 		currentDate = Calendar.getInstance();
 
-		newGameP = ngdp;
-
-		setPanel();
-				
-		//initialize dayBox to 31 days (as in January)
-		for (int i=0; i<31; i++){
-			dayBox.addItem(i+1);
-		}
-		
 		//Initialize hour and minute combo boxes
 		hourComboBox.addItem("");
 		minuteComboBox.addItem("");
 		for (int j=0; j<12; j++){
 			hourComboBox.addItem(j+1 + "");
 		}
-		
+
 		for (int i=0; i<60; i++){
 			if (i < 10){
 				minuteComboBox.addItem("0" + i);
@@ -168,9 +189,76 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 			}
 		}
 		
+		//Sets isNew to false, and sets minuteTime to the selected minute.
+		minuteComboBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e){
+				minuteTime = minuteComboBox.getSelectedIndex() - 1;
+				newGameP.isNew = false;
+			}
+
+		});
+
+		//Sets isNew to false and sets hourtime to the hour selected. It is set to 0 if 12 is selected.
+		hourComboBox.addActionListener(new ActionListener() {
+			@Override 
+			public void actionPerformed(ActionEvent e){
+				int hourIndex = hourComboBox.getSelectedIndex();
+				if (hourIndex != 12 && hourIndex != 0){
+					hourTime = hourComboBox.getSelectedIndex();
+				}
+				else{
+					hourTime = 0;
+				}
+				newGameP.isNew = false;
+			}
+		});
+		
 		//Initializes the deck combo box
-		deckBox.addItem("No Deck");
 		deckBox.addItem("Default Deck");
+		
+		newGameP = ngdp;
+		
+		setPanel();
+		
+		//Set deadline visible to false
+		setDeadlineVisible(false);
+		
+		
+		//Display Deadline option only when checkbox is selected
+		deadlineCheckBox.addItemListener(new ItemListener()
+		{
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					setDeadlineVisible(true);
+			        datePicker.revalidate();
+			        datePicker.repaint();
+			        
+			    } else {
+			    	setDeadlineVisible(false);
+			    }
+			}
+			
+		});
+		
+		setDeckVisible(false);
+		
+		deckCheckBox.addItemListener(new ItemListener()
+		{
+
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					setDeckVisible(true);		        
+			    } else {
+			    	setDeckVisible(false);
+			    }
+			}	
+		});
+		
+
+		
 		
 		//This is run if the game is opened in edit mode
 		if(editMode)
@@ -207,6 +295,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 			nameTextField.setText(gameSession.getGameName());
 			nameTextField.setEditable(false);
 			descTextArea.setText(gameSession.getGameDescription());
+			nameTextField.setEditable(false);
 			
 		}
 		//Adds a documentlistener to the name text field so that way if the text is changed, the pop-up will appear if 
@@ -237,20 +326,20 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 
 		//Adds a documentlistener to the description text area so that way if the text is changed in the description text area, the pop-up will 
 		// appear is the new game tab is close
-				descTextArea.getDocument().addDocumentListener(new DocumentListener(){
-					@Override
-					public void changedUpdate(DocumentEvent e){
-						newGameP.isNew = false;
-					}
-					@Override
-					public void removeUpdate(DocumentEvent e){
-						newGameP.isNew = false;
-					}
-					@Override 
-					public void insertUpdate(DocumentEvent e){
-						newGameP.isNew = false;
-					}
-				});
+		descTextArea.getDocument().addDocumentListener(new DocumentListener(){
+			@Override
+			public void changedUpdate(DocumentEvent e){
+				newGameP.isNew = false;
+			}
+			@Override
+			public void removeUpdate(DocumentEvent e){
+				newGameP.isNew = false;
+			}
+			@Override 
+			public void insertUpdate(DocumentEvent e){
+				newGameP.isNew = false;
+			}
+		});
 
 		//Adds an action listener to the deck box so that if the deck combo box to set isNew to false
 		//if it is changed.
@@ -265,44 +354,18 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 				newGameP.isNew = false;
 			}
 		});
-
-		//Sets isNew to false, and sets isAM to true if AM is selected, or false if PM is selected
-		ampmBox.addActionListener(new ActionListener() {
+		AMButton.addActionListener(new ActionListener(){
 			@Override
-			public void actionPerformed(ActionEvent e){
-				if (ampmBox.getSelectedIndex() == 0){
-					isAM = true;
-				}
-				else {
-					isAM = false;
-				}
-				newGameP.isNew = false;
+			public void actionPerformed(ActionEvent e) {
+				PMButton.setSelected(false);
+				isAM = true;
 			}
-			
 		});
-
-		//Sets isNew to false, and sets minuteTime to the selected minute.
-		minuteComboBox.addActionListener(new ActionListener() {
+		PMButton.addActionListener(new ActionListener(){
 			@Override
-			public void actionPerformed(ActionEvent e){
-				minuteTime = minuteComboBox.getSelectedIndex() - 1;
-				newGameP.isNew = false;
-			}
-			
-		});
-
-		//Sets isNew to false and sets hourtime to the hour selected. It is set to 0 if 12 is selected.
-		hourComboBox.addActionListener(new ActionListener() {
-			@Override 
-			public void actionPerformed(ActionEvent e){
-				int hourIndex = hourComboBox.getSelectedIndex();
-				if (hourIndex != 12 && hourIndex != 0){
-					hourTime = hourComboBox.getSelectedIndex();
-				}
-				else{
-					hourTime = 0;
-				}
-				newGameP.isNew = false;
+			public void actionPerformed(ActionEvent e) {
+				AMButton.setSelected(false);
+				isAM = false;
 			}
 		});
 
@@ -314,7 +377,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 				GameModel model = GameModel.getInstance();
 				GameSession newGame = new GameSession(name, new String(), 0, model.getSize() + 1, new Date(), new ArrayList<Integer>()); 
 				AddGameController msgr = new AddGameController(model);
-				msgr.sendMessage(newGame);	
+				msgr.sendGame(newGame);	
 			}
 		});
 		
@@ -344,11 +407,11 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 				for (int i=0; i<reqsSelected.size(); i++){
 					selectionsMade.add(reqsSelected.get(i).getId());
 				}
-				//Displays the hour error message if no hour was chosen
+				//Displays the hour error game if no hour was chosen
 				if (hourComboBox.getSelectedIndex() == 0){
 					hourError.setVisible(true);
 				}
-				//Displays the minute error message if no minute was chosen
+				//Displays the minute error game if no minute was chosen
 				else if (minuteComboBox.getSelectedIndex() == 0){
 					minuteError.setVisible(true);
 				}
@@ -374,7 +437,10 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 					GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize()+1, deadlineDate, selectionsMade); 
 					GameModel model = GameModel.getInstance();
 					AddGameController msgr = new AddGameController(model);
-					msgr.sendMessage(newGame);	
+					msgr.sendGame(newGame);	
+					final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.PUT); // PUT == create
+					request.setBody("endGame" + newGame.getGameName());
+					request.send(); // send the request
 					JOptionPane gameCreated = new JOptionPane("Game Created and Activated");
 					JOptionPane.showMessageDialog(gameCreated, "Game has been created and activated", "Game created", JOptionPane.INFORMATION_MESSAGE);
 					newGameP.close.doClick();
@@ -502,28 +568,32 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 		springLayout.putConstraint(SpringLayout.NORTH, descTextArea, 10, SpringLayout.SOUTH, descriptionLabel);
 		springLayout.putConstraint(SpringLayout.WEST, descTextArea, 0, SpringLayout.WEST, descriptionLabel);
 		springLayout.putConstraint(SpringLayout.EAST, descTextArea, -10, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, descTextArea, -15, SpringLayout.NORTH, deadlineLabel);
+		springLayout.putConstraint(SpringLayout.SOUTH, descTextArea, -15, SpringLayout.NORTH, deadlineCheckBox);
+		
+		//Spring layout for the deadlineCheckBox
+		springLayout.putConstraint(SpringLayout.SOUTH, deadlineCheckBox, -250, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, deadlineCheckBox, 0, SpringLayout.WEST, nameLabel);
+
+		//Spring layout for the deckCheckBox
+		springLayout.putConstraint(SpringLayout.SOUTH, deckCheckBox, -250, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, deckCheckBox, 25, SpringLayout.EAST, deadlineCheckBox);
+
+		//Spring layout for the deckLabel
+		springLayout.putConstraint(SpringLayout.SOUTH, deckLabel, -250, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, deckLabel, 20, SpringLayout.EAST, deckCheckBox);		
+		
+		//Spring layout for the deckBox
+		springLayout.putConstraint(SpringLayout.WEST, deckBox, 100, SpringLayout.WEST, deckLabel);
+		springLayout.putConstraint(SpringLayout.SOUTH, deckBox, 0, SpringLayout.SOUTH, deckLabel);
 		
 		//Spring layout for the deadlineLabel
-		springLayout.putConstraint(SpringLayout.SOUTH, deadlineLabel, -250, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, deadlineLabel, -200, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, deadlineLabel, 0, SpringLayout.WEST, nameLabel);
 		
-		//Spring layout for the descriptionLabel
-		springLayout.putConstraint(SpringLayout.NORTH, descriptionLabel, 30, SpringLayout.NORTH, nameLabel);
-		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 23, SpringLayout.WEST, this);
-		
-		//Spring layout for the descTextArea
-		descTextArea.setRows(3);
-		descTextArea.setLineWrap(true);
-		springLayout.putConstraint(SpringLayout.NORTH, descTextArea, 10, SpringLayout.SOUTH, descriptionLabel);
-		springLayout.putConstraint(SpringLayout.WEST, descTextArea, 0, SpringLayout.WEST, descriptionLabel);
-		springLayout.putConstraint(SpringLayout.EAST, descTextArea, -10, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, descTextArea, -15, SpringLayout.NORTH, deadlineLabel);
-		
-		//Spring layout for the deadlineLabel
-		springLayout.putConstraint(SpringLayout.SOUTH, deadlineLabel, -250, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, deadlineLabel, 0, SpringLayout.WEST, nameLabel);
-		
+		//Spring layout for the datePicker
+		springLayout.putConstraint(SpringLayout.WEST, datePicker, 75, SpringLayout.WEST, deadlineLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, datePicker, 0, SpringLayout.NORTH, deadlineLabel);
+					
 		//Spring layout for the activateButton
 		springLayout.putConstraint(SpringLayout.SOUTH, saveButton, -10, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, saveButton, 180, SpringLayout.WEST, this);
@@ -553,69 +623,24 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 		springLayout.putConstraint(SpringLayout.WEST, reqError, 0, SpringLayout.WEST, deadlineError);
 		springLayout.putConstraint(SpringLayout.NORTH, reqError, 0, SpringLayout.NORTH, deadlineError);
 		reqError.setVisible(false);
-		
-		//Spring layout for the yearLabel
-		springLayout.putConstraint(SpringLayout.WEST, yearLabel, 0, SpringLayout.WEST, deadlineLabel);
-		springLayout.putConstraint(SpringLayout.NORTH, yearLabel, 18, SpringLayout.SOUTH, deadlineLabel);
-		
-		//Spring layout for the monthLabel
-		springLayout.putConstraint(SpringLayout.WEST, monthLabel, 0, SpringLayout.WEST, yearLabel);
-		springLayout.putConstraint(SpringLayout.NORTH, monthLabel, 18, SpringLayout.SOUTH, yearLabel);
-		
-		//Spring layout for the dayLabel
-		springLayout.putConstraint(SpringLayout.WEST, dayLabel, 0, SpringLayout.WEST, monthLabel);
-		springLayout.putConstraint(SpringLayout.NORTH, dayLabel, 18, SpringLayout.SOUTH, monthLabel);
-		
-		//Spring layout for the yearBox
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, yearBox, 0, SpringLayout.VERTICAL_CENTER, yearLabel);
-		springLayout.putConstraint(SpringLayout.WEST, yearBox, 50, SpringLayout.WEST, yearLabel);
-		springLayout.putConstraint(SpringLayout.EAST, yearBox, 100, SpringLayout.WEST, yearBox);
-		
-		//Spring layout for the monthBox
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, monthBox, 0, SpringLayout.VERTICAL_CENTER, monthLabel);
-		springLayout.putConstraint(SpringLayout.WEST, monthBox, 0, SpringLayout.WEST, yearBox);
-		springLayout.putConstraint(SpringLayout.EAST, monthBox, 100, SpringLayout.WEST, monthBox);
-		
-		//Spring layout for the dayBox
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, dayBox, 0, SpringLayout.VERTICAL_CENTER, dayLabel);
-		springLayout.putConstraint(SpringLayout.WEST, dayBox, 0, SpringLayout.WEST, monthBox);
-		springLayout.putConstraint(SpringLayout.EAST, dayBox, 100, SpringLayout.WEST, dayBox);
-		
-		//Spring layout for the deckBox
-		springLayout.putConstraint(SpringLayout.EAST, deckBox, 150, SpringLayout.EAST, yearBox);
-		springLayout.putConstraint(SpringLayout.SOUTH, deckBox, 0, SpringLayout.SOUTH, yearBox);
-		
-		//Spring layout for the deckLabel
-		springLayout.putConstraint(SpringLayout.EAST, deckLabel, 250, SpringLayout.EAST, deadlineLabel);
-		springLayout.putConstraint(SpringLayout.NORTH, deckLabel, 0, SpringLayout.NORTH, deadlineLabel);		
-
-		//Spring layout for the datePicker
-		springLayout.putConstraint(SpringLayout.WEST, datePicker, 150, SpringLayout.WEST, deadlineLabel);
-		springLayout.putConstraint(SpringLayout.NORTH, datePicker, 0, SpringLayout.NORTH, deadlineLabel);
-		
+						
 		//Spring layout for timeLabel
-    	springLayout.putConstraint(SpringLayout.NORTH, timeLabel, 25, SpringLayout.SOUTH, deadlineLabel);
-        springLayout.putConstraint(SpringLayout.WEST, timeLabel, 0, SpringLayout.WEST, nameLabel);
+    	springLayout.putConstraint(SpringLayout.NORTH, deadlineTime, 45, SpringLayout.SOUTH, deadlineLabel);
+        springLayout.putConstraint(SpringLayout.WEST, deadlineTime, 0, SpringLayout.WEST, nameLabel);
 		    
 		//Spring layout for hourComboBox
-        springLayout.putConstraint(SpringLayout.NORTH, hourComboBox, 0, SpringLayout.NORTH, timeLabel);
-        springLayout.putConstraint(SpringLayout.WEST, hourComboBox, 150, SpringLayout.WEST, timeLabel);
+        springLayout.putConstraint(SpringLayout.NORTH, hourComboBox, 0, SpringLayout.NORTH, deadlineTime);
+        springLayout.putConstraint(SpringLayout.WEST, hourComboBox, 100, SpringLayout.WEST, deadlineTime);
         
         //Spring layout for minuteComboBox
         springLayout.putConstraint(SpringLayout.NORTH, minuteComboBox, 0, SpringLayout.NORTH, hourComboBox);
-        springLayout.putConstraint(SpringLayout.WEST, minuteComboBox, 10, SpringLayout.EAST, hourComboBox);
+        springLayout.putConstraint(SpringLayout.WEST, minuteComboBox, 40, SpringLayout.EAST, hourComboBox);
         
-        //Spring layout for ampmBox
-        springLayout.putConstraint(SpringLayout.NORTH, ampmBox, 0, SpringLayout.NORTH, minuteComboBox);
-        springLayout.putConstraint(SpringLayout.WEST, ampmBox, 10, SpringLayout.EAST, minuteComboBox);
-		
-		//Spring layout for the deckLabel
-		springLayout.putConstraint(SpringLayout.NORTH, deckLabel, 25, SpringLayout.SOUTH, timeLabel);
-		springLayout.putConstraint(SpringLayout.WEST, deckLabel, 0, SpringLayout.WEST, nameLabel);		
-		
-		//Spring layout for the deckBox
-		springLayout.putConstraint(SpringLayout.WEST, deckBox, 150, SpringLayout.WEST, deckLabel);
-		springLayout.putConstraint(SpringLayout.SOUTH, deckBox, 0, SpringLayout.SOUTH, deckLabel);
+        //Spring layout for ampmButton
+        springLayout.putConstraint(SpringLayout.NORTH, AMButton, 10, SpringLayout.SOUTH, hourComboBox);
+        springLayout.putConstraint(SpringLayout.WEST, AMButton, 0, SpringLayout.WEST, hourComboBox);
+        springLayout.putConstraint(SpringLayout.NORTH, PMButton, 10, SpringLayout.SOUTH, minuteComboBox);
+        springLayout.putConstraint(SpringLayout.WEST, PMButton, 0, SpringLayout.WEST, minuteComboBox);
 		
 		//Spring layout for the saveButton
 		springLayout.putConstraint(SpringLayout.SOUTH, saveButton, -10, SpringLayout.SOUTH, this);
@@ -634,18 +659,21 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 		add(descTextArea);
 		
 		//Adds time related components
-		add(timeLabel);
+		add(deadlineTime);
 		add(hourComboBox);
 		add(minuteComboBox);
-		add(ampmBox);
+		add(AMButton);
+		add(PMButton);
 		
 		// Adds label for Deadline and date related labels and boxes
+		add(deadlineCheckBox);
 		add(deadlineLabel);
 		add(datePicker);
 		
 		// Adds deck GUI objects
 		add(deckLabel);
 		add(deckBox);
+		add(deckCheckBox);
 		
 		// Adds buttons at the bottom end of the GUI
 		add(saveButton);

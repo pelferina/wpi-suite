@@ -13,6 +13,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameTree;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.JTableModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame.JTableView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -42,7 +43,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
-public class OverviewPanel extends JPanel {
+public class OverviewPanel extends JPanel implements Refreshable {
 	GetGamesController ggc; 
 	GameSession[] curSessions = {}; // store gameSessions here
 	GameModel gameModel;
@@ -58,16 +59,15 @@ public class OverviewPanel extends JPanel {
 	public OverviewPanel(){
 		
 		this.gameModel = GameModel.getInstance();
-		ggc = new GetGamesController(gameModel);
+		ggc = GetGamesController.getInstance();
+		ggc.addRefreshable(this);
 		GameSession[] sessions = {};
 		
 		table = new JTable(new JTableModel(sessions));
 		sorter = new TableRowSorter<JTableModel>((JTableModel)table.getModel());
 		table.setRowSorter(sorter);
-
 		
 		//This is used to refresh the overview table
-		
 		
 		table.addMouseListener(new MouseAdapter() {
 			  public void mouseClicked(MouseEvent e) {
@@ -133,22 +133,7 @@ public class OverviewPanel extends JPanel {
 			}
 			
 		});
-		// Refreshes the gamemodel every time you mouse over the JTree. crude but effective.
-		gameTree.addMouseMotionListener(new MouseMotionListener() {
 
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseMoved(MouseEvent e) {
-				ggc.actionPerformed(new ActionEvent(new Object(), 5, "Go"));
-			}
-
-		
-		});
 
 		
 		treeView = new JScrollPane(gameTree);
@@ -165,7 +150,7 @@ public class OverviewPanel extends JPanel {
 	public void updateTable(String s){
 		
 		List<GameSession> sessions = new ArrayList<GameSession>();
-		
+				
 		if (s.equals("Drafts")){
 			sessions = (ArrayList<GameSession>) gameModel.getDraftGameSessions();
 		} else if (s.equals("Active Games")){
@@ -177,18 +162,38 @@ public class OverviewPanel extends JPanel {
 		} else if (s.equals("Archived Games")){
 			sessions = (ArrayList<GameSession>) gameModel.getArchivedGameSessions();
 		} else {
-			//Get the sessions
-			HashSet<GameSession> allGames = new HashSet<GameSession>(gameModel.getDraftGameSessions());
-			allGames.addAll(gameModel.getActiveGameSessions());
-			allGames.addAll(gameModel.getInProgressGameSessions());
-			allGames.addAll(gameModel.getCompletedGameSessions());
-			allGames.addAll(gameModel.getArchivedGameSessions());
-			sessions.addAll(allGames);
+			sessions = (ArrayList<GameSession>) gameModel.getGames();
 		}
 		JTableModel jModel = (JTableModel)table.getModel();
 		jModel.update((ArrayList<GameSession>)sessions);
 		table.setModel(jModel);
 		jModel.fireTableDataChanged();
+		
 	}
 
+	@Override
+	public void refreshRequirements() {
+		
+	}
+
+	@Override
+	public void refreshGames() {
+		gameTreeModel.update();
+        DefaultTreeModel model = (DefaultTreeModel) gameTree.getModel();
+        model.setRoot(gameTreeModel.getTop());
+        model.reload();
+        updateTable("");
+        
+        System.out.println("Updating: Games are now " + table.getModel().getRowCount());
+        
+        gameTree.repaint();
+        table.repaint();
+        		
+	}
+
+	//Refreshes the view event controller whenever a new game tab is created
+	public void refresh(){
+		ViewEventController.getInstance();
+	}
+	
 }

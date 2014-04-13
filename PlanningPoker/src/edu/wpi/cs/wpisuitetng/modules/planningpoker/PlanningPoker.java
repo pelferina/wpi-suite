@@ -23,11 +23,14 @@ import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.RefreshManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ToolbarView;
+
 
 public class PlanningPoker implements IJanewayModule{
 
@@ -36,34 +39,27 @@ public class PlanningPoker implements IJanewayModule{
 	
 	private MainView mainPanel;
 	private JPanel buttonPanel;
+	private RefreshManager refresh;
 	
 	
 	/**
 	 * Construct a new PlanningPoker module
 	 */
 	public PlanningPoker() {
-		
-		// Setup button panel
-		final GameModel gameModel = GameModel.getInstance();
-		DeckModel deckModel = new DeckModel();
-		mainPanel = new MainView(deckModel);
-		buttonPanel = new JPanel();
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new FlowLayout());
-		JButton newGameButton = new JButton("New Game");
-		buttonPanel.add(newGameButton);
-		buttonPanel.add(new JButton("Options"));
-		
-		ViewEventController.getInstance().setMainView(mainPanel);
-		
-		newGameButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				mainPanel.addNewGameTab();
-			}
-		});
-		
+		//Setup refreshing
+		refresh = new RefreshManager();
+
 		tabs = new ArrayList<JanewayTabModel>();
-		JanewayTabModel tab = new JanewayTabModel("PlanningPoker", new ImageIcon(), buttonPanel, mainPanel);
+//		final GameModel gameModel = GameModel.getInstance();
+//		DeckModel deckModel = new DeckModel();
+		
+		mainPanel = new MainView();
+		ToolbarView toolBar = new ToolbarView(true);
+				
+		ViewEventController.getInstance().setMainView(mainPanel);
+		ViewEventController.getInstance().setToolBar(toolBar);
+		
+		JanewayTabModel tab = new JanewayTabModel("PlanningPoker", new ImageIcon(), toolBar, mainPanel);
 		tabs.add(tab);
 	}
 	

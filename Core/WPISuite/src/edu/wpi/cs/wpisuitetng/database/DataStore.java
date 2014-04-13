@@ -283,7 +283,7 @@ public class DataStore implements Data {
 				result.add(theModel);
 			}
 		}
-		System.out.println("retrievedAll: "+result);
+//		System.out.println("retrievedAll: "+result);
 		theDB.commit();
 		logger.log(Level.FINE, "Database RetrieveAll Performed");
 		return result;

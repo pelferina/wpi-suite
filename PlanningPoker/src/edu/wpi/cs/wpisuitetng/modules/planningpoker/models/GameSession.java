@@ -15,14 +15,16 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * Model to contain a single game on the PostBoard
@@ -49,6 +51,7 @@ public class GameSession extends AbstractModel {
 	
 	/** The date-time stamp of the creation */
 	private List<Integer> gameReqs;
+	private List<Vote> votes;
 	private final Date creationdate;
 	/** The date that the game will end, if there is no end time then this value is null*/
 	private Date endDate;
@@ -64,6 +67,7 @@ public class GameSession extends AbstractModel {
 		this.gameReqs = gameReqs;
 		creationdate = new Date();
 		this.gameStatus = GameStatus.DRAFT;
+		votes = (new ArrayList<Vote>());
 	}
 
 	/**
@@ -123,8 +127,6 @@ public class GameSession extends AbstractModel {
 			returnStr =  returnStr + gameReqs.get(i) + ';';
 			}
 		}
-		System.out.println(returnStr);
-
 		return returnStr;
 	}
 
@@ -183,4 +185,48 @@ public class GameSession extends AbstractModel {
 		this.gameName = gameName;
 	}
 
+	@Override
+	public boolean equals(Object other){
+		if (!(other instanceof GameSession))
+			return false;
+		
+		GameSession o = (GameSession) other;
+		
+		if (this.gameName.equals(o.getGameName()))
+		if (this.gameDescription.equals(o.getGameDescription()))
+		if (this.ownerID == o.getOwnerID())
+		if (this.gameID == o.getGameID())
+		if (this.endDate.equals(o.getEndDate()))
+		if (this.gameReqs.equals(o.getGameReqs()))
+		if (this.gameStatus == o.getGameStatus())
+		if (this.votes.equals(o.getVotes()))
+			return true;
+		
+		return false;
+		
+		
+	}
+	public void setVotes(List<Vote> v){
+		this.votes = v;
+	}
+
+	/**Gets the votes
+	 * @return the votes
+	 */
+	public List<Vote> getVotes() {
+		return votes;
+	}
+	/**
+	 * Clears the votes
+	 */
+	public void clearVotes(){
+		votes = (new ArrayList<Vote>());
+	}
+	/** Adds a vote
+	 * @param v the vote to be added.
+	 */
+	public void addVote(Vote v){
+		if(votes.contains(v)) votes.remove(v);
+		votes.add(v);
+	}
 }

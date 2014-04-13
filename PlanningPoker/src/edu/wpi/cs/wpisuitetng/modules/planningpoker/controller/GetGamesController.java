@@ -14,53 +14,70 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.RefreshableController;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
- * This controller coordinates retrieving all of the messages
+ * This controller coordinates retrieving all of the games
  * from the server. This controller is called when the user
  * clicks the refresh button.
  * 
  * @author Chris Casola
  *
  */
-public class GetGamesController implements ActionListener {
+public class GetGamesController extends RefreshableController implements ActionListener {
 
+	private static GetGamesController instance = null;
 	private final GameModel model;
 
-	public GetGamesController(GameModel model) {
-		this.model = model.getInstance();
+	public GetGamesController() {
+		this.model = GameModel.getInstance();
+	}
+	
+	public static GetGamesController getInstance(){
+		if (instance==null)
+			instance = new GetGamesController();
+		
+		return instance;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO: Fix refresh function, possibly database calls having issues
-		// Send a request to the core to save this message
+		// Send a request to the core to save this game
 		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.GET); // GET == read
-		request.addObserver(new GetGamesRequestObserver(this)); // add an observer to process the response
+		request.addObserver(new GetGamesRequestObserver()); // add an observer to process the response
 		request.send(); // send the request
 	}
 	
 	/**
-	 * Add the given messages to the local model (they were received from the core).
-	 * This method is called by the GetMessagesRequestObserver
+	 * Add the given games to the local model (they were received from the core).
+	 * This method is called by the GetGamesRequestObserver
 	 * 
-	 * @param messages an array of messages received from the server
+	 * @param games an array of games received from the server
 	 */
-	public void receivedMessages(GameSession[] messages) {
+	public void receivedGames(GameSession[] games) {
 		// Empty the local model to eliminate duplications
 		model.emptyModel();
-		System.out.println("Yo! " + messages);
 		// Make sure the response was not null
-		if (messages != null) {
-			
-			// add the messages to the local model
-			model.addMessages(messages);
+		if (games != null) {
+			// add the games to the local model
+			model.addGames(games);
+		}
+	}
+
+	@Override
+	public void refresh() {
+		for (Refreshable r : refreshables){
+			r.refreshGames();
 		}
 	}
 }

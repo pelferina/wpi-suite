@@ -80,6 +80,15 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 			}
 			return newEmailAddress;
 		}
+		
+		else if(content.contains("newGame")){
+			System.err.println("Game Ended");
+			List<Model> emails = db.retrieveAll(newEmailAddress, s.getProject());
+			for(Model e: emails){
+				sendEmail(((EmailAddressModel)e).getAddress(), "A game started", content.substring(7) + " just started");
+			}
+			return newEmailAddress;
+		} 
 
 		
 		newEmailAddress.setUserID(s.getUser().getIdNum());

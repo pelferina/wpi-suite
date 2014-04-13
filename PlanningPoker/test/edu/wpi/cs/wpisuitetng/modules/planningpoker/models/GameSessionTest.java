@@ -64,9 +64,9 @@ public class GameSessionTest {
 		GameSession gs3 = new GameSession("Test Game3", "Test Description", 0, 3, new Date(), new ArrayList<Integer>());
 		gs2.setGameStatus(GameStatus.ACTIVE);
 		gs3.setGameStatus(GameStatus.COMPLETED);
-		gm.addMessage(gs1);
-		gm.addMessage(gs2);
-		gm.addMessage(gs3);
+		gm.addGame(gs1);
+		gm.addGame(gs2);
+		gm.addGame(gs3);
 		List<GameSession> draftGameSessionList = new ArrayList<GameSession>();
 		draftGameSessionList.add(gs1);
 		int i = 0;
@@ -86,9 +86,9 @@ public class GameSessionTest {
 		GameSession gs3 = new GameSession("Test Game3", "Test Description", 0, 3, new Date(), new ArrayList<Integer>());
 		gs2.setGameStatus(GameStatus.ACTIVE);
 		gs3.setGameStatus(GameStatus.COMPLETED);
-		gm.addMessage(gs1);
-		gm.addMessage(gs2);
-		gm.addMessage(gs3);
+		gm.addGame(gs1);
+		gm.addGame(gs2);
+		gm.addGame(gs3);
 		List<GameSession> activeGameSessionList = new ArrayList<GameSession>();
 		activeGameSessionList.add(gs2);
 		int i = 0;
@@ -107,9 +107,9 @@ public class GameSessionTest {
 		GameSession gs3 = new GameSession("Test Game3", "Test Description", 0, 3, new Date(), new ArrayList<Integer>());
 		gs2.setGameStatus(GameStatus.ACTIVE);
 		gs3.setGameStatus(GameStatus.COMPLETED);
-		gm.addMessage(gs1);
-		gm.addMessage(gs2);
-		gm.addMessage(gs3);
+		gm.addGame(gs1);
+		gm.addGame(gs2);
+		gm.addGame(gs3);
 		List<GameSession> pastGameSessionList = new ArrayList<GameSession>();
 		pastGameSessionList.add(gs3);
 		int i = 0;
