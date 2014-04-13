@@ -31,13 +31,13 @@ public class JTableModel extends AbstractTableModel {
 
 	public JTableModel(GameSession[] sessions){
 		users = null;
-		guc = new GetUsersController(users);
+		guc = GetUsersController.getInstance();
     	setUpTable(sessions);
     }
 	
 	private void setUpTable(GameSession[] sessions){
 		
-		Data = new Object[COLUMN_NAMES.length][sessions.length];
+		Data = new Object[sessions.length][COLUMN_NAMES.length];
 		gameIDs = new Integer[sessions.length];
     	size = sessions.length;
     	for (int i=0; i<sessions.length; i++){
@@ -45,7 +45,7 @@ public class JTableModel extends AbstractTableModel {
     							sessions[i].getEndDate(), 
     							getUserFromID(sessions[i].getOwnerID()), 
     							"To Be Implemented", // Progress
-    							sessions[i].getGameStatus()
+    							sessions[i].getGameStatus().name()
     							};
     		
     		Data[i] = curRow;
@@ -59,6 +59,7 @@ public class JTableModel extends AbstractTableModel {
 		while (guc.getUsers() == null){
 			try{
 				Thread.sleep(10);
+				System.out.println("Waiting for users");
 			}
 			catch(Exception e){
 				

@@ -68,7 +68,7 @@ public class CurrentGamePanel extends JPanel {
 				ViewEventController.getInstance().editGameTab(tempGame);
 			}	
 		});
-		btnRefresh.addActionListener(new GetGamesController(GameModel.getInstance()));
+		btnRefresh.addActionListener(GetGamesController.getInstance());
 		add(Box.createVerticalStrut(20)); // leave a 20 pixel gap
 		add(activeLstScrollPane);
 		add(Box.createVerticalStrut(20)); // leave a 20 pixel gap

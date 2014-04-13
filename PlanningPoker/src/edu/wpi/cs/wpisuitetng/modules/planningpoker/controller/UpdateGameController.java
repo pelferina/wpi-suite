@@ -23,8 +23,8 @@ public class UpdateGameController {
 	 * Construct an UpdateMessageController for the given model
 	 * @param model the model containing the messages
 	 */
-	public UpdateGameController(GameModel model){
-		this.model = model;
+	public UpdateGameController(){
+		this.model = GameModel.getInstance();
 	}
 	public void sendMessage(GameSession ToSend){
 		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.POST); // PUT == create
