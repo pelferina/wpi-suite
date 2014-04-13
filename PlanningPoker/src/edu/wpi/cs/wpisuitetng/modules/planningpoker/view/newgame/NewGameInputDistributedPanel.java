@@ -29,6 +29,9 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController
 //import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 import net.sourceforge.jdatepicker.*;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
@@ -375,6 +378,9 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 					GameModel model = GameModel.getInstance();
 					AddGameController msgr = new AddGameController(model);
 					msgr.sendMessage(newGame);	
+					final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.PUT); // PUT == create
+					request.setBody("endGame" + newGame.getGameName());
+					request.send(); // send the request
 					JOptionPane gameCreated = new JOptionPane("Game Created and Activated");
 					JOptionPane.showMessageDialog(gameCreated, "Game has been created and activated", "Game created", JOptionPane.INFORMATION_MESSAGE);
 					newGameP.close.doClick();
