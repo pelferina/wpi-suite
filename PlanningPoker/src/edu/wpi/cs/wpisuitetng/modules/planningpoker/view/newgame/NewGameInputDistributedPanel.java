@@ -311,8 +311,27 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 		saveButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				String name = nameTextField.getText();
+				String desc = descTextArea.getText();
+				Date selected = new Date();
+				Calendar selectedDeadline = Calendar.getInstance();
+				List<Requirement> reqsSelected = newGameP.getSelected();
+				for (int i=0; i<reqsSelected.size(); i++){
+					selectionsMade.add(reqsSelected.get(i).getId());
+				}
+				currentDate = Calendar.getInstance();
+				if (datePicker.getModel().isSelected() == false){
+					selected = null;
+				}
+				else{
+					currentDate.set(Calendar.MONTH, currentDate.get(Calendar.MONTH) + 1);
+					deadlineYear = datePicker.getModel().getYear();
+					deadlineMonth = datePicker.getModel().getMonth() + 1;
+					deadlineDay = datePicker.getModel().getDay();
+					selectedDeadline.set(deadlineYear, deadlineMonth, deadlineDay, getHour(hourTime), minuteTime);
+					selected = selectedDeadline.getTime();
+				}
 				GameModel model = GameModel.getInstance();
-				GameSession newGame = new GameSession(name, new String(), 0, model.getSize() + 1, new Date(), new ArrayList<Integer>()); 
+				GameSession newGame = new GameSession(name, desc, 0, model.getSize() + 1, selected, selectionsMade); 
 				AddGameController msgr = new AddGameController(model);
 				msgr.sendMessage(newGame);	
 				JOptionPane gameCreated = new JOptionPane("Game Created");
