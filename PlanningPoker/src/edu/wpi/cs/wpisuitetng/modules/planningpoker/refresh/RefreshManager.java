@@ -42,7 +42,7 @@ public class RefreshManager {
 				}
 
 				catch(RuntimeException exception){
-					System.err.println(exception.getMessage());
+					//System.err.println(exception.getMessage());
 				}
 			}
 		};
@@ -62,20 +62,21 @@ public class RefreshManager {
 		if (differentList(reqCache, RequirementModel.getInstance().getRequirements())){
 			System.out.println(" RequirementController\'s reliant objects are out of date");
 			reqController.refresh();
+			//reqCache.clear();
+			reqCache = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
 		}	
 		if ( differentList(gameCache, GameModel.getInstance().getGames())){
 			System.out.println(" GameController\'s reliant objects are out of date");
 			gameController.refresh();
+			//gameCache.clear();
+			gameCache = new ArrayList<GameSession>(GameModel.getInstance().getGames());
 		}
-		
-		//Force deep copy into cache
-		gameCache = new ArrayList<GameSession>(GameModel.getInstance().getGames());
-		reqCache = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
-		
 	}
 	
 	//Assumes list are in the same order
 	public boolean differentList(List<?> l1, List<?> l2) {
+		System.out.println("1: "+l1);
+		System.out.println("2: "+l2);
 		if (l1.size() != l2.size() )
 			return true;
 		
