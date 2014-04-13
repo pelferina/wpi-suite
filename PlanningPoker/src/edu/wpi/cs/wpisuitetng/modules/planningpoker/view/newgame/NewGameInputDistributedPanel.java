@@ -315,6 +315,10 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 				GameSession newGame = new GameSession(name, new String(), 0, model.getSize() + 1, new Date(), new ArrayList<Integer>()); 
 				AddGameController msgr = new AddGameController(model);
 				msgr.sendMessage(newGame);	
+				JOptionPane gameCreated = new JOptionPane("Game Created");
+				JOptionPane.showMessageDialog(gameCreated, "Game has been created", "Game created", JOptionPane.INFORMATION_MESSAGE);
+				newGameP.isNew = true;
+				newGameP.close.doClick();
 			}
 		});
 		
