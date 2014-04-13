@@ -32,20 +32,14 @@ public class PlanningPoker implements IJanewayModule{
 	/** The tabs used by this module */
 	private ArrayList<JanewayTabModel> tabs;
 	
-	private MainView mainPanel;
-	private JPanel buttonPanel;
-	
-	
 	/**
 	 * Construct a new PlanningPoker module
 	 */
 	public PlanningPoker() {
 		
 		tabs = new ArrayList<JanewayTabModel>();
-//		final GameModel gameModel = GameModel.getInstance();
-//		DeckModel deckModel = new DeckModel();
 		
-		mainPanel = new MainView();
+		MainView mainPanel = new MainView();
 		ToolbarView toolBar = new ToolbarView(true);
 				
 		ViewEventController.getInstance().setMainView(mainPanel);
