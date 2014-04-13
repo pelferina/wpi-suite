@@ -53,7 +53,6 @@ public class GameSession extends AbstractModel {
 	/** The date that the game will end, if there is no end time then this value is null*/
 	private Date endDate;
 	public boolean emailSent = false;
-	private Project project;
 	
 	public GameSession(String game, String description, int ownerID, int gameID, Date deadline, List<Integer> gameReqs){
 		this.gameName = game;
@@ -65,7 +64,6 @@ public class GameSession extends AbstractModel {
 		this.gameReqs = gameReqs;
 		creationdate = new Date();
 		this.gameStatus = GameStatus.DRAFT;
-		this.project = null;
 	}
 
 	/**
@@ -184,10 +182,5 @@ public class GameSession extends AbstractModel {
 	public void setGameName(String gameName) {
 		this.gameName = gameName;
 	}
-	public void setProject(Project project){
-		this.project = project;
-	}
-	public Project getProject(){
-		return this.project;
-	}
+
 }

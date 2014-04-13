@@ -61,7 +61,9 @@ public class DeadLineListener implements ActionListener{
 						ex.printStackTrace();
 					}
 					try {
-						this.entityManager.sendUserEmails("End notification", gameArray[i].getGameName() + " has reached its deadline.", null);
+						String textToSend;
+						textToSend = "The game '"+ gameArray[i].getGameName() + "' has reached its deadline at" + gameArray[i].getEndDate() +"\r\n" + "Sent by fff8e7";
+						this.entityManager.sendUserEmails("End game notification",  textToSend, gameArray[i].getProject());
 					} catch (UnsupportedEncodingException e1) {
 						System.out.println("fail to send end notification email");
 						// TODO Auto-generated catch block
