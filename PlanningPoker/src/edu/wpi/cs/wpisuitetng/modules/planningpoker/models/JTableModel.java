@@ -56,7 +56,7 @@ public class JTableModel extends AbstractTableModel {
     
 	private String getUserFromID(int userID){
 		guc.actionPerformed();
-		while (guc.getUsers()==null){
+		while (guc.getUsers() == null){
 			try{
 				Thread.sleep(10);
 				System.out.println("Waiting for users");

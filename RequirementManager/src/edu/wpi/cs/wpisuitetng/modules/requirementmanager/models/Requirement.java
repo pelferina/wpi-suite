@@ -909,15 +909,15 @@ public class Requirement extends AbstractModel {
 		if (this.estimateEdited == o.getEstimateEdited() )
 		if (this.wasCreated == o.getWasCreated())
 		if (this.actualEffort == o.getEffort())
-		if (this.history.equals(o.getHistory()))
+		//if (this.history.equals(o.getHistory()))
 		if (this.type.equals(o.getType()))
-		if (this.notes.equals(o.getNotes()))
+		///if (this.notes.equals(o.getNotes()))
 		if (this.iteration.equals(o.getIteration()))
 		if (this.parentID == this.getParentID())
 		if (this.assignedTo.equals(o.getAssignedTo()))
-		if (this.tasks.equals(o.getTasks()))
-		if (this.tests.equals(o.getTests()))
-		if (this.attachments.equals(o.getAttachments()))
+		//if (this.tasks.equals(o.getTasks()))
+		//if (this.tests.equals(o.getTests()))
+		//if (this.attachments.equals(o.getAttachments()))
 			return true;
 		
 		return false;		

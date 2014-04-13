@@ -102,6 +102,10 @@ public class GetRequirementsController implements ActionListener {
 		refreshables.add(r);
 	}
 	
+	public void removeRefreshable(Refreshable r){
+		refreshables.remove(r);
+	}
+	
 	public void refresh() {
 		for (Refreshable r : refreshables){
 			r.refreshRequirements();
