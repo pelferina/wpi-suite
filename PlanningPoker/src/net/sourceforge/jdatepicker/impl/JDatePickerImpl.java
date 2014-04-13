@@ -29,6 +29,7 @@ package net.sourceforge.jdatepicker.impl;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,10 +37,13 @@ import java.awt.event.HierarchyBoundsListener;
 import java.awt.event.HierarchyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Properties;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
@@ -107,14 +111,18 @@ public class JDatePickerImpl extends JPanel implements JDatePicker {
 		formattedTextField = new JFormattedTextField((formatter!=null) ? formatter : createDefaultFormatter());
 		DateModel<?> model = datePanel.getModel();
 		setTextFieldValue(formattedTextField, model.getYear(), model.getMonth(), model.getDay(), model.isSelected());
-		formattedTextField.setEditable(false);		
+//		formattedTextField.setEditable(true);		
 		add(formattedTextField);
         layout.putConstraint(SpringLayout.WEST, formattedTextField, 0, SpringLayout.WEST, this);
         layout.putConstraint(SpringLayout.SOUTH, this, 0, SpringLayout.SOUTH, formattedTextField);
 
 		//Add and Configure Button
-		button = new JButton("...");
+		button = new JButton();
 		button.setFocusable(true);
+		try {
+		    Image img = ImageIO.read(getClass().getResource("calendar_icon.png"));
+		    this.button.setIcon(new ImageIcon(img));		    
+		} catch (IOException ex) {}
 		add(button);
         layout.putConstraint(SpringLayout.WEST, button, 1, SpringLayout.EAST, formattedTextField);
         layout.putConstraint(SpringLayout.EAST, this, 0, SpringLayout.EAST, button);
