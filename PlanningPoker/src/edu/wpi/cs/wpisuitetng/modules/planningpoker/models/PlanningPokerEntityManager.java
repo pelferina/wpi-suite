@@ -62,7 +62,7 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 		this.db = db;
 
 		//set up and start timer to check deadline every second.
-		deadlineCheck = new Timer(3000, new DeadLineListener(db));
+		deadlineCheck = new Timer(3000, new DeadLineListener(db, this));
 		deadlineCheck.start();
 	}
 

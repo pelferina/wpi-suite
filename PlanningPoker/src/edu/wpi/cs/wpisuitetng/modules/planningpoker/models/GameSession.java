@@ -15,15 +15,14 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * Model to contain a single game on the PostBoard
@@ -54,6 +53,7 @@ public class GameSession extends AbstractModel {
 	/** The date that the game will end, if there is no end time then this value is null*/
 	private Date endDate;
 	public boolean emailSent = false;
+	private Project project;
 	
 	public GameSession(String game, String description, int ownerID, int gameID, Date deadline, List<Integer> gameReqs){
 		this.gameName = game;
@@ -65,6 +65,7 @@ public class GameSession extends AbstractModel {
 		this.gameReqs = gameReqs;
 		creationdate = new Date();
 		this.gameStatus = GameStatus.DRAFT;
+		this.project = null;
 	}
 
 	/**
@@ -182,5 +183,11 @@ public class GameSession extends AbstractModel {
 	}
 	public void setGameName(String gameName) {
 		this.gameName = gameName;
+	}
+	public void setProject(Project project){
+		this.project = project;
+	}
+	public Project getProject(){
+		return this.project;
 	}
 }
