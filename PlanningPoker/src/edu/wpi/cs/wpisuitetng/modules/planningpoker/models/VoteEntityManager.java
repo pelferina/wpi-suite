@@ -23,9 +23,8 @@ public class VoteEntityManager implements EntityManager<Vote> {
 	public Vote makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
 		Vote v = Vote.fromJson(content);
+		// update invalid information.
 		if (v.getUID() == -1) v.setUID(s.getUser().getIdNum());
-		//TODO Replace SHADY Hash function
-		if(v.getVoteID() == -1) v.setVoteID(v.getUID() + v.getGameID()*100000);
 		// Check for duplication
 		GameSession[] session = (GameSession[]) db.retrieve(GameSession.class, "GameID", v.getGameID()).toArray();
 		if(session.length != 1) throw new WPISuiteException();

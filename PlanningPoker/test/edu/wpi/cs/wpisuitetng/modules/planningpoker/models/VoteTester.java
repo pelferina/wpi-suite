@@ -35,6 +35,15 @@ public class VoteTester {
 		assertTrue(v.getVoteID() == 0);
 		v.save();
 		v.delete();
+		Vote v2 = new Vote(null, 1);
+		assertFalse(v.equals(v2));
+		assertFalse(v.identify(null));
+		assertFalse(v.identify(v2));
+		assertTrue(v2.getUID() == -1);
+		v2.setUID(0);
+		v2.setGameID(0);
+		assertTrue(Vote.toHash(v2) == 0);
+		assertFalse(v.equals(""));
 		
 	}
 	@Test
