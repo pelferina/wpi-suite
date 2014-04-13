@@ -73,11 +73,11 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 	private JComboBox<String> hourComboBox = new JComboBox<String>();
 	private JComboBox<String> minuteComboBox = new JComboBox<String>();
 	
-	private JCheckBox deadlineCheckBox = new JCheckBox("Add a deadline?"); 
+	private JCheckBox deadlineCheckBox = new JCheckBox("Set Deadline"); 
 	private JRadioButton AMButton = new JRadioButton("AM");
 	private JRadioButton PMButton = new JRadioButton("PM");
 
-	private JCheckBox deckCheckBox = new JCheckBox("Add a deck?"); 
+	private JCheckBox deckCheckBox = new JCheckBox("Use Deck"); 
 
 	private final JLabel nameLabel = new JLabel("Game Name*:");
 	private final JLabel deadlineTime = new JLabel ("Deadline Time:");
@@ -174,6 +174,47 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 		activateButton.setEnabled(false);
 		currentDate = Calendar.getInstance();
 
+		//Initialize hour and minute combo boxes
+		hourComboBox.addItem("");
+		minuteComboBox.addItem("");
+		for (int j=0; j<12; j++){
+			hourComboBox.addItem(j+1 + "");
+		}
+
+		for (int i=0; i<60; i++){
+			if (i < 10){
+				minuteComboBox.addItem("0" + i);
+			}
+			else{
+				minuteComboBox.addItem("" + i);
+			}
+		}
+		
+		//Sets isNew to false, and sets minuteTime to the selected minute.
+		minuteComboBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e){
+				minuteTime = minuteComboBox.getSelectedIndex() - 1;
+				newGameP.isNew = false;
+			}
+
+		});
+
+		//Sets isNew to false and sets hourtime to the hour selected. It is set to 0 if 12 is selected.
+		hourComboBox.addActionListener(new ActionListener() {
+			@Override 
+			public void actionPerformed(ActionEvent e){
+				int hourIndex = hourComboBox.getSelectedIndex();
+				if (hourIndex != 12 && hourIndex != 0){
+					hourTime = hourComboBox.getSelectedIndex();
+				}
+				else{
+					hourTime = 0;
+				}
+				newGameP.isNew = false;
+			}
+		});
+		
 		//Initializes the deck combo box
 		deckBox.addItem("Default Deck");
 		
