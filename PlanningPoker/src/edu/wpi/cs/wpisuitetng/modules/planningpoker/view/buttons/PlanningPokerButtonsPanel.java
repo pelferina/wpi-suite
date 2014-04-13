@@ -51,10 +51,10 @@ public class PlanningPokerButtonsPanel extends ToolbarGroupView{
 	
 		this.createButton.setHorizontalAlignment(SwingConstants.CENTER);
 		try {
-		    Image img = ImageIO.read(getClass().getResource("newgamebutton.png"));
+		    Image img = ImageIO.read(getClass().getResource("newgameimage.png"));
 		    this.createButton.setIcon(new ImageIcon(img));
 		    
-		    img = ImageIO.read(getClass().getResource("optionsbutton.png"));
+		    img = ImageIO.read(getClass().getResource("optionsimage.png"));
 		    this.optionsButton.setIcon(new ImageIcon(img));
 		    
 		} catch (IOException ex) {}
