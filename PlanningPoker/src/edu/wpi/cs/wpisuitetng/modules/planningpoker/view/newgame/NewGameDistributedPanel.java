@@ -63,18 +63,6 @@ public class NewGameDistributedPanel extends JSplitPane {
 	 * <3
 	 */
 	private void setPanel(){
-		this.addFocusListener(new FocusListener(){
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				GetRequirementsController.getInstance().retrieveRequirements();
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				GetRequirementsController.getInstance().retrieveRequirements();
-			}
-		});
 		addImpl(newGameInputPanel, JSplitPane.LEFT, 1);
 		Dimension minimumSize = new Dimension(600, 200);
 		leftComponent.setMinimumSize(minimumSize);
