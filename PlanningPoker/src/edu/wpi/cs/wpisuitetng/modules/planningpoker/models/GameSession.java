@@ -16,7 +16,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +24,6 @@ import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * Model to contain a single game on the PostBoard
@@ -55,7 +54,9 @@ public class GameSession extends AbstractModel {
 	private final Date creationdate;
 	/** The date that the game will end, if there is no end time then this value is null*/
 	private Date endDate;
-	public boolean emailSent = false;
+	
+	private List<Float> median;
+	private List<Float> mean;
 	
 	public GameSession(String game, String description, int ownerID, int gameID, Date deadline, List<Integer> gameReqs){
 		this.gameName = game;
@@ -63,11 +64,13 @@ public class GameSession extends AbstractModel {
 		this.ownerID = ownerID;
 		this.gameID = gameID;
 		this.endDate = deadline;
-		this.endDate.setMonth(endDate.getMonth());
+		//this.endDate.setMonth(endDate.getMonth());
 		this.gameReqs = gameReqs;
 		creationdate = new Date();
 		this.gameStatus = GameStatus.DRAFT;
 		votes = (new ArrayList<Vote>());
+		this.median = null;
+		this.mean = null;
 	}
 
 	/**
@@ -229,4 +232,38 @@ public class GameSession extends AbstractModel {
 		if(votes.contains(v)) votes.remove(v);
 		votes.add(v);
 	}
+	
+	public void calculateStats(){
+		int requirementNum = gameReqs.size();
+		int userNum = votes.size();
+		this.mean = new ArrayList<Float>();
+		this.median = new ArrayList<Float>();
+		int[][] voteResult = new int[requirementNum][userNum];
+		for(int i=0; i < userNum; i++){
+			for(int j=0;j < requirementNum; j++){
+				voteResult[j][i] = votes.get(i).getVote().get(j);
+			}
+		}
+		for(int i=0; i <requirementNum; i++){
+			Arrays.sort(voteResult[i]);
+			// calculate median
+			if(userNum%2 == 0)
+				median.add(((float)voteResult[i][(userNum-1)/2] + voteResult[i][(userNum-1)/2+1])/2);
+			else
+				median.add((float)voteResult[i][(userNum-1)/2+1]);
+			// calculate mean
+			int sum = 0;
+			for(int j=0; j < userNum; j++){
+				sum += voteResult[i][j];
+			}
+			mean.add(((float)sum) / userNum);
+		}
+	}
+	public List<Float> getMean(){
+		return mean;
+	}
+	public List<Float> getMedian(){
+		return median;
+	}
+	
 }
