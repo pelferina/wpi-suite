@@ -68,5 +68,6 @@ public class GetUsersController {
 
 		// Make sure the response was not null
 		this.userList = userList;
+
 	}
 }

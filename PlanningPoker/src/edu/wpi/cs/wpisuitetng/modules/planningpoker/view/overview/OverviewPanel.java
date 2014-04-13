@@ -191,4 +191,9 @@ public class OverviewPanel extends JPanel implements Refreshable {
         		
 	}
 
+	//Refreshes the view event controller whenever a new game tab is created
+	public void refresh(){
+		ViewEventController.getInstance();
+	}
+	
 }

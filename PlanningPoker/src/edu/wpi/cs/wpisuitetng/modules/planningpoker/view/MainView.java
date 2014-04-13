@@ -43,37 +43,31 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 @SuppressWarnings("serial")
 public class MainView extends JTabbedPane {
-	private JPanel overviewPanel;
+	private OverviewPanel overviewPanel;
 	private GameModel gameModel;
 	private int newGameTabs = 0;
 	private GetRequirementsRequestObserver refresher;
 	private int j = 0;
 	private List<Integer> openTabs = new ArrayList<Integer>();
 	private List<NewGameDistributedPanel> newGames = new ArrayList<NewGameDistributedPanel>();
-	final int PERMANANT_TABS = 2;
+	final int PERMANANT_TABS = 1;
 	private final AddEmailPanel addEmailPanel;
 	
-	public MainView(DeckModel deckModel) {
+	public MainView() {
 		overviewPanel = new OverviewPanel();
 		addEmailPanel = new AddEmailPanel();
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
 		addTab("Overview", overviewPanel);
 		
-		this.addChangeListener(new ChangeListener(){
-
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				for (int i = 0; i<newGames.size(); i++){
-					//GetRequirementsController.getInstance().retrieveRequirements();
-					//newGames.get(i).refresh();
-				}
-			}
-		});
-		addTab("Add Email", addEmailPanel);
 		ViewEventController.getInstance().setMainView(this);
 	}
+	//The function to add an email address tab
 	
+	public void addEmailAddress()
+	{
+		addTab("Add Email", addEmailPanel);
+	}
 	//The function to add a new game tab
 	
 	public void addNewGameTab()
