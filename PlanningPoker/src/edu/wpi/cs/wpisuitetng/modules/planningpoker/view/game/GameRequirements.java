@@ -48,8 +48,20 @@ public class GameRequirements extends JSplitPane{
 		}
 		
 		//Initializes the two JTables
-		estimatesPending = new JTable();
-		estimatesComplete = new JTable();
+		estimatesPending = new JTable() {
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+		       return false;
+		    }
+		};
+		estimatesComplete = new JTable() {
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+		       return false;
+		    }
+		};
 		estimatesPending.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Description"}));
 		estimatesComplete.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Description"}));
 		init();
