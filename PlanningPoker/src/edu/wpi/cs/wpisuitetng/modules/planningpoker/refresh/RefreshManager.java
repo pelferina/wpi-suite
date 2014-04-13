@@ -32,12 +32,27 @@ public class RefreshManager {
 		gameCache =  new ArrayList<GameSession>();
 		
 		//Create action listener for timer
-		final ActionListener actionListener = new ActionListener() {
+		final ActionListener gameCheck = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try{
 					if(Network.getInstance().getDefaultNetworkConfiguration() != null){
-						updateAllControllers();
+						updateGames();
+					}
+				}
+
+				catch(RuntimeException exception){
+					//System.err.println(exception.getMessage());
+				}
+			}
+		};
+		//Create action listener for timer
+		final ActionListener reqCheck = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try{
+					if(Network.getInstance().getDefaultNetworkConfiguration() != null){
+						updateRequirements();
 					}
 				}
 
@@ -48,35 +63,38 @@ public class RefreshManager {
 		};
 		
 		// Timer will update RefreshManager every 2 seconds
-		Timer t = new Timer(2000, actionListener);
-		t.start();
+		Timer g = new Timer(2000, gameCheck);
+		Timer r = new Timer(2000, reqCheck);
+		g.start();
+		r.start();
 	}
 	
-	private void updateAllControllers()
+	private void updateGames()
 	{
 		//Make a request to the database
 		gameController.actionPerformed(null);
-		reqController.actionPerformed(null);	
-
-		
-		if (differentList(reqCache, RequirementModel.getInstance().getRequirements())){
-			System.out.println(" RequirementController\'s reliant objects are out of date");
-			reqController.refresh();
-			//reqCache.clear();
-			reqCache = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
-		}	
+	
 		if ( differentList(gameCache, GameModel.getInstance().getGames())){
-			System.out.println(" GameController\'s reliant objects are out of date");
 			gameController.refresh();
-			//gameCache.clear();
 			gameCache = new ArrayList<GameSession>(GameModel.getInstance().getGames());
 		}
 	}
 	
+	private void updateRequirements()
+	{
+		//Make a request to the database
+		reqController.actionPerformed(null);	
+
+		
+		if (differentList(reqCache, RequirementModel.getInstance().getRequirements())){
+			reqController.refresh();
+			reqCache = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
+		}	
+	}
+	
+	
 	//Assumes list are in the same order
 	public boolean differentList(List<?> l1, List<?> l2) {
-		System.out.println("1: "+l1);
-		System.out.println("2: "+l2);
 		if (l1.size() != l2.size() )
 			return true;
 		
