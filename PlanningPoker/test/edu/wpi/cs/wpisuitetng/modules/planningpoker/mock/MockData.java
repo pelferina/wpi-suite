@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 
 import edu.wpi.cs.wpisuitetng.database.Data;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
@@ -157,9 +158,36 @@ public class MockData implements Data {
 	 * @see edu.wpi.cs.wpisuitetng.database.Data#update(Class, String, Object, String, Object) */
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void update(Class arg0, String arg1, Object arg2, String arg3,
-			Object arg4) {
-		// TODO Auto-generated method stub
+	public void update(final Class anObjectToBeModified, String fieldName, Object uniqueID, String changeField, Object changeValue) {
+
+		List<? extends Object> objectsToUpdate = retrieve(anObjectToBeModified, fieldName, uniqueID);
+		Object theObject;
+		for(int i = 0; i < objectsToUpdate.size(); i++){
+			final Class <?> objectClass = objectsToUpdate.get(i).getClass();
+			Method[] allMethods = objectClass.getMethods();
+			Method methodToBeSaved = null;
+			for(Method m: allMethods){
+				if(m.getName().equalsIgnoreCase("set"+changeField)){
+					methodToBeSaved = m;
+				}
+			}
+			final Method theSetter = methodToBeSaved;
+			if(theSetter == null){
+				System.err.println("Mock data|"+ "Null setter method.");
+			}
+			try {
+				theObject = (Object) theSetter.invoke(objectsToUpdate.get(i), changeValue);
+			} catch (IllegalArgumentException e) {
+				
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+			
+				e.printStackTrace();
+			}
+		}
 
 	}
 

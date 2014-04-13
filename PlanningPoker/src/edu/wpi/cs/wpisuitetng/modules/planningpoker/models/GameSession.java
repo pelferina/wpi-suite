@@ -127,8 +127,6 @@ public class GameSession extends AbstractModel {
 			returnStr =  returnStr + gameReqs.get(i) + ';';
 			}
 		}
-		System.out.println(returnStr);
-
 		return returnStr;
 	}
 
@@ -186,9 +184,32 @@ public class GameSession extends AbstractModel {
 	public void setGameName(String gameName) {
 		this.gameName = gameName;
 	}
+
+	@Override
+	public boolean equals(Object other){
+		if (!(other instanceof GameSession))
+			return false;
+		
+		GameSession o = (GameSession) other;
+		
+		if (this.gameName.equals(o.getGameName()))
+		if (this.gameDescription.equals(o.getGameDescription()))
+		if (this.ownerID == o.getOwnerID())
+		if (this.gameID == o.getGameID())
+		if (this.endDate.equals(o.getEndDate()))
+		if (this.gameReqs.equals(o.getGameReqs()))
+		if (this.gameStatus == o.getGameStatus())
+		if (this.votes.equals(o.getVotes()))
+			return true;
+		
+		return false;
+		
+		
+	}
 	public void setVotes(List<Vote> v){
 		this.votes = v;
 	}
+
 	/**Gets the votes
 	 * @return the votes
 	 */

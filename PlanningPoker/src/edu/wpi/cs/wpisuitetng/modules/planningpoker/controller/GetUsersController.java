@@ -27,6 +27,16 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * 
  */
 public class GetUsersController {
+	
+	private static GetUsersController instance = null;
+	
+	public static GetUsersController getInstance(){
+		if (instance == null){
+			instance = new GetUsersController(new User[0]);
+		}
+		
+		return instance;
+	}
 
 	protected User[] userList;
 
@@ -42,16 +52,9 @@ public class GetUsersController {
 	public void actionPerformed() {
 		// Send a request to the core to save this message
 		
-		 int ii = 100000;
-    	 int jj;
-    	while(ii != 0){jj = ii*ii;ii=ii-1;};
-		
-		final Request request = Network.getInstance().makeRequest("core/user",
-				HttpMethod.GET); // GET == read
-		request.addObserver(new GetUsersRequestObserver(this)); // add an
-																// observer to
-																// process the
-																// response
+		final Request request = Network.getInstance().makeRequest("core/user", HttpMethod.GET); // GET == read
+		request.addObserver(new GetUsersRequestObserver()); 
+		// add an observer to process the response
 		request.send(); // send the request
 		
 	}
@@ -59,18 +62,11 @@ public class GetUsersController {
 	/**
 	 * This method is called by the GetUsersRequestObserver
 	 * 
-	 * @param an
-	 *            array of users received from the server
+	 * @param an array of users received from the server
 	 */
 	public void receivedUserList(User[] userList) {
 
-		// Empty the local model to eliminate duplications
-		System.out
-				.println(userList.length + " users returned back from server");
 		// Make sure the response was not null
 		this.userList = userList;
-		for (int i = 0; i < userList.length; i++) {
-			System.out.println(userList[i].toString());
-		}
 	}
 }

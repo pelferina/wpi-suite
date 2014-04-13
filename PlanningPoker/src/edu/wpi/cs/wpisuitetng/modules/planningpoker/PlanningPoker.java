@@ -23,9 +23,10 @@ import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.RefreshManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -36,12 +37,16 @@ public class PlanningPoker implements IJanewayModule{
 	
 	private MainView mainPanel;
 	private JPanel buttonPanel;
+	private RefreshManager refresh;
 	
 	
 	/**
 	 * Construct a new PlanningPoker module
 	 */
 	public PlanningPoker() {
+		
+		//Setup refreshing
+		refresh = new RefreshManager();
 		
 		// Setup button panel
 		final GameModel gameModel = GameModel.getInstance();
