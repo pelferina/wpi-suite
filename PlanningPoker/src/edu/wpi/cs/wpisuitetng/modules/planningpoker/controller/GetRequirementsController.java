@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.RefreshableController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -28,9 +29,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * @version $Revision: 1.0 $
  * @author justinhess
  */
-public class GetRequirementsController implements ActionListener {
-	
-	List<Refreshable> refreshables = new ArrayList<Refreshable>();
+public class GetRequirementsController extends RefreshableController implements ActionListener {
 
 	private GetRequirementsRequestObserver observer;
 	private static GetRequirementsController instance;
@@ -95,20 +94,6 @@ public class GetRequirementsController implements ActionListener {
 			
 			// add the requirements to the local model
 			RequirementModel.getInstance().addRequirements(requirements);
-		}
-	}
-	
-	public void addRefreshable(Refreshable r){
-		refreshables.add(r);
-	}
-	
-	public void removeRefreshable(Refreshable r){
-		refreshables.remove(r);
-	}
-	
-	public void refresh() {
-		for (Refreshable r : refreshables){
-			r.refreshRequirements();
 		}
 	}
 }
