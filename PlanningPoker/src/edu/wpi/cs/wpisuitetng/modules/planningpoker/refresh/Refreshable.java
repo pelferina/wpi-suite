@@ -5,7 +5,4 @@ public interface Refreshable {
 	public void refreshRequirements();
 	
 	public void refreshGames();
-
-	
-
 }

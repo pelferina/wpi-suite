@@ -65,7 +65,7 @@ public class MainView extends JTabbedPane {
 			public void stateChanged(ChangeEvent e) {
 				for (int i = 0; i<newGames.size(); i++){
 					//GetRequirementsController.getInstance().retrieveRequirements();
-					newGames.get(i).refresh();
+					//newGames.get(i).refresh();
 				}
 			}
 		});
@@ -77,11 +77,9 @@ public class MainView extends JTabbedPane {
 	
 	public void addNewGameTab()
 	{
-		GetRequirementsController.getInstance().retrieveRequirements();
 		openTabs.add(newGameTabs, j);
 		JButton btnClose = new JButton("x");
-		List<Requirement> reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
-		NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose);
+		NewGameDistributedPanel newGame = new NewGameDistributedPanel(btnClose);
 		newGames.add(newGame);
 		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler("New Game", j, newGame);
 		add(newGame, newGameTabs + PERMANANT_TABS);
@@ -116,8 +114,7 @@ public class MainView extends JTabbedPane {
 		GetRequirementsController.getInstance().retrieveRequirements();
 		openTabs.add(newGameTabs, j);
 		JButton btnClose = new JButton("x");
-		List<Requirement> reqs = RequirementModel.getInstance().getRequirements();
-		NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose, gameSession);
+		NewGameDistributedPanel newGame = new NewGameDistributedPanel(btnClose, gameSession);
 		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler(gameSession.getGameName(), j, newGame);
 		add(newGame, newGameTabs + PERMANANT_TABS);
 		JPanel pnlTab = new JPanel(new GridBagLayout());

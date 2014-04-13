@@ -104,7 +104,7 @@ public class GetRequirementsController implements ActionListener {
 	
 	public void refresh() {
 		for (Refreshable r : refreshables){
-			r.refreshGames();
+			r.refreshRequirements();
 		}
 	}
 }

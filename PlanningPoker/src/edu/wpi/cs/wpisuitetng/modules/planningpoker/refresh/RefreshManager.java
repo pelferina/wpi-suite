@@ -17,26 +17,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 import edu.wpi.cs.wpisuitetng.network.Network;
 
 
-
-/*
- * Refresh Class
- * 	all controllers
- * 		cache for each controller
- * 		methods to diff cache and local model
- * 
- * Every Controller
- * 	List of refreshable panels
- *	Add Refreshable Method
- *	Remove Refreshable
- *
- * Each Panel
- * 	Refresh Method
- * 
- * Refreshable Interface
- *
- * 
- */
-
 public class RefreshManager {
 	
 	GetGamesController gameController;
@@ -77,26 +57,18 @@ public class RefreshManager {
 		//Make a request to the database
 		gameController.actionPerformed(null);
 		reqController.actionPerformed(null);	
+
 		
-		
-		//System.out.println("RefreshManager polling for updates");
+		if (differentList(reqCache, RequirementModel.getInstance().getRequirements())){
+			System.out.println(" RequirementController\'s reliant objects are out of date");
+			reqController.refresh();
+		}	
 		if ( differentList(gameCache, GameModel.getInstance().getGames())){
 			System.out.println(" GameController\'s reliant objects are out of date");
 			gameController.refresh();
-			
-			
-		}
-		else if (differentList(reqCache, RequirementModel.getInstance().getRequirements())){
-			System.out.println(" RequirementController\'s reliant objects are out of date");
-			reqController.refresh();
-			
-			
-		}	
-		else{			
-			// everything up to date!
-			
 		}
 		
+		//Force deep copy into cache
 		gameCache = new ArrayList<GameSession>(GameModel.getInstance().getGames());
 		reqCache = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
 		
@@ -104,9 +76,6 @@ public class RefreshManager {
 	
 	//Assumes list are in the same order
 	public boolean differentList(List<?> l1, List<?> l2) {
-		System.out.println(" Diffing "+l1.toString()+"\n"+l2.toString());
-
-		
 		if (l1.size() != l2.size() )
 			return true;
 		
