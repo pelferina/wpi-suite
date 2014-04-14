@@ -27,6 +27,7 @@ import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
@@ -173,6 +174,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 		activateButton.setEnabled(false);
 		currentDate = Calendar.getInstance();
 
+		
 		//Initialize hour and minute combo boxes
 		hourComboBox.addItem("");
 		minuteComboBox.addItem("");
@@ -360,6 +362,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 				PMButton.setSelected(false);
 				isAM = true;
 			}
+			
 		});
 		PMButton.addActionListener(new ActionListener(){
 			@Override
@@ -374,10 +377,33 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 		saveButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				String name = nameTextField.getText();
+				String desc = descTextArea.getText();
+				Date selected = new Date();
+				Calendar selectedDeadline = Calendar.getInstance();
+				List<Requirement> reqsSelected = newGameP.getSelected();
+				for (int i=0; i<reqsSelected.size(); i++){
+					selectionsMade.add(reqsSelected.get(i).getId());
+				}
+				currentDate = Calendar.getInstance();
+				if (datePicker.getModel().isSelected() == false){
+					selected = null;
+				}
+				else{
+					currentDate.set(Calendar.MONTH, currentDate.get(Calendar.MONTH) + 1);
+					deadlineYear = datePicker.getModel().getYear();
+					deadlineMonth = datePicker.getModel().getMonth() + 1;
+					deadlineDay = datePicker.getModel().getDay();
+					selectedDeadline.set(deadlineYear, deadlineMonth, deadlineDay, getHour(hourTime), minuteTime);
+					selected = selectedDeadline.getTime();
+				}
 				GameModel model = GameModel.getInstance();
-				GameSession newGame = new GameSession(name, new String(), 0, model.getSize() + 1, new Date(), new ArrayList<Integer>()); 
+				GameSession newGame = new GameSession(name, desc, 0, model.getSize() + 1, selected, selectionsMade); 
 				AddGameController msgr = new AddGameController(model);
 				msgr.sendGame(newGame);	
+				JOptionPane gameCreated = new JOptionPane("Game Created");
+				JOptionPane.showMessageDialog(gameCreated, "Game has been created", "Game created", JOptionPane.INFORMATION_MESSAGE);
+				newGameP.isNew = true;
+				newGameP.close.doClick();
 			}
 		});
 		
@@ -435,6 +461,7 @@ private Calendar currentDate; // TODO get rid of this, switch to GregorianCalend
 					newGameP.isNew = true;
 					Date deadlineDate = new Date(deadlineYear - 1900, deadlineMonth - 1, deadlineDay, getHour(hourTime), minuteTime);
 					GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize()+1, deadlineDate, selectionsMade); 
+					newGame.setGameStatus(GameStatus.ACTIVE);
 					GameModel model = GameModel.getInstance();
 					AddGameController msgr = new AddGameController(model);
 					msgr.sendGame(newGame);	

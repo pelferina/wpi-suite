@@ -66,7 +66,7 @@ public class VoteTester {
 		}
 		assertNull(nullManager.advancedGet(null, null));
 		assertNull(nullManager.advancedPost(null, null, null));
-		assertNull(nullManager.Count());
+		assertTrue(0 == nullManager.Count());
 		nullManager.deleteAll(null);
 		nullManager.deleteEntity(null, null);
 		try{

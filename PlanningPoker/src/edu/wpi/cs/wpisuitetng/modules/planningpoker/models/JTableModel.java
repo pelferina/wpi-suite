@@ -23,7 +23,7 @@ public class JTableModel extends AbstractTableModel {
 	protected User[] users;
 	protected int size =0;
     protected static final String[] COLUMN_NAMES = new String[] {"Name", "Deadline", "Owner", "Progress", "Status"};
-    protected static final Class<?>[] COLUMN_TYPES = new Class<?>[] {String.class, Date.class, String.class, String.class, String.class};
+    protected static final Class<?>[] COLUMN_TYPES = new Class<?>[] {String.class, String.class, String.class, String.class, String.class};
     
     public JTableModel(ArrayList<GameSession> sessions){
     	this(sessions.toArray(new GameSession[0]));
@@ -42,7 +42,7 @@ public class JTableModel extends AbstractTableModel {
     	size = sessions.length;
     	for (int i=0; i<sessions.length; i++){
     		Object[] curRow = {sessions[i].getGameName(),
-    							sessions[i].getEndDate(), 
+    							sessions[i].getEndDate()!=null ? sessions[i].getEndDate().toString() : "No Deadline", 
     							getUserFromID(sessions[i].getOwnerID()), 
     							"To Be Implemented", // Progress
     							sessions[i].getGameStatus().name()
@@ -51,7 +51,6 @@ public class JTableModel extends AbstractTableModel {
     		Data[i] = curRow;
     		gameIDs[i] = sessions[i].getGameID();
     	}
-		
 	}
     
 	private String getUserFromID(int userID){

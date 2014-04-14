@@ -14,6 +14,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 
+
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -80,7 +81,6 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 		System.out.println("Adding: " + content);
 		GameSession[] games = getAll(s);
 	
-		
 		GameSession newGame = new GameSession(importedGame.getGameName(), importedGame.getGameDescription(), importedGame.getOwnerID(), importedGame.getGameID(), importedGame.getEndDate(), importedGame.getGameReqs());
 		newGame.setProject(s.getProject());
 		// Save the message in the database if possible, otherwise throw an exception
