@@ -15,6 +15,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -48,6 +49,7 @@ public class GameSession extends AbstractModel {
 	
 	/** The date-time stamp of the creation */
 	private List<Integer> gameReqs;
+	private List<Vote> votes;
 	private final Date creationdate;
 	/** The date that the game will end, if there is no end time then this value is null*/
 	private Date endDate;
@@ -62,8 +64,9 @@ public class GameSession extends AbstractModel {
 		this.endDate.setMonth(endDate.getMonth());
 		this.gameReqs = gameReqs;
 		creationdate = new Date();
-		//TODO Constructor should have a GameStatus field
+		//starts as a draft then becomes active
 		this.gameStatus = GameStatus.ACTIVE;
+		votes = (new ArrayList<Vote>());
 	}
 
 	/**
@@ -181,5 +184,27 @@ public class GameSession extends AbstractModel {
 	}
 	public void setGameName(String gameName) {
 		this.gameName = gameName;
+	}
+	public void setVotes(List<Vote> v){
+		this.votes = v;
+	}
+	/**Gets the votes
+	 * @return the votes
+	 */
+	public List<Vote> getVotes() {
+		return votes;
+	}
+	/**
+	 * Clears the votes
+	 */
+	public void clearVotes(){
+		votes = (new ArrayList<Vote>());
+	}
+	/** Adds a vote
+	 * @param v the vote to be added.
+	 */
+	public void addVote(Vote v){
+		if(votes.contains(v)) votes.remove(v);
+		votes.add(v);
 	}
 }

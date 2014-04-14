@@ -12,6 +12,7 @@ public class GameView extends JSplitPane{
 
 	GameRequirements gameReqs;
 	PlayGame playGame;
+	public boolean isNew = false;
 	
 	public GameView (GameSession gameToPlay){
 		this.gameReqs = new GameRequirements(gameToPlay, this);

@@ -122,7 +122,7 @@ public class MainView extends JTabbedPane {
 		}
 		JPanel pnlTab = new JPanel(new GridBagLayout());
 		pnlTab.setOpaque(false);
-		JLabel lblTitle = new JLabel("New Game");
+		JLabel lblTitle = new JLabel(tabLabler(tabType, game));
 		btnClose.setMargin(new Insets(0, 0, 0, 0));
 		btnClose.setFont(btnClose.getFont().deriveFont((float) 8));
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -157,7 +157,20 @@ public class MainView extends JTabbedPane {
 	*/
 	
 	//The action listener for closing of tabs
-	
+	public String tabLabler(String tabType, GameSession game){
+		if (tabType.equals("Play Game")){
+			return game.getGameName();
+		}
+		else if (tabType.equals("New Game")){
+			return "New Game";
+		}
+		else if (tabType.equals("edit Game")){
+			return game.getGameName();
+		}
+		else return "help";
+	}
+			
+			
 	public class MyCloseActionHandler implements ActionListener {
 
 	    private String tabName;
@@ -222,8 +235,15 @@ public class MainView extends JTabbedPane {
 	        	}
 	        }
 	        else if (type == 2){
-	        	//TODO check if the user has inputted an estimate 
-	        	ViewEventController.getInstance().getMain().remove(gameView);
+	        	if(!gameView.isNew){
+	        		int option = JOptionPane.showOptionDialog(gameView, "Discard unsaved changes and close tab?", "Discard changes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+					if (option == 0){
+						ViewEventController.getInstance().getMain().remove(gameView);
+					}
+	        	}
+	        	else{
+	        		ViewEventController.getInstance().getMain().remove(gameView);
+	        	}
 	        }
 	    }
 	}
