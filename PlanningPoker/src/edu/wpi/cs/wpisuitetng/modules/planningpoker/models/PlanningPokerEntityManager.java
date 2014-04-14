@@ -80,8 +80,9 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 		final GameSession importedGame = GameSession.fromJson(content);
 		System.out.println("Adding: " + content);
 		GameSession[] games = getAll(s);
-	
+		
 		GameSession newGame = new GameSession(importedGame.getGameName(), importedGame.getGameDescription(), importedGame.getOwnerID(), importedGame.getGameID(), importedGame.getEndDate(), importedGame.getGameReqs());
+		newGame.setGameStatus(importedGame.getGameStatus());
 		newGame.setProject(s.getProject());
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
