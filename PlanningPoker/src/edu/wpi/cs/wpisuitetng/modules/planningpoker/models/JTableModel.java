@@ -1,19 +1,14 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Calendar;
 
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersController;
-import edu.wpi.cs.wpisuitetng.network.Network;
 
+@SuppressWarnings("serial")
 public class JTableModel extends AbstractTableModel {
 
 	protected Object[][] Data; 	// Create new data array with the "X" position as each sessionData

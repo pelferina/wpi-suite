@@ -12,10 +12,6 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;

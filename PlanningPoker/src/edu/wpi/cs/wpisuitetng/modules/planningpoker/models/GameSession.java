@@ -16,7 +16,6 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +23,7 @@ import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+
 
 /**
  * Model to contain a single game on the PostBoard

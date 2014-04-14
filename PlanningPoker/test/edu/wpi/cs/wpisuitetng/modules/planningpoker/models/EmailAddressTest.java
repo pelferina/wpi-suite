@@ -1,40 +1,26 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import edu.wpi.cs.wpisuitetng.Session;
-import edu.wpi.cs.wpisuitetng.exceptions.BadRequestException;
-import edu.wpi.cs.wpisuitetng.exceptions.ConflictException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
-import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailAddressController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailAddressObserver;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.mock.MockData;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.mock.MockRequest;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.MockNetwork;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.network.Network;
-import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.configuration.NetworkConfiguration;
-import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 public class EmailAddressTest {
 

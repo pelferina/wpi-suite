@@ -7,41 +7,33 @@ import javax.swing.Timer;
 import javax.swing.table.TableRowSorter;
 import javax.swing.JTree;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailAddressObserver;
+
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameTree;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.JTableModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame.JTableView;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.network.Network;
-import edu.wpi.cs.wpisuitetng.network.Request;
-import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 import javax.swing.JScrollPane;
-import javax.swing.SpringLayout;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeModel;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
+@SuppressWarnings("serial")
 public class OverviewPanel extends JPanel {
 	GetGamesController ggc; 
 	GameSession[] curSessions = {}; // store gameSessions here
@@ -85,7 +77,7 @@ public class OverviewPanel extends JPanel {
 				    	  }
 				      }
 				      if (clickedGame != null){
-				    	  ViewEventController.getInstance().editGameTab(clickedGame);; // Make this edit insteadS
+				    	  ViewEventController.getInstance().editGameTab(clickedGame); // Make this edit insteadS
 				      }
 				    }
 				  }
@@ -167,15 +159,15 @@ public class OverviewPanel extends JPanel {
 		List<GameSession> sessions = new ArrayList<GameSession>();
 		
 		if (s.equals("Drafts")){
-			sessions = (ArrayList<GameSession>) gameModel.getDraftGameSessions();
+			sessions = gameModel.getDraftGameSessions();
 		} else if (s.equals("Active Games")){
-			sessions = (ArrayList<GameSession>) gameModel.getActiveGameSessions();
+			sessions = gameModel.getActiveGameSessions();
 		} else if (s.equals("In Progress Games")){
-			sessions = (ArrayList<GameSession>) gameModel.getInProgressGameSessions();
+			sessions = gameModel.getInProgressGameSessions();
 		} else if (s.equals("Completed Games")){
-			sessions = (ArrayList<GameSession>) gameModel.getCompletedGameSessions();
+			sessions = gameModel.getCompletedGameSessions();
 		} else if (s.equals("Archived Games")){
-			sessions = (ArrayList<GameSession>) gameModel.getArchivedGameSessions();
+			sessions = gameModel.getArchivedGameSessions();
 		} else {
 			//Get the sessions
 			HashSet<GameSession> allGames = new HashSet<GameSession>(gameModel.getDraftGameSessions());

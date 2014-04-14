@@ -12,12 +12,6 @@ import javax.swing.tree.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.tree.*;
-
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-
 /**
  * @author Anthony
  *

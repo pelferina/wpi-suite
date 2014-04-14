@@ -44,7 +44,7 @@ public class GetUsersController {
 		
 		 int ii = 100000;
     	 int jj;
-    	while(ii != 0){jj = ii*ii;ii=ii-1;};
+    	while(ii != 0){jj = ii*ii;ii=ii-1;}
 		
 		final Request request = Network.getInstance().makeRequest("core/user",
 				HttpMethod.GET); // GET == read
