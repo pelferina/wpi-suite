@@ -22,7 +22,7 @@ public class JTableModel extends AbstractTableModel {
 	protected Integer[] gameIDs;
 	protected GetUsersController guc;
 	protected User[] users;
-	protected int size =0;
+	protected int size = 0;
     protected static final String[] COLUMN_NAMES = new String[] {"Name", "Deadline", "Owner", "Progress", "Status"};
     protected static final Class<?>[] COLUMN_TYPES = new Class<?>[] {String.class, Date.class, String.class, String.class, String.class};
     

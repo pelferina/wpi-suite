@@ -38,7 +38,17 @@ public class NewGameReqPanel extends JPanel {
 	private JTable selectedTable;
 	private List<Requirement> reqs = new ArrayList<Requirement>();
 	private Timer refresh;
-
+	// Declarations and initializations of GUI components
+	JLabel lblRequirementsAvailable = new JLabel("Requirements Available");
+	JButton btnAddReq = new JButton("Add New Requirement");
+	JButton btnRemoveOne = new JButton("\u2191");
+	JLabel lblRequirementsSelected = new JLabel("Requirements Selected");
+	JButton btnAddOne = new JButton("\u2193");
+	JButton btnRemoveAll = new JButton("\u21c8");
+	JButton btnAddAll = new JButton("\u21ca");
+	JScrollPane unselected_table = new JScrollPane();
+	JScrollPane selected_table = new JScrollPane();
+	
 	/**
 	 * 
 	 * @param requirements, the current requirements in the database
@@ -94,17 +104,6 @@ public class NewGameReqPanel extends JPanel {
 		refresh.schedule(new RefreshTask(refresh, this), 1000);
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
-
-		// Declarations and initializations of GUI components
-		JLabel lblRequirementsAvailable = new JLabel("Requirements Available");
-		JButton btnAddReq = new JButton("Add New Requirement");
-		JButton btnRemoveOne = new JButton("\u2191");
-		JLabel lblRequirementsSelected = new JLabel("Requirements Selected");
-		JButton btnAddOne = new JButton("\u2193");
-		JButton btnRemoveAll = new JButton("\u21c8");
-		JButton btnAddAll = new JButton("\u21ca");
-		JScrollPane unselected_table = new JScrollPane();
-		JScrollPane selected_table = new JScrollPane();
 
 		// Observers
 
@@ -345,6 +344,30 @@ public class NewGameReqPanel extends JPanel {
 			System.out.println("Iteration: " + req.getIteration());
 			if (!req.getIteration().equals("Backlog")) reqs.remove(req);
 		}
+	}
+	
+	public JTable getReqsTable(){
+		return this.unselectedTable;
+	}
+	
+	public JButton getAddOneButton(){
+		return this.btnAddOne;
+	}
+	
+	public JButton getAddAllButton(){
+		return this.btnAddAll;
+	}
+	
+	public JButton getRemoveOneButton(){
+		return this.btnRemoveOne;
+	}
+	
+	public JButton getRemoveAllButton(){
+		return this.btnRemoveAll;
+	}
+
+	public JTable getSelectedTabel() {
+		return this.selectedTable;
 	}
 }
 

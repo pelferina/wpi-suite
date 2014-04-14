@@ -31,7 +31,7 @@ public class PlayGame extends JPanel{
 	private final JButton submit = new JButton("Submit Estimate");
 	private Requirement currentReq;
 	private GameView gv;
-	private GameCard[] gameCards = {new GameCard(1), new GameCard(2), new GameCard(5)};
+	//private GameCard[] gameCards = {new GameCard(1), new GameCard(2), new GameCard(5)};
 	
 	public PlayGame(GameSession gameToPlay, GameView agv){
 		submit.setEnabled(false);
@@ -135,10 +135,10 @@ public class PlayGame extends JPanel{
 		gv.updateReqTables(r);
 	}
 	
-	@Override
+/*	@Override
     protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(, 0, 0, null);
 	}
-	
+*/
 }
