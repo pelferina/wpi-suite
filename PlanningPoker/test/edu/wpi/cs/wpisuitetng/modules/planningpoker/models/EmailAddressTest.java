@@ -27,7 +27,7 @@ public class EmailAddressTest {
 	MockData db;
 	Requirement req1;
 	String mockSsid;
-	PlanningPokerEntityManager p_manager;
+	GameEntityManager p_manager;
 	EmailAddressEntityManager e_manager;
 	Session adminSession;
 	Session bobSession;
@@ -51,7 +51,7 @@ public class EmailAddressTest {
 		db.save(req1, testProject);
 
 		db.save(admin);
-		p_manager = new PlanningPokerEntityManager(db);
+		p_manager = new GameEntityManager(db);
 		e_manager = new EmailAddressEntityManager(db);
 		eController = new AddEmailAddressController();
 		

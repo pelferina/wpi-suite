@@ -43,7 +43,7 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
  * This is the entity manager for the Planning Poker Module.
  * 
  */
-public class PlanningPokerEntityManager implements EntityManager<GameSession> {
+public class GameEntityManager implements EntityManager<GameSession> {
 
 	/** The database */
 	Data db;
@@ -58,7 +58,7 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 	 * 
 	 * @param db a reference to the persistent database
 	 */
-	public PlanningPokerEntityManager(Data db) {
+	public GameEntityManager(Data db) {
 		this.db = db;
 
 		//set up and start timer to check deadline every second.
@@ -77,10 +77,12 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 
 		// Parse the message from JSON
 		final GameSession importedGame = GameSession.fromJson(content);
+		
 		System.out.println("Adding: " + content);
 		GameSession[] games = getAll(s);
 	
 		GameSession newGame = new GameSession(importedGame.getGameName(), importedGame.getGameDescription(), importedGame.getOwnerID(), importedGame.getGameID(), importedGame.getEndDate(), importedGame.getGameReqs());
+		newGame.setGameStatus(importedGame.getGameStatus());
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
 		if (!db.save(newGame, s.getProject())) {

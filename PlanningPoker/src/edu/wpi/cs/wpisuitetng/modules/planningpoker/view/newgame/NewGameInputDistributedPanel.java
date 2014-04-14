@@ -13,10 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-
 import java.text.SimpleDateFormat;
-//import java.awt.event.MouseAdapter;
-//import java.awt.event.MouseEvent;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,6 +31,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -61,11 +60,11 @@ public class NewGameInputDistributedPanel extends JPanel {
 	private JDatePickerImpl datePicker = new JDatePickerImpl(datePanel);
 	
 	private final JLabel deadlineTime = new JLabel ("Deadline Time:");
-	private int hourTime = -1;
-	private int minuteTime = -1; 
-	private int deadlineDay = 1;
-	private int deadlineMonth = 1;
-	private int deadlineYear = 2014;
+	private int hourTime;
+	private int minuteTime; 
+	private int deadlineDay;
+	private int deadlineMonth;
+	private int deadlineYear;
 	private JComboBox<String> deadlineHourComboBox = new JComboBox<String>();
 	private JComboBox<String> deadlineMinuteComboBox = new JComboBox<String>();
 	private JRadioButton AMButton = new JRadioButton("AM");
@@ -118,6 +117,8 @@ public class NewGameInputDistributedPanel extends JPanel {
 	 * Initializing Time Checker
 	 */
 	Timer canActivateChecker;
+
+	private boolean activate;
 	
 	
 	/**
@@ -268,14 +269,9 @@ public class NewGameInputDistributedPanel extends JPanel {
 		//This button is for saving a game, and to do that, only the name is required		
 		saveGameButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				newGameP.isNew = true;
-				String name = nameTextField.getText();
-				GameModel model = GameModel.getInstance();
-				GameSession newGame = new GameSession(name, new String(), 0, model.getSize() + 1, new Date(), new ArrayList<Integer>()); 
-				AddGameController msgr = new AddGameController(model);
-				msgr.sendGame(newGame);
+				saveOrActivateGame();
 				JOptionPane gameCreated = new JOptionPane("Game Created");
-				JOptionPane.showMessageDialog(gameCreated, "Game has been Created", "Game created", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(gameCreated, "Game has been created", "Game created", JOptionPane.INFORMATION_MESSAGE);
 				newGameP.close.doClick();
 			}
 		});
@@ -283,25 +279,46 @@ public class NewGameInputDistributedPanel extends JPanel {
 		//Checks to see if all the fields are properly filled, and then sends the game object to the database if done.
 		activateGameButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				initializeErrorMessages();
-				String name = nameTextField.getText();
-				String description = descTextArea.getText();
-				newGameP.isNew = true;
-				Date deadlineDate = new Date(deadlineYear, deadlineMonth - 1, deadlineDay, getHour(hourTime), minuteTime);
-				GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade); 
-				GameModel model = GameModel.getInstance();
-				AddGameController msgr = new AddGameController(model);
-				msgr.sendGame(newGame);	
-				final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.PUT); // PUT == create
-				request.setBody("endGame" + newGame.getGameName());
-				request.send(); // send the request
+				saveOrActivateGame();
 				JOptionPane gameCreated = new JOptionPane("Game Created and Activated");
 				JOptionPane.showMessageDialog(gameCreated, "Game has been created and activated", "Game created", JOptionPane.INFORMATION_MESSAGE);
 				newGameP.close.doClick();
 			}
 		});
 	}
-	
+
+	private void saveOrActivateGame()
+	{
+		newGameP.isNew = true;
+
+		initializeErrorMessages();
+		
+		String name = nameTextField.getText();
+		String description = descTextArea.getText();
+		
+		@SuppressWarnings("deprecation")
+		Date deadlineDate = new Date(deadlineYear, deadlineMonth - 1, deadlineDay, getHour(hourTime), minuteTime);
+		
+		//If just saving the game, set deadline to null
+		if(!deadlineCheckBox.isSelected())
+		{
+			deadlineDate = null;
+		}		
+		GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
+
+		//If activating: Set game status to active and Send an activation email 
+		if(this.activate == true)
+		{   
+			newGame.setGameStatus(GameStatus.ACTIVE);
+			final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.PUT); // PUT == create
+			request.setBody("endGame" + newGame.getGameName());
+			request.send(); // send the request
+		}
+		 
+		GameModel model = GameModel.getInstance();
+		AddGameController msgr = new AddGameController(model);
+		msgr.sendGame(newGame);	
+	}
 	/**
 	 * This timer is used to check if the game can be activated.
 	 * If it can be activated, which means that all the necessary fields are filled,
@@ -344,6 +361,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 			return true;
 		}
 	}
+	
 	/**
 	 *  Handles the error messages for deadline time
 	 * @return true if invalid deadline is selected
@@ -352,13 +370,18 @@ public class NewGameInputDistributedPanel extends JPanel {
 	{	
 		//Get deadline date
 		currentDate = Calendar.getInstance();
-		getDeadlineDate();
+		setDeadlineDate();
 		hourTime = getHour(deadlineHourComboBox.getSelectedIndex() + 1);
 		minuteTime = deadlineMinuteComboBox.getSelectedIndex();
 		Calendar deadline = Calendar.getInstance();
-		deadline.set(deadlineYear, deadlineMonth, deadlineDay, getHour(hourTime), minuteTime);
+		deadline.set(deadlineYear, deadlineMonth, deadlineDay, hourTime, minuteTime);
 		
-		if (deadline.after(currentDate)){
+//		System.out.println(deadline.get(Calendar.DAY_OF_MONTH)+"/"+deadline.get(Calendar.MONTH)+"/"+deadline.get(Calendar.YEAR)+ "     " 
+//				 		+ currentDate.get(Calendar.DAY_OF_MONTH)+"/"+currentDate.get(Calendar.MONTH)+"/"+currentDate.get(Calendar.YEAR));
+//				 		SimpleDateFormat deadlineTimeFormat = new SimpleDateFormat("hh:mm aa");
+//				 		System.out.println(deadlineTimeFormat.format(deadline.getTime())+ "     "+ deadlineTimeFormat.format(currentDate.getTime()));
+				 
+		if (deadline.after(currentDate) && minuteTime!=currentDate.get(Calendar.MINUTE)){
 			deadlineError.setVisible(false);
 			return true;
 		}
@@ -478,7 +501,13 @@ public class NewGameInputDistributedPanel extends JPanel {
 	private void initializeDeadline()
 	{
 		currentDate = Calendar.getInstance();
-
+		//Initialize date picker
+		if (datePicker.getModel().isSelected() == false){
+			datePicker.getModel().setDate(currentDate.get(Calendar.YEAR), 
+					currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DAY_OF_MONTH));
+		}
+		setDeadlineDate();
+		
 		//Initialize Deadline Hour and Minute
 		for (int j=0; j<12; j++){
 			deadlineHourComboBox.addItem(j + 1 + "");
@@ -493,29 +522,26 @@ public class NewGameInputDistributedPanel extends JPanel {
 			}
 		}
 		
-		//Default deadline hour and minute
+		//Default deadline hour and minute to a minute from the current time
 		SimpleDateFormat hourDateFormat = new SimpleDateFormat("hh");
         SimpleDateFormat minuteDateFormat = new SimpleDateFormat("mm"); 
         String hour = hourDateFormat.format(currentDate.getTime());
         String minute = minuteDateFormat.format(currentDate.getTime());
-        deadlineHourComboBox.setSelectedIndex(Integer.parseInt(hour)-1);
-        deadlineMinuteComboBox.setSelectedIndex(Integer.parseInt(minute));
+        hourTime = Integer.parseInt(hour);
+        minuteTime = Integer.parseInt(minute)+1;
+        deadlineHourComboBox.setSelectedIndex(hourTime-1);
+        deadlineMinuteComboBox.setSelectedIndex(minuteTime);
         if (currentDate.get(Calendar.AM_PM) == Calendar.PM) {
         	PMButton.setSelected(true);
+        	isAM = false;
         }        
         else
         {
+        	isAM = true;
         	AMButton.setSelected(true);
         }
-        
-		//Initialize date picker
-		if (datePicker.getModel().isSelected() == false){
-			datePicker.getModel().setDate(currentDate.get(Calendar.YEAR), 
-					currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DAY_OF_MONTH) - 1);
-		}
 	}
-	private void getDeadlineDate()
-	{
+	private void setDeadlineDate() {
 		deadlineYear = datePicker.getModel().getYear();
 		deadlineMonth = datePicker.getModel().getMonth();
 		deadlineDay = datePicker.getModel().getDay();
