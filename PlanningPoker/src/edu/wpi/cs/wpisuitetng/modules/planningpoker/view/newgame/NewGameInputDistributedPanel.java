@@ -144,7 +144,233 @@ public class NewGameInputDistributedPanel extends JPanel {
 		init(ngdp);
 	}
 	
+	/**
+	 * Initializes the NewGameDistributedPanel
+	 * @param ngdp
+	 */
+	private void init(NewGameDistributedPanel ngdp)
+	{
+		newGameP = ngdp;
+		
+		setPanel();
+				
+		// Set initial save/activate game visibility		
+		setSaveGameButtonVisibility(false);
+		setActivateGameButtonVisibility(false);
+
+		//Set deadline and deck to not be visible
+		setDeadlineVisibility(false);	
+		setDeckVisibility(false);
+		
+		// Initialize the error Messages		
+		initializeErrorMessages();
+		
+		startCanActivateCheckerTimer();		
+		
+		//Display Deadline option only when checkbox is selected
+		deadlineCheckBox.addItemListener(new ItemListener()
+		{
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					setDeadlineVisibility(true);
+			        datePicker.revalidate();
+			        datePicker.repaint();
+			        // Initialize the deadline
+					initializeDeadline();
+					setupDeadlineActionListeners();
+			    } else {
+			    	setDeadlineVisibility(false);
+			    }
+			}
+			
+		});
+		
+		//Display Deck selection only when checkbox is selected
+		deckCheckBox.addItemListener(new ItemListener()
+		{
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					// Initialize the deck
+					initializeDeckComboBox();
+					setDeckVisibility(true);		        
+			    } else {
+			    	setDeckVisibility(false);
+			    }
+			}	
+		});
+		
+		//This is run if the game is opened in edit mode
+		if(editMode)
+		{
+			initializeEditMode();
+		}
+		
+		//Adds a documentlistener to the name text field so that no name error can be handled, save button can be made visible  
+		//the pop-up will appear if the new game tab is closed.
+		nameTextField.getDocument().addDocumentListener(new DocumentListener(){
+			@Override
+			public void changedUpdate(DocumentEvent e){
+				updateSave(e);
+			}
+			@Override
+			public void removeUpdate(DocumentEvent e){
+				updateSave(e);
+			}
+			@Override 
+			public void insertUpdate(DocumentEvent e){
+				updateSave(e);
+			}
+			public void updateSave(DocumentEvent e) {
+				newGameP.isNew = false;
+				if (nameTextField.getText().length() != 0){
+					nameError.setVisible(false);		
+					setSaveGameButtonVisibility(true);
+				}
+				else
+				{
+					nameError.setVisible(true);		
+					setSaveGameButtonVisibility(false);
+				}
+			}
+		});
+
+		//Adds a documentlistener to the description text area so that way if the text is changed in the description text area, the pop-up will 
+		// appear is the new game tab is close
+		descTextArea.getDocument().addDocumentListener(new DocumentListener(){
+			@Override
+			public void changedUpdate(DocumentEvent e){
+				newGameP.isNew = false;
+			}
+			@Override
+			public void removeUpdate(DocumentEvent e){
+				newGameP.isNew = false;
+			}
+			@Override 
+			public void insertUpdate(DocumentEvent e){
+				newGameP.isNew = false;
+			}
+		});
+
+		//TODO: isNew? for deckbox
+		//Adds an action listener to the deck box so that if the deck combo box to set isNew to false
+		//if it is changed.		
+		deckBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (deckBox.getSelectedIndex() == 0){
+				}
+				newGameP.isNew = false;
+			}
+		});
+			
+		//This button is for saving a game, and to do that, only the name is required		
+		saveGameButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				newGameP.isNew = true;
+				String name = nameTextField.getText();
+				GameModel model = GameModel.getInstance();
+				GameSession newGame = new GameSession(name, new String(), 0, model.getSize() + 1, new Date(), new ArrayList<Integer>()); 
+				AddGameController msgr = new AddGameController(model);
+				msgr.sendGame(newGame);
+				JOptionPane gameCreated = new JOptionPane("Game Created");
+				JOptionPane.showMessageDialog(gameCreated, "Game has been Created", "Game created", JOptionPane.INFORMATION_MESSAGE);
+				newGameP.close.doClick();
+			}
+		});
+
+		//Checks to see if all the fields are properly filled, and then sends the game object to the database if done.
+		activateGameButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				initializeErrorMessages();
+				String name = nameTextField.getText();
+				String description = descTextArea.getText();
+				newGameP.isNew = true;
+				Date deadlineDate = new Date(deadlineYear, deadlineMonth - 1, deadlineDay, getHour(hourTime), minuteTime);
+				GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade); 
+				GameModel model = GameModel.getInstance();
+				AddGameController msgr = new AddGameController(model);
+				msgr.sendGame(newGame);	
+				final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.PUT); // PUT == create
+				request.setBody("endGame" + newGame.getGameName());
+				request.send(); // send the request
+				JOptionPane gameCreated = new JOptionPane("Game Created and Activated");
+				JOptionPane.showMessageDialog(gameCreated, "Game has been created and activated", "Game created", JOptionPane.INFORMATION_MESSAGE);
+				newGameP.close.doClick();
+			}
+		});
+	}
 	
+	/**
+	 * This timer is used to check if the game can be activated.
+	 * If it can be activated, which means that all the necessary fields are filled,
+	 *  then the activate button will become enabled 
+	 */
+	void startCanActivateCheckerTimer()
+	{
+		canActivateChecker = new Timer(100, new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				if (canActivate()){
+					initializeErrorMessages();
+					activateGameButton.setEnabled(true);
+				}
+				else {
+					activateGameButton.setEnabled(false);
+				}
+			}
+		});
+		canActivateChecker.start();
+	}
+
+	/**
+	 * Handles the error messages for requirements 
+	 * @return true if requirements have been selected
+	 */
+	private boolean hasReqs()
+	{
+		List<Requirement> reqsSelected = newGameP.getSelected();
+		for (int i=0; i<reqsSelected.size(); i++){
+			selectionsMade.add(reqsSelected.get(i).getId());
+		}
+		//Displays the cannot have a game without requirements error if no requirements were chosen
+		if (selectionsMade.isEmpty()){
+			reqError.setVisible(true);
+			return false;
+		}
+		else
+		{
+			reqError.setVisible(false);
+			return true;
+		}
+	}
+	/**
+	 *  Handles the error messages for deadline time
+	 * @return true if invalid deadline is selected
+	 */
+	private boolean hasDeadline()
+	{	
+		//Get deadline date
+		currentDate = Calendar.getInstance();
+		getDeadlineDate();
+		hourTime = getHour(deadlineHourComboBox.getSelectedIndex() + 1);
+		minuteTime = deadlineMinuteComboBox.getSelectedIndex();
+		Calendar deadline = Calendar.getInstance();
+		deadline.set(deadlineYear, deadlineMonth, deadlineDay, getHour(hourTime), minuteTime);
+		System.out.println(deadline.get(Calendar.DAY_OF_MONTH)+"/"+deadline.get(Calendar.MONTH)+"/"+deadline.get(Calendar.YEAR)+ "     " 
+		+ currentDate.get(Calendar.DAY_OF_MONTH)+"/"+currentDate.get(Calendar.MONTH)+"/"+currentDate.get(Calendar.YEAR));
+		SimpleDateFormat deadlineTimeFormat = new SimpleDateFormat("hh:mm aa");
+		System.out.println(deadlineTimeFormat.format(deadline.getTime())+ "     "+ deadlineTimeFormat.format(currentDate.getTime()));
+		if (deadline.after(currentDate)){
+			deadlineError.setVisible(false);
+			System.out.println("WTH");
+			return true;
+		}
+		else {
+			deadlineError.setVisible(true);
+			return false;
+		}
+	}
 	/**
 	 *  Sets deadline(datePicker and time) to either visible or not
 	 * @param isVisible
@@ -170,6 +396,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 	}
 
 	/**
+	 * Sets the save game button visibility
 	 * @param isVisible
 	 */
 	private void setSaveGameButtonVisibility(boolean isVisible)
@@ -178,6 +405,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 	}
 	
 	/**
+	 * Sets the Activate game button visibility
 	 * @param isVisible
 	 */
 	private void setActivateGameButtonVisibility(boolean isVisible)
@@ -186,14 +414,78 @@ public class NewGameInputDistributedPanel extends JPanel {
 	}
 	
 	/**
-	 * Initialize hour and minute combo boxes
+	 * Initializes Error Messages to false
 	 */
-	private void initializeHourMinuteComboBoxes()
+	private void initializeErrorMessages()
 	{
-		deadlineHourComboBox.addItem("");
-		deadlineMinuteComboBox.addItem("");
+		hourError.setVisible(false);
+		minuteError.setVisible(false);
+		deadlineError.setVisible(false);
+		nameError.setVisible(false);
+		reqError.setVisible(false);
+	}
+	
+	/**
+	 * Sets up deadline related action listeners
+	 */
+	private void setupDeadlineActionListeners()
+	{
+		//Sets isNew to false, and sets minuteTime to the selected minute.
+		deadlineMinuteComboBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e){
+				minuteTime = deadlineMinuteComboBox.getSelectedIndex();
+				newGameP.isNew = false;
+				minuteError.setVisible(false);
+			}
+
+		});
+
+		//Sets isNew to false and sets hourtime to the hour selected. It is set to 0 if 12 is selected.
+		deadlineHourComboBox.addActionListener(new ActionListener() {
+			@Override 
+			public void actionPerformed(ActionEvent e){
+				int hourIndex = deadlineHourComboBox.getSelectedIndex();
+				if (hourIndex != 12 && hourIndex != 0){
+					hourTime = deadlineHourComboBox.getSelectedIndex() + 1;
+				}
+				else{
+					hourTime = 0;
+				}
+				hourError.setVisible(false);
+				newGameP.isNew = false;
+			}
+		});
+
+		AMButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PMButton.setSelected(false);
+				AMButton.setSelected(true);
+				isAM = true;
+			}
+		});
+		
+		PMButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AMButton.setSelected(false);
+				PMButton.setSelected(true);
+				isAM = false;
+			}
+		});		
+		
+	}
+	/**
+	 * Initialize date picker, hour and minute combo boxes
+	 */
+	private void initializeDeadline()
+	{
+		currentDate = Calendar.getInstance();
+
+		//Initialize Deadline Hour and Minute
 		for (int j=0; j<12; j++){
-			deadlineHourComboBox.addItem(j+1 + "");
+			deadlineHourComboBox.addItem(j + 1 + "");
 		}
 
 		for (int i=0; i<60; i++){
@@ -205,47 +497,33 @@ public class NewGameInputDistributedPanel extends JPanel {
 			}
 		}
 		
-		//Sets isNew to false, and sets minuteTime to the selected minute.
-		deadlineMinuteComboBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e){
-				minuteTime = deadlineMinuteComboBox.getSelectedIndex() - 1;
-				newGameP.isNew = false;
-			}
-
-		});
-
-		//Sets isNew to false and sets hourtime to the hour selected. It is set to 0 if 12 is selected.
-		deadlineHourComboBox.addActionListener(new ActionListener() {
-			@Override 
-			public void actionPerformed(ActionEvent e){
-				int hourIndex = deadlineHourComboBox.getSelectedIndex();
-				if (hourIndex != 12 && hourIndex != 0){
-					hourTime = deadlineHourComboBox.getSelectedIndex();
-				}
-				else{
-					hourTime = 0;
-				}
-				newGameP.isNew = false;
-			}
-		});
-
-		AMButton.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				PMButton.setSelected(false);
-				isAM = true;
-			}
-		});
-		PMButton.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				AMButton.setSelected(false);
-				isAM = false;
-			}
-		});
+		//Default deadline hour and minute
+		SimpleDateFormat hourDateFormat = new SimpleDateFormat("hh");
+        SimpleDateFormat minuteDateFormat = new SimpleDateFormat("mm"); 
+        String hour = hourDateFormat.format(currentDate.getTime());
+        String minute = minuteDateFormat.format(currentDate.getTime());
+        deadlineHourComboBox.setSelectedIndex(Integer.parseInt(hour)-1);
+        deadlineMinuteComboBox.setSelectedIndex(Integer.parseInt(minute));
+        if (currentDate.get(Calendar.AM_PM) == Calendar.PM) {
+        	PMButton.setSelected(true);
+        }        
+        else
+        {
+        	AMButton.setSelected(true);
+        }
+        
+		//Initialize date picker
+		if (datePicker.getModel().isSelected() == false){
+			datePicker.getModel().setDate(currentDate.get(Calendar.YEAR), 
+					currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DAY_OF_MONTH) - 1);
+		}
 	}
-	
+	private void getDeadlineDate()
+	{
+		deadlineYear = datePicker.getModel().getYear();
+		deadlineMonth = datePicker.getModel().getMonth();
+		deadlineDay = datePicker.getModel().getDay();
+	}
 	private void initializeDeckComboBox()
 	{
 		//Initializes the deck combo box
@@ -274,7 +552,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 			else {
 				deadlineHourComboBox.setSelectedIndex(gameSession.getEndDate().getHours());
 			}
-			deadlineMinuteComboBox.setSelectedIndex(gameSession.getEndDate().getMinutes()+1);
+			deadlineMinuteComboBox.setSelectedIndex(gameSession.getEndDate().getMinutes());
 		}
 		//Puts the name of the game into the name text field, it can not be edited
 		
@@ -282,215 +560,8 @@ public class NewGameInputDistributedPanel extends JPanel {
 		nameTextField.setEditable(false);
 		descTextArea.setText(gameSession.getGameDescription());
 		nameTextField.setEditable(false);
-	}
-	/**
-	 * Initializes the NewGameDistributedPanel
-	 * @param ngdp
-	 */
-	private void init(NewGameDistributedPanel ngdp)
-	{
-		// This timer is used to check if the game can be activated. If it can be activated, which means that all the necessary fields are filled,
-		// then the activate button will become enabled
-		canActivateChecker = new Timer(100, new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				if (canActivate()){
-					activateGameButton.setEnabled(true);
-				}
-				else {
-					activateGameButton.setEnabled(false);
-				}
-			}
-		});
-		canActivateChecker.start();
-		
-		// Set save/activate game to not be visible 		
-		setSaveGameButtonVisibility(false);
-		setActivateGameButtonVisibility(false);
-
-		//Set deadline and deck to not be visible
-		setDeadlineVisibility(false);	
-		setDeckVisibility(false);
-
-		currentDate = Calendar.getInstance();
-		
-
-		initializeHourMinuteComboBoxes();		
-		initializeDeckComboBox();
-		
-		newGameP = ngdp;
-		
-		setPanel();
-		
-		//Display Deadline option only when checkbox is selected
-		deadlineCheckBox.addItemListener(new ItemListener()
-		{
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) {
-					setDeadlineVisibility(true);
-			        datePicker.revalidate();
-			        datePicker.repaint();
-			        
-			    } else {
-			    	setDeadlineVisibility(false);
-			    }
-			}
-			
-		});
-
-		//Display Deck selection only when checkbox is selected
-		deckCheckBox.addItemListener(new ItemListener()
-		{
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) {
-					setDeckVisibility(true);		        
-			    } else {
-			    	setDeckVisibility(false);
-			    }
-			}	
-		});
-		
-		//This is run if the game is opened in edit mode
-		if(editMode)
-		{
-			initializeEditMode();
-		}
-		
-		//Adds a documentlistener to the name text field so that way if the text is changed, the pop-up will appear if 
-		//the new game tab is closed.
-		nameTextField.getDocument().addDocumentListener(new DocumentListener(){
-			@Override
-			public void changedUpdate(DocumentEvent e){
-				updateSave(e);
-			}
-			@Override
-			public void removeUpdate(DocumentEvent e){
-				updateSave(e);
-			}
-			@Override 
-			public void insertUpdate(DocumentEvent e){
-				updateSave(e);
-			}
-			public void updateSave(DocumentEvent e) {
-				newGameP.isNew = false;
-				if (nameTextField.getText().length() != 0){
-					setSaveGameButtonVisibility(true);
-				}
-				else
-				{
-					setSaveGameButtonVisibility(false);
-				}
-			}
-		});
-
-		//Adds a documentlistener to the description text area so that way if the text is changed in the description text area, the pop-up will 
-		// appear is the new game tab is close
-		descTextArea.getDocument().addDocumentListener(new DocumentListener(){
-			@Override
-			public void changedUpdate(DocumentEvent e){
-				newGameP.isNew = false;
-			}
-			@Override
-			public void removeUpdate(DocumentEvent e){
-				newGameP.isNew = false;
-			}
-			@Override 
-			public void insertUpdate(DocumentEvent e){
-				newGameP.isNew = false;
-			}
-		});
-
-		//Adds an action listener to the deck box so that if the deck combo box to set isNew to false
-		//if it is changed.		
-		deckBox.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (deckBox.getSelectedIndex() == 0){
-				}
-				newGameP.isNew = false;
-			}
-		});
-			
-		//This button is for saving a game, and to do that, only the name is required		
-		saveGameButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				String name = nameTextField.getText();
-				GameModel model = GameModel.getInstance();
-				GameSession newGame = new GameSession(name, new String(), 0, model.getSize() + 1, new Date(), new ArrayList<Integer>()); 
-				AddGameController msgr = new AddGameController(model);
-				msgr.sendGame(newGame);	
-			}
-		});
-	
-		//Checks to see if all the fields are properly filled, and then sends the game object to the database if done.
-		activateGameButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				hourError.setVisible(false);
-				minuteError.setVisible(false);
-				deadlineError.setVisible(false);
-				nameError.setVisible(false);
-				reqError.setVisible(false);
-				String name = nameTextField.getText();
-				String description = descTextArea.getText();
-				Calendar selectedDeadline = Calendar.getInstance();
-				currentDate = Calendar.getInstance();
-				if (datePicker.getModel().isSelected() == false){
-					datePicker.getModel().setDate(currentDate.get(Calendar.YEAR), 
-							currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DAY_OF_MONTH) - 1);
-				}
-				currentDate.set(Calendar.MONTH, currentDate.get(Calendar.MONTH) + 1);
-				deadlineYear = datePicker.getModel().getYear();
-				deadlineMonth = datePicker.getModel().getMonth() + 1;
-				deadlineDay = datePicker.getModel().getDay();
-				selectedDeadline.set(deadlineYear, deadlineMonth, deadlineDay, getHour(hourTime), minuteTime);
-				List<Requirement> reqsSelected = newGameP.getSelected();
-				for (int i=0; i<reqsSelected.size(); i++){
-					selectionsMade.add(reqsSelected.get(i).getId());
-				}
-				//Displays the hour error game if no hour was chosen
-				if (deadlineHourComboBox.getSelectedIndex() == 0){
-					hourError.setVisible(true);
-				}
-				//Displays the minute error game if no minute was chosen
-				else if (deadlineMinuteComboBox.getSelectedIndex() == 0){
-					minuteError.setVisible(true);
-				}
-				//Displays deadline in the past error if the chosen deadline is before the current date
-				else if(!selectedDeadline.after(currentDate)){
-					deadlineError.setVisible(true);
-				}
-				//Displays the cannot have a game without requirements error if no requirements were chosen
-				else if (selectionsMade.isEmpty()){
-					reqError.setVisible(true);
-				}
-				//Displays the no name inputed error
-				else if (name.length() < 1){
-					nameError.setVisible(true);
-				}
-				else if (description.length() < 1){
-					nameError.setVisible(true);
-				}
-				//Sends the game to the database
-				else{
-					newGameP.isNew = true;
-					Date deadlineDate = new Date(deadlineYear - 1900, deadlineMonth - 1, deadlineDay, getHour(hourTime), minuteTime);
-					GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize()+1, deadlineDate, selectionsMade); 
-					GameModel model = GameModel.getInstance();
-					AddGameController msgr = new AddGameController(model);
-					msgr.sendGame(newGame);	
-					final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.PUT); // PUT == create
-					request.setBody("endGame" + newGame.getGameName());
-					request.send(); // send the request
-					JOptionPane gameCreated = new JOptionPane("Game Created and Activated");
-					JOptionPane.showMessageDialog(gameCreated, "Game has been created and activated", "Game created", JOptionPane.INFORMATION_MESSAGE);
-					newGameP.close.doClick();
-				}
-			}
-		});
-	}
-	
+	}	
+	//TODO: Account for midnight	
 	//Sets the hour based on the AM or PM combo box selection
 	private int getHour(int hour){
 		if (isAM == true){
@@ -503,8 +574,13 @@ public class NewGameInputDistributedPanel extends JPanel {
 	
 	//This function checks to see if everything necessary for activating a game has been entered by the user.
 	private boolean canActivate(){
-		if (nameInputted() && descInputted() && hourSelected() && minuteSelected() && hasReqs() && hasDeadline()){
-			return true;
+		if (nameInputted() && descInputted() && hasReqs()){
+			//Activate if deadline checkbox is not selected
+			if(!deadlineCheckBox.isSelected())
+				return true;
+			//Activate if deadline is valid
+			if(hasDeadline())
+				return true;
 		}
 		return false;
 	}
@@ -529,57 +605,57 @@ public class NewGameInputDistributedPanel extends JPanel {
 		}
 	}
 	
-	//Returns true if an hour has been selected
-	private boolean hourSelected(){
-		if (deadlineHourComboBox.getSelectedIndex() != 0){
-			return true;
-		}
-		else{
-			return false;
-		}
-	}
-	
-	//Returns true if a minute has been selected
-	private boolean minuteSelected(){
-		if (deadlineMinuteComboBox.getSelectedIndex() != 0){
-			return true;
-		}
-		else{
-			return false;
-		}
-	}
-	
+//	//Returns true if an hour has been selected
+//	private boolean hourSelected(){
+//		if (deadlineHourComboBox.getSelectedIndex() != 0){
+//			return true;
+//		}
+//		else{
+//			return false;
+//		}
+//	}
+//	//Returns true if a minute has been selected
+//	private boolean minuteSelected(){
+//		System.out.println(deadlineMinuteComboBox.getSelectedIndex()+" index");
+//		if (deadlineMinuteComboBox.getSelectedIndex() != 0){
+//			return true;
+//		}
+//		else{
+//			return false;
+//		}
+//	}
+//	
 	//Returns true if requirements have been added to the game
-	private boolean hasReqs(){
-		List<Requirement> reqsSelected = newGameP.getSelected();
-		if (reqsSelected.size() > 0){
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
+//	private boolean hasReqs(){
+//		List<Requirement> reqsSelected = newGameP.getSelected();
+//		if (reqsSelected.size() > 0){
+//			return true;
+//		}
+//		else {
+//			return false;
+//		}
+//	}
 	
-	//Returns true if a deadline is in the future
-	private boolean hasDeadline(){
-		Calendar currentDate = Calendar.getInstance();
-		int year = datePicker.getModel().getYear();
-		int month = datePicker.getModel().getMonth();
-		int day = datePicker.getModel().getDay();
-		if (!hourSelected() && !minuteSelected()){
-			return false;
-		}
-		int hour = getHour(deadlineHourComboBox.getSelectedIndex());
-		int minute = deadlineMinuteComboBox.getSelectedIndex();
-		Calendar deadline = Calendar.getInstance();
-		deadline.set(year, month, day, hour, minute);
-		if (deadline.after(currentDate)){
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
+//	//Returns true if a deadline is in the future
+//	private boolean hasDeadline(){
+//		Calendar currentDate = Calendar.getInstance();
+//		int year = datePicker.getModel().getYear();
+//		int month = datePicker.getModel().getMonth();
+//		int day = datePicker.getModel().getDay();
+//		if (!hourSelected() && !minuteSelected()){
+//			return false;
+//		}
+//		int hour = getHour(deadlineHourComboBox.getSelectedIndex());
+//		int minute = deadlineMinuteComboBox.getSelectedIndex();
+//		Calendar deadline = Calendar.getInstance();
+//		deadline.set(year, month, day, hour, minute);
+//		if (deadline.after(currentDate)){
+//			return true;
+//		}
+//		else {
+//			return false;
+//		}
+//	}
 	
 	/**
 	 * a lot of Window Builder generated UI

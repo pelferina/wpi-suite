@@ -35,7 +35,7 @@ public class NewGameDistributedPanel extends JSplitPane {
 	
 	public boolean isNew = true;
 	public NewGameInputDistributedPanel newGameInputPanel;
-	public NewGameReqPanel newGameReqPanel;
+	private NewGameReqPanel newGameReqPanel;
 	public JButton close;
 	private GameSession editMode;
 	
