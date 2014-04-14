@@ -24,7 +24,7 @@ public class ReqPanelTest {
 		reqs.add(req1);
 		reqs.add(req2);
 		reqs.add(req3);
-		NewGameReqPanel reqPanel = new NewGameReqPanel(reqs);
+		NewGameReqPanel reqPanel = new NewGameReqPanel();
 		JTable unselected = reqPanel.getReqsTable();
 		JTable selected = reqPanel.getSelectedTabel();
 		JButton addOne = reqPanel.getAddOneButton();

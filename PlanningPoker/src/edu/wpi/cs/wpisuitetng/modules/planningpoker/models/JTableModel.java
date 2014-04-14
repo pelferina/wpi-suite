@@ -24,7 +24,7 @@ public class JTableModel extends AbstractTableModel {
 	protected User[] users;
 	protected int size = 0;
     protected static final String[] COLUMN_NAMES = new String[] {"Name", "Deadline", "Owner", "Progress", "Status"};
-    protected static final Class<?>[] COLUMN_TYPES = new Class<?>[] {String.class, Date.class, String.class, String.class, String.class};
+    protected static final Class<?>[] COLUMN_TYPES = new Class<?>[] {String.class, String.class, String.class, String.class, String.class};
     
     public JTableModel(ArrayList<GameSession> sessions){
     	this(sessions.toArray(new GameSession[0]));
@@ -32,27 +32,26 @@ public class JTableModel extends AbstractTableModel {
 
 	public JTableModel(GameSession[] sessions){
 		users = null;
-		guc = new GetUsersController(users);
+		guc = GetUsersController.getInstance();
     	setUpTable(sessions);
     }
 	
 	private void setUpTable(GameSession[] sessions){
 		
-		Data = new Object[COLUMN_NAMES.length][sessions.length];
+		Data = new Object[sessions.length][COLUMN_NAMES.length];
 		gameIDs = new Integer[sessions.length];
     	size = sessions.length;
     	for (int i=0; i<sessions.length; i++){
     		Object[] curRow = {sessions[i].getGameName(),
-    							sessions[i].getEndDate(), 
+    							sessions[i].getEndDate()!=null ? sessions[i].getEndDate().toString() : "No Deadline", 
     							getUserFromID(sessions[i].getOwnerID()), 
     							"To Be Implemented", // Progress
-    							gameStatus(sessions[i])
+    							sessions[i].getGameStatus().name()
     							};
     		
     		Data[i] = curRow;
     		gameIDs[i] = sessions[i].getGameID();
     	}
-		
 	}
     
 	private String gameStatus(GameSession game){
@@ -78,6 +77,7 @@ public class JTableModel extends AbstractTableModel {
 		while (guc.getUsers() == null){
 			try{
 				Thread.sleep(10);
+				System.out.println("Waiting for users");
 			}
 			catch(Exception e){
 				

@@ -19,7 +19,7 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 /**
  * This observer is called when a response is received from a request
- * to the server to add a message.
+ * to the server to add a game.
  * 
  * @author Chris Casola
  *
@@ -33,7 +33,7 @@ public class AddGameRequestObserver implements RequestObserver {
 	}
 	
 	/*
-	 * Parse the message that was received from the server then pass them to
+	 * Parse the game that was received from the server then pass them to
 	 * the controller.
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseSuccess(edu.wpi.cs.wpisuitetng.network.models.IRequest)
@@ -43,11 +43,11 @@ public class AddGameRequestObserver implements RequestObserver {
 		// Get the response to the given request
 		final ResponseModel response = iReq.getResponse();
 		
-		// Parse the message out of the response body
-		final GameSession message = GameSession.fromJson(response.getBody());
+		// Parse the game out of the response body
+		final GameSession game = GameSession.fromJson(response.getBody());
 		
-		// Pass the messages back to the controller
-		controller.addMessageToModel(message);
+		// Pass the games back to the controller
+		controller.addGameToModel(game);
 	}
 
 	@Override

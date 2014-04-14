@@ -18,7 +18,7 @@ import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -39,15 +39,17 @@ public class NewGameDistributedPanel extends JSplitPane {
 	public JButton close;
 	private GameSession editMode;
 	
-	public NewGameDistributedPanel(List<Requirement> reqs, JButton close, GameSession gameSession)
+	public NewGameDistributedPanel(JButton close, GameSession gameSession)
 	{
 		this.close = close;
-		this.newGameReqPanel = new NewGameReqPanel(reqs, gameSession);
+		this.newGameReqPanel = new NewGameReqPanel(gameSession);
+		GetRequirementsController.getInstance().addRefreshable(newGameReqPanel); /** TODO this adds a refreshable whenever a new game tab is created.  We need to clean up refreshables when the tab is closed*/
 		this.newGameInputPanel = new NewGameInputDistributedPanel(this, gameSession);
 		setPanel();
 	}
 	public NewGameDistributedPanel(List<Requirement> reqs, JButton close) {
-		newGameReqPanel = new NewGameReqPanel(reqs);
+		newGameReqPanel = new NewGameReqPanel();
+		GetRequirementsController.getInstance().addRefreshable(newGameReqPanel);
 		this.newGameInputPanel = new NewGameInputDistributedPanel(this);
 		this.close = close;
 		
@@ -61,20 +63,6 @@ public class NewGameDistributedPanel extends JSplitPane {
 	 * <3
 	 */
 	private void setPanel(){
-		this.addFocusListener(new FocusListener(){
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				GetRequirementsController.getInstance().retrieveRequirements();
-				refresh();
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				GetRequirementsController.getInstance().retrieveRequirements();
-				refresh();
-			}
-		});
 		addImpl(newGameInputPanel, JSplitPane.LEFT, 1);
 		Dimension minimumSize = new Dimension(600, 200);
 		leftComponent.setMinimumSize(minimumSize);
@@ -85,14 +73,5 @@ public class NewGameDistributedPanel extends JSplitPane {
 	
 	public List<Requirement> getSelected(){
 		return newGameReqPanel.getSelected();
-	}
-	/**
-	 * Takes in a requirement from the NewGameInputPanel
-	 * and sets it into the newGameReqPanel
-	 * @param requirment
-	 */
-	public void refresh() {
-		// TODO Auto-generated method stub
-		newGameReqPanel.refresh();
 	}
 }

@@ -12,7 +12,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -20,7 +21,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.table.DefaultTableModel;
@@ -30,14 +30,14 @@ import javax.swing.table.DefaultTableModel;
  *
  */
 @SuppressWarnings("serial")
-public class NewGameReqPanel extends JPanel {
+public class NewGameReqPanel extends JPanel implements Refreshable {
 
 	DefaultListModel<String> listValue = new DefaultListModel<String>();
 	private List<Requirement> selected = new ArrayList<Requirement>();
 	private JTable unselectedTable;
 	private JTable selectedTable;
-	private List<Requirement> reqs = new ArrayList<Requirement>();
 	private Timer refresh;
+	private List<Requirement> reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
 	// Declarations and initializations of GUI components
 	JLabel lblRequirementsAvailable = new JLabel("Requirements Available");
 	JButton btnAddReq = new JButton("Add New Requirement");
@@ -48,15 +48,13 @@ public class NewGameReqPanel extends JPanel {
 	JButton btnAddAll = new JButton("\u21ca");
 	JScrollPane unselected_table = new JScrollPane();
 	JScrollPane selected_table = new JScrollPane();
-	
+
 	/**
 	 * 
 	 * @param requirements, the current requirements in the database
 	 */
 	//Constructor for new game tab
-	public NewGameReqPanel(List<Requirement> requirements) {
-		reqs = new ArrayList<Requirement>(requirements);
-		System.out.println(reqs.size());
+	public NewGameReqPanel() {
 		unselectedTable = new JTable();
 		selectedTable = new JTable();
 		init();
@@ -68,10 +66,11 @@ public class NewGameReqPanel extends JPanel {
 	 * @param gameSession, the game to be edited
 	 */
 	//Constructor for edit games tab
-	public NewGameReqPanel(List<Requirement> requirements, GameSession gameSession) {
+	public NewGameReqPanel(GameSession gameSession) {
+
 		unselectedTable = new JTable();
 		selectedTable = new JTable();
-		getReqs();
+
 		List<Requirement> reqList = new ArrayList<Requirement>(reqs);
 		List<Integer> selectedIDs = gameSession.getGameReqs();
 		
@@ -81,7 +80,6 @@ public class NewGameReqPanel extends JPanel {
 		for (int i = 0; i < reqList.size(); i++){
 			Requirement req = reqList.get(i);
 			for (int selectedReqID: selectedIDs) {
-				System.out.println(req.getName()+" "+selectedReqID);
 				if (req.getId() == selectedReqID) {
 					int index = reqList.indexOf(req);
 					Requirement temp_req = reqList.remove(index); 
@@ -96,12 +94,8 @@ public class NewGameReqPanel extends JPanel {
 	//Initializes the reqpanel
 	
 	private void init()
-	{
-		//Adds a timer to call refresh half a second after a new game tab is opened
-		refresh = new Timer();
-		TimerTask initialize = new RefreshTask(refresh, this);
-		refresh.schedule(initialize, 500);
-		refresh.schedule(new RefreshTask(refresh, this), 1000);
+	{	
+		
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 
@@ -306,6 +300,8 @@ public class NewGameReqPanel extends JPanel {
 			dtm_1.setValueAt(selected.get(i).getName(), i, 0);
 			dtm_1.setValueAt(selected.get(i).getDescription(), i, 1);
 		}
+		
+		
 		unselectedTable.repaint();
 	}
 	
@@ -314,22 +310,26 @@ public class NewGameReqPanel extends JPanel {
 		return selected;
 	}
 
-	//Refreshes the requirements that are displayed in the unselected table. This is for when the user inputs a new requirement into requirement
-	//manager with a game tab open
-	public void refresh() {
-		getReqs();
-		ArrayList<Requirement> addedReqs = new ArrayList<Requirement>();
+	//This gets only the requirements in the "Backlog" iteration from the requirements manager
+	private void filterBacklog()
+	{
+		for (Requirement req : reqs) {
+			if (!req.getIteration().equals("Backlog")) reqs.remove(req);
+		}
+	}
+
+	@Override
+	public void refreshRequirements() {
+		reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
+		filterBacklog();
 		for (int i = 0; i < selected.size(); i++){
 			reqs.remove(selected.get(i).getId());
 		}
 		DefaultTableModel dtm = (DefaultTableModel) unselectedTable.getModel();
 		dtm.setRowCount(reqs.size());
 		for (int i = 0; i < reqs.size(); i++){
-			if (!addedReqs.contains(reqs.get(i))){
 				dtm.setValueAt(reqs.get(i).getName(), i, 0);
 				dtm.setValueAt(reqs.get(i).getDescription(), i, 1);
-				addedReqs.add(reqs.get(i));
-			}
 		}
 		unselectedTable.repaint();
 	}
@@ -369,6 +369,12 @@ public class NewGameReqPanel extends JPanel {
 	public JTable getSelectedTabel() {
 		return this.selectedTable;
 	}
+
+	@Override
+	public void refreshGames() {
+		// TODO Auto-generated method stub
+		
+	}
 }
 
 //The timer task for scheduling the initial refresh of the page
@@ -385,9 +391,9 @@ class RefreshTask extends TimerTask {
 
 	@Override
 	public void run() {
-		ngrp.refresh();
+		// TODO Auto-generated method stub
+		
 	}
-
 
 }
 

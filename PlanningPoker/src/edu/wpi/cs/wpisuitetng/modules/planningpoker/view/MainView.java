@@ -37,7 +37,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameInputDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
@@ -54,96 +55,92 @@ public class MainView extends JTabbedPane {
 	private int j = 0;
 	private List<Integer> openTabs = new ArrayList<Integer>();
 	private List<NewGameDistributedPanel> newGames = new ArrayList<NewGameDistributedPanel>();
-	final int PERMANANT_TABS = 2;
+	final int PERMANANT_TABS = 1;
 	private final AddEmailPanel addEmailPanel;
 	
-	public MainView(DeckModel deckModel) {
+	public MainView() {
 		overviewPanel = new OverviewPanel();
 		addEmailPanel = new AddEmailPanel();
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
 		addTab("Overview", overviewPanel);
 		
-		this.addChangeListener(new ChangeListener(){
-
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				for (int i = 0; i<newGames.size(); i++){
-					//GetRequirementsController.getInstance().retrieveRequirements();
-					newGames.get(i).refresh();
-				}
-			}
-		});
+		ViewEventController.getInstance().setMainView(this);
+	}
+	//The function to add an email address tab
+	
+	public void addEmailAddress()
+	{
 		addTab("Add Email", addEmailPanel);
 	}
-	
 	//The function to add a new game tab
-	
-	public void addNewGameTab()
-	{
-		addTab("New Game", new GameSession(new String(), new String(), 0, 0, new Date(), new ArrayList<Integer>()));
-	}
-	
-	//Adds a new edit game tab
-	public void addEditGameTab(GameSession gameSession)
-	{
-		addTab("Edit Game", gameSession);
-	}
-	
-	//Adds a new game view tab
-	public void addPlayGameTab(GameSession gametoPlay){
-		addTab("Play Game", gametoPlay);
-	}
-	
-	private void addTab(String tabType, GameSession game){
-		int open = this.getTabCount();
-		MyCloseActionHandler myCloseActionHandler = null;
-		overviewPanel.refresh();
-		GetRequirementsController.getInstance().retrieveRequirements();
-		openTabs.add(newGameTabs, j);
-		JButton btnClose = new JButton("x");
-		List<Requirement> reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
-		if (tabType.equals("New Game")){
-			NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose);
-			myCloseActionHandler = new MyCloseActionHandler(tabType, j, this, newGame, 0);
-			newGames.add(newGame);
-			add(newGame, open);
-		}
-		else if (tabType.equals("Edit Game")){
-			NewGameDistributedPanel newEdit = new NewGameDistributedPanel(reqs, btnClose);
-			myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newEdit, 1);
-			newGames.add(newEdit);
-			add(newEdit, open);
-		}
-		else if (tabType.equals("Play Game")){
-			GameView newGameView = new GameView(game);
-			myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newGameView, 2);
-			add(newGameView, open);
-		}
-		JPanel pnlTab = new JPanel(new GridBagLayout());
-		pnlTab.setOpaque(false);
-		JLabel lblTitle = new JLabel(tabLabler(tabType, game));
-		btnClose.setMargin(new Insets(0, 0, 0, 0));
-		btnClose.setFont(btnClose.getFont().deriveFont((float) 8));
-		GridBagConstraints gbc = new GridBagConstraints();
-		
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.weightx = 1;
-		
-		pnlTab.add(lblTitle, gbc);
+	//The function to add a new game tab
 
-		gbc.gridx++;
-		gbc.weightx = 0;
-		pnlTab.add(btnClose, gbc);
+		public void addNewGameTab()
+		{
+			addTab("New Game", new GameSession(new String(), new String(), 0, 0, new Date(), new ArrayList<Integer>()));
+		}
 
-		setTabComponentAt(open, pnlTab);
+		//Adds a new edit game tab
+		public void addEditGameTab(GameSession gameSession)
+		{
+			addTab("Edit Game", gameSession);
+		}
 
-		btnClose.addActionListener(myCloseActionHandler);
-		setSelectedIndex(open);
-		newGameTabs++;
-		j++;
-	}
+		//Adds a new game view tab
+		public void addPlayGameTab(GameSession gametoPlay){
+			addTab("Play Game", gametoPlay);
+		}
+
+		private void addTab(String tabType, GameSession game){
+			int open = this.getTabCount();
+			MyCloseActionHandler myCloseActionHandler = null;
+			overviewPanel.refresh();
+			GetRequirementsController.getInstance().retrieveRequirements();
+			openTabs.add(newGameTabs, j);
+			JButton btnClose = new JButton("x");
+			List<Requirement> reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
+			if (tabType.equals("New Game")){
+				NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose);
+				myCloseActionHandler = new MyCloseActionHandler(tabType, j, this, newGame, 0);
+				newGames.add(newGame);
+				add(newGame, open);
+			}
+			else if (tabType.equals("Edit Game")){
+				NewGameDistributedPanel newEdit = new NewGameDistributedPanel(reqs, btnClose);
+				myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newEdit, 1);
+				newGames.add(newEdit);
+				add(newEdit, open);
+			}
+			else if (tabType.equals("Play Game")){
+				GameView newGameView = new GameView(game);
+				myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newGameView, 2);
+				add(newGameView, open);
+			}
+			JPanel pnlTab = new JPanel(new GridBagLayout());
+			pnlTab.setOpaque(false);
+			JLabel lblTitle = new JLabel("New Game");
+			btnClose.setMargin(new Insets(0, 0, 0, 0));
+			btnClose.setFont(btnClose.getFont().deriveFont((float) 8));
+			GridBagConstraints gbc = new GridBagConstraints();
+
+			gbc.gridx = 0;
+			gbc.gridy = 0;
+			gbc.weightx = 1;
+
+			pnlTab.add(lblTitle, gbc);
+
+			gbc.gridx++;
+			gbc.weightx = 0;
+			pnlTab.add(btnClose, gbc);
+
+			setTabComponentAt(open, pnlTab);
+
+			btnClose.addActionListener(myCloseActionHandler);
+			setSelectedIndex(open);
+			newGameTabs++;
+			j++;
+		}
 	
 	/*
 	@Override
@@ -180,8 +177,8 @@ public class MainView extends JTabbedPane {
 	    //2 - Game View
 	    private int type;
 	    private MainView mv;
-	    private NewGameDistributedPanel ngdp;
 	    private GameView gameView;
+	    private NewGameDistributedPanel ngdp;
 	    
 	    public MyCloseActionHandler(String tabName, int index, MainView mv, NewGameDistributedPanel ngdp, int type) {
 	        this.tabName = tabName;
@@ -199,7 +196,6 @@ public class MainView extends JTabbedPane {
 	    	this.mv = mv;
 	    }
 	    
-	    
 	    public String getTabName() {
 	        return tabName;
 	    }
@@ -212,9 +208,9 @@ public class MainView extends JTabbedPane {
 				if (openTabs.get(i) == index){
 					removeTabAt(i + PERMANANT_TABS);
 					openTabs.remove(i);
+					newGameTabs--;
 				}
 			}
-	    	newGameTabs--;
 	    }
 	    */
 	    
@@ -223,17 +219,18 @@ public class MainView extends JTabbedPane {
 	    
 	    public void actionPerformed(ActionEvent evt) {
 
-	        if (type == 0 || type == 1) {
-	        	if (!ngdp.isNew){
-					int option = JOptionPane.showOptionDialog(ngdp, "Discard unsaved changes and close tab?", "Discard changes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-					if (option == 0){
-						ViewEventController.getInstance().getMain().remove(ngdp);
-					}
-	        	}
-	        	else{
-	        		ViewEventController.getInstance().getMain().remove(ngdp);
-	        	}
-	        }
+	    	 if (type == 0 || type == 1) {
+		        	if (!ngdp.isNew){
+						int option = JOptionPane.showOptionDialog(ngdp, "Discard unsaved changes and close tab?", "Discard changes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+						if (option == 0){
+							ViewEventController.getInstance().getMain().remove(ngdp);
+						}
+		        	}
+		        	else{
+		        		ViewEventController.getInstance().getMain().remove(ngdp);
+		        	}
+		        }
+
 	        else if (type == 2){
 	        	if(!gameView.isNew){
 	        		int option = JOptionPane.showOptionDialog(gameView, "Discard unsaved changes and close tab?", "Discard changes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
@@ -246,9 +243,5 @@ public class MainView extends JTabbedPane {
 	        	}
 	        }
 	    }
-	}
+	}   
 }
-	
-
-	
-

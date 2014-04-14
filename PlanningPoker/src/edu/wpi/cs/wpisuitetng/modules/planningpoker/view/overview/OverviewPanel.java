@@ -14,6 +14,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameTree;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.JTableModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame.JTableView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -43,7 +44,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
-public class OverviewPanel extends JPanel {
+public class OverviewPanel extends JPanel implements Refreshable {
 	GetGamesController ggc; 
 	GameSession[] curSessions = {}; // store gameSessions here
 	GameModel gameModel;
@@ -59,38 +60,13 @@ public class OverviewPanel extends JPanel {
 	public OverviewPanel(){
 		
 		this.gameModel = GameModel.getInstance();
-		ggc = new GetGamesController(gameModel);
+		ggc = GetGamesController.getInstance();
+		ggc.addRefreshable(this);
 		GameSession[] sessions = {};
 		
 		table = new JTable(new JTableModel(sessions));
 		sorter = new TableRowSorter<JTableModel>((JTableModel)table.getModel());
 		table.setRowSorter(sorter);
-	
-		//This timer checks the deadlines of all active games and sends an email to all users that have added an email
-		//saying that the game is complete. 
-		
-		deadlineCheck = new Timer(60000, new ActionListener(){
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				List<GameSession> games = gameModel.getGames();
-				Date today = new Date();
-				for(int i=0; i<games.size(); i++){
-					if (games.get(i).getEndDate() != null){
-						if (games.get(i).getEndDate().before(today) && !games.get(i).emailSent){
-							final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.PUT); // PUT == create
-							//request.setBody(new EmailAddressModel(address).toJSON()); // put the new message in the body of the request
-							request.setBody("endGame" + games.get(i).getGameName());
-							request.send(); // send the request
-							games.get(i).emailSent = true;
-						}
-					}
-				}
-			}
-			
-		});
-		
-		deadlineCheck.start();
 		
 		//This is used to refresh the overview table
 		
@@ -161,22 +137,7 @@ public class OverviewPanel extends JPanel {
 			}
 			
 		});
-		// Refreshes the gamemodel every time you mouse over the JTree. crude but effective.
-		gameTree.addMouseMotionListener(new MouseMotionListener() {
 
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseMoved(MouseEvent e) {
-				ggc.actionPerformed(new ActionEvent(new Object(), 5, "Go"));
-			}
-
-		
-		});
 
 		
 		treeView = new JScrollPane(gameTree);
@@ -193,7 +154,7 @@ public class OverviewPanel extends JPanel {
 	public void updateTable(String s){
 		
 		List<GameSession> sessions = new ArrayList<GameSession>();
-		
+				
 		if (s.equals("Drafts")){
 			sessions = (ArrayList<GameSession>) gameModel.getDraftGameSessions();
 		} else if (s.equals("Active Games")){
@@ -205,18 +166,33 @@ public class OverviewPanel extends JPanel {
 		} else if (s.equals("Archived Games")){
 			sessions = (ArrayList<GameSession>) gameModel.getArchivedGameSessions();
 		} else {
-			//Get the sessions
-			HashSet<GameSession> allGames = new HashSet<GameSession>(gameModel.getDraftGameSessions());
-			allGames.addAll(gameModel.getActiveGameSessions());
-			allGames.addAll(gameModel.getInProgressGameSessions());
-			allGames.addAll(gameModel.getCompletedGameSessions());
-			allGames.addAll(gameModel.getArchivedGameSessions());
-			sessions.addAll(allGames);
+			sessions = (ArrayList<GameSession>) gameModel.getGames();
 		}
 		JTableModel jModel = (JTableModel)table.getModel();
 		jModel.update((ArrayList<GameSession>)sessions);
 		table.setModel(jModel);
 		jModel.fireTableDataChanged();
+		
+	}
+
+	@Override
+	public void refreshRequirements() {
+		
+	}
+
+	@Override
+	public void refreshGames() {
+		gameTreeModel.update();
+        DefaultTreeModel model = (DefaultTreeModel) gameTree.getModel();
+        model.setRoot(gameTreeModel.getTop());
+        model.reload();
+        updateTable("");
+        
+        System.out.println("Updating: Games are now " + table.getModel().getRowCount());
+        
+        gameTree.repaint();
+        table.repaint();
+        		
 	}
 
 	//Refreshes the view event controller whenever a new game tab is created

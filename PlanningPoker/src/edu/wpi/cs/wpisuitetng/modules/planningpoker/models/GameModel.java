@@ -63,13 +63,13 @@ public class GameModel extends AbstractListModel {
 		return instance;
 	}
 	/**
-	 * Adds the given message to the board
+	 * Adds the given Game to the board
 	 * 
-	 * @param newMessage the new message to add
+	 * @param newGame the new Game to add
 	 */
-	public void addMessage(GameSession newMessage) {
-		// Add the message
-		games.add(newMessage);
+	public void addGame(GameSession newGame) {
+		// Add the Game
+		games.add(newGame);
 		
 		// Notify the model that it has changed so the GUI will be udpated
 		this.fireIntervalAdded(this, 0, 0);
@@ -80,7 +80,7 @@ public class GameModel extends AbstractListModel {
 	 * 
 	 * @param games the array of games to add
 	 */
-	public void addMessages(GameSession[] games) {
+	public void addGames(GameSession[] games) {
 		for (int i = 0; i < games.length; i++) {
 			this.games.add(games[i]);
 		}
@@ -92,7 +92,7 @@ public class GameModel extends AbstractListModel {
 	 * 
 	 * NOTE: One cannot simply construct a new instance of
 	 * the model, because other classes in this module have
-	 * references to it. Hence, we manually remove each message
+	 * references to it. Hence, we manually remove each Game
 	 * from the model.
 	 */
 	public void emptyModel() {
@@ -184,7 +184,7 @@ public class GameModel extends AbstractListModel {
 	
 	
 	/* 
-	 * Returns the message at the given index. This method is called
+	 * Returns the Game at the given index. This method is called
 	 * internally by the JList in BoardPanel. Note this method returns
 	 * elements in reverse order, so newest games are returned first.
 	 * 

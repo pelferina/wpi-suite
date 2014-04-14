@@ -20,24 +20,24 @@ public class UpdateGameController {
 	private final GameModel model;
 	//TODO Remove depreciated methods once GUI is updated for new data definitions
 	/**
-	 * Construct an UpdateMessageController for the given model
-	 * @param model the model containing the messages
+	 * Construct an UpdateGameController for the given model
+	 * @param model the model containing the games
 	 */
-	public UpdateGameController(GameModel model){
-		this.model = model;
+	public UpdateGameController(){
+		this.model = GameModel.getInstance();
 	}
-	public void sendMessage(GameSession ToSend){
+	public void sendGame(GameSession ToSend){
 		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.POST); // PUT == create
 		request.setBody(ToSend.toJSON()); // put the new session in the body of the request
 		request.addObserver(new UpdateGameRequestObserver(this)); // add an observer to process the response
 		request.send(); // send the request
 	}
 	/**
-	 * When the new message is received back from the server, add it to the local model.
-	 * @param message
+	 * When the new game is received back from the server, add it to the local model.
+	 * @param game
 	 */
-	public void addMessageToModel(GameSession message) {
-		model.addMessage(message);
+	public void addGameToModel(GameSession game) {
+		model.addGame(game);
 	}
 
 }

@@ -27,7 +27,12 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
+<<<<<<< HEAD
  * Model to contain a single game for the Planning Poker module
+=======
+ * Model to contain a single game on the PostBoard
+ * 
+>>>>>>> dd3f3f7d070cdf4f2d2c50a632a367cd17f21a36
  *
  */
 public class GameSession extends AbstractModel {
@@ -61,7 +66,7 @@ public class GameSession extends AbstractModel {
 		this.ownerID = ownerID;
 		this.gameID = gameID;
 		this.endDate = deadline;
-		this.endDate.setMonth(endDate.getMonth());
+		//this.endDate.setMonth(endDate.getMonth());
 		this.gameReqs = gameReqs;
 		creationdate = new Date();
 		//starts as a draft then becomes active
@@ -126,8 +131,6 @@ public class GameSession extends AbstractModel {
 			returnStr =  returnStr + gameReqs.get(i) + ';';
 			}
 		}
-		System.out.println(returnStr);
-
 		return returnStr;
 	}
 
@@ -185,9 +188,32 @@ public class GameSession extends AbstractModel {
 	public void setGameName(String gameName) {
 		this.gameName = gameName;
 	}
+
+	@Override
+	public boolean equals(Object other){
+		if (!(other instanceof GameSession))
+			return false;
+		
+		GameSession o = (GameSession) other;
+		
+		if (this.gameName.equals(o.getGameName()))
+		if (this.gameDescription.equals(o.getGameDescription()))
+		if (this.ownerID == o.getOwnerID())
+		if (this.gameID == o.getGameID())
+		if (this.endDate.equals(o.getEndDate()))
+		if (this.gameReqs.equals(o.getGameReqs()))
+		if (this.gameStatus == o.getGameStatus())
+		if (this.votes.equals(o.getVotes()))
+			return true;
+		
+		return false;
+		
+		
+	}
 	public void setVotes(List<Vote> v){
 		this.votes = v;
 	}
+
 	/**Gets the votes
 	 * @return the votes
 	 */
