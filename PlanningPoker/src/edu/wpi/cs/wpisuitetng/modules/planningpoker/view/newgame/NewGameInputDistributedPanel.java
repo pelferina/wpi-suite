@@ -357,13 +357,9 @@ public class NewGameInputDistributedPanel extends JPanel {
 		minuteTime = deadlineMinuteComboBox.getSelectedIndex();
 		Calendar deadline = Calendar.getInstance();
 		deadline.set(deadlineYear, deadlineMonth, deadlineDay, getHour(hourTime), minuteTime);
-		System.out.println(deadline.get(Calendar.DAY_OF_MONTH)+"/"+deadline.get(Calendar.MONTH)+"/"+deadline.get(Calendar.YEAR)+ "     " 
-		+ currentDate.get(Calendar.DAY_OF_MONTH)+"/"+currentDate.get(Calendar.MONTH)+"/"+currentDate.get(Calendar.YEAR));
-		SimpleDateFormat deadlineTimeFormat = new SimpleDateFormat("hh:mm aa");
-		System.out.println(deadlineTimeFormat.format(deadline.getTime())+ "     "+ deadlineTimeFormat.format(currentDate.getTime()));
+		
 		if (deadline.after(currentDate)){
 			deadlineError.setVisible(false);
-			System.out.println("WTH");
 			return true;
 		}
 		else {
@@ -595,57 +591,6 @@ public class NewGameInputDistributedPanel extends JPanel {
 		return  (descTextArea.getText().length() > 0);
 	}
 	
-//	//Returns true if an hour has been selected
-//	private boolean hourSelected(){
-//		if (deadlineHourComboBox.getSelectedIndex() != 0){
-//			return true;
-//		}
-//		else{
-//			return false;
-//		}
-//	}
-//	//Returns true if a minute has been selected
-//	private boolean minuteSelected(){
-//		System.out.println(deadlineMinuteComboBox.getSelectedIndex()+" index");
-//		if (deadlineMinuteComboBox.getSelectedIndex() != 0){
-//			return true;
-//		}
-//		else{
-//			return false;
-//		}
-//	}
-//	
-	//Returns true if requirements have been added to the game
-//	private boolean hasReqs(){
-//		List<Requirement> reqsSelected = newGameP.getSelected();
-//		if (reqsSelected.size() > 0){
-//			return true;
-//		}
-//		else {
-//			return false;
-//		}
-//	}
-	
-//	//Returns true if a deadline is in the future
-//	private boolean hasDeadline(){
-//		Calendar currentDate = Calendar.getInstance();
-//		int year = datePicker.getModel().getYear();
-//		int month = datePicker.getModel().getMonth();
-//		int day = datePicker.getModel().getDay();
-//		if (!hourSelected() && !minuteSelected()){
-//			return false;
-//		}
-//		int hour = getHour(deadlineHourComboBox.getSelectedIndex());
-//		int minute = deadlineMinuteComboBox.getSelectedIndex();
-//		Calendar deadline = Calendar.getInstance();
-//		deadline.set(year, month, day, hour, minute);
-//		if (deadline.after(currentDate)){
-//			return true;
-//		}
-//		else {
-//			return false;
-//		}
-//	}
 	
 	/**
 	 * a lot of Window Builder generated UI
