@@ -17,20 +17,40 @@ import javax.swing.ImageIcon;
 
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
+<<<<<<< HEAD
+=======
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.RefreshManager;
+>>>>>>> cd1010f974bc3d98ced115fabcf23ecd13677661
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ToolbarView;
+
 
 public class PlanningPoker implements IJanewayModule{
 
 	/** The tabs used by this module */
 	private ArrayList<JanewayTabModel> tabs;
 	
+<<<<<<< HEAD
+=======
+	private MainView mainPanel;
+	private JPanel buttonPanel;
+	private RefreshManager refresh;
+	
+	
+>>>>>>> cd1010f974bc3d98ced115fabcf23ecd13677661
 	/**
 	 * Construct a new PlanningPoker module
 	 */
 	public PlanningPoker() {
-		
+		//Setup refreshing
+		refresh = new RefreshManager();
+
 		tabs = new ArrayList<JanewayTabModel>();
 		
 		MainView mainPanel = new MainView();

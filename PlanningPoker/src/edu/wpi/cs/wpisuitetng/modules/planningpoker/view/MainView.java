@@ -30,7 +30,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
@@ -55,16 +56,6 @@ public class MainView extends JTabbedPane {
 
 		addTab("Overview", overviewPanel);
 		
-		this.addChangeListener(new ChangeListener(){
-
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				for (int i = 0; i<newGames.size(); i++){
-					//GetRequirementsController.getInstance().retrieveRequirements();
-					newGames.get(i).refresh();
-				}
-			}
-		});
 		ViewEventController.getInstance().setMainView(this);
 	}
 	//The function to add an email address tab
@@ -77,12 +68,9 @@ public class MainView extends JTabbedPane {
 	
 	public void addNewGameTab()
 	{
-		overviewPanel.refresh();
-		GetRequirementsController.getInstance().retrieveRequirements();
 		openTabs.add(newGameTabs, j);
 		JButton btnClose = new JButton("x");
-		List<Requirement> reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
-		NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose);
+		NewGameDistributedPanel newGame = new NewGameDistributedPanel(btnClose);
 		newGames.add(newGame);
 		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler("New Game", j, newGame);
 		add(newGame, newGameTabs + PERMANANT_TABS);
@@ -117,8 +105,7 @@ public class MainView extends JTabbedPane {
 		GetRequirementsController.getInstance().retrieveRequirements();
 		openTabs.add(newGameTabs, j);
 		JButton btnClose = new JButton("x");
-		List<Requirement> reqs = RequirementModel.getInstance().getRequirements();
-		NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose, gameSession);
+		NewGameDistributedPanel newGame = new NewGameDistributedPanel(btnClose, gameSession);
 		MyCloseActionHandler myCloseActionHandler = new MyCloseActionHandler(gameSession.getGameName(), j, newGame);
 		add(newGame, newGameTabs + PERMANANT_TABS);
 		JPanel pnlTab = new JPanel(new GridBagLayout());
@@ -186,6 +173,7 @@ public class MainView extends JTabbedPane {
 					int option = JOptionPane.showOptionDialog(ngdp, "Discard unsaved changes and close tab?", "Discard changes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 					if (option == 0){
 						removeTab(index);
+						GetGamesController.getInstance().removeRefreshable(ngdp.newGameReqPanel);
 					}
 	        	}
 	        	else{

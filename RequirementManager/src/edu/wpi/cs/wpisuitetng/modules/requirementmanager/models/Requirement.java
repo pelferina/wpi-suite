@@ -890,4 +890,36 @@ public class Requirement extends AbstractModel {
 	public void setWasCreated(boolean wasCreated) {
 		this.wasCreated = wasCreated;
 	}
+	
+	@Override
+	public boolean equals(Object other){
+		if (!(other instanceof Requirement))
+			return false;
+		
+		Requirement o = (Requirement) other;
+		
+		/** TODO not all of these models have an equals method */
+		if (this.id == o.getId())
+		if (this.name.equals(o.getName()))
+		if (this.release.equals(o.getRelease()))
+		if (this.status.equals(o.getStatus()))
+		if (this.priority.equals(o.getPriority()))
+		if (this.description.equals(o.getDescription()))
+		if (this.estimate == o.getEstimate())
+		if (this.estimateEdited == o.getEstimateEdited() )
+		if (this.wasCreated == o.getWasCreated())
+		if (this.actualEffort == o.getEffort())
+		//if (this.history.equals(o.getHistory()))
+		if (this.type.equals(o.getType()))
+		///if (this.notes.equals(o.getNotes()))
+		if (this.iteration.equals(o.getIteration()))
+		if (this.parentID == this.getParentID())
+		if (this.assignedTo.equals(o.getAssignedTo()))
+		//if (this.tasks.equals(o.getTasks()))
+		//if (this.tests.equals(o.getTests()))
+		//if (this.attachments.equals(o.getAttachments()))
+			return true;
+		
+		return false;		
+	}
 }

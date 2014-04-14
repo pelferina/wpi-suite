@@ -14,9 +14,13 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.RefreshableController;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -29,12 +33,20 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * @author Chris Casola
  *
  */
-public class GetGamesController implements ActionListener {
+public class GetGamesController extends RefreshableController implements ActionListener {
 
+	private static GetGamesController instance = null;
 	private final GameModel model;
 
-	public GetGamesController(GameModel model) {
+	public GetGamesController() {
 		this.model = GameModel.getInstance();
+	}
+	
+	public static GetGamesController getInstance(){
+		if (instance==null)
+			instance = new GetGamesController();
+		
+		return instance;
 	}
 
 	@Override
@@ -42,7 +54,7 @@ public class GetGamesController implements ActionListener {
 		// TODO: Fix refresh function, possibly database calls having issues
 		// Send a request to the core to save this game
 		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.GET); // GET == read
-		request.addObserver(new GetGamesRequestObserver(this)); // add an observer to process the response
+		request.addObserver(new GetGamesRequestObserver()); // add an observer to process the response
 		request.send(); // send the request
 	}
 	
@@ -59,6 +71,13 @@ public class GetGamesController implements ActionListener {
 		if (games != null) {
 			// add the games to the local model
 			model.addGames(games);
+		}
+	}
+
+	@Override
+	public void refresh() {
+		for (Refreshable r : refreshables){
+			r.refreshGames();
 		}
 	}
 }

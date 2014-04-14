@@ -30,9 +30,22 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 		this.setVote(vote);
 		this.setUID(UID);
 		this.setGameID(gameID);
+		this.setVoteID();
 		
 	}
-
+	
+	/** Constructs a vote submission object, the UID must be set if this is on the server.
+	 * @param vote 		A list of voted on requirements, must match the 
+	 * 						list of requirements in the associated game in order
+	 * @param gameID	the game the user was voting on 
+	 */
+	public Vote(List<Integer> vote, int gameID) {
+		this.setVote(vote);
+		this.setUID(-1);
+		this.setGameID(gameID);
+		this.setVoteID();
+		
+	}
 	/**
 	 * @return THE GAMEID
 	 */
@@ -45,6 +58,7 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	 */
 	public void setGameID(int gameID) {
 		this.gameID = gameID;
+		this.setVoteID();
 	}
 
 	/**
@@ -59,6 +73,7 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	 */
 	public void setUID(int uID) {
 		UID = uID;
+		this.setVoteID();
 	}
 
 	/**
@@ -118,9 +133,15 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	public int getVoteID() {
 		return VoteID;
 	}
-
+	/**
+	 * Sets the vote id with the tohash method
+	 */
+	public void setVoteID(){
+		this.VoteID = toHash(this);
+	}
 	/**
 	 * @param voteID the voteID to set
+ 	 * should use the tohash method
 	 */
 	public void setVoteID(int voteID) {
 		VoteID = voteID;
@@ -141,6 +162,9 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	@Override
 	public int compareTo(Vote o) {
 		return o.VoteID - this.VoteID;
+	}
+	public static int toHash(Vote v){
+		return v.gameID* 100000 + v.UID;
 	}
 	
 }

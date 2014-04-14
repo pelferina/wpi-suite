@@ -14,7 +14,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 
-import java.awt.event.ActionListener;
+
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,6 +37,7 @@ import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
+import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 
 
 /**
@@ -62,7 +63,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 		this.db = db;
 
 		//set up and start timer to check deadline every second.
-		deadlineCheck = new Timer(3000, new DeadLineListener(db));
+		deadlineCheck = new Timer(3000, new DeadLineListener(db, this));
 		deadlineCheck.start();
 	}
 
@@ -80,9 +81,10 @@ public class GameEntityManager implements EntityManager<GameSession> {
 		
 		System.out.println("Adding: " + content);
 		GameSession[] games = getAll(s);
-	
+		
 		GameSession newGame = new GameSession(importedGame.getGameName(), importedGame.getGameDescription(), importedGame.getOwnerID(), importedGame.getGameID(), importedGame.getEndDate(), importedGame.getGameReqs());
 		newGame.setGameStatus(importedGame.getGameStatus());
+		newGame.setProject(s.getProject());
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
 		if (!db.save(newGame, s.getProject())) {
@@ -166,10 +168,10 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	 * @throws WPISuiteException 
 	 * @throws  
 	 */
-	public void endGame(int gameID, Session s) throws WPISuiteException{
+	public void endGame(int gameID, Project project) throws WPISuiteException{
 		db.update(GameSession.class, "GameID", gameID, "Status", 3);
 		try {
-			sendUserEmails("Planning Poker Alert","Planning Poker voting has ended for game: "+gameID,s);
+			sendUserEmails("Planning Poker Alert","Planning Poker voting has ended for game: "+gameID, project);
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			throw new WPISuiteException(e.toString()); 
@@ -181,7 +183,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	 * @param  textToSend the message to be sent
 	 * @throws UnsupportedEncodingException 
 	 */
-	public void sendUserEmails(String subject, String textToSend, Session s) throws UnsupportedEncodingException
+	public void sendUserEmails(String subject, String textToSend, Project project) throws UnsupportedEncodingException
 	{
 		final String username = "fff8e7.email@gmail.com";
 		final String password = "fff8e7team5";
@@ -203,7 +205,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("fff8e7.email@gmail.com"));
 			
-			List<Model> model_emails = db.retrieveAll(new EmailAddressModel(""), s.getProject());
+			List<Model> model_emails = db.retrieveAll(new EmailAddressModel(""), project);
 			EmailAddressModel[] emails = model_emails.toArray(new EmailAddressModel[0]);
 			
 			message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(username)); /** TODO find a more elegent solution can't send only bcc's */

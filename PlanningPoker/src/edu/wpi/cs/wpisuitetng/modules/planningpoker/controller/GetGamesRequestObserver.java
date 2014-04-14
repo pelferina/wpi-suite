@@ -27,8 +27,8 @@ public class GetGamesRequestObserver implements RequestObserver {
 	
 	public GetGamesController controller;
 	
-	public GetGamesRequestObserver(GetGamesController controller) {
-		this.controller = controller;
+	public GetGamesRequestObserver() {
+		this.controller = GetGamesController.getInstance();
 	}
 
 	/*
@@ -58,7 +58,7 @@ public class GetGamesRequestObserver implements RequestObserver {
 	 */
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		if(exception == null) System.err.println("FAILURE in GetGamesRequestObserver!");
+		if(exception == null) System.err.println("FAILURE in GetGamesRequestObserver");
 		exception.printStackTrace();
 	}
 

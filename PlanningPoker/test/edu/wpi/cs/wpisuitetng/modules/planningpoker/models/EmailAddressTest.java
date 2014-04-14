@@ -95,7 +95,7 @@ public class EmailAddressTest {
 //		}
 		
 		try {
-			p_manager.endGame(gs.getGameID(), adminSession);
+			p_manager.endGame(gs.getGameID(), adminSession.getProject());
 		} catch (WPISuiteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
