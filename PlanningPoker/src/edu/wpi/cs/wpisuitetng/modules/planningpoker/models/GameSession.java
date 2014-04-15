@@ -157,24 +157,27 @@ public class GameSession extends AbstractModel {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public GameSession setEndDate(Date endDate) {
 		this.endDate = endDate;
+		return this;
 	}
 
 	public GameStatus getGameStatus() {
 		return gameStatus;
 	}
 
-	public void setGameStatus(GameStatus gameStatus) {
+	public GameSession setGameStatus(GameStatus gameStatus) {
 		this.gameStatus = gameStatus;
+		return this;
 	}
 
 	public List<Integer> getGameReqs() {
 		return gameReqs;
 	}
 
-	public void setGameReqs(List<Integer> gameReqs) {
+	public GameSession setGameReqs(List<Integer> gameReqs) {
 		this.gameReqs = gameReqs;
+		return this;
 	}
 	public String getGameName() {
 		return gameName;
@@ -182,8 +185,9 @@ public class GameSession extends AbstractModel {
 	public String getGameDescription(){
 		return gameDescription;
 	}
-	public void setGameName(String gameName) {
+	public GameSession setGameName(String gameName) {
 		this.gameName = gameName;
+		return this;
 	}
 
 	@Override
@@ -207,8 +211,9 @@ public class GameSession extends AbstractModel {
 		
 		
 	}
-	public void setVotes(List<Vote> v){
+	public GameSession setVotes(List<Vote> v){
 		this.votes = v;
+		return this;
 	}
 
 	/**Gets the votes

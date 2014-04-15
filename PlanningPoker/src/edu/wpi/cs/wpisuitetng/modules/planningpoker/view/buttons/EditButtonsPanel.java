@@ -15,6 +15,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
@@ -23,6 +24,13 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateGameRequestObserver;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 /**
  *
  * @version $Revision: 1.0 $
@@ -132,5 +140,46 @@ public class EditButtonsPanel extends ToolbarGroupView{
 	}
 	public void setActivateEnabled(boolean enabled){
 		createEditButton.setEnabled(enabled);
+	}
+	class activateGameActionListener implements ActionListener{
+		int gameID;
+		public activateGameActionListener(int gameID){
+			this.gameID = gameID;
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			List<GameSession> games = GameModel.getInstance().getGames();
+			for(GameSession g: games){
+				if(g.getGameID() == gameID){
+					g.setGameStatus(GameStatus.ACTIVE);
+					final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.POST); // POST == UPDATE
+					request.setBody(g.toJSON()); // put the new session in the body of the request
+					request.addObserver(new UpdateGameRequestObserver()); // add an observer to process the response
+					request.send(); // send the request
+				}
+			}
+			
+		}
+	}
+	class endGameActionListener implements ActionListener{
+		int gameID;
+		public endGameActionListener(int gameID){
+			this.gameID = gameID;
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			List<GameSession> games = GameModel.getInstance().getGames();
+			for(GameSession g: games){
+				if(g.getGameID() == gameID){
+					g.setGameStatus(GameStatus.ARCHIVED);
+					final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.POST); // POST == UPDATE
+					request.setBody(g.toJSON()); // put the new session in the body of the request
+					request.addObserver(new UpdateGameRequestObserver()); // add an observer to process the response
+					request.send(); // send the request
+				}
+			}
+			
+		}
+		
 	}
 }
