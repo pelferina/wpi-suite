@@ -44,7 +44,7 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
  * This is the entity manager for the Planning Poker Module.
  * 
  */
-public class PlanningPokerEntityManager implements EntityManager<GameSession> {
+public class GameEntityManager implements EntityManager<GameSession> {
 
 	/** The database */
 	Data db;
@@ -60,7 +60,7 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 	 * 
 	 * @param db a reference to the persistent database
 	 */
-	public PlanningPokerEntityManager(Data db) {
+	public GameEntityManager(Data db) {
 		this.db = db;
 
 		//set up and start timer to check deadline every 3 seconds.
@@ -82,6 +82,7 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 
 		// Parse the message from JSON
 		final GameSession importedGame = GameSession.fromJson(content);
+		
 		System.out.println("Adding: " + content);
 		GameSession[] games = getAll(s);
 		

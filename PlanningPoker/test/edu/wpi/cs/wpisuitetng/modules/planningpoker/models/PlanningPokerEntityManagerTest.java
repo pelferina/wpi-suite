@@ -27,7 +27,7 @@ public class PlanningPokerEntityManagerTest {
 	MockData db;
 	Requirement req1, req2;
 	String mockSsid;
-	PlanningPokerEntityManager p_manager;
+	GameEntityManager p_manager;
 	EmailAddressEntityManager e_manager;
 	Session adminSession;
 	Session bobSession;
@@ -53,7 +53,7 @@ public class PlanningPokerEntityManagerTest {
 		db.save(req2, testProject);
 
 		db.save(admin);
-		p_manager = new PlanningPokerEntityManager(db);
+		p_manager = new GameEntityManager(db);
 		e_manager = new EmailAddressEntityManager(db);
 		eController = new AddEmailAddressController();
 		

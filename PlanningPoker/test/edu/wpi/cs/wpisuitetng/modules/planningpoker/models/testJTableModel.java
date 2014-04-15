@@ -3,10 +3,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.junit.Test;
 
