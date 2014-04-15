@@ -30,7 +30,7 @@ public class GetGamesRequestObserver implements RequestObserver {
 	 * This constructor populates the controller variable with the instance of GetGamesController
 	 */
 	public GetGamesRequestObserver() {
-		this.controller = GetGamesController.getInstance();
+		controller = GetGamesController.getInstance();
 	}
 
 	/*

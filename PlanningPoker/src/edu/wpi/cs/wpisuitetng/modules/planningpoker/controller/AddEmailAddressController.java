@@ -45,7 +45,7 @@ public class AddEmailAddressController implements ActionListener {
 	 * @param view the view where the user enters new messages
 	 */
 	public AddEmailAddressController() {
-		this.view = null;
+		view = null;
 	}
 
 	/* *

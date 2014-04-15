@@ -30,7 +30,7 @@ public class UpdateGameController {
 	 * @param model the model containing the games
 	 */
 	public UpdateGameController(){
-		this.model = GameModel.getInstance();
+		model = GameModel.getInstance();
 	}
 	/**
 	 * This method sends a request to update GameSession and adds an observer

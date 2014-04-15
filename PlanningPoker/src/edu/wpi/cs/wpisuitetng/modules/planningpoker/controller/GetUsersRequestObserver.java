@@ -31,7 +31,7 @@ public class GetUsersRequestObserver implements RequestObserver {
 	 * This constructor populates the controller variable with the instance of GetUsersController
 	 */
 	public GetUsersRequestObserver() {
-	this.controller = GetUsersController.getInstance();
+		controller = GetUsersController.getInstance();
 	}
 	
 	/**

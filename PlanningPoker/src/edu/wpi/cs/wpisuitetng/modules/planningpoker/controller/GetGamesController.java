@@ -12,8 +12,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
+
+
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
@@ -41,7 +41,7 @@ public class GetGamesController extends RefreshableController implements ActionL
 	 * This constructor populates the model variable with the instance of GameModel
 	 */
 	public GetGamesController() {
-		this.model = GameModel.getInstance();
+		model = GameModel.getInstance();
 	}
 	
 	/**
@@ -49,8 +49,9 @@ public class GetGamesController extends RefreshableController implements ActionL
 	 * @return the instance of GetGamesController
 	 */
 	public static GetGamesController getInstance(){
-		if (instance==null)
+		if (instance==null){
 			instance = new GetGamesController();
+		}
 		
 		return instance;
 	}
