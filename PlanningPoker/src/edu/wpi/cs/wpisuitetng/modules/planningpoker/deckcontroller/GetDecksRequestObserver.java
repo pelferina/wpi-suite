@@ -1,11 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2013 -- WPI Suite
+ * Copyright (c) 2014 -- WPI Suite
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
+ * Contributors:
+ *    Team Cosmic Latte
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.deckcontroller;
@@ -17,11 +19,13 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 /**
  * This observer handles responses to requests for all
  * decks.
- *
+ * 
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
  */
 public class GetDecksRequestObserver implements RequestObserver {
 
-	private GetDecksController controller;
+	final private GetDecksController controller;
 	
 	/**
 	 * Constructs the observer given a GetDecksController
@@ -39,7 +43,7 @@ public class GetDecksRequestObserver implements RequestObserver {
 	@Override
 	public void responseSuccess(IRequest iReq) {
 		// Convert the JSON array of Decks to a Deck object array
-		Deck[] Decks = Deck.fromJsonArray(iReq.getResponse().getBody());
+		final Deck[] Decks = Deck.fromJsonArray(iReq.getResponse().getBody());
 		
 		// Pass these Decks to the controller
 		controller.receivedDecks(Decks);
@@ -60,7 +64,7 @@ public class GetDecksRequestObserver implements RequestObserver {
 	 */
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		Deck[] errorDeck = { new Deck() };
+		final Deck[] errorDeck = { new Deck() };
 		controller.receivedDecks(errorDeck);
 	}
 
