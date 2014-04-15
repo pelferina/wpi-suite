@@ -56,9 +56,10 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	/**
 	 * @param gameID THE GAMEID
 	 */
-	public void setGameID(int gameID) {
+	public Vote setGameID(int gameID) {
 		this.gameID = gameID;
 		this.setVoteID();
+		return this;
 	}
 
 	/**
@@ -71,9 +72,10 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	/**
 	 * @param uID The new USERID
 	 */
-	public void setUID(int uID) {
+	public Vote setUID(int uID) {
 		UID = uID;
 		this.setVoteID();
+		return this;
 	}
 
 	/**
@@ -86,8 +88,9 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	/**
 	 * @param vote The new votelist
 	 */
-	public void setVote(List<Integer> vote) {
+	public Vote setVote(List<Integer> vote) {
 		this.vote = vote;
+		return this;
 	}
 	public String toJSON() {
 		return new Gson().toJson(this, Vote.class);
@@ -136,15 +139,17 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	/**
 	 * Sets the vote id with the tohash method
 	 */
-	public void setVoteID(){
+	public Vote setVoteID(){
 		this.VoteID = toHash(this);
+		return this;
 	}
 	/**
 	 * @param voteID the voteID to set
  	 * should use the tohash method
 	 */
-	public void setVoteID(int voteID) {
+	public Vote setVoteID(int voteID) {
 		VoteID = voteID;
+		return this;
 	}
 	/** (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
