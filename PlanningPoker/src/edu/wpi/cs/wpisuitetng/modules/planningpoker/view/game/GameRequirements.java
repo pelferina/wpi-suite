@@ -49,6 +49,7 @@ public class GameRequirements extends JSplitPane{
 	private List<Integer> gameReqIDs;
 	private List<Requirement> gameReqs = new ArrayList<Requirement>();
 	private GameView gv;
+	final private int COLUMN_NUM = 3;
 	
 	/**
 	 * Constructor for GameRequirements
@@ -72,7 +73,7 @@ public class GameRequirements extends JSplitPane{
 		estimatesPending = new JTable() {
 			@Override
 		    public boolean isCellEditable(int row, int column) {
-		       //all cells false
+		       //all -cells false
 		       return false;
 		    }
 		};
@@ -83,27 +84,28 @@ public class GameRequirements extends JSplitPane{
 		       return false;
 		    }
 		};
-		estimatesPending.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Description"}));
-		estimatesComplete.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Description"}));
+		estimatesPending.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Name", "Description"}));
+		estimatesComplete.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Name", "Description"}));
 		init();
 	}
 
 	private void init(){
 		DefaultTableModel pendingModel = (DefaultTableModel) estimatesPending.getModel();
 		pendingModel.setNumRows(gameReqs.size());
-		pendingModel.setColumnCount(2);
+		pendingModel.setColumnCount(COLUMN_NUM);
 		setColumnWidth(estimatesPending);
 		
 		//Fills the pending table with the name and description of the requirements that are in the game
 		
 		for (int i = 0; i < gameReqs.size(); i++){
-			pendingModel.setValueAt(gameReqs.get(i).getName(), i, 0);
-			pendingModel.setValueAt(gameReqs.get(i).getDescription(), i, 1);
+			pendingModel.setValueAt(gameReqs.get(i).getId(), i, 0);
+			pendingModel.setValueAt(gameReqs.get(i).getName(), i, 1);
+			pendingModel.setValueAt(gameReqs.get(i).getDescription(), i, 2);
 		}
 		
 		DefaultTableModel completedModel = (DefaultTableModel) estimatesComplete.getModel();
 		completedModel.setNumRows(0);
-		completedModel.setColumnCount(2);
+		completedModel.setColumnCount(COLUMN_NUM);
 		setColumnWidth(estimatesComplete);
 		this.pendingPane = new JScrollPane(estimatesPending);
 		this.completePane = new JScrollPane(estimatesComplete);
@@ -142,12 +144,26 @@ public class GameRequirements extends JSplitPane{
 		DefaultTableModel complete = (DefaultTableModel) estimatesComplete.getModel();
 		int numberofReqs = estimatesPending.getRowCount();
 		for (int i=0; i < numberofReqs; i++){
-			if (r.getName().equals(reqNames.getValueAt(i, 0))){
-				String name = (String) reqNames.getValueAt(i, 0);
-				String description = (String) reqNames.getValueAt(i, 1);
+			if (r.getId() == (int)reqNames.getValueAt(i, 0)){
+				int reqId = (int) reqNames.getValueAt(i, 0);
+				String name = (String) reqNames.getValueAt(i, 1);
+				String description = (String) reqNames.getValueAt(i, 2);
 				reqNames.removeRow(i);
-				complete.addRow(new Object[]{name, description});
+				complete.addRow(new Object[]{reqId, name, description});
+				break;
 			}
+		}
+		if (estimatesPending.getRowCount() > 0){
+			int nextID = (int) estimatesPending.getValueAt(0, 0);
+			for (Requirement req: gameReqs){
+				if (req.getId() == nextID){
+					gv.sendReqToPlay(req);
+					break;
+				}
+			}
+		}
+		else {
+			gv.clearBoxes();
 		}
 	}
 	
@@ -178,7 +194,7 @@ public class GameRequirements extends JSplitPane{
 				List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
 				Requirement req = null;
 				for (Requirement r: allReqs){
-					if (r.getName().equals(tableClicked.getValueAt(row, 0))){
+					if (r.getId() == (int)tableClicked.getValueAt(row, 0)){
 						req = r;
 					}
 				}
@@ -186,4 +202,5 @@ public class GameRequirements extends JSplitPane{
 			}
 		}
 	}
+	
 }

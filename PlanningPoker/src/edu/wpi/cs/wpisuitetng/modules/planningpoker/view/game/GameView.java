@@ -58,5 +58,9 @@ public class GameView extends JSplitPane{
 	public void updateReqTables(Requirement r) {
 		gameReqs.updateTables(r);
 	}
+
+	public void clearBoxes() {
+		playGame.clear();
+	}
 	
 }

@@ -129,7 +129,7 @@ public class MainView extends JTabbedPane {
 			}
 			JPanel pnlTab = new JPanel(new GridBagLayout());
 			pnlTab.setOpaque(false);
-			JLabel lblTitle = new JLabel("New Game");
+			JLabel lblTitle = new JLabel(tabLabler(tabType, game));
 			if (tabType.equals("Add Email")) lblTitle.setText("Options");
 			btnClose.setMargin(new Insets(0, 0, 0, 0));
 			btnClose.setFont(btnClose.getFont().deriveFont((float) 8));
@@ -152,7 +152,7 @@ public class MainView extends JTabbedPane {
 			newGameTabs++;
 			j++;
 		}
-	
+
 	/*
 	@Override
 	public void insertTab(String title, Icon icon, Component component,

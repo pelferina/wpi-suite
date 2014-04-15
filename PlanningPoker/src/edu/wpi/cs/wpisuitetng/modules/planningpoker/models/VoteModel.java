@@ -21,11 +21,24 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
  * @version $Revision: 1.0 $
  */
 public class VoteModel implements Model {
+	private static VoteModel instance = null;
 
 	public VoteModel() {
 		// TODO Auto-generated constructor stub
 	}
-
+	
+	/**
+	
+	 * @return the instance of the requirement model singleton. */
+	public static VoteModel getInstance()
+	{
+		if(instance == null)
+		{
+			instance = new VoteModel();
+		}
+		
+		return instance;
+	}
 	@Override
 	public void save() {
 		// TODO Auto-generated method stub

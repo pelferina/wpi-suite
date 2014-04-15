@@ -11,6 +11,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
@@ -19,6 +20,9 @@ import edu.wpi.cs.wpisuitetng.exceptions.ConflictException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
+import edu.wpi.cs.wpisuitetng.modules.Model;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * This class manages all votes
@@ -44,10 +48,17 @@ public class VoteEntityManager implements EntityManager<Vote> {
 		// update invalid information.
 		if (v.getUID() == -1) v.setUID(s.getUser().getIdNum());
 		// Check for duplication
-		GameSession[] session = (GameSession[]) db.retrieve(GameSession.class, "GameID", v.getGameID()).toArray();
+		GameSession[] session = null;
+		try {
+			session = db.retrieve(GameSession.class, "GameID", v.getGameID(), s.getProject()).toArray(new GameSession[0]);
+		} catch (WPISuiteException e) {
+			e.printStackTrace();
+		}
 		if(session.length != 1) throw new WPISuiteException();
 		session[0].addVote(v);
+		session[0].setGameStatus(GameStatus.INPROGRESS);
 		db.update(GameSession.class, "GameID", session[0].getGameID(), "Votes", session[0].getVotes());
+		db.update(GameSession.class, "GameID", session[0].getGameID(), "GameStatus", session[0].getGameStatus());
 		return v;
 	}
 
@@ -58,12 +69,12 @@ public class VoteEntityManager implements EntityManager<Vote> {
 	 */
 	@Override
 	public Vote[] getEntity(Session s, String example) throws NotFoundException,
-			WPISuiteException {
-			Vote v = Vote.fromJson(example);
-			Vote[] vlist = (Vote[]) db.retrieve(Vote.class, "UID", v.getUID(), s.getProject()).toArray();
-			ArrayList<Vote> voteList = new ArrayList<Vote>();
-			for(Vote vo : vlist) if(v.getGameID() == vo.getGameID())  voteList.add(vo);
-			return (Vote[]) voteList.toArray();
+	WPISuiteException {
+		Vote v = Vote.fromJson(example);
+		Vote[] vlist = (Vote[]) db.retrieve(Vote.class, "UID", v.getUID(), s.getProject()).toArray();
+		ArrayList<Vote> voteList = new ArrayList<Vote>();
+		for(Vote vo : vlist) if(v.getGameID() == vo.getGameID())  voteList.add(vo);
+		return (Vote[]) voteList.toArray();
 	}
 
 	@Override

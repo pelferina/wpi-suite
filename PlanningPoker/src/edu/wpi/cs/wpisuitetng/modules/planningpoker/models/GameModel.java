@@ -22,7 +22,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
  * This is a model for the game model. It contains all of the games
  * to be displayed on the board. It extends AbstractListModel so that
  * it can provide the model data to the JList component in the BoardPanel.
- * 
+ *
  * @author Cosmic Latte
  * @version $Revsion: 1.0 $
  * 
