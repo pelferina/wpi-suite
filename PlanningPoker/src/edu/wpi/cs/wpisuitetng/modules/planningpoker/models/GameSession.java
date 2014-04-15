@@ -27,9 +27,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
- * Model to contain a single game on the PostBoard
- * 
- *
+ * Model to contain a single game for the Planning Poker module
  */
 public class GameSession extends AbstractModel {
 
@@ -64,8 +62,8 @@ public class GameSession extends AbstractModel {
 		this.endDate = deadline;
 		//this.endDate.setMonth(endDate.getMonth());
 		this.gameReqs = gameReqs;
-		creationdate = new Date();
 		this.gameStatus = GameStatus.DRAFT;
+		creationdate = new Date();
 		votes = (new ArrayList<Vote>());
 	}
 
