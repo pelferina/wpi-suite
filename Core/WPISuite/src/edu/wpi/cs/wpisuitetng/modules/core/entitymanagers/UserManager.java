@@ -77,7 +77,10 @@ public class UserManager implements EntityManager<User> {
 	
 	@Override
 	public User makeEntity(Session s, String content) throws WPISuiteException{
-
+		// This is added by Ruofan, for retrieve the user who currently log in to the Janeway.
+		if(content.equals("who am I?")){
+			return s.getUser();
+		}
 		//TODO: create a custom de-serializer & serializer so we can hash the desired password & remove it from others.
 		
 		logger.log(Level.FINE, "Attempting new User creation...");

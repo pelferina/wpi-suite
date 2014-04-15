@@ -1,47 +1,37 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.JTable;
-import javax.swing.Timer;
-import javax.swing.table.TableRowSorter;
-import javax.swing.JTree;
-
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailAddressObserver;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameTree;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.JTableModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame.JTableView;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.network.Network;
-import edu.wpi.cs.wpisuitetng.network.Request;
-import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
-
-import javax.swing.JScrollPane;
-import javax.swing.SpringLayout;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeModel;
-
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTable;
+import javax.swing.JTree;
+import javax.swing.Timer;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.table.TableRowSorter;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameTree;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.JTableModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.network.Request;
 
 public class OverviewPanel extends JPanel implements Refreshable {
 	GetGamesController ggc; 
@@ -71,11 +61,10 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		
 		table.addMouseListener(new MouseAdapter() {
 			  public void mouseClicked(MouseEvent e) {
+				  JTable target = (JTable)e.getSource();
+			      int row = target.getSelectedRow();
+			      int column = target.getSelectedColumn();
 				    if (e.getClickCount() == 2) {
-				      JTable target = (JTable)e.getSource();
-				      int row = target.getSelectedRow();
-				      int column = target.getSelectedColumn();
-				      
 				      int gameID = (Integer)((JTableModel)target.getModel()).getIDFromRow(row);
 				      List<GameSession> games = gameModel.getGames();
 				      GameSession clickedGame = null;
@@ -84,12 +73,23 @@ public class OverviewPanel extends JPanel implements Refreshable {
 				    		  clickedGame = gm;
 				    	  }
 				      }
-				      if (clickedGame != null){
-				    	  ViewEventController.getInstance().editGameTab(clickedGame);; // Make this edit insteadS
+				      if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.DRAFT){
+				    	  ViewEventController.getInstance().editGameTab(clickedGame); // Make this edit insteadS
+				      }
+				      else if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.ACTIVE){
+				    	  ViewEventController.getInstance().playGameTab(clickedGame);
 				      }
 				    }
 				    if(e.getClickCount() == 1){
 				    	ViewEventController.getInstance().setEndGameButtonVisible();
+				    	int ownerID = ((JTableModel)(target.getModel())).getOwnerID(row);
+				    	User currentUser = GetCurrentUser.getInstance().getCurrentUser();
+				    	if(currentUser.getIdNum() == ownerID){
+				    		ViewEventController.getInstance().setEndGameButtonVisible();
+				    	}else{
+				    		ViewEventController.getInstance().setEndGameButtonInvisible();
+				    	}
+		
 				    }
 				  }
 				});
@@ -164,7 +164,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 			sessions = (ArrayList<GameSession>) gameModel.getCompletedGameSessions();
 		} else if (s.equals("Archived Games")){
 			sessions = (ArrayList<GameSession>) gameModel.getArchivedGameSessions();
-		} else {
+		} else if (s.equals("Planning Poker")) {
 			sessions = (ArrayList<GameSession>) gameModel.getGames();
 		}
 		JTableModel jModel = (JTableModel)table.getModel();
@@ -197,6 +197,28 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	//Refreshes the view event controller whenever a new game tab is created
 	public void refresh(){
 		ViewEventController.getInstance();
+	}
+	
+	private int getUserID(String userName){
+		GetUsersController guc = GetUsersController.getInstance();
+		User users[];
+		guc.actionPerformed();
+		while (guc.getUsers() == null){
+			try{
+				Thread.sleep(100);
+				System.out.println("Waiting for users");
+			}
+			catch(Exception e){
+				
+			}
+		}
+		users = guc.getUsers();
+		for (User u : users){
+			if (u.getUsername().equals(userName)){
+				return u.getIdNum();
+			}
+		}
+		return -1;
 	}
 	
 }

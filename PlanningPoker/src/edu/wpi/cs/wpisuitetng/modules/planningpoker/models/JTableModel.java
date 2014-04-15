@@ -12,6 +12,7 @@ import javax.swing.table.AbstractTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.network.Network;
 
 public class JTableModel extends AbstractTableModel {
@@ -22,7 +23,7 @@ public class JTableModel extends AbstractTableModel {
 	protected GameSession[] games;
 	protected GetUsersController guc;
 	protected User[] users;
-	protected int size =0;
+	protected int size = 0;
     protected static final String[] COLUMN_NAMES = new String[] {"Name", "Deadline", "Owner", "Progress", "Status"};
     protected static final Class<?>[] COLUMN_TYPES = new Class<?>[] {String.class, String.class, String.class, String.class, String.class};
     
@@ -54,6 +55,24 @@ public class JTableModel extends AbstractTableModel {
     	}
 	}
     
+	private String gameStatus(GameSession game){
+		if (game.getGameStatus() == GameStatus.DRAFT){
+			return "Draft";
+		}
+		else if (game.getGameStatus() == GameStatus.ACTIVE){
+			return "Active";
+		}
+		else if (game.getGameStatus() == GameStatus.INPROGRESS){
+			return "In Progress";
+		}
+		else if (game.getGameStatus() == GameStatus.COMPLETED){
+			return "Completed";
+		}
+		else {
+			return "Archived";
+		}
+	}
+	
 	private String getUserFromID(int userID){
 		guc.actionPerformed();
 		while (guc.getUsers() == null){
@@ -118,6 +137,12 @@ public class JTableModel extends AbstractTableModel {
 	public int getIDFromRow(int row){
 		return gameIDs[row];
 	}
+	
+	/**
+	 * 
+	 * @param i the row number
+	 * @return the game owner id of the ith row
+	 */
 	public int getOwnerID(int i){
 		return games[i].getOwnerID();
 	}

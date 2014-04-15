@@ -49,6 +49,7 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 	/** The database */
 	Data db;
 	Timer deadlineCheck; // Timer for checking deadline
+	Timer votingCompleteCheck;
 
 	
 	/**
@@ -62,9 +63,12 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 	public PlanningPokerEntityManager(Data db) {
 		this.db = db;
 
-		//set up and start timer to check deadline every second.
+		//set up and start timer to check deadline every 3 seconds.
 		deadlineCheck = new Timer(3000, new DeadLineListener(db, this));
 		deadlineCheck.start();
+		//set up and start a timer to check if all users has voted every 3 seconds.
+		votingCompleteCheck = new Timer(3000, new VotingCompleteListener(db));
+		votingCompleteCheck.start();
 	}
 
 	/*
@@ -75,13 +79,13 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 	@Override
 	public GameSession makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
-
+		
 		// Parse the message from JSON
 		final GameSession importedGame = GameSession.fromJson(content);
 		System.out.println("Adding: " + content);
 		GameSession[] games = getAll(s);
 		
-		GameSession newGame = new GameSession(importedGame.getGameName(), importedGame.getGameDescription(), importedGame.getOwnerID(), importedGame.getGameID(), importedGame.getEndDate(), importedGame.getGameReqs());
+		GameSession newGame = new GameSession(importedGame.getGameName(), importedGame.getGameDescription(), s.getUser().getIdNum(), games.length+1, importedGame.getEndDate(), importedGame.getGameReqs());
 		newGame.setGameStatus(importedGame.getGameStatus());
 		newGame.setProject(s.getProject());
 		// Save the message in the database if possible, otherwise throw an exception

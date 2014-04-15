@@ -22,9 +22,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
  * This controller coordinates retrieving all of the core users from the server.
- * 
- * @author Ruofan Ding
- * 
+ *
  */
 public class GetUsersController {
 	
