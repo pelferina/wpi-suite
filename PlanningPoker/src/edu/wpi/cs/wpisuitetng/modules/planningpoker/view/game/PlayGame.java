@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -16,6 +17,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddVoteController
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.VoteModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -38,7 +40,6 @@ public class PlayGame extends JPanel{
 	private Requirement currentReq;
 	private GameView gv;
 	private GameSession currentGame;
-	//private GameCard[] gameCards = {new GameCard(1), new GameCard(2), new GameCard(5)};
 	
 	public PlayGame(GameSession gameToPlay, GameView agv){
 		currentGame = gameToPlay;
@@ -115,11 +116,14 @@ public class PlayGame extends JPanel{
 		});
 		
 		submit.addActionListener(new ActionListener(){
-			
 			@Override
 			public void actionPerformed(ActionEvent e){
-				AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
-				msgr.sendVote(userEstimates);
+				int option = JOptionPane.showOptionDialog(gv, "Do you wish to submit your current votes?", "Save Votes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+				if (option == 0){
+					AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
+					msgr.sendVote(userEstimates);
+					ViewEventController.getInstance().getMain().remove(gv);
+				}
 			}
 		});
 		
