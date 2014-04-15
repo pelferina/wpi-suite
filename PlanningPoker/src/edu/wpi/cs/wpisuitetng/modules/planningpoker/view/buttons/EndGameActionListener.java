@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: Team Cosmic Latte
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,14 +20,23 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
+/**
+ * This listener watches for the end of a game
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
+ */
 public class EndGameActionListener implements ActionListener{
 	int gameID;
+	/**
+	 * Constructor to populate gameID
+	 * @param gameID
+	 */
 	public EndGameActionListener(int gameID){
 		this.gameID = gameID;
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		List<GameSession> games = GameModel.getInstance().getGames();
+		final List<GameSession> games = GameModel.getInstance().getGames();
 		for(GameSession g: games){
 			if(g.getGameID() == gameID){
 				g.setGameStatus(GameStatus.ARCHIVED);

@@ -62,21 +62,23 @@ public class EditButtonsPanel extends ToolbarGroupView{
 	public EditButtonsPanel(){
 		super("");
 		
-		this.contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
+		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
 		this.setPreferredWidth(500);
 		
 		createEditButton.setPreferredSize(new Dimension(150,50));	
 		createCancelButton.setVisible(false);
 		
 		try {
-		    Image img = ImageIO.read(getClass().getResource("cancel.png"));
+		    final Image img = ImageIO.read(getClass().getResource("cancel.png"));
 		    createCancelButton.setIcon(new ImageIcon(img));
 		    
 		    editImg = new ImageIcon(ImageIO.read(getClass().getResource("edit.png")));
 		    createEditButton.setIcon(editImg);
 		    saveImg = new ImageIcon(ImageIO.read(getClass().getResource("save.png")));
 		    
-		} catch (IOException ex) {}
+		} catch (IOException ex) {
+			System.out.println("IOException thrown in EditButtonsPanel.");
+		}
 		
 		createEditButton.setVisible(true);
 		// the action listener for the Edit Games button
@@ -123,7 +125,7 @@ public class EditButtonsPanel extends ToolbarGroupView{
 	 * 
 	 */
 	public JButton getEditButton() {
-		return this.createEditButton;
+		return createEditButton;
 	}
 	/**
 	 * This method creates an edit button and enables it while disableing the cancel button
@@ -152,14 +154,23 @@ public class EditButtonsPanel extends ToolbarGroupView{
 	public void setActivateEnabled(boolean enabled){
 		createEditButton.setEnabled(enabled);
 	}
+	/**
+	 * This listener watches for when a game is activated
+	 * @author Cosmic Latte
+	 * @version $Revision: 1.0 $
+	 */
 	class activateGameActionListener implements ActionListener{
 		int gameID;
+		/**
+		 * Constructor to poulate gameID
+		 * @param gameID
+		 */
 		public activateGameActionListener(int gameID){
 			this.gameID = gameID;
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			List<GameSession> games = GameModel.getInstance().getGames();
+			final List<GameSession> games = GameModel.getInstance().getGames();
 			for(GameSession g: games){
 				if(g.getGameID() == gameID){
 					g.setGameStatus(GameStatus.ACTIVE);
@@ -172,14 +183,23 @@ public class EditButtonsPanel extends ToolbarGroupView{
 			
 		}
 	}
+	/**
+	 * This listener watches for the end of a game
+	 * @author Cosmic Latte
+	 * @version $Revision: 1.0 $
+	 */
 	class endGameActionListener implements ActionListener{
 		int gameID;
+		/**
+		 * Constructor that populates gameID
+		 * @param gameID
+		 */
 		public endGameActionListener(int gameID){
 			this.gameID = gameID;
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			List<GameSession> games = GameModel.getInstance().getGames();
+			final List<GameSession> games = GameModel.getInstance().getGames();
 			for(GameSession g: games){
 				if(g.getGameID() == gameID){
 					g.setGameStatus(GameStatus.ARCHIVED);
