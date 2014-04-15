@@ -24,8 +24,8 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 public class Deck extends AbstractModel {
 
 	/** the ID of the deck */
-	private int id;
-	private List<Integer> cards;
+	private final int id;
+	private final List<Integer> cards;
 	
 	/**
 	 * Constructs a Deck with default cards
@@ -34,7 +34,7 @@ public class Deck extends AbstractModel {
 	{
 		super();
 		id = 0;
-		this.cards = Arrays.asList(0,1,1,2,3,5,8,13); 
+		cards = Arrays.asList(0,1,1,2,3,5,8,13); 
 	}
 	
 	/**
@@ -56,7 +56,7 @@ public class Deck extends AbstractModel {
 	 * @return boolean for equality */
 	// TODO: implement two decks being equal
 	public boolean equals(Deck that) {
-		return (this.id == that.id);
+		return (id == that.id);
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class Deck extends AbstractModel {
 	 * @return the Iteration contained in the given JSON */
 	public static Deck fromJson(String body) {
 		final Gson parser = new Gson();
-		Deck test = parser.fromJson(body, Deck.class);
+		final Deck test = parser.fromJson(body, Deck.class);
 
 		return test;
 	}

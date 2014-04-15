@@ -34,11 +34,12 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ToolbarView;
 public class PlanningPoker implements IJanewayModule{
 
 	/** The tabs used by this module */
-	private ArrayList<JanewayTabModel> tabs;
+	private final List<JanewayTabModel> tabs;
+	
 	
 	private MainView mainPanel;
 	private JPanel buttonPanel;
-	private RefreshManager refresh;
+	final private RefreshManager refresh;
 	
 	
 	/**
@@ -50,13 +51,13 @@ public class PlanningPoker implements IJanewayModule{
 
 		tabs = new ArrayList<JanewayTabModel>();
 		
-		MainView mainPanel = new MainView();
-		ToolbarView toolBar = new ToolbarView(true);
+		final MainView mainPanel = new MainView();
+		final ToolbarView toolBar = new ToolbarView(true);
 				
 		ViewEventController.getInstance().setMainView(mainPanel);
 		ViewEventController.getInstance().setToolBar(toolBar);
 		
-		JanewayTabModel tab = new JanewayTabModel("PlanningPoker", new ImageIcon(), toolBar, mainPanel);
+		final JanewayTabModel tab = new JanewayTabModel("PlanningPoker", new ImageIcon(), toolBar, mainPanel);
 		tabs.add(tab);
 	}
 	

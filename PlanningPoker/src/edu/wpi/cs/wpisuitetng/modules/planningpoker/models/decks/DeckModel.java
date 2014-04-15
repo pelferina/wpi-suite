@@ -73,7 +73,7 @@ public class DeckModel extends AbstractListModel {
 		try {
 			AddDeckController.getInstance().addDeck(newDeck);
 		} catch (Exception e) {
-
+			System.out.println("Exception thrown in DeckModel");
 		}
 		//TODO:Change to Deck View
 		ViewEventController.getInstance().refreshTree();
@@ -122,7 +122,7 @@ public class DeckModel extends AbstractListModel {
 	 * remove each Deck from the model.
 	 */
 	public void emptyModel() {
-		int oldSize = getSize();
+		final int oldSize = getSize();
 		Iterator<Deck> iterator = listOfDecks.iterator();
 		while (iterator.hasNext()) {
 			iterator.next();
