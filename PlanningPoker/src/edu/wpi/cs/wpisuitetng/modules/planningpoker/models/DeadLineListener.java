@@ -27,8 +27,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
  */
 public class DeadLineListener implements ActionListener{
 	private Data db;
-	private PlanningPokerEntityManager entityManager;
-	public DeadLineListener(Data db, PlanningPokerEntityManager ppem){
+	private GameEntityManager entityManager;
+	public DeadLineListener(Data db, GameEntityManager ppem){
 		this.db = db;
 		this.entityManager = ppem;
 		System.err.println("create a listener");
@@ -53,13 +53,15 @@ public class DeadLineListener implements ActionListener{
 				if (gameArray[i].getEndDate().before(today) && (gameArray[i].getGameStatus().compareTo(GameStatus.ARCHIVED) != 0)){
 					System.err.println("Name "+gameArray[i].getGameName() + " reaches deadline at" + today);
 					
+					// change the status of gameSession
 					try {
 						db.update(GameSession.class, "GameID", gameArray[i].getGameID(), "GameStatus",  GameStatus.ARCHIVED);
 					} catch (WPISuiteException ex) {
-						System.err.println("fail to set the gameStatus");
+						System.err.println("fail to set the gameStatus to archived");
 						// TODO Auto-generated catch block
 						ex.printStackTrace();
 					}
+					// send notification email.
 					try {
 						String textToSend;
 						textToSend = "The game '"+ gameArray[i].getGameName() + "' has reached its deadline at" + gameArray[i].getEndDate() +"\r\n" + "Sent by fff8e7";

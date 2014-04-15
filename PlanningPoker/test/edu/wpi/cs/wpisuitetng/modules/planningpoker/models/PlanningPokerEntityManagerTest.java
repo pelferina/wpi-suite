@@ -1,7 +1,8 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -24,9 +25,9 @@ import edu.wpi.cs.wpisuitetng.network.configuration.NetworkConfiguration;
 
 public class PlanningPokerEntityManagerTest {
 	MockData db;
-	Requirement req1;
+	Requirement req1, req2;
 	String mockSsid;
-	PlanningPokerEntityManager p_manager;
+	GameEntityManager p_manager;
 	EmailAddressEntityManager e_manager;
 	Session adminSession;
 	Session bobSession;
@@ -44,13 +45,15 @@ public class PlanningPokerEntityManagerTest {
 		bobSession = new Session(bob, testProject, "bob123");
 		
 		req1 = new Requirement(1, "Bob", "1.0", RequirementStatus.NEW, RequirementPriority.BLANK, "Desc", 1, 1);
+		req2 = new Requirement(2, "Tom", "2.0", RequirementStatus.NEW, RequirementPriority.BLANK, "Desc", 1, 1);
 
 		
 		db = new MockData(new HashSet<Object>());
 		db.save(req1, testProject);
+		db.save(req2, testProject);
 
 		db.save(admin);
-		p_manager = new PlanningPokerEntityManager(db);
+		p_manager = new GameEntityManager(db);
 		e_manager = new EmailAddressEntityManager(db);
 		eController = new AddEmailAddressController();
 		
@@ -59,7 +62,7 @@ public class PlanningPokerEntityManagerTest {
 				new NetworkConfiguration("http://wpisuitetng"));
 
 	}	
-	@Test
+	//@Test
 	public void testDeadlineCheck(){
 		Date deadline = new Date();
 		deadline.setSeconds(deadline.getSeconds()+5);
@@ -73,7 +76,32 @@ public class PlanningPokerEntityManagerTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		assertTrue(testGame.getGameStatus().compareTo(GameStatus.ARCHIVED)==0);
+		assertTrue(testGame.getGameStatus().compareTo(GameStatus.ARCHIVED)==0);	
+	}
+	@Test
+	public void testStats(){
+		ArrayList<Integer> reqList = new ArrayList<Integer>();
+		ArrayList<Vote> voteList = new ArrayList<Vote>();
+		ArrayList<Integer> vote11 = new ArrayList<Integer>();
+		ArrayList<Integer> vote22 = new ArrayList<Integer>();
+		vote11.add(12);
+		vote11.add(32);
+		vote22.add(21);
+		vote22.add(17);
+		Vote vote1 = new Vote(vote11,1,1);
+		Vote vote2 = new Vote(vote22,2,1);
+		
+		
+		reqList.add(1);
+		reqList.add(2);
+		GameSession testGame = new GameSession("test game", null, 1, 1, null , reqList);
+		
+		testGame.addVote(vote1);
+		testGame.addVote(vote2);
+		
+		testGame.calculateStats();
+		System.out.println(testGame.getMean());
+		System.out.println(testGame.getMedian());
 		
 	}
 }

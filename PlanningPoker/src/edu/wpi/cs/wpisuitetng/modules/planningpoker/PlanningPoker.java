@@ -9,26 +9,20 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker;
 
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.RefreshManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ToolbarView;
 
 
@@ -50,10 +44,8 @@ public class PlanningPoker implements IJanewayModule{
 		refresh = new RefreshManager();
 
 		tabs = new ArrayList<JanewayTabModel>();
-//		final GameModel gameModel = GameModel.getInstance();
-//		DeckModel deckModel = new DeckModel();
 		
-		mainPanel = new MainView();
+		MainView mainPanel = new MainView();
 		ToolbarView toolBar = new ToolbarView(true);
 				
 		ViewEventController.getInstance().setMainView(mainPanel);
