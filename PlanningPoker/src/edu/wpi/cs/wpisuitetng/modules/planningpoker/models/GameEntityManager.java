@@ -81,7 +81,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	@Override
 	public GameSession makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
-
+		
 		// Parse the message from JSON
 		final GameSession importedGame = GameSession.fromJson(content);
 		
@@ -145,16 +145,20 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
-	public GameSession update(Session s, String content)
-			throws WPISuiteException {
+	public GameSession update(Session s, String content){
 
 		// Parse the message from JSON
 		final GameSession importedGame = GameSession.fromJson(content);
-		db.update(GameSession.class, "GameID", importedGame.getGameID(), "GameReqs", importedGame.getGameReqs());
-		db.update(GameSession.class, "GameID", importedGame.getGameID(), "EndDate", importedGame.getEndDate());
-		db.update(GameSession.class, "GameID", importedGame.getGameID(), "GameName", importedGame.getGameName());
-		// This module does not allow PostBoardMessages to be modified, so throw an exception
-		throw new WPISuiteException();
+		System.out.println(importedGame);
+		try {
+			db.update(GameSession.class, "GameID", importedGame.getGameID(), "GameReqs", importedGame.getGameReqs());
+			db.update(GameSession.class, "GameID", importedGame.getGameID(), "EndDate", importedGame.getEndDate());
+			db.update(GameSession.class, "GameID", importedGame.getGameID(), "GameName", importedGame.getGameName());
+			db.update(GameSession.class, "GameID", importedGame.getGameID(), "GameStatus", importedGame.getGameStatus());
+		} catch (WPISuiteException e) {
+			e.printStackTrace();
+		}
+		return importedGame;
 	}
 
 	/*

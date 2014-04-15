@@ -32,6 +32,7 @@ public class JTableModel extends AbstractTableModel {
 	protected Object[][] Data; 	// Create new data array with the "X" position as each sessionData
 								// and the "Y" as each Table spot
 	protected Integer[] gameIDs;
+	protected GameSession[] games;
 	protected GetUsersController guc;
 	protected User[] users;
 	protected int size = 0;
@@ -61,7 +62,7 @@ public class JTableModel extends AbstractTableModel {
 	 * @param sessions GameSession[] of sessions to create the model from
 	 */
 	private void setUpTable(GameSession[] sessions){
-		
+		games = sessions;
 		Data = new Object[sessions.length][COLUMN_NAMES.length];
 		gameIDs = new Integer[sessions.length];
     	size = sessions.length;
@@ -187,5 +188,22 @@ public class JTableModel extends AbstractTableModel {
 	 */
 	public int getIDFromRow(int row){
 		return gameIDs[row];
+	}
+	
+	/**
+	 * 
+	 * @param i the row number
+	 * @return the game owner id of the ith row
+	 */
+	public int getOwnerID(int i){
+		return games[i].getOwnerID();
+	}
+	/**
+	 * 
+	 * @param i the row number
+	 * @return the game id of the ith row
+	 */
+	public int getGameID(int i){
+		return games[i].getGameID();
 	}
 }

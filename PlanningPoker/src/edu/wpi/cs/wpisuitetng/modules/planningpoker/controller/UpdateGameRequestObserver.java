@@ -21,6 +21,7 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  */
 public class UpdateGameRequestObserver implements RequestObserver {
 
+<<<<<<< HEAD
 	/**
 	 * This observer handles the requests to update games
 	 * @param controller The controller this was called from
@@ -31,6 +32,8 @@ public class UpdateGameRequestObserver implements RequestObserver {
 
 	private final UpdateGameController controller;
 
+=======
+>>>>>>> 374598f4604063e59e2d5486de75d7585d702439
 	/* (non-Javadoc)
 	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseSuccess(edu.wpi.cs.wpisuitetng.network.models.IRequest)
 	 */
@@ -41,8 +44,6 @@ public class UpdateGameRequestObserver implements RequestObserver {
 		// Parse the game out of the response body
 		final GameSession game = GameSession.fromJson(response.getBody());
 		
-		// Pass the games back to the controller
-		controller.addGameToModel(game);
 	}
 
 	/* (non-Javadoc)

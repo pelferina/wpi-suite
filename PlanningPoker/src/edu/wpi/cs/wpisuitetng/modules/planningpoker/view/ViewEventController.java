@@ -110,4 +110,18 @@ public class ViewEventController {
 	public void newGameTab() {
 		main.addNewGameTab();
 	}
+	
+	/**
+	 * Set the end game button in tool bar visible 
+	 * @param gameID 
+	 */
+	public void setEndGameButtonVisible(int gameID){
+		toolbar.setEndGameVisible(gameID);
+	}
+	/**
+	 * Set the end game button in tool bar invisible 
+	 */
+	public void setEndGameButtonInvisible(){
+		toolbar.setEndGameInvisible();
+	}
 }

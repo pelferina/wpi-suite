@@ -39,7 +39,7 @@ public class UpdateGameController {
 	public void sendGame(GameSession ToSend){
 		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.POST); // PUT == create
 		request.setBody(ToSend.toJSON()); // put the new session in the body of the request
-		request.addObserver(new UpdateGameRequestObserver(this)); // add an observer to process the response
+		request.addObserver(new UpdateGameRequestObserver()); // add an observer to process the response
 		request.send(); // send the request
 	}
 	/**
