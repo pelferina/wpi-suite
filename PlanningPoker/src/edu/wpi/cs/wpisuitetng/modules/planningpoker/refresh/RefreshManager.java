@@ -13,7 +13,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashSet;
+
 import java.util.List;
 
 import javax.swing.Timer;
@@ -111,13 +111,22 @@ public class RefreshManager {
 	
 	
 	//Assumes list are in the same order
+	/**
+	 * Checks whether two lists are different or not. Assumes they are sorted in the same order
+	 * @param l1 the first list
+	 * @param l2 the second list
+	 * @return whether or not they are the same as a boolean
+	 */
 	public boolean differentList(List<?> l1, List<?> l2) {
-		if (l1.size() != l2.size() )
+		if (l1.size() != l2.size() ){
 			return true;
+		}
 		
-	    for (int i = 0; i < l1.size(); i++) 
-	    	if ( ! l1.get(i).equals(l2.get(i) ))
+	    for (int i = 0; i < l1.size(); i++){
+	    	if ( ! l1.get(i).equals(l2.get(i) )){
 	        	return true;
+	    	}
+	    }
 	    
 	    return false;
 	}

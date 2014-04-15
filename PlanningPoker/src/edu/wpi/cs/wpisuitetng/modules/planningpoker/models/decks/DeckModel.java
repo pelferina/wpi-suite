@@ -98,7 +98,7 @@ public class DeckModel extends AbstractListModel {
 	 * 
 	 * @return the next open id number */
 	public int getNextID() {
-		return this.nextID++;
+		return nextID++;
 	}
 
 	/**
@@ -142,7 +142,7 @@ public class DeckModel extends AbstractListModel {
 	public void addDecks(Deck[] Decks) {
 		System.out.println("Got decks.." + Decks.length);
 		for (int i = 0; i < Decks.length; i++) {
-			this.listOfDecks.add(Decks[i]);
+			listOfDecks.add(Decks[i]);
 			if (Decks[i].getId() >= nextID) nextID = Decks[i].getId() + 1;
 		}
 		
