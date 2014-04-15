@@ -367,12 +367,17 @@ public class NewGameInputDistributedPanel extends JPanel {
 		if(!deadlineCheckBox.isSelected())
 		{
 			deadlineDate = null;
-		}		
+		}
+		List<Requirement> reqsSelected = newGameP.getSelected();
+		for (int i=0; i<reqsSelected.size(); i++){
+			selectionsMade.add(reqsSelected.get(i).getId());
+		}
 		GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
 
 		//If activating: Set game status to active and Send an activation email 
 		if(this.activate == true)
 		{   
+			System.out.println("Requirements Selected:" + selectionsMade);
 			newGame.setGameStatus(GameStatus.ACTIVE);
 			final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.PUT); // PUT == create
 			request.setBody("endGame" + newGame.getGameName());
@@ -410,12 +415,8 @@ public class NewGameInputDistributedPanel extends JPanel {
 	 */
 	private boolean hasReqs()
 	{
-		List<Requirement> reqsSelected = newGameP.getSelected();
-		for (int i=0; i<reqsSelected.size(); i++){
-			selectionsMade.add(reqsSelected.get(i).getId());
-		}
 		//Displays the cannot have a game without requirements error if no requirements were chosen
-		if (selectionsMade.isEmpty()){
+		if (newGameP.getSelected().isEmpty()){
 			reqError.setVisible(true);
 			return false;
 		}
@@ -440,12 +441,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		Calendar deadline = Calendar.getInstance();
 		deadline.set(deadlineYear, deadlineMonth, deadlineDay, hourTime, minuteTime);
 		
-//		System.out.println(deadline.get(Calendar.DAY_OF_MONTH)+"/"+deadline.get(Calendar.MONTH)+"/"+deadline.get(Calendar.YEAR)+ "     " 
-//				 		+ currentDate.get(Calendar.DAY_OF_MONTH)+"/"+currentDate.get(Calendar.MONTH)+"/"+currentDate.get(Calendar.YEAR));
-//				 		SimpleDateFormat deadlineTimeFormat = new SimpleDateFormat("hh:mm aa");
-//				 		System.out.println(deadlineTimeFormat.format(deadline.getTime())+ "     "+ deadlineTimeFormat.format(currentDate.getTime()));
-				 
-		if (deadline.after(currentDate) && minuteTime!=currentDate.get(Calendar.MINUTE)){
+		if (deadline.after(currentDate)){
 			deadlineError.setVisible(false);
 			return true;
 		}

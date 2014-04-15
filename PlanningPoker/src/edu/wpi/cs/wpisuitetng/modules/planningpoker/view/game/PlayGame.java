@@ -12,8 +12,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddVoteController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.VoteModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -41,11 +43,12 @@ public class PlayGame extends JPanel{
 	public PlayGame(GameSession gameToPlay, GameView agv){
 		currentGame = gameToPlay;
 		this.gameReqs = currentGame.getGameReqs();
-		ArrayList<Integer> Estimates = new ArrayList<Integer>();
+		ArrayList<Integer> estimates = new ArrayList<Integer>();
+		System.out.println(gameReqs.size());
 		for (int i = 0; i < gameReqs.size(); i++){
-			Estimates.add(-1);
+			estimates.add(-1);
 		}
-		userEstimates = new Vote(Estimates, currentGame.getGameID());
+		userEstimates = new Vote(estimates, currentGame.getGameID());
 		submit.setEnabled(false);
 		this.gv = agv;
 		List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
@@ -97,17 +100,27 @@ public class PlayGame extends JPanel{
 				else{
 					for(int i = 0; i < gameReqs.size(); i++){
 						if (gameReqs.get(i) == currentReq.getId()){
-							System.out.println("Size: " + userEstimates.getVote().size());
 							ArrayList<Integer> votes = (ArrayList<Integer>) userEstimates.getVote();
 							votes.set(i, estimate);
 							userEstimates.setVote(votes);
 							break;
 						}
 					}
-					gv.updateReqTables(currentReq);
+					checkCanSubmit();
+					System.out.println(userEstimates.getVote());
+					sendEstimatetoGameView(currentReq);
 				}
 			}
 			
+		});
+		
+		submit.addActionListener(new ActionListener(){
+			
+			@Override
+			public void actionPerformed(ActionEvent e){
+				AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
+				msgr.sendVote(userEstimates);
+			}
 		});
 		
 		SpringLayout springLayout = new SpringLayout();
@@ -115,10 +128,12 @@ public class PlayGame extends JPanel{
 		//Spring layout placement for vote button
 		springLayout.putConstraint(SpringLayout.NORTH, voteButton, 6, SpringLayout.SOUTH, estimateTextField);
 		springLayout.putConstraint(SpringLayout.WEST, voteButton, 132, SpringLayout.WEST, this);		
+		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, voteButton, 0, springLayout.HORIZONTAL_CENTER, estimateTextField);
 		
 		//Spring layout placement for submit button
-		springLayout.putConstraint(SpringLayout.NORTH, submit, -10, SpringLayout.SOUTH, voteButton);
+		springLayout.putConstraint(SpringLayout.NORTH, submit, 30, SpringLayout.SOUTH, voteButton);
 		springLayout.putConstraint(SpringLayout.WEST, submit, 0, SpringLayout.WEST, voteButton);
+		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, submit, 0, springLayout.HORIZONTAL_CENTER, voteButton);
 		
 		//Spring layout placement for estimateTextField
 		springLayout.putConstraint(SpringLayout.NORTH, estimateTextField, 6, SpringLayout.SOUTH, estimateLabel);
@@ -161,11 +176,9 @@ public class PlayGame extends JPanel{
 	
 	private void isValidEstimate(){
 		if (estimateTextField.getText().length() > 0 && isInteger(estimateTextField.getText())){
-			submit.setEnabled(true);
 			voteButton.setEnabled(true);
 		}
 		else{
-			submit.setEnabled(false);
 			voteButton.setEnabled(false);
 		}
 	}
@@ -174,13 +187,24 @@ public class PlayGame extends JPanel{
 	//selected requirement
 	public void chooseReq(Requirement reqToEstimate){
 		currentReq = reqToEstimate;
-		reqNameTextField.setText(reqToEstimate.getName());
-		reqDescTextArea.setText(reqToEstimate.getDescription());
-		estimateTextField.setText("");
+		reqNameTextField.setText(currentReq.getName());
+		reqDescTextArea.setText(currentReq.getDescription());
+		int i = 0;
+		for(i = 0; i < gameReqs.size(); i++){
+			if (gameReqs.get(i) == currentReq.getId()){
+				break;
+			}
+		}
+		int estimate = userEstimates.getVote().get(i);
+		if (estimate > -1) {
+			estimateTextField.setText(Integer.toString(estimate));
+		} else {
+			estimateTextField.setText("");
+		}
 	}
 	
 	//This function will be used when the user submits an estimate for a requirement, and it will notify GameRequirements to move the requirement from
-	//toestimate table to the completed estimates table
+	//to estimate table to the completed estimates table
 	public void sendEstimatetoGameView(Requirement r){
 		gv.updateReqTables(r);
 	}
@@ -194,6 +218,25 @@ public class PlayGame extends JPanel{
 	    }
 	    // only got here if we didn't return false
 	    return true;
+	}
+
+	//This function is called when the user estimates all of the requirements, it clears the name and description boxes
+	public void clear() {
+		reqNameTextField.setText("");
+		reqDescTextArea.setText("");
+		estimateTextField.setText("");
+	}
+	
+	
+	public void checkCanSubmit(){
+		boolean canSubmit = true;
+		for (int estimate: userEstimates.getVote()){
+			if (estimate < 0){
+				canSubmit = false;
+				break;
+			}
+		}
+		submit.setEnabled(canSubmit);
 	}
 	
 /*	@Override

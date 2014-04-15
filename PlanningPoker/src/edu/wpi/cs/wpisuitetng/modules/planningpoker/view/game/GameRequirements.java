@@ -124,16 +124,20 @@ public class GameRequirements extends JSplitPane{
 				String description = (String) reqNames.getValueAt(i, 2);
 				reqNames.removeRow(i);
 				complete.addRow(new Object[]{reqId, name, description});
+				break;
 			}
 		}
 		if (estimatesPending.getRowCount() > 0){
 			int nextID = (int) estimatesPending.getValueAt(0, 0);
 			for (Requirement req: gameReqs){
 				if (req.getId() == nextID){
-					gv.sendReqToPlay(r);
+					gv.sendReqToPlay(req);
 					break;
 				}
 			}
+		}
+		else {
+			gv.clearBoxes();
 		}
 	}
 	
@@ -156,7 +160,7 @@ public class GameRequirements extends JSplitPane{
 				List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
 				Requirement req = null;
 				for (Requirement r: allReqs){
-					if (r.getName().equals(tableClicked.getValueAt(row, 0))){
+					if (r.getId() == (int)tableClicked.getValueAt(row, 0)){
 						req = r;
 					}
 				}
