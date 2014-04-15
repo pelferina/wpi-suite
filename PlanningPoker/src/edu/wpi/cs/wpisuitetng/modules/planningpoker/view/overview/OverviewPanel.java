@@ -28,6 +28,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameTree;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.JTableModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.RTableModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
@@ -167,11 +168,29 @@ public class OverviewPanel extends JPanel implements Refreshable {
 			sessions = (ArrayList<GameSession>) gameModel.getArchivedGameSessions();
 		} else if (s.equals("Planning Poker")) {
 			sessions = (ArrayList<GameSession>) gameModel.getGames();
+		} else {
+			String node = s;
+			GameSession game = null;
+			for (GameSession gs : GameModel.getInstance().getCompletedGameSessions()){
+				if (gs.getGameName().equals(node)){
+					game = gs;
+				}
+			}
+			
+			if (game!=null){ // if game is found
+    			splitPane.remove(table);
+    			RTableModel rtab = new RTableModel(game);
+    			table = new JTable(rtab);
+    			splitPane.setRightComponent(table);
+			}
 		}
-		JTableModel jModel = (JTableModel)table.getModel();
-		jModel.update((ArrayList<GameSession>)sessions);
-		table.setModel(jModel);
-		jModel.fireTableDataChanged();
+		
+		if (table.getModel() instanceof JTableModel){
+			JTableModel jModel = (JTableModel)table.getModel();
+			jModel.update((ArrayList<GameSession>)sessions);
+			table.setModel(jModel);
+			jModel.fireTableDataChanged();
+		}
 		
 	}
 
