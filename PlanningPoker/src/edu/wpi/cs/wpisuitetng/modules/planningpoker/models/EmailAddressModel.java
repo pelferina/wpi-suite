@@ -19,8 +19,8 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 /**
  * This is a model for email addresses. 
  * 
- * @author Chris Casola
- *
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
  */
 @SuppressWarnings({"serial"})
 public class EmailAddressModel extends AbstractModel {
@@ -32,6 +32,8 @@ public class EmailAddressModel extends AbstractModel {
 	/**
 	 * Constructs a new email model with a provided address
 	 * Sets userID to -1 until on server side
+	 * 
+	 *  @param address This is the address to send the email to
 	 */
 	public EmailAddressModel(String address) {
 		this.address = address;

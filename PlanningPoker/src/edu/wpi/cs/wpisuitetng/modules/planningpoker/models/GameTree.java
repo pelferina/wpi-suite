@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * @author Anthony
- *
+ * @version $Revision: 1.0 $
  */
 @SuppressWarnings("serial")
 public class GameTree extends DefaultMutableTreeNode {
@@ -22,6 +22,11 @@ public class GameTree extends DefaultMutableTreeNode {
 	private DefaultMutableTreeNode top;
 	private GameModel gameModel;
 
+	/**
+	 * This constructor creates a tree system and its highest node as well as populating variables
+	 * 
+	 * @param top the topmost node of the tree
+	 */
 	public GameTree(DefaultMutableTreeNode top) {
         this.top = top;
         this.gameModel = GameModel.getInstance();
@@ -105,6 +110,9 @@ public class GameTree extends DefaultMutableTreeNode {
 		return top;
 	}
 	
+	/**
+	 * This method updates all the nodes by removing the tops children and rebuilding
+	 */
 	public void update(){
 		top.removeAllChildren();
 		createNodes(top);

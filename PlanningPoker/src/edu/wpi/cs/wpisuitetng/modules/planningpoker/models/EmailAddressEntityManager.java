@@ -37,8 +37,8 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
  * This is the entity manager for the EmailAddressModel in the
  * PostBoard module.
  * 
- * @author Chris Casola
- *
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
  */
 public class EmailAddressEntityManager implements EntityManager<EmailAddressModel> {
 
@@ -215,7 +215,12 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 		return null;
 	}
 
-	
+	/**
+	 * This method sends an email.
+	 * @param sent_to The person to send the email to
+	 * @param send_subject The subject line of the email
+	 * @param send_text The text body of the email.
+	 */
 	public void sendEmail(String sent_to, String send_subject, String send_text) {
 		 
 		final String username = "fff8e7.email@gmail.com";

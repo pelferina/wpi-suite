@@ -15,6 +15,11 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
+/**
+ * This is the model for votes
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
+ */
 public class VoteModel implements Model {
 
 	public VoteModel() {

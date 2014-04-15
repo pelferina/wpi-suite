@@ -20,10 +20,19 @@ import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 
+/**
+ * This class manages all votes
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
+ */
 public class VoteEntityManager implements EntityManager<Vote> {
 
 	private Data db;
 
+	/**
+	 * This constructor populates the database variable with input
+	 * @param db the database to manage
+	 */
 	public VoteEntityManager(Data db) {
 		this.db = db;
 	}

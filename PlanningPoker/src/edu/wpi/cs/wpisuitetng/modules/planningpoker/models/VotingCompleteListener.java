@@ -18,9 +18,18 @@ import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 
+/**
+ * This is the listener that listens for when voting is complete
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
+ */
 public class VotingCompleteListener implements ActionListener {
 	Data db;
 
+	/**
+	 * Constructor to create the listener for a database
+	 * @param db the database to be listening to
+	 */
 	public VotingCompleteListener(Data db) {
 		this.db = db;
 	}

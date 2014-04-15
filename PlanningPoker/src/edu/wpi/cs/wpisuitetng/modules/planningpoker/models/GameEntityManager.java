@@ -43,6 +43,8 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 /**
  * This is the entity manager for the Planning Poker Module.
  * 
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
  */
 public class GameEntityManager implements EntityManager<GameSession> {
 

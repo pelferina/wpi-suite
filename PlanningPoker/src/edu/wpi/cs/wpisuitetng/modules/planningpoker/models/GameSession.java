@@ -1,14 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2013 -- WPI Suite
+ * Copyright (c) 2014 -- WPI Suite
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *    Chris Casola
- *    Andrew Hurle
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
@@ -28,6 +25,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * Model to contain a single game for the Planning Poker module
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
  */
 public class GameSession extends AbstractModel {
 
@@ -56,6 +55,15 @@ public class GameSession extends AbstractModel {
 	private List<Float> median;
 	private List<Float> mean;
 	
+	/**
+	 * This constructor generates a game session
+	 * @param game the name of the game as a string
+	 * @param description the description of the game as a string
+	 * @param ownerID the id number of the owner as an int
+	 * @param gameID the id number of the game as an int
+	 * @param deadline the time of the deadline as a date
+	 * @param gameReqs the requirements of the game, as a List<Integers>
+	 */
 	public GameSession(String game, String description, int ownerID, int gameID, Date deadline, List<Integer> gameReqs){
 		this.gameName = game;
 		this.gameDescription = description;
@@ -231,6 +239,9 @@ public class GameSession extends AbstractModel {
 		votes.add(v);
 	}
 	
+	/**
+	 * This method calculates the statistics of the votes, such as mean and median
+	 */
 	public void calculateStats(){
 		int requirementNum = gameReqs.size();
 		int userNum = votes.size();

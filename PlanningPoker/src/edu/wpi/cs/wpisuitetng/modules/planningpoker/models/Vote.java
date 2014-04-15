@@ -10,8 +10,9 @@ import com.google.gson.Gson;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
 /**
+ * This is the vote class, that stores information on the game it corresponds with, and which user cast the vote
  * @author Team FFF8E7
- *
+ * @version $Revision: 1.0 $
  */
 public class Vote extends AbstractModel implements Comparable<Vote>{
 
@@ -163,6 +164,11 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	public int compareTo(Vote o) {
 		return o.VoteID - this.VoteID;
 	}
+	/**
+	 * This function takes a vote and returns it as an integer
+	 * @param v the vote to hash
+	 * @return the hashed vote as an integer
+	 */
 	public static int toHash(Vote v){
 		return v.gameID* 100000 + v.UID;
 	}
