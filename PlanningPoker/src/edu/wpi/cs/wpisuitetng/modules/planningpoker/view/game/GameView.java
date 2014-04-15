@@ -17,6 +17,11 @@ import javax.swing.JSplitPane;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
+/**
+ * A split pane for when a game's information is being viewed
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
+ */
 @SuppressWarnings("serial")
 public class GameView extends JSplitPane{
 
@@ -24,6 +29,10 @@ public class GameView extends JSplitPane{
 	PlayGame playGame;
 	public boolean isNew = false;
 	
+	/**
+	 * Constructor to make a gameview with a given session
+	 * @param gameToPlay the active game to be viewing
+	 */
 	public GameView (GameSession gameToPlay){
 		this.gameReqs = new GameRequirements(gameToPlay, this);
 		this.playGame = new PlayGame(gameToPlay, this);
@@ -34,10 +43,18 @@ public class GameView extends JSplitPane{
 		setDividerLocation(400);
 	}
 
+	/**
+	 * This method chooses a requirement
+	 * @param r the requirement
+	 */
 	public void sendReqToPlay(Requirement r) {
 		playGame.chooseReq(r);
 	}
 
+	/**
+	 * This method updates the requirement tables with a requirement
+	 * @param r the requirement
+	 */
 	public void updateReqTables(Requirement r) {
 		gameReqs.updateTables(r);
 	}

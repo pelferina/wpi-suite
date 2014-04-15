@@ -14,10 +14,10 @@ import java.awt.event.MouseEvent;
 import javax.swing.*;
 
 /**
- * Description
+ * Initial panel for creating a new game
  *
  * @author Xi Wen; Anthony Dresser; Nathan Bryant
- * @version Mar 24, 2014
+ * @version $Revision: 1.0 $
  */
 @SuppressWarnings("serial")
 public class NewGameInitialPanel extends JPanel{
@@ -63,6 +63,10 @@ public class NewGameInitialPanel extends JPanel{
 		return gameNameInput;
 	}
 	
+	/**
+	 * This method returns either 1 or 2, for live or distributed game.
+	 * @return returns the type of game as an integer
+	 */
 	public int getGameType(){
 		if (liveButton.isSelected())
 			return 1; // flag for live game

@@ -27,10 +27,10 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
- * Description
+ * Panel that displays the current game
  *
  * @author Ruofan Ding
- * @version Apr 1st
+ * @version $Revision: 1.0 $
  */
 @SuppressWarnings({"serial"})
 public class CurrentGamePanel extends JPanel {
@@ -48,6 +48,9 @@ public class CurrentGamePanel extends JPanel {
 
 		setPanel();
 	}
+	/**
+	 * This method sets the layout and designs the panel
+	 */
 	private void setPanel(){
 		SpringLayout springLayout = new SpringLayout();
 		JScrollPane activeLstScrollPane = new JScrollPane(activeGameList);

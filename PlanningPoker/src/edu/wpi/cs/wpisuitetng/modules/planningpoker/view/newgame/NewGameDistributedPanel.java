@@ -26,8 +26,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 /**
  * The panel for creating a new live Planning Poker game, along with fields
  * that have the parameters for what a new game should have.
- *
- * 
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
  */
 @SuppressWarnings("serial")
 
@@ -39,6 +39,11 @@ public class NewGameDistributedPanel extends JSplitPane {
 	public JButton close;
 	private GameSession editMode;
 	
+	/**
+	 * Constructor for NewGameDistributedPanel
+	 * @param gameSession the session to display
+	 * @param close the close button to close the panel
+	 */
 	public NewGameDistributedPanel(GameSession gameSession, JButton close)
 	{
 		this.close = close;
@@ -47,6 +52,11 @@ public class NewGameDistributedPanel extends JSplitPane {
 		this.newGameInputPanel = new NewGameInputDistributedPanel(this, gameSession);
 		setPanel();
 	}
+	/**
+	 * Constructor for NewGameDistributedPanel that gets requirements
+	 * @param reqs a List<Requirement> of requirements
+	 * @param close button to close the panel
+	 */
 	public NewGameDistributedPanel(List<Requirement> reqs, JButton close) {
 		newGameReqPanel = new NewGameReqPanel();
 		GetRequirementsController.getInstance().addRefreshable(newGameReqPanel);
@@ -60,7 +70,7 @@ public class NewGameDistributedPanel extends JSplitPane {
 	 * This sets up the panels
 	 * Must be private so that it cannot be set up more than once
 	 * Only to be called in the constructor
-	 * <3
+	 * 
 	 */
 	private void setPanel(){
 		addImpl(newGameInputPanel, JSplitPane.LEFT, 1);

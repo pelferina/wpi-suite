@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 WPI-Suite
+ * Copyright (c) 2014 WPI-Suite
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -58,8 +58,8 @@ public class NewGameImportWindow {
 	
 	/**s
 	 * constructor for newgameimportwindow
-	 * @param requirements
-	 * @param parentFrame
+	 * @param theRequirements a  List<Requirement> of requirements for the new game
+	 * @param parentFrame the window this is coming from
 	 */
 	public NewGameImportWindow(List<Requirement> theRequirements, Window parentFrame)
 	{

@@ -27,7 +27,8 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  * This class shows the requirements that are currently in the game
- *
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
  */
 @SuppressWarnings("serial")
 public class NewGameReqPanel extends JPanel implements Refreshable {
@@ -61,9 +62,9 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	}
 
 	/**
-	 * 
-	 * @param requirements, the current requirements in the database
-	 * @param gameSession, the game to be edited
+	 * Constructor for the new game requirements panel
+	 *
+	 * @param gameSession the game to be edited
 	 */
 	//Constructor for edit games tab
 	public NewGameReqPanel(GameSession gameSession) {

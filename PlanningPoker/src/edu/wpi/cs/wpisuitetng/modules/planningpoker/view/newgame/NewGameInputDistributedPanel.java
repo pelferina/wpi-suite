@@ -40,7 +40,8 @@ import javax.swing.event.DocumentListener;
 
 /**
  * This is the window for the user to create a planning poker session
- *
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
  */
 @SuppressWarnings("serial")
 public class NewGameInputDistributedPanel extends JPanel {
@@ -124,8 +125,8 @@ public class NewGameInputDistributedPanel extends JPanel {
 	
 	/**
 	 * Edit Tab constructor
-	 * @param ngdp, the new game distributed panel that it was added from
-	 * @param gameSession, the game to be edited
+	 * @param ngdp the new game distributed panel that it was added from
+	 * @param gameSession the game to be edited
 	 */
 	public NewGameInputDistributedPanel(NewGameDistributedPanel ngdp, GameSession gameSession)
 	{
@@ -139,7 +140,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 	/**
 	 * The constructor for the NewGameInputPanel
 	 * has void parameters
-	 * @param nglp, The NewGameLivePanel that it was added from
+	 * @param nglp The NewGameLivePanel that it was added from
 	 */
 	public NewGameInputDistributedPanel(NewGameDistributedPanel ngdp) {
 		saveGameButton = new JButton("Create Game");
@@ -159,7 +160,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 
 	/**
 	 * Initializes the NewGameDistributedPanel
-	 * @param ngdp
+	 * @param ngdp the NewGameDistributedPanel to initialize
 	 */
 	private void init(NewGameDistributedPanel ngdp)
 	{

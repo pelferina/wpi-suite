@@ -29,6 +29,11 @@ import javax.swing.SpringLayout;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+/**
+ * A panel for playing a game session
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
+ */
 public class PlayGame extends JPanel{
 
 	private List<Integer> gameReqs;
@@ -43,6 +48,11 @@ public class PlayGame extends JPanel{
 	private GameView gv;
 	//private GameCard[] gameCards = {new GameCard(1), new GameCard(2), new GameCard(5)};
 	
+	/**
+	 * Constructor for a PlayGame panel
+	 * @param gameToPlay the game session that is being played
+	 * @param agv the active game view
+	 */
 	public PlayGame(GameSession gameToPlay, GameView agv){
 		submit.setEnabled(false);
 		this.gameReqs = gameToPlay.getGameReqs();
@@ -130,8 +140,13 @@ public class PlayGame extends JPanel{
 		add(reqDescTextArea);
 	}
 	
-	//This function is used when a requirement is double clicked in one of the two requirement tables, and it sets the name and description fields to the 
-	//selected requirement
+
+	/**
+	 * This function is used when a requirement is double clicked in one of the two requirement tables 
+	 * and it sets the name and description fields to the selected requirement
+	 * 
+	 * @param reqToEstimate the requirement that is being estimated
+	 */
 	public void chooseReq(Requirement reqToEstimate){
 		currentReq = reqToEstimate;
 		reqNameTextField.setText(reqToEstimate.getName());
@@ -141,6 +156,11 @@ public class PlayGame extends JPanel{
 	
 	//This function will be used when the user submits an estimate for a requirement, and it will notify GameRequirements to move the requirement from
 	//toestimate table to the completed estimates table
+	/**
+	 * This function will be used when the user submits an estimate for a requirement and it will notify GameRequirements to move the requirement from 
+	 * to estimate table to the completed estimates table
+	 * @param r the requirement to send
+	 */
 	public void sendEstimatetoGameView(Requirement r){
 		gv.updateReqTables(r);
 	}

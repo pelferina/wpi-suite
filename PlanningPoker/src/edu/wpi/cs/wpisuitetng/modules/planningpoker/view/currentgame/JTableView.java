@@ -16,6 +16,11 @@ import javax.swing.JTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.JTableModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 
+/**
+ * The view for the table of game sessions
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
+ */
 public class JTableView extends JScrollPane {
 	private JTable table;
 	public JTableView(){
@@ -24,6 +29,10 @@ public class JTableView extends JScrollPane {
 		setViewportView(table);
 		add(table);
 	}
+	/**
+	 * Constructor to create the table view with an array of sessions
+	 * @param sessions
+	 */
 	public JTableView(GameSession[] sessions) {
 		table = new JTable(new JTableModel(sessions));
 		setViewportView(table);

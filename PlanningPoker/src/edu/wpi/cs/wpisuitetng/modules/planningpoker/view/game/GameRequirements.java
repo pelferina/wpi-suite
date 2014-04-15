@@ -32,6 +32,12 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 
 import javax.swing.SpringLayout;
 
+/**
+ * The gameRequirements class that handles information on each game's requirements
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
+ *
+ */
 public class GameRequirements extends JSplitPane{
 	
 	private JTable estimatesPending;
@@ -44,6 +50,11 @@ public class GameRequirements extends JSplitPane{
 	private List<Requirement> gameReqs = new ArrayList<Requirement>();
 	private GameView gv;
 	
+	/**
+	 * Constructor for GameRequirements
+	 * @param gameToPlay the game session
+	 * @param agv the active game view
+	 */
 	public GameRequirements(GameSession gameToPlay, GameView agv) {
 		List<Requirement> allReqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
 		this.gameReqIDs = gameToPlay.getGameReqs();
@@ -114,13 +125,18 @@ public class GameRequirements extends JSplitPane{
 		table.getColumnModel().getColumn(0).setPreferredWidth(150);
 	}
 	
-	//This function will send the clicked requirement to the PlayGame panel
+	/**
+	 * This function sends the clicked requirement to the PlayGame panel
+	 * @param r the requirement to send
+	 */
 	public void sendReq(Requirement r){
 		gv.sendReqToPlay(r);
 	}
 
-	//This function is called when an estimate is completed, and it moves the requirement from the pending table to the completed table
-	
+	/**
+	 * This function updates the tables when an estimate is completed and it moves the requirement from the pending table to the completed table
+	 * @param r the requirement
+	 */
 	public void updateTables(Requirement r) {
 		DefaultTableModel reqNames = (DefaultTableModel) estimatesPending.getModel();
 		DefaultTableModel complete = (DefaultTableModel) estimatesComplete.getModel();
@@ -136,11 +152,19 @@ public class GameRequirements extends JSplitPane{
 	}
 	
 	
-	//This listener is used to select a requirement to estimate by double clicking on the estimate in the table
+	/**
+	 * This listener is used to select a requirement to estimate by double clicking on the estimate in the table
+	 * @author Cosmic Latte
+	 * @version $Revision: 1.0 $
+	 */
 	public class tableListener extends MouseAdapter{
 		
 		JTable tableClicked;
 		
+		/**
+		 * constructor for the table listener
+		 * @param table the table to listen to
+		 */
 		public tableListener(JTable table){
 			this.tableClicked = table;
 		}
