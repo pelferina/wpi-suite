@@ -342,6 +342,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		//Checks to see if all the fields are properly filled, and then sends the game object to the database if done.
 		activateGameButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				activate=true;
 				saveOrActivateGame();
 				JOptionPane gameCreated = new JOptionPane("Game Created and Activated");
 				JOptionPane.showMessageDialog(gameCreated, "Game has been created and activated", "Game created", JOptionPane.INFORMATION_MESSAGE);
@@ -374,7 +375,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		{   
 			newGame.setGameStatus(GameStatus.ACTIVE);
 			final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.PUT); // PUT == create
-			request.setBody("endGame" + newGame.getGameName());
+			request.setBody("newGame" + newGame.getGameName());
 			request.send(); // send the request
 		}
 		 
@@ -444,7 +445,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 //				 		SimpleDateFormat deadlineTimeFormat = new SimpleDateFormat("hh:mm aa");
 //				 		System.out.println(deadlineTimeFormat.format(deadline.getTime())+ "     "+ deadlineTimeFormat.format(currentDate.getTime()));
 				 
-		if (deadline.after(currentDate) && minuteTime!=currentDate.get(Calendar.MINUTE)){
+		if (deadline.after(currentDate)){
 			deadlineError.setVisible(false);
 			return true;
 		}
