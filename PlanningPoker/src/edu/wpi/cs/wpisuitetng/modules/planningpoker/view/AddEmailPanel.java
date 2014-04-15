@@ -14,9 +14,12 @@ public class AddEmailPanel extends JPanel {
 	private JTextField emailField = new JTextField();
 	private JLabel emailLabel = new JLabel("Email: ");
 	private JButton submitButton = new JButton ("Submit");
+	private JButton close;
+	public boolean isNew = false;
 	
-	public AddEmailPanel(){
+	public AddEmailPanel(JButton btnClose){
 		setupPanel();
+		this.close = btnClose;
 	}
 	
 	private void setupPanel(){
