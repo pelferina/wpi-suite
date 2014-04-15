@@ -1,4 +1,3 @@
-
 /*******************************************************************************
  * Copyright (c) 2012-2014 -- WPI Suite
  *
@@ -28,7 +27,7 @@ import javax.swing.JComboBox;
  * Description
  *
  * @author Eric Faust; Dan Murray; Ayesha Fathima
- * @version Mar 24, 2014
+ * @version $Revision: 1.0 $
  */
 @SuppressWarnings({"serial"})
 public class DeckPanel extends JPanel {
@@ -40,6 +39,10 @@ public class DeckPanel extends JPanel {
 
 	private JComboBox deckDropdown = new JComboBox();
 
+	/**
+	 * Constructs a panel with a given DeckModel
+	 * @param deckModel the DeckModel the panel will use
+	 */
 	public DeckPanel(DeckModel deckModel) {
 		
 		lstDeckModel = deckModel;
@@ -55,7 +58,7 @@ public class DeckPanel extends JPanel {
 
 
 	/**
-	 * this function displays the deck given to deck panel
+	 * This function displays the deck given to deck panel
 	 */
 	private void setPanel(){
 		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
