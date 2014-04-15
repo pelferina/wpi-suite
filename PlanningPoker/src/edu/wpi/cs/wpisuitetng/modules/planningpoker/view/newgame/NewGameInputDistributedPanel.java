@@ -9,12 +9,13 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -22,7 +23,6 @@ import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -33,6 +33,7 @@ import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -145,6 +146,17 @@ public class NewGameInputDistributedPanel extends JPanel {
 		init(ngdp);
 	}
 	
+	private void setupButtonIcons()
+	{
+		try {
+			Image img = ImageIO.read(getClass().getResource("create.png"));
+			saveGameButton.setIcon(new ImageIcon(img));
+		    
+			img = ImageIO.read(getClass().getResource("activate.png"));
+		    activateGameButton.setIcon(new ImageIcon(img));		    
+		} catch (IOException ex) {}
+	}
+
 	/**
 	 * Initializes the NewGameDistributedPanel
 	 * @param ngdp
@@ -164,10 +176,13 @@ public class NewGameInputDistributedPanel extends JPanel {
 			}
 		});
 		canActivateChecker.start();
+		
+		setupButtonIcons();	
+		
 		saveGameButton.setEnabled(false);
 		activateGameButton.setEnabled(false);
+		
 		currentDate = Calendar.getInstance();
-
 		
 		//Initialize hour and minute combo boxes
 		deadlineHourComboBox.addItem("");
@@ -736,37 +751,28 @@ public class NewGameInputDistributedPanel extends JPanel {
 		//Spring layout for the datePicker
 		springLayout.putConstraint(SpringLayout.WEST, datePicker, 75, SpringLayout.WEST, deadlineLabel);
 		springLayout.putConstraint(SpringLayout.NORTH, datePicker, 0, SpringLayout.NORTH, deadlineLabel);
-					
-		//Spring layout for the activateGameButton
-		springLayout.putConstraint(SpringLayout.SOUTH, saveGameButton, -10, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, saveGameButton, 180, SpringLayout.WEST, this);
 		
 		//Spring layout for the deadlineError
-		springLayout.putConstraint(SpringLayout.WEST, deadlineError, 0, SpringLayout.WEST, saveGameButton);
+		springLayout.putConstraint(SpringLayout.WEST, deadlineError, 50, SpringLayout.WEST, saveGameButton);
 		springLayout.putConstraint(SpringLayout.NORTH, deadlineError, -20, SpringLayout.NORTH, saveGameButton);
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameTextField, 0, SpringLayout.VERTICAL_CENTER, nameLabel);
-		deadlineError.setVisible(false);
 		
 		//Spring layout for the minuteError
 		springLayout.putConstraint(SpringLayout.WEST, minuteError, 0, SpringLayout.WEST, deadlineError);
 		springLayout.putConstraint(SpringLayout.NORTH, minuteError, 0, SpringLayout.NORTH, deadlineError);
-		minuteError.setVisible(false);
 		
 		//Spring layout for the hourError
 		springLayout.putConstraint(SpringLayout.WEST, hourError, 0, SpringLayout.WEST, deadlineError);
 		springLayout.putConstraint(SpringLayout.NORTH, hourError, 0, SpringLayout.NORTH, deadlineError);
-		hourError.setVisible(false);
 		
 		//Spring layout for the nameError
 		springLayout.putConstraint(SpringLayout.WEST, nameError, 0, SpringLayout.WEST, deadlineError);
 		springLayout.putConstraint(SpringLayout.NORTH, nameError, 0, SpringLayout.NORTH, deadlineError);
-		nameError.setVisible(false);
 		
 		//Spring layout for the reqError
 		springLayout.putConstraint(SpringLayout.WEST, reqError, 0, SpringLayout.WEST, deadlineError);
 		springLayout.putConstraint(SpringLayout.NORTH, reqError, 0, SpringLayout.NORTH, deadlineError);
-		reqError.setVisible(false);
-						
+		
 		//Spring layout for timeLabel
     	springLayout.putConstraint(SpringLayout.NORTH, deadlineTime, 45, SpringLayout.SOUTH, deadlineLabel);
         springLayout.putConstraint(SpringLayout.WEST, deadlineTime, 0, SpringLayout.WEST, nameLabel);
@@ -785,12 +791,12 @@ public class NewGameInputDistributedPanel extends JPanel {
         springLayout.putConstraint(SpringLayout.NORTH, PMButton, 10, SpringLayout.SOUTH, deadlineMinuteComboBox);
         springLayout.putConstraint(SpringLayout.WEST, PMButton, 0, SpringLayout.WEST, deadlineMinuteComboBox);
 		
-		//Spring layout for the saveButton
+		//Spring layout for the saveGameButton
 		springLayout.putConstraint(SpringLayout.SOUTH, saveGameButton, -10, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, saveGameButton, 180, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.WEST, saveGameButton, 50, SpringLayout.WEST, this);
 		
 		//Spring layout for activateGameButton
-		springLayout.putConstraint(SpringLayout.WEST, activateGameButton, 50, SpringLayout.EAST, saveGameButton);
+		springLayout.putConstraint(SpringLayout.WEST, activateGameButton, 100, SpringLayout.EAST, saveGameButton);
 		springLayout.putConstraint(SpringLayout.NORTH, activateGameButton, 0, SpringLayout.NORTH, saveGameButton);
 		
 		setLayout(springLayout);
