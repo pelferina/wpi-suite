@@ -1,11 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2014 -- WPI Suite
- *
+ * Copyright (c) 2013 WPI-Suite
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * 
+ * Contributors: Team Cosmic Latte
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
@@ -15,25 +15,12 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 /**
- * This observer handles the requests to update games sent from the UpdateGameController
+ * Observer for game updates
  * @author Cosmic Latte
  * @version $Revision: 1.0 $
  */
 public class UpdateGameRequestObserver implements RequestObserver {
 
-<<<<<<< HEAD
-	/**
-	 * This observer handles the requests to update games
-	 * @param controller The controller this was called from
-	 */
-	public UpdateGameRequestObserver(UpdateGameController controller) {
-		this.controller = controller;
-	}
-
-	private final UpdateGameController controller;
-
-=======
->>>>>>> 374598f4604063e59e2d5486de75d7585d702439
 	/* (non-Javadoc)
 	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseSuccess(edu.wpi.cs.wpisuitetng.network.models.IRequest)
 	 */
