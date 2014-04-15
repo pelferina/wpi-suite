@@ -1,13 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2013 -- WPI Suite
+ * Copyright (c) 2014 -- WPI Suite
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *    Chris Casola
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
@@ -30,7 +28,8 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * from the server. This controller is called when the user
  * clicks the refresh button.
  * 
- * @author Chris Casola
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
  *
  */
 public class GetGamesController extends RefreshableController implements ActionListener {
@@ -38,10 +37,17 @@ public class GetGamesController extends RefreshableController implements ActionL
 	private static GetGamesController instance = null;
 	private final GameModel model;
 
+	/**
+	 * This constructor populates the model variable with the instance of GameModel
+	 */
 	public GetGamesController() {
 		this.model = GameModel.getInstance();
 	}
 	
+	/**
+	 * This method returns the instance of GetGamesController, or creates an instance if one does not exist
+	 * @return the instance of GetGamesController
+	 */
 	public static GetGamesController getInstance(){
 		if (instance==null)
 			instance = new GetGamesController();
