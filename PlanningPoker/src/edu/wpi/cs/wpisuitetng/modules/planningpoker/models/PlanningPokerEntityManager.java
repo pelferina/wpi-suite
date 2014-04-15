@@ -81,7 +81,7 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 		System.out.println("Adding: " + content);
 		GameSession[] games = getAll(s);
 		
-		GameSession newGame = new GameSession(importedGame.getGameName(), importedGame.getGameDescription(), importedGame.getOwnerID(), importedGame.getGameID(), importedGame.getEndDate(), importedGame.getGameReqs());
+		GameSession newGame = new GameSession(importedGame.getGameName(), importedGame.getGameDescription(), s.getUser().getIdNum(), importedGame.getGameID(), importedGame.getEndDate(), importedGame.getGameReqs());
 		newGame.setGameStatus(importedGame.getGameStatus());
 		newGame.setProject(s.getProject());
 		// Save the message in the database if possible, otherwise throw an exception
