@@ -165,7 +165,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 			sessions = (ArrayList<GameSession>) gameModel.getCompletedGameSessions();
 		} else if (s.equals("Archived Games")){
 			sessions = (ArrayList<GameSession>) gameModel.getArchivedGameSessions();
-		} else {
+		} else if (s.equals("Planning Poker")) {
 			sessions = (ArrayList<GameSession>) gameModel.getGames();
 		}
 		JTableModel jModel = (JTableModel)table.getModel();
