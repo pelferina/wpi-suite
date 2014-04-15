@@ -81,11 +81,11 @@ public class OverviewPanel extends JPanel implements Refreshable {
 				      }
 				    }
 				    if(e.getClickCount() == 1){
-				    	ViewEventController.getInstance().setEndGameButtonVisible();
 				    	int ownerID = ((JTableModel)(target.getModel())).getOwnerID(row);
+				    	int gameID = ((JTableModel)(target.getModel())).getGameID(row);
 				    	User currentUser = GetCurrentUser.getInstance().getCurrentUser();
 				    	if(currentUser.getIdNum() == ownerID){
-				    		ViewEventController.getInstance().setEndGameButtonVisible();
+				    		ViewEventController.getInstance().setEndGameButtonVisible(gameID);
 				    	}else{
 				    		ViewEventController.getInstance().setEndGameButtonInvisible();
 				    	}

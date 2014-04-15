@@ -53,9 +53,12 @@ public class ToolbarView  extends DefaultToolbarView {
 	public PlanningPokerButtonsPanel getReqButton() {
 		return gameButton;
 	}
-	
-	public void setEndGameVisible(){
-		endGameButton.setEndGameButtonVisible();
+	/**
+	 * Enables the end game button
+	 * @param gameID the ID associated with this button
+	 */
+	public void setEndGameVisible(int gameID){
+		endGameButton.setEndGameButtonVisible(gameID);
 	}
 	public void setEndGameInvisible(){
 		endGameButton.setEndGameButtonInvisible();

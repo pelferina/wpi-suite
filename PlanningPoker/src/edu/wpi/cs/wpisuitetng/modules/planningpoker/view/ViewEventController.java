@@ -117,9 +117,10 @@ public class ViewEventController {
 	
 	/**
 	 * Set the end game button in tool bar visible 
+	 * @param gameID 
 	 */
-	public void setEndGameButtonVisible(){
-		toolbar.setEndGameVisible();
+	public void setEndGameButtonVisible(int gameID){
+		toolbar.setEndGameVisible(gameID);
 	}
 	/**
 	 * Set the end game button in tool bar invisible 

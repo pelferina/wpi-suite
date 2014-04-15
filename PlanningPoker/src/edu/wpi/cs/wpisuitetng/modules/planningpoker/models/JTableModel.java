@@ -146,4 +146,12 @@ public class JTableModel extends AbstractTableModel {
 	public int getOwnerID(int i){
 		return games[i].getOwnerID();
 	}
+	/**
+	 * 
+	 * @param i the row number
+	 * @return the game id of the ith row
+	 */
+	public int getGameID(int i){
+		return games[i].getGameID();
+	}
 }
