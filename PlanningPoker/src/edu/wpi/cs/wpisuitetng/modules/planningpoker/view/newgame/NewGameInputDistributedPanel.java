@@ -16,6 +16,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,6 +24,7 @@ import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -169,6 +171,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		newGameP = ngdp;
 		
 		currentDate = Calendar.getInstance();
+
 		
 		setupButtonIcons();	
 		
@@ -330,12 +333,17 @@ public class NewGameInputDistributedPanel extends JPanel {
 		if(!deadlineCheckBox.isSelected())
 		{
 			deadlineDate = null;
-		}		
+		}
+		List<Requirement> reqsSelected = newGameP.getSelected();
+		for (int i=0; i<reqsSelected.size(); i++){
+			selectionsMade.add(reqsSelected.get(i).getId());
+		}
 		GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
 
 		//If activating: Set game status to active and Send an activation email 
 		if(this.activate == true)
 		{   
+			System.out.println("Requirements Selected:" + selectionsMade);
 			newGame.setGameStatus(GameStatus.ACTIVE);
 			final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.PUT); // PUT == create
 			request.setBody("newGame" + newGame.getGameName());
@@ -383,12 +391,8 @@ public class NewGameInputDistributedPanel extends JPanel {
 	 */
 	private boolean hasReqs()
 	{
-		List<Requirement> reqsSelected = newGameP.getSelected();
-		for (int i=0; i<reqsSelected.size(); i++){
-			selectionsMade.add(reqsSelected.get(i).getId());
-		}
 		//Displays the cannot have a game without requirements error if no requirements were chosen
-		if (selectionsMade.isEmpty()){
+		if (newGameP.getSelected().isEmpty()){
 			reqError.setVisible(true);
 			return false;
 		}
@@ -742,23 +746,31 @@ public class NewGameInputDistributedPanel extends JPanel {
 		//Spring layout for the datePicker
 		springLayout.putConstraint(SpringLayout.WEST, datePicker, 75, SpringLayout.WEST, deadlineLabel);
 		springLayout.putConstraint(SpringLayout.NORTH, datePicker, 0, SpringLayout.NORTH, deadlineLabel);
+					
+		//Spring layout for the activateGameButton
+		springLayout.putConstraint(SpringLayout.SOUTH, saveGameButton, -10, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, saveGameButton, 180, SpringLayout.WEST, this);
 		
 		//Spring layout for the deadlineError
 		springLayout.putConstraint(SpringLayout.WEST, deadlineError, 50, SpringLayout.WEST, saveGameButton);
 		springLayout.putConstraint(SpringLayout.NORTH, deadlineError, -20, SpringLayout.NORTH, saveGameButton);
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameTextField, 0, SpringLayout.VERTICAL_CENTER, nameLabel);
+		deadlineError.setVisible(false);
 		
 		//Spring layout for the minuteError
 		springLayout.putConstraint(SpringLayout.WEST, minuteError, 0, SpringLayout.WEST, deadlineError);
 		springLayout.putConstraint(SpringLayout.NORTH, minuteError, 0, SpringLayout.NORTH, deadlineError);
+		minuteError.setVisible(false);
 		
 		//Spring layout for the hourError
 		springLayout.putConstraint(SpringLayout.WEST, hourError, 0, SpringLayout.WEST, deadlineError);
 		springLayout.putConstraint(SpringLayout.NORTH, hourError, 0, SpringLayout.NORTH, deadlineError);
+		hourError.setVisible(false);
 		
 		//Spring layout for the nameError
 		springLayout.putConstraint(SpringLayout.WEST, nameError, 0, SpringLayout.WEST, deadlineError);
 		springLayout.putConstraint(SpringLayout.NORTH, nameError, 0, SpringLayout.NORTH, deadlineError);
+		nameError.setVisible(false);
 		
 		//Spring layout for the reqError
 		springLayout.putConstraint(SpringLayout.WEST, reqError, 0, SpringLayout.WEST, deadlineError);
@@ -825,4 +837,5 @@ public class NewGameInputDistributedPanel extends JPanel {
 		add(reqError);
 		add(activateGameButton);
 	}
+
 }

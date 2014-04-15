@@ -25,7 +25,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
  * to be displayed on the board. It extends AbstractListModel so that
  * it can provide the model data to the JList component in the BoardPanel.
  * 
- * @author Chris Casola
+ * @author fff8e7
  * 
  */
 @SuppressWarnings({"serial"})
