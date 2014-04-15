@@ -79,6 +79,10 @@ public class ViewEventController {
 		main.addEditGameTab(gameSession);
 	}
 	
+	public void playGameTab(GameSession gameSession){
+		main.addPlayGameTab(gameSession);
+	}
+	
 	/**
 	 * Opens a new tab for the creation of a game.
 	 */
@@ -91,5 +95,13 @@ public class ViewEventController {
 	 */
 	public void options() {
 		main.addEmailAddress();
+	}
+	
+	public MainView getMain(){
+		return main;
+	}
+
+	public void newGameTab() {
+		main.addNewGameTab();
 	}
 }

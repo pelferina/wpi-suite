@@ -14,6 +14,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameTree;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.JTableModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
@@ -75,8 +76,11 @@ public class OverviewPanel extends JPanel implements Refreshable {
 				    		  clickedGame = gm;
 				    	  }
 				      }
-				      if (clickedGame != null){
+				      if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.DRAFT){
 				    	  ViewEventController.getInstance().editGameTab(clickedGame); // Make this edit insteadS
+				      }
+				      else if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.ACTIVE){
+				    	  ViewEventController.getInstance().playGameTab(clickedGame);
 				      }
 				    }
 				  }
@@ -151,8 +155,8 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		} else if (s.equals("Completed Games")){
 			sessions = gameModel.getCompletedGameSessions();
 		} else if (s.equals("Archived Games")){
-			sessions = gameModel.getArchivedGameSessions();
-		} else {
+			sessions = (ArrayList<GameSession>) gameModel.getArchivedGameSessions();
+		} else if (s.equals("Planning Poker")) {
 			sessions = (ArrayList<GameSession>) gameModel.getGames();
 		}
 		JTableModel jModel = (JTableModel)table.getModel();

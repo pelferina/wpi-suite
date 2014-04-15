@@ -8,6 +8,8 @@ import javax.swing.table.AbstractTableModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersController;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
+
 @SuppressWarnings("serial")
 public class JTableModel extends AbstractTableModel {
 
@@ -16,7 +18,7 @@ public class JTableModel extends AbstractTableModel {
 	protected Integer[] gameIDs;
 	protected GetUsersController guc;
 	protected User[] users;
-	protected int size =0;
+	protected int size = 0;
     protected static final String[] COLUMN_NAMES = new String[] {"Name", "Deadline", "Owner", "Progress", "Status"};
     protected static final Class<?>[] COLUMN_TYPES = new Class<?>[] {String.class, String.class, String.class, String.class, String.class};
     
@@ -47,6 +49,24 @@ public class JTableModel extends AbstractTableModel {
     	}
 	}
     
+	private String gameStatus(GameSession game){
+		if (game.getGameStatus() == GameStatus.DRAFT){
+			return "Draft";
+		}
+		else if (game.getGameStatus() == GameStatus.ACTIVE){
+			return "Active";
+		}
+		else if (game.getGameStatus() == GameStatus.INPROGRESS){
+			return "In Progress";
+		}
+		else if (game.getGameStatus() == GameStatus.COMPLETED){
+			return "Completed";
+		}
+		else {
+			return "Archived";
+		}
+	}
+	
 	private String getUserFromID(int userID){
 		guc.actionPerformed();
 		while (guc.getUsers() == null){

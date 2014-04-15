@@ -18,7 +18,7 @@ public class AddVoteController {
 	 * @param v the vote to be sent
 	 */
 	public void sendVote(Vote v){
-		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.PUT); // PUT == create
+		final Request request = Network.getInstance().makeRequest("planningpoker/vote", HttpMethod.PUT); // PUT == create
 		request.setBody(v.toJSON()); // put the new session in the body of the request
 		request.addObserver(new AddVoteRequestObserver(this)); // add an observer to process the response
 		request.send(); // send the request

@@ -21,6 +21,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimerTask;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -35,7 +36,18 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	private List<Requirement> selected = new ArrayList<Requirement>();
 	private JTable unselectedTable;
 	private JTable selectedTable;
+	private Timer refresh;
 	private List<Requirement> reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
+	// Declarations and initializations of GUI components
+	JLabel lblRequirementsAvailable = new JLabel("Requirements Available");
+	JButton btnAddReq = new JButton("Add New Requirement");
+	JButton btnRemoveOne = new JButton("\u2191");
+	JLabel lblRequirementsSelected = new JLabel("Requirements Selected");
+	JButton btnAddOne = new JButton("\u2193");
+	JButton btnRemoveAll = new JButton("\u21c8");
+	JButton btnAddAll = new JButton("\u21ca");
+	JScrollPane unselected_table = new JScrollPane();
+	JScrollPane selected_table = new JScrollPane();
 
 	/**
 	 * 
@@ -86,17 +98,6 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
-
-		// Declarations and initializations of GUI components
-		JLabel lblRequirementsAvailable = new JLabel("Requirements Available");
-		JButton btnAddReq = new JButton("Add New Requirement");
-		JButton btnRemoveOne = new JButton("\u2191");
-		JLabel lblRequirementsSelected = new JLabel("Requirements Selected");
-		JButton btnAddOne = new JButton("\u2193");
-		JButton btnRemoveAll = new JButton("\u21c8");
-		JButton btnAddAll = new JButton("\u21ca");
-		JScrollPane unselected_table = new JScrollPane();
-		JScrollPane selected_table = new JScrollPane();
 
 		// Observers
 
@@ -333,11 +334,67 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		unselectedTable.repaint();
 	}
 
+	//This gets only the requirements in the "Backlog" iteration from the requirements manager
+	
+	private void getReqs() {
+		GetRequirementsController.getInstance().retrieveRequirements();
+		reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
+		ArrayList<Requirement> reqsCopy = new ArrayList<Requirement>(reqs);
+		for (Requirement req : reqsCopy) {
+			System.out.println("Iteration: " + req.getIteration());
+			if (!req.getIteration().equals("Backlog")) reqs.remove(req);
+		}
+	}
+	
+	public JTable getReqsTable(){
+		return this.unselectedTable;
+	}
+	
+	public JButton getAddOneButton(){
+		return this.btnAddOne;
+	}
+	
+	public JButton getAddAllButton(){
+		return this.btnAddAll;
+	}
+	
+	public JButton getRemoveOneButton(){
+		return this.btnRemoveOne;
+	}
+	
+	public JButton getRemoveAllButton(){
+		return this.btnRemoveAll;
+	}
+
+	public JTable getSelectedTabel() {
+		return this.selectedTable;
+	}
+
 	@Override
 	public void refreshGames() {
-		// Games aren't needed
+		// TODO Auto-generated method stub
 		
 	}
+}
+
+//The timer task for scheduling the initial refresh of the page
+
+class RefreshTask extends TimerTask {
+
+	Timer timer;
+	NewGameReqPanel ngrp;
+
+	public RefreshTask(Timer timer, NewGameReqPanel ngrp){
+		this.timer = timer;
+		this.ngrp = ngrp;
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
 
 

@@ -39,7 +39,7 @@ public class NewGameDistributedPanel extends JSplitPane {
 	public JButton close;
 	private GameSession editMode;
 	
-	public NewGameDistributedPanel(JButton close, GameSession gameSession)
+	public NewGameDistributedPanel(GameSession gameSession, JButton close)
 	{
 		this.close = close;
 		this.newGameReqPanel = new NewGameReqPanel(gameSession);
@@ -47,7 +47,7 @@ public class NewGameDistributedPanel extends JSplitPane {
 		this.newGameInputPanel = new NewGameInputDistributedPanel(this, gameSession);
 		setPanel();
 	}
-	public NewGameDistributedPanel(JButton close) {
+	public NewGameDistributedPanel(List<Requirement> reqs, JButton close) {
 		newGameReqPanel = new NewGameReqPanel();
 		GetRequirementsController.getInstance().addRefreshable(newGameReqPanel);
 		this.newGameInputPanel = new NewGameInputDistributedPanel(this);
