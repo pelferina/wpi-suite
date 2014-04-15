@@ -637,9 +637,9 @@ public class NewGameInputDistributedPanel extends JPanel {
 		if (gameSession.getEndDate() != null){
 			int year_index = gameSession.getEndDate().getYear();
 		
-			int day_index = gameSession.getEndDate().getMonth() - 1;
+			int month_index = gameSession.getEndDate().getMonth();
 		
-			int month_index = gameSession.getEndDate().getDay();
+			int day_index = gameSession.getEndDate().getDay();
 			datePicker.getModel().setDate(year_index, month_index, day_index);
 		
 		//Sets the hour and minute combo boxes to the hour and minute in the game's deadline
@@ -660,7 +660,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		nameTextField.setText(gameSession.getGameName());
 		nameTextField.setEditable(false);
 		descTextArea.setText(gameSession.getGameDescription());
-		nameTextField.setEditable(false);
+		descTextArea.setEditable(false);
 	}	
 	//TODO: Account for midnight	
 	//Sets the hour based on the AM or PM combo box selection
