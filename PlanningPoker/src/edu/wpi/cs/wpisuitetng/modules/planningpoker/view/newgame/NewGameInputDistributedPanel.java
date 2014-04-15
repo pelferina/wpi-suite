@@ -342,6 +342,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		//Checks to see if all the fields are properly filled, and then sends the game object to the database if done.
 		activateGameButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				activate=true;
 				saveOrActivateGame();
 				JOptionPane gameCreated = new JOptionPane("Game Created and Activated");
 				JOptionPane.showMessageDialog(gameCreated, "Game has been created and activated", "Game created", JOptionPane.INFORMATION_MESSAGE);

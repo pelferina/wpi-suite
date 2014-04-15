@@ -9,6 +9,7 @@ import javax.swing.JTree;
 
 
 
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
@@ -35,6 +36,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+@SuppressWarnings("serial")
 public class OverviewPanel extends JPanel implements Refreshable {
 	GetGamesController ggc; 
 	GameSession[] curSessions = {}; // store gameSessions here
