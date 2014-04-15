@@ -124,4 +124,13 @@ public class ViewEventController {
 	public void setEndGameButtonInvisible(){
 		toolbar.setEndGameInvisible();
 	}
+	
+	public void setEditGameButtonVisible(int gameID)
+	{
+		toolbar.getEditButton().setButtonToEdit();
+	}
+
+	public void setEditGameButtonInVisible() {
+		toolbar.getEditButton().setVisible(false);		
+	}
 }
