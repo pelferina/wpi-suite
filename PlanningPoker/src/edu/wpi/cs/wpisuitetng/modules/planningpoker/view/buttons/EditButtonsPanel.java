@@ -1,13 +1,13 @@
-/**
- *  * Copyright (c) 2013 -- WPI Suite
+/*******************************************************************************
+ * Copyright (c) 2014 -- WPI Suite
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- */
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
 
 import java.awt.Dimension;
@@ -111,11 +111,15 @@ public class EditButtonsPanel extends ToolbarGroupView{
 	
 	/**
 	 * Method getEditButton.
-	
-	 * @return JButton */
+	 * @return JButton 
+	 * 
+	 */
 	public JButton getEditButton() {
 		return this.createEditButton;
 	}
+	/**
+	 * This method creates an edit button and enables it while disableing the cancel button
+	 */
 	public void setButtonToEdit(){
 		if (editImg != null){
 			createEditButton.setIcon(editImg);}
@@ -123,6 +127,9 @@ public class EditButtonsPanel extends ToolbarGroupView{
 		createEditButton.setEnabled(true);
 		createCancelButton.setVisible(false);
 	}
+	/**
+	 * This method sets the button to read "activate"
+	 */
 	public void setButtonToActivate(){
 		if (saveImg != null){
 			createEditButton.setIcon(saveImg);}
@@ -130,6 +137,10 @@ public class EditButtonsPanel extends ToolbarGroupView{
 		createEditButton.setEnabled(false);
 		createCancelButton.setVisible(true);
 	}
+	/**
+	 * This method enables the edit button.
+	 * @param enabled whether the button should have enabled be true or false
+	 */
 	public void setActivateEnabled(boolean enabled){
 		createEditButton.setEnabled(enabled);
 	}
