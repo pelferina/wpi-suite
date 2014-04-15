@@ -31,8 +31,9 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.JTableModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.network.Request;
 
+
+@SuppressWarnings("serial")
 public class OverviewPanel extends JPanel implements Refreshable {
 	GetGamesController ggc; 
 	GameSession[] curSessions = {}; // store gameSessions here
@@ -155,13 +156,13 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		List<GameSession> sessions = new ArrayList<GameSession>();
 				
 		if (s.equals("Drafts")){
-			sessions = (ArrayList<GameSession>) gameModel.getDraftGameSessions();
+			sessions = gameModel.getDraftGameSessions();
 		} else if (s.equals("Active Games")){
-			sessions = (ArrayList<GameSession>) gameModel.getActiveGameSessions();
+			sessions = gameModel.getActiveGameSessions();
 		} else if (s.equals("In Progress Games")){
-			sessions = (ArrayList<GameSession>) gameModel.getInProgressGameSessions();
+			sessions = gameModel.getInProgressGameSessions();
 		} else if (s.equals("Completed Games")){
-			sessions = (ArrayList<GameSession>) gameModel.getCompletedGameSessions();
+			sessions = gameModel.getCompletedGameSessions();
 		} else if (s.equals("Archived Games")){
 			sessions = (ArrayList<GameSession>) gameModel.getArchivedGameSessions();
 		} else if (s.equals("Planning Poker")) {

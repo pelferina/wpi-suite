@@ -27,8 +27,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
  */
 public class DeadLineListener implements ActionListener{
 	private Data db;
-	private PlanningPokerEntityManager entityManager;
-	public DeadLineListener(Data db, PlanningPokerEntityManager ppem){
+	private GameEntityManager entityManager;
+	public DeadLineListener(Data db, GameEntityManager ppem){
 		this.db = db;
 		this.entityManager = ppem;
 		System.err.println("create a listener");

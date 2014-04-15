@@ -24,8 +24,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.Timer;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
@@ -35,11 +33,10 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame.CurrentGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameInputDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsRequestObserver;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ClosableTabComponent;
@@ -56,22 +53,15 @@ public class MainView extends JTabbedPane {
 	private List<Integer> openTabs = new ArrayList<Integer>();
 	private List<NewGameDistributedPanel> newGames = new ArrayList<NewGameDistributedPanel>();
 	final int PERMANANT_TABS = 1;
-	private final AddEmailPanel addEmailPanel;
 	
 	public MainView() {
 		overviewPanel = new OverviewPanel();
-		addEmailPanel = new AddEmailPanel();
+		
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
 		addTab("Overview", overviewPanel);
 		
 		ViewEventController.getInstance().setMainView(this);
-	}
-	//The function to add an email address tab
-	
-	public void addEmailAddress()
-	{
-		addTab("Add Email", addEmailPanel);
 	}
 	//The function to add a new game tab
 	//The function to add a new game tab
@@ -95,7 +85,7 @@ public class MainView extends JTabbedPane {
 		private void addTab(String tabType, GameSession game){
 			int open = this.getTabCount();
 			MyCloseActionHandler myCloseActionHandler = null;
-			overviewPanel.refresh();
+			overviewPanel.refreshGames();
 			GetRequirementsController.getInstance().retrieveRequirements();
 			openTabs.add(newGameTabs, j);
 			JButton btnClose = new JButton("x");
@@ -117,9 +107,15 @@ public class MainView extends JTabbedPane {
 				myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newGameView, 2);
 				add(newGameView, open);
 			}
+			else if (tabType.equals("Add Email")){
+				AddEmailPanel addEmailPanel = new AddEmailPanel(btnClose);
+				myCloseActionHandler = new MyCloseActionHandler("options", j, this, addEmailPanel, 3);
+				add(addEmailPanel, open);
+			}
 			JPanel pnlTab = new JPanel(new GridBagLayout());
 			pnlTab.setOpaque(false);
 			JLabel lblTitle = new JLabel("New Game");
+			if (tabType.equals("Add Email")) lblTitle.setText("Options");
 			btnClose.setMargin(new Insets(0, 0, 0, 0));
 			btnClose.setFont(btnClose.getFont().deriveFont((float) 8));
 			GridBagConstraints gbc = new GridBagConstraints();
@@ -179,6 +175,7 @@ public class MainView extends JTabbedPane {
 	    private MainView mv;
 	    private GameView gameView;
 	    private NewGameDistributedPanel ngdp;
+	    private AddEmailPanel addEmailPanel;
 	    
 	    public MyCloseActionHandler(String tabName, int index, MainView mv, NewGameDistributedPanel ngdp, int type) {
 	        this.tabName = tabName;
@@ -196,7 +193,16 @@ public class MainView extends JTabbedPane {
 	    	this.mv = mv;
 	    }
 	    
-	    public String getTabName() {
+	    public MyCloseActionHandler(String tabName, int index, MainView mv,
+				AddEmailPanel addEmailPanel, int type) {
+			this.tabName = tabName;
+	    	this.index = index;
+	    	this.addEmailPanel = addEmailPanel;
+	    	this.type = type;
+	    	this.mv = mv;
+		}
+
+		public String getTabName() {
 	        return tabName;
 	    }
 
@@ -218,7 +224,6 @@ public class MainView extends JTabbedPane {
 	    //new game creation fields
 	    
 	    public void actionPerformed(ActionEvent evt) {
-
 	    	 if (type == 0 || type == 1) {
 		        	if (!ngdp.isNew){
 						int option = JOptionPane.showOptionDialog(ngdp, "Discard unsaved changes and close tab?", "Discard changes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
@@ -240,8 +245,27 @@ public class MainView extends JTabbedPane {
 	        	}
 	        	else{
 	        		ViewEventController.getInstance().getMain().remove(gameView);
-	        	}
-	        }
-	    }
+				}
+			} else if (type == 3){
+				if (!addEmailPanel.isNew) {
+					int option = JOptionPane.showOptionDialog(addEmailPanel,
+							"Discard unsaved changes and close tab?",
+							"Discard changes?", JOptionPane.YES_NO_OPTION,
+							JOptionPane.QUESTION_MESSAGE, null, null, null);
+					if (option == 0) {
+						ViewEventController.getInstance().getMain()
+								.remove(addEmailPanel);
+					}
+				} else {
+					ViewEventController.getInstance().getMain().remove(addEmailPanel);
+				}
+			}
+		}
+	}
+
+
+	public void addEmailAddress() {
+		this.addTab("Add Email", new GameSession(null, null, 0, 0, null, null));
+		
 	}   
 }
