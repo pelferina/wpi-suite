@@ -27,6 +27,10 @@ public class AddEmailAddressObserver implements RequestObserver {
 	
 	private final AddEmailAddressController controller;
 	
+	/**
+	 * Observer that watches for emailaddress requests
+	 * @param controller the controller to be watching
+	 */
 	public AddEmailAddressObserver(AddEmailAddressController controller) {
 		this.controller = controller;
 	}

@@ -112,8 +112,9 @@ public class GameModel extends AbstractListModel {
 	public List<GameSession> getDraftGameSessions(){
 		List<GameSession> draftGames = new ArrayList<GameSession>();
 		for (GameSession possibleDraft: games){
-			if (possibleDraft.getGameStatus() == GameStatus.DRAFT)
+			if (possibleDraft.getGameStatus() == GameStatus.DRAFT){
 				draftGames.add(possibleDraft);
+			}
 		}
 		return draftGames;
 	}
@@ -127,8 +128,9 @@ public class GameModel extends AbstractListModel {
 	public List<GameSession> getActiveGameSessions(){
 		List<GameSession> activeGames = new ArrayList<GameSession>();
 		for (GameSession possibleActive: games){
-			if (possibleActive.getGameStatus() == GameStatus.ACTIVE)
+			if (possibleActive.getGameStatus() == GameStatus.ACTIVE){
 				activeGames.add(possibleActive);
+			}
 		}
 		return activeGames;
 	}
@@ -142,8 +144,9 @@ public class GameModel extends AbstractListModel {
 	public List<GameSession> getInProgressGameSessions(){
 		List<GameSession> inProgressGames = new ArrayList<GameSession>();
 		for (GameSession possibleInProgress: games){
-			if (possibleInProgress.getGameStatus() == GameStatus.INPROGRESS)
+			if (possibleInProgress.getGameStatus() == GameStatus.INPROGRESS){
 				inProgressGames.add(possibleInProgress);
+			}
 		}
 		return inProgressGames;
 	}
@@ -157,8 +160,9 @@ public class GameModel extends AbstractListModel {
 	public List<GameSession> getCompletedGameSessions(){
 		List<GameSession> completedGames = new ArrayList<GameSession>();
 		for (GameSession possibleCompleted: games){
-			if (possibleCompleted.getGameStatus() == GameStatus.COMPLETED)
+			if (possibleCompleted.getGameStatus() == GameStatus.COMPLETED){
 				completedGames.add(possibleCompleted);
+			}
 		}
 		return completedGames;
 	}
@@ -172,8 +176,9 @@ public class GameModel extends AbstractListModel {
 	public List<GameSession> getArchivedGameSessions(){
 		List<GameSession> archivedGames = new ArrayList<GameSession>();
 		for (GameSession possibleArchived: games){
-			if (possibleArchived.getGameStatus() == GameStatus.ARCHIVED)
+			if (possibleArchived.getGameStatus() == GameStatus.ARCHIVED){
 				archivedGames.add(possibleArchived);
+			}
 		}
 		return archivedGames;
 	}

@@ -29,7 +29,7 @@ public class GameTree extends DefaultMutableTreeNode {
 	 */
 	public GameTree(DefaultMutableTreeNode top) {
         this.top = top;
-        this.gameModel = GameModel.getInstance();
+        gameModel = GameModel.getInstance();
         createNodes(top);
 	}
 

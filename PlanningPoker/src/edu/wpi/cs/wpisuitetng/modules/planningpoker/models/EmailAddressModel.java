@@ -37,7 +37,7 @@ public class EmailAddressModel extends AbstractModel {
 	 */
 	public EmailAddressModel(String address) {
 		this.address = address;
-		this.userID = -1;
+		userID = -1;
 	}
 
 	/**
@@ -110,5 +110,7 @@ public class EmailAddressModel extends AbstractModel {
 	public void delete() {}
 
 	@Override
-	public Boolean identify(Object o) {return null;}
+	public Boolean identify(Object o) {
+		return null;
+	}
 }

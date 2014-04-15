@@ -38,7 +38,7 @@ public class DeadLineListener implements ActionListener{
 	 */
 	public DeadLineListener(Data db, GameEntityManager ppem){
 		this.db = db;
-		this.entityManager = ppem;
+		entityManager = ppem;
 		System.err.println("create a listener");
 	}
 
@@ -73,7 +73,7 @@ public class DeadLineListener implements ActionListener{
 					try {
 						String textToSend;
 						textToSend = "The game '"+ gameArray[i].getGameName() + "' has reached its deadline at" + gameArray[i].getEndDate() +"\r\n" + "Sent by fff8e7";
-						this.entityManager.sendUserEmails("End game notification",  textToSend, gameArray[i].getProject());
+						entityManager.sendUserEmails("End game notification",  textToSend, gameArray[i].getProject());
 					} catch (UnsupportedEncodingException e1) {
 						System.out.println("fail to send end notification email");
 						// TODO Auto-generated catch block

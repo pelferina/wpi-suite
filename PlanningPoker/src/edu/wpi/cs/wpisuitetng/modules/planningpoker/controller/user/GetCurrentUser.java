@@ -55,8 +55,9 @@ public class GetCurrentUser {
 			}
 			return user;
 		}
-		else 
+		else{
 			return user;
+		}
 	}
 	public void setUser(User user){
 		this.user = user;

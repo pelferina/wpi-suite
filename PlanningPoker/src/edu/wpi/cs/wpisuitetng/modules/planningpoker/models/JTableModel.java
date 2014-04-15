@@ -10,7 +10,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
-import java.sql.Date;
+
 import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;

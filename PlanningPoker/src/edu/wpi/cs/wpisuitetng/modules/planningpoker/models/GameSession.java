@@ -21,7 +21,7 @@ import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+
 
 /**
  * Model to contain a single game for the Planning Poker module
@@ -65,18 +65,18 @@ public class GameSession extends AbstractModel {
 	 * @param gameReqs the requirements of the game, as a List<Integers>
 	 */
 	public GameSession(String game, String description, int ownerID, int gameID, Date deadline, List<Integer> gameReqs){
-		this.gameName = game;
-		this.gameDescription = description;
+		gameName = game;
+		gameDescription = description;
 		this.ownerID = ownerID;
 		this.gameID = gameID;
-		this.endDate = deadline;
+		endDate = deadline;
 		//this.endDate.setMonth(endDate.getMonth());
 		this.gameReqs = gameReqs;
-		this.gameStatus = GameStatus.DRAFT;
+		gameStatus = GameStatus.DRAFT;
 		creationdate = new Date();
 		votes = (new ArrayList<Vote>());
-		this.median = null;
-		this.mean = null;
+		median = null;
+		mean = null;
 	}
 
 	/**
@@ -121,8 +121,9 @@ public class GameSession extends AbstractModel {
 		DateFormat dateFormat2 = new SimpleDateFormat("MM/dd/yy");
 		String returnStr = new String();
 		returnStr = gameName + "	";
-		if(creationdate != null)
+		if(creationdate != null){
 			returnStr = returnStr + "     " + "	Start: " + dateFormat1.format(creationdate);
+		}
 		if(endDate != null){
 			returnStr = returnStr + "      " + "End:" + dateFormat1.format(endDate);
 		}	
@@ -151,7 +152,9 @@ public class GameSession extends AbstractModel {
 	public void delete() {}
 
 	@Override
-	public Boolean identify(Object o) {return null;}
+	public Boolean identify(Object o) {
+		return null;
+	}
 
 	public int getOwnerID() {
 		return ownerID;
@@ -196,27 +199,34 @@ public class GameSession extends AbstractModel {
 
 	@Override
 	public boolean equals(Object other){
-		if (!(other instanceof GameSession))
+		if (!(other instanceof GameSession)){
 			return false;
-		
+		}
 		GameSession o = (GameSession) other;
 		
-		if (this.gameName.equals(o.getGameName()))
-		if (this.gameDescription.equals(o.getGameDescription()))
-		if (this.ownerID == o.getOwnerID())
-		if (this.gameID == o.getGameID())
-		if (this.endDate.equals(o.getEndDate()))
-		if (this.gameReqs.equals(o.getGameReqs()))
-		if (this.gameStatus == o.getGameStatus())
-		if (this.votes.equals(o.getVotes()))
-			return true;
+		if (gameName.equals(o.getGameName()))
+			if (gameDescription.equals(o.getGameDescription())){
+				if (ownerID == o.getOwnerID()){
+					if (gameID == o.getGameID()){
+						if (endDate.equals(o.getEndDate())){
+							if (gameReqs.equals(o.getGameReqs())){
+								if (gameStatus == o.getGameStatus()){
+									if (votes.equals(o.getVotes())){
+										return true;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 		
 		return false;
 		
 		
 	}
 	public void setVotes(List<Vote> v){
-		this.votes = v;
+		votes = v;
 	}
 
 	/**Gets the votes
@@ -245,8 +255,8 @@ public class GameSession extends AbstractModel {
 	public void calculateStats(){
 		int requirementNum = gameReqs.size();
 		int userNum = votes.size();
-		this.mean = new ArrayList<Float>();
-		this.median = new ArrayList<Float>();
+		mean = new ArrayList<Float>();
+		median = new ArrayList<Float>();
 		int[][] voteResult = new int[requirementNum][userNum];
 		for(int i=0; i < userNum; i++){
 			for(int j=0;j < requirementNum; j++){

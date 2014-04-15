@@ -174,9 +174,8 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	/**
 	 * Ends a game
 	 * @param gameID the game to be ended
-	 * @param s  	 the session info from which this was called
-	 * @throws WPISuiteException 
-	 * @throws  
+	 * @param project the project to be ended
+	 * @throws WPISuiteException the thrown exception 
 	 */
 	public void endGame(int gameID, Project project) throws WPISuiteException{
 		db.update(GameSession.class, "GameID", gameID, "Status", 3);
@@ -191,6 +190,8 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	/**
 	 * Sends a email message to the users in given session.
 	 * @param  textToSend the message to be sent
+	 * @param subject the subject line
+	 * @param project the project
 	 * @throws UnsupportedEncodingException 
 	 */
 	public void sendUserEmails(String subject, String textToSend, Project project) throws UnsupportedEncodingException

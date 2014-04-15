@@ -125,7 +125,7 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	public Boolean identify(Object o) {
 		if(o == null || o.getClass() != this.getClass()) return false;
 		Vote other = (Vote) o;
-		return (this.gameID == other.gameID && this.UID == other.UID);
+		return (gameID == other.gameID && UID == other.UID);
 	}
 
 	/**
@@ -138,7 +138,7 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	 * Sets the vote id with the tohash method
 	 */
 	public void setVoteID(){
-		this.VoteID = toHash(this);
+		VoteID = toHash(this);
 	}
 	/**
 	 * @param voteID the voteID to set
@@ -153,7 +153,7 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	@Override
 	public boolean equals(Object other){
 		if(other.getClass() != Vote.class) return false;
-		return ((Vote) other).VoteID == this.VoteID;
+		return ((Vote) other).VoteID == VoteID;
 		
 	}
 	/**
@@ -162,7 +162,7 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	 */
 	@Override
 	public int compareTo(Vote o) {
-		return o.VoteID - this.VoteID;
+		return o.VoteID - VoteID;
 	}
 	/**
 	 * This function takes a vote and returns it as an integer
