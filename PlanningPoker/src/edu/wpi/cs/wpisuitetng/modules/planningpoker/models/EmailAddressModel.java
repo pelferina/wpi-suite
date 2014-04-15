@@ -39,15 +39,6 @@ public class EmailAddressModel extends AbstractModel {
 	}
 
 	/**
-	 * Adds the given message to the board
-	 * 
-	 * @param address the email address to use
-	 */
-	public void updateEmail(String address) {
-		this.address = address;
-	}
-
-	/**
 	 * Retrieves the address
 	 */
 	public String getAddress() {
@@ -57,8 +48,9 @@ public class EmailAddressModel extends AbstractModel {
 	/**
 	 * sets the address
 	 */
-	public void setAddress(String address) {
+	public EmailAddressModel setAddress(String address) {
 		this.address = address;
+		return this;
 	}
 
 	/**
@@ -71,8 +63,9 @@ public class EmailAddressModel extends AbstractModel {
 	/**
 	 * sets the userID
 	 */
-	public void setUserID(int userID) {
+	public EmailAddressModel setUserID(int userID) {
 		this.userID = userID;
+		return this;
 	}
 
 	/**

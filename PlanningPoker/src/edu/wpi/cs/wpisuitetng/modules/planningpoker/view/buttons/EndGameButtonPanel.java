@@ -72,27 +72,7 @@ public class EndGameButtonPanel extends ToolbarGroupView{
 	public void setEndGameButtonVisible(int gameID){
 		endGameButton.setVisible(true);
 		endGameButton.setEnabled(true);
-		endGameButton.addActionListener(new endGameActionListener(gameID));
+		endGameButton.addActionListener(new EndGameActionListener(gameID));
 	}
 }
-class endGameActionListener implements ActionListener{
-	int gameID;
-	public endGameActionListener(int gameID){
-		this.gameID = gameID;
-	}
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		List<GameSession> games = GameModel.getInstance().getGames();
-		for(GameSession g: games){
-			if(g.getGameID() == gameID){
-				g.setGameStatus(GameStatus.ARCHIVED);
-				final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.POST); // POST == UPDATE
-				request.setBody(g.toJSON()); // put the new session in the body of the request
-				request.addObserver(new UpdateGameRequestObserver()); // add an observer to process the response
-				request.send(); // send the request
-			}
-		}
-		
-	}
-	
-}
+
