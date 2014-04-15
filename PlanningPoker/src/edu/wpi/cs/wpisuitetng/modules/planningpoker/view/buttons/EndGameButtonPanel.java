@@ -11,6 +11,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
 
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -29,7 +30,8 @@ import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 public class EndGameButtonPanel extends ToolbarGroupView{
 	
 	private final JPanel contentPanel = new JPanel();
-	final private JButton endGameButton = new JButton("<html>End<br />Game</html>");
+	private final JButton endGameButton = new JButton("<html>End<br />Game</html>");
+	private ActionListener listener = null;
 	
 	public EndGameButtonPanel(){
 		super("");
@@ -41,7 +43,7 @@ public class EndGameButtonPanel extends ToolbarGroupView{
 		endGameButton.setVisible(false);
 		
 		try {
-		    final Image img = ImageIO.read(getClass().getResource("endGame.png"));
+		    final Image img = ImageIO.read(getClass().getResource("cancel.png"));
 		    endGameButton.setIcon(new ImageIcon(img));
 		} catch (IOException ex) {
 			System.out.println("IOException thrown in EndGameButtonPanel");
@@ -68,6 +70,10 @@ public class EndGameButtonPanel extends ToolbarGroupView{
 	public void setEndGameButtonVisible(int gameID){
 		endGameButton.setVisible(true);
 		endGameButton.setEnabled(true);
-		endGameButton.addActionListener(new EndGameActionListener(gameID));
+		if(listener != null){
+			endGameButton.removeActionListener(listener);
+		}
+		listener = new EndGameActionListener(gameID);
+		endGameButton.addActionListener(listener);
 	}
 }
