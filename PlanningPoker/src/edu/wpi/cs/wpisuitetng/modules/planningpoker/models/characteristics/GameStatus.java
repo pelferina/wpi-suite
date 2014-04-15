@@ -1,18 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2013 WPI-Suite
+ * Copyright (c) 2014 WPI-Suite
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: Team Rolling Thunder
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics;
 
 /**
  * Various status' that a Game can have 
  * @version $Revision: 1.0 $
- * @author justinhess
+ * @author Cosmic Latte
  */
 public enum GameStatus {
 	/**
@@ -35,10 +33,6 @@ public enum GameStatus {
 	 * Indicates that the Game has been archived such that the deadline has passed or the owner has ended the game
 	 */
 	ARCHIVED("Archived");
-//	/**
-//	 * Indicates that the Game has been deleted
-//	 */
-//	DELETED("Deleted");
 	
 	private final String name;
 	
