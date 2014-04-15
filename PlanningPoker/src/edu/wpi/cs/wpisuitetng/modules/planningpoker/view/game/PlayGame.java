@@ -3,6 +3,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -12,6 +13,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -28,14 +30,23 @@ public class PlayGame extends JPanel{
 	private JTextField estimateTextField = new JTextField();
 	private JTextField reqNameTextField = new JTextField();
 	private JTextArea reqDescTextArea = new JTextArea();
-	private final JButton submit = new JButton("Submit Estimate");
+	private final JButton submit = new JButton("Submit All Estimates");
+	private final JButton voteButton = new JButton("Vote");
+	private Vote userEstimates;
 	private Requirement currentReq;
 	private GameView gv;
+	private GameSession currentGame;
 	//private GameCard[] gameCards = {new GameCard(1), new GameCard(2), new GameCard(5)};
 	
 	public PlayGame(GameSession gameToPlay, GameView agv){
+		currentGame = gameToPlay;
+		this.gameReqs = currentGame.getGameReqs();
+		ArrayList<Integer> Estimates = new ArrayList<Integer>();
+		for (int i = 0; i < gameReqs.size(); i++){
+			Estimates.add(-1);
+		}
+		userEstimates = new Vote(Estimates, currentGame.getGameID());
 		submit.setEnabled(false);
-		this.gameReqs = gameToPlay.getGameReqs();
 		this.gv = agv;
 		List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
 		
@@ -44,6 +55,9 @@ public class PlayGame extends JPanel{
 		for (Requirement r: allReqs){
 			if (r.getId() == gameReqs.get(0)){
 				currentReq = r;
+				System.out.println("R: " + r.getId());
+				System.out.println("Current: " + currentReq.getId());
+				break;
 			}
 		}
 		
@@ -57,30 +71,54 @@ public class PlayGame extends JPanel{
 		estimateTextField.getDocument().addDocumentListener(new DocumentListener(){
 			@Override
 			public void changedUpdate(DocumentEvent e){
-				if (estimateTextField.getText().length() > 0){
-					submit.setEnabled(true);
-				}
+				isValidEstimate();
 			}
 			@Override
 			public void removeUpdate(DocumentEvent e){
-				if (estimateTextField.getText().length() > 0){
-					submit.setEnabled(true);
-				}
+				isValidEstimate();
 			}
 			@Override 
 			public void insertUpdate(DocumentEvent e){
-				if (estimateTextField.getText().length() > 0){
-					submit.setEnabled(true);
-				}
+				isValidEstimate();
 			}
 		});
-
+		
+		//Observer for the vote button. It will save the vote client side, the submit button will handle sending it to the database.
+		
+		voteButton.addActionListener(new ActionListener(){
+			
+			@Override
+			public void actionPerformed(ActionEvent e){
+				int estimate = Integer.parseInt(estimateTextField.getText());
+				if (estimate < 0){
+					//TODO error message
+					return;
+				}
+				else{
+					for(int i = 0; i < gameReqs.size(); i++){
+						if (gameReqs.get(i) == currentReq.getId()){
+							System.out.println("Size: " + userEstimates.getVote().size());
+							ArrayList<Integer> votes = (ArrayList<Integer>) userEstimates.getVote();
+							votes.set(i, estimate);
+							userEstimates.setVote(votes);
+							break;
+						}
+					}
+					gv.updateReqTables(currentReq);
+				}
+			}
+			
+		});
 		
 		SpringLayout springLayout = new SpringLayout();
 		
+		//Spring layout placement for vote button
+		springLayout.putConstraint(SpringLayout.NORTH, voteButton, 6, SpringLayout.SOUTH, estimateTextField);
+		springLayout.putConstraint(SpringLayout.WEST, voteButton, 132, SpringLayout.WEST, this);		
+		
 		//Spring layout placement for submit button
-		springLayout.putConstraint(SpringLayout.NORTH, submit, 6, SpringLayout.SOUTH, estimateTextField);
-		springLayout.putConstraint(SpringLayout.WEST, submit, 132, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, submit, -10, SpringLayout.SOUTH, voteButton);
+		springLayout.putConstraint(SpringLayout.WEST, submit, 0, SpringLayout.WEST, voteButton);
 		
 		//Spring layout placement for estimateTextField
 		springLayout.putConstraint(SpringLayout.NORTH, estimateTextField, 6, SpringLayout.SOUTH, estimateLabel);
@@ -111,6 +149,7 @@ public class PlayGame extends JPanel{
 		springLayout.putConstraint(SpringLayout.WEST, reqName, 25, SpringLayout.WEST, this);
 		setLayout(springLayout);
 	
+		add(voteButton);
 		add(submit);
 		add(reqName);
 		add(reqDesc);
@@ -118,6 +157,17 @@ public class PlayGame extends JPanel{
 		add(estimateTextField);
 		add(reqNameTextField);
 		add(reqDescTextArea);
+	}
+	
+	private void isValidEstimate(){
+		if (estimateTextField.getText().length() > 0 && isInteger(estimateTextField.getText())){
+			submit.setEnabled(true);
+			voteButton.setEnabled(true);
+		}
+		else{
+			submit.setEnabled(false);
+			voteButton.setEnabled(false);
+		}
 	}
 	
 	//This function is used when a requirement is double clicked in one of the two requirement tables, and it sets the name and description fields to the 
@@ -133,6 +183,17 @@ public class PlayGame extends JPanel{
 	//toestimate table to the completed estimates table
 	public void sendEstimatetoGameView(Requirement r){
 		gv.updateReqTables(r);
+	}
+	
+	//Helper function for checking if the estimate text box contains an integer
+	public static boolean isInteger(String s) {
+	    try { 
+	        Integer.parseInt(s); 
+	    } catch(NumberFormatException e) { 
+	        return false; 
+	    }
+	    // only got here if we didn't return false
+	    return true;
 	}
 	
 /*	@Override
