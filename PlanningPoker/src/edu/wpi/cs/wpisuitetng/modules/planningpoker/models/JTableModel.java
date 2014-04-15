@@ -48,6 +48,7 @@ public class JTableModel extends AbstractTableModel {
     		Data[i] = curRow;
     		gameIDs[i] = sessions[i].getGameID();
     	}
+
 	}
     
 	private String gameStatus(GameSession game){
@@ -149,4 +150,13 @@ public class JTableModel extends AbstractTableModel {
 	public int getGameID(int i){
 		return games[i].getGameID();
 	}
+	/**
+	 * 
+	 * @param i the row number
+	 * @return the game status of the ith row
+	 */
+	public GameStatus getGameStatus(int i){
+		return games[i].getGameStatus();
+	}
+	
 }

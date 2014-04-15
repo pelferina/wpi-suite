@@ -36,6 +36,7 @@ public class EndGameButtonPanel extends ToolbarGroupView{
 	
 	private final JPanel contentPanel = new JPanel();
 	private JButton endGameButton = new JButton("<html>End<br />Game</html>");
+	private ActionListener listener = null;
 	
 	public EndGameButtonPanel(){
 		super("");
@@ -47,7 +48,7 @@ public class EndGameButtonPanel extends ToolbarGroupView{
 		endGameButton.setVisible(false);
 		
 		try {
-		    Image img = ImageIO.read(getClass().getResource("endGame.png"));
+		    Image img = ImageIO.read(getClass().getResource("cancel.png"));
 		    endGameButton.setIcon(new ImageIcon(img));
 		} catch (IOException ex) {}
 		
@@ -72,7 +73,11 @@ public class EndGameButtonPanel extends ToolbarGroupView{
 	public void setEndGameButtonVisible(int gameID){
 		endGameButton.setVisible(true);
 		endGameButton.setEnabled(true);
-		endGameButton.addActionListener(new EndGameActionListener(gameID));
+		if(listener != null){
+			endGameButton.removeActionListener(listener);
+		}
+		listener = new EndGameActionListener(gameID);
+		endGameButton.addActionListener(listener);
 	}
 }
 
