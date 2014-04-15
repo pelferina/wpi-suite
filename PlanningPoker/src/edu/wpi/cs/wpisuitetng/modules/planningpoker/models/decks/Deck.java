@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 WPI-Suite
+ * Copyright (c) 2014 WPI-Suite
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,8 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
 /**
  * A deck in a game. Decks can be assigned to a game.
- * 
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
 */
 public class Deck extends AbstractModel {
 
@@ -36,6 +37,11 @@ public class Deck extends AbstractModel {
 		this.cards = Arrays.asList(0,1,1,2,3,5,8,13); 
 	}
 	
+	/**
+	 * Constructs a deck with the given cards that has the given id
+	 * @param id the deck id number
+	 * @param cards the cards that should be in the deck
+	 */
 	public Deck(int id, List<Integer> cards)
 	{
 		super();
