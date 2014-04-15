@@ -41,13 +41,13 @@ public class EndGameButtonPanel extends ToolbarGroupView{
 		super("");
 		
 		this.contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
-		this.setPreferredWidth(300);
+		this.setPreferredWidth(150);
 		
-		endGameButton.setPreferredSize(new Dimension(150, 50));	
+		endGameButton.setPreferredSize(new Dimension(150,30));	
 		endGameButton.setVisible(false);
 		
 		try {
-		    Image img = ImageIO.read(getClass().getResource("vDH0q.png"));
+		    Image img = ImageIO.read(getClass().getResource("endGame.png"));
 		    endGameButton.setIcon(new ImageIcon(img));
 		} catch (IOException ex) {}
 		
