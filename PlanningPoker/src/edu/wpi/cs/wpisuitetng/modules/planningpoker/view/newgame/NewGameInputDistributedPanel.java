@@ -375,7 +375,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		{   
 			newGame.setGameStatus(GameStatus.ACTIVE);
 			final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.PUT); // PUT == create
-			request.setBody("endGame" + newGame.getGameName());
+			request.setBody("newGame" + newGame.getGameName());
 			request.send(); // send the request
 		}
 		 
