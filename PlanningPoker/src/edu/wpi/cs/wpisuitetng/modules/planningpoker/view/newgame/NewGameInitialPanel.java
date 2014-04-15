@@ -13,13 +13,6 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.*;
 
-<<<<<<< HEAD
-=======
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
-
->>>>>>> cd1010f974bc3d98ced115fabcf23ecd13677661
 /**
  * Description
  *

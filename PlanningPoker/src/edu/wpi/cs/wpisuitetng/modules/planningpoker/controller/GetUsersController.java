@@ -52,22 +52,9 @@ public class GetUsersController {
 	public void actionPerformed() {
 		// Send a request to the core to save this message
 		
-<<<<<<< HEAD
-		 int ii = 100000;
-    	 int jj;
-    	while(ii != 0){jj = ii*ii;ii=ii-1;}
-		
-		final Request request = Network.getInstance().makeRequest("core/user",
-				HttpMethod.GET); // GET == read
-		request.addObserver(new GetUsersRequestObserver(this)); // add an
-																// observer to
-																// process the
-																// response
-=======
 		final Request request = Network.getInstance().makeRequest("core/user", HttpMethod.GET); // GET == read
 		request.addObserver(new GetUsersRequestObserver()); 
 		// add an observer to process the response
->>>>>>> cd1010f974bc3d98ced115fabcf23ecd13677661
 		request.send(); // send the request
 		
 	}

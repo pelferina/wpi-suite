@@ -34,12 +34,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-<<<<<<< HEAD
-@SuppressWarnings("serial")
-public class OverviewPanel extends JPanel {
-=======
 public class OverviewPanel extends JPanel implements Refreshable {
->>>>>>> cd1010f974bc3d98ced115fabcf23ecd13677661
 	GetGamesController ggc; 
 	GameSession[] curSessions = {}; // store gameSessions here
 	GameModel gameModel;
