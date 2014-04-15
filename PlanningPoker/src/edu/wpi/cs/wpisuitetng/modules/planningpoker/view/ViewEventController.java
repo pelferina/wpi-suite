@@ -1,11 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2013 WPI-Suite
+ * Copyright (c) 2014 WPI-Suite
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: Team Rolling Thunder
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
@@ -16,7 +14,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ToolbarView;
  * Provides an interface for interaction with the main GUI elements
  * All actions on GUI elements should be conducted through this controller.
  * @version $Revision: 1.0 $
- * @author justinhess
+ * @author Cosmic Latte
  */
 
 public class ViewEventController {
@@ -74,11 +72,16 @@ public class ViewEventController {
 	
 	/**
 	 * Opens a new tab for editing a game
+	 * @param gameSession the GameSession the tab is editing
 	 */
 	public void editGameTab(GameSession gameSession) {
 		main.addEditGameTab(gameSession);
 	}
 	
+	/**
+	 * Opens a new tab for playing a game
+	 * @param gameSession the GameSession the user is playing
+	 */
 	public void playGameTab(GameSession gameSession){
 		main.addPlayGameTab(gameSession);
 	}
@@ -101,6 +104,9 @@ public class ViewEventController {
 		return main;
 	}
 
+	/**
+	 * Opens a new tab for creating a new game
+	 */
 	public void newGameTab() {
 		main.addNewGameTab();
 	}

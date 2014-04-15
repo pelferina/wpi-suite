@@ -18,6 +18,11 @@ import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailAddressController;
 
+/**
+ * Panel to add an email address
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
+ */
 @SuppressWarnings("serial")
 public class AddEmailPanel extends JPanel {
 	
@@ -27,11 +32,18 @@ public class AddEmailPanel extends JPanel {
 	private JButton close;
 	public boolean isNew = false;
 	
+	/**
+	 * Constructor to create panel with close button
+	 * @param btnClose button to close the panel
+	 */
 	public AddEmailPanel(JButton btnClose){
 		setupPanel();
 		this.close = btnClose;
 	}
 	
+	/**
+	 * This method sets up the panel layout and design
+	 */
 	private void setupPanel(){
 		SpringLayout springLayout = new SpringLayout();
 		springLayout.putConstraint(SpringLayout.NORTH, submitButton, 21, SpringLayout.SOUTH, emailField);

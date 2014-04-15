@@ -43,6 +43,12 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ClosableTabCompone
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.iterations.IterationOverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
+/**
+ * Main view of the PlanningPoker module
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
+ *
+ */
 @SuppressWarnings("serial")
 public class MainView extends JTabbedPane {
 	private OverviewPanel overviewPanel;
@@ -66,18 +72,27 @@ public class MainView extends JTabbedPane {
 	//The function to add a new game tab
 	//The function to add a new game tab
 
+	/**
+	 * This method adds a tab labeled "New Game" to the view
+	 */
 		public void addNewGameTab()
 		{
 			addTab("New Game", new GameSession(new String(), new String(), 0, 0, new Date(), new ArrayList<Integer>()));
 		}
-
-		//Adds a new edit game tab
+		
+		/**
+		 * This method adds a tab labeled "Edit Game" to the view
+		 * @param gameSession the game session to edit
+		 */
 		public void addEditGameTab(GameSession gameSession)
 		{
 			addTab("Edit Game", gameSession);
 		}
 
-		//Adds a new game view tab
+		/**
+		 * This method adds a tab lebeled "Play Game" to the view
+		 * @param gametoPlay the game session to play
+		 */
 		public void addPlayGameTab(GameSession gametoPlay){
 			addTab("Play Game", gametoPlay);
 		}
@@ -149,6 +164,13 @@ public class MainView extends JTabbedPane {
 	}
 	*/
 	
+	
+	/**
+	 * The action listener for closing of tabs
+	 * @param tabType the title of the tab being closed
+	 * @param game the game session
+	 * @return Returns the name of the game closed, or "New Game" if a new game tab, or "help" if an unexpected tab
+	 */
 	//The action listener for closing of tabs
 	public String tabLabler(String tabType, GameSession game){
 		if (tabType.equals("Play Game")){
@@ -163,7 +185,12 @@ public class MainView extends JTabbedPane {
 		else return "help";
 	}
 			
-			
+	/**
+	 * The action handler for closing a tab
+	 * 	
+	 * @author Cosmic Latte
+	 * @version $Revision: 1.0 $
+	 */
 	public class MyCloseActionHandler implements ActionListener {
 
 	    private String tabName;
@@ -177,6 +204,14 @@ public class MainView extends JTabbedPane {
 	    private NewGameDistributedPanel ngdp;
 	    private AddEmailPanel addEmailPanel;
 	    
+	    /**
+	     * Close action handler for NewGameDistributedPanel
+	     * @param tabName name of the tab being closed
+	     * @param index index of that tab on the tab list
+	     * @param mv the MainView
+	     * @param ngdp the NewGameDistributedPanel
+	     * @param type integer for type
+	     */
 	    public MyCloseActionHandler(String tabName, int index, MainView mv, NewGameDistributedPanel ngdp, int type) {
 	        this.tabName = tabName;
 	        this.index = index;
@@ -184,7 +219,14 @@ public class MainView extends JTabbedPane {
 	        this.type = type;
 	        this.mv = mv;
 	    }
-	    
+	    /**
+	     * Close action handler for game view
+	     * @param tabName name of the tab being closed
+	     * @param index index of that tab on the tab list
+	     * @param mv the MainView
+	     * @param gv the GameView
+	     * @param type integer for type
+	     */
 	    public MyCloseActionHandler(String tabName, int index, MainView mv, GameView gv, int type){
 	    	this.tabName = tabName;
 	    	this.index = index;
@@ -193,6 +235,15 @@ public class MainView extends JTabbedPane {
 	    	this.mv = mv;
 	    }
 	    
+	    /**
+	     * Close action handler for email panel
+	     * 
+	     * @param tabName name of the tab being closed
+	     * @param index index of that tab on the tab list
+	     * @param mv the MainView
+	     * @param addEmailPanel the AddEmailPanel
+	     * @param type integer for type
+	     */
 	    public MyCloseActionHandler(String tabName, int index, MainView mv,
 				AddEmailPanel addEmailPanel, int type) {
 			this.tabName = tabName;
@@ -264,6 +315,9 @@ public class MainView extends JTabbedPane {
 	}
 
 
+	/**
+	 * This method adds the "Add Email" tab
+	 */
 	public void addEmailAddress() {
 		this.addTab("Add Email", new GameSession(null, null, 0, 0, null, null));
 		
