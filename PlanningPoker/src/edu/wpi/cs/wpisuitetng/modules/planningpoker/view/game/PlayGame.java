@@ -1,3 +1,11 @@
+/*******************************************************************************
+ * Copyright (c) 2012-2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game;
 
 import java.awt.Graphics;
@@ -25,6 +33,10 @@ import javax.swing.SpringLayout;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+/**
+ * @author fff8e7
+ *
+ */
 public class PlayGame extends JPanel{
 
 	private List<Integer> gameReqs;
@@ -115,6 +127,7 @@ public class PlayGame extends JPanel{
 			
 		});
 		
+		//adds the action listener for controlling the submit button
 		submit.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
@@ -178,6 +191,8 @@ public class PlayGame extends JPanel{
 		add(reqDescTextArea);
 	}
 	
+	//This function checks to make sure an inputed estimate is valid, i.e is not blank and is an integer
+	//then enables the vote button
 	private void isValidEstimate(){
 		if (estimateTextField.getText().length() > 0 && isInteger(estimateTextField.getText())){
 			voteButton.setEnabled(true);
@@ -231,7 +246,7 @@ public class PlayGame extends JPanel{
 		estimateTextField.setText("");
 	}
 	
-	
+	//checks to see if the user has voted on all the requirements in a game, then enables the submit button
 	public void checkCanSubmit(){
 		boolean canSubmit = true;
 		for (int estimate: userEstimates.getVote()){
@@ -242,13 +257,4 @@ public class PlayGame extends JPanel{
 		}
 		submit.setEnabled(canSubmit);
 	}
-	
-/*	@Override
-    protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		g.drawImage(, 0, 0, null);
-	}
-*/
-
-
 }
