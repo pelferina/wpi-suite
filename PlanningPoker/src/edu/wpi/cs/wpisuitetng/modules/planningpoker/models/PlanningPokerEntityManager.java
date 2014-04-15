@@ -49,6 +49,7 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 	/** The database */
 	Data db;
 	Timer deadlineCheck; // Timer for checking deadline
+	Timer votingCompleteCheck;
 
 	
 	/**
@@ -62,9 +63,12 @@ public class PlanningPokerEntityManager implements EntityManager<GameSession> {
 	public PlanningPokerEntityManager(Data db) {
 		this.db = db;
 
-		//set up and start timer to check deadline every second.
+		//set up and start timer to check deadline every 3 seconds.
 		deadlineCheck = new Timer(3000, new DeadLineListener(db, this));
 		deadlineCheck.start();
+		//set up and start a timer to check if all users has voted every 3 seconds.
+		votingCompleteCheck = new Timer(3000, new VotingCompleteListener(db));
+		votingCompleteCheck.start();
 	}
 
 	/*
