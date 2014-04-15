@@ -445,7 +445,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 //				 		SimpleDateFormat deadlineTimeFormat = new SimpleDateFormat("hh:mm aa");
 //				 		System.out.println(deadlineTimeFormat.format(deadline.getTime())+ "     "+ deadlineTimeFormat.format(currentDate.getTime()));
 				 
-		if (deadline.after(currentDate) && minuteTime!=currentDate.get(Calendar.MINUTE)){
+		if (deadline.after(currentDate)){
 			deadlineError.setVisible(false);
 			return true;
 		}
