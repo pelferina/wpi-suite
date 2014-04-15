@@ -25,11 +25,14 @@ public class RTableModel extends AbstractTableModel {
 	
 	private void setUpTable(GameSession gs){
 		game = gs;
+		game.calculateStats();
 		Data = new Object[gs.getGameReqs().size()][COLUMN_NAMES.length];
+		requirements = new Requirement[gs.getGameReqs().size()];
 		
 		int j=0;
 		for (Integer i : gs.getGameReqs()){
 			requirements[j] = RequirementModel.getInstance().getRequirement(i);
+			j++;
 		}
 			
 		reqIDs = new Integer[requirements.length];
@@ -37,8 +40,8 @@ public class RTableModel extends AbstractTableModel {
     	for (int i=0; i<requirements.length; i++){
     		Object[] curRow = {requirements[i].getName(),
 								requirements[i].getDescription(), 
-    							gs.getMean(), // Progress
-    							gs.getMedian()
+    							gs.getMean().get(i),
+    							gs.getMedian().get(i)
     							};
     		Data[i] = curRow;
     		reqIDs[i] = requirements[i].getId();

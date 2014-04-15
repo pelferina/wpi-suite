@@ -253,7 +253,7 @@ public class GameSession extends AbstractModel {
 			if(userNum%2 == 0)
 				median.add(((float)voteResult[i][(userNum-1)/2] + voteResult[i][(userNum-1)/2+1])/2);
 			else
-				median.add((float)voteResult[i][(userNum-1)/2+1]);
+				median.add((float)voteResult[i][(userNum-1)/2]);
 			// calculate mean
 			int sum = 0;
 			for(int j=0; j < userNum; j++){

@@ -59,7 +59,7 @@ public class GameTree extends DefaultMutableTreeNode {
 		DefaultMutableTreeNode inProgressGames = new DefaultMutableTreeNode("In Progress Games");
 		List<GameSession> inProgressGameSessionList = new ArrayList<GameSession>();
 		if (gameModel != null){
-			inProgressGameSessionList = gameModel.getActiveGameSessions();
+			inProgressGameSessionList = gameModel.getInProgressGameSessions();
 			for (GameSession inProgressGameSession: inProgressGameSessionList){
 				inProgressGames.add(new DefaultMutableTreeNode(inProgressGameSession.getGameName()));
 			}

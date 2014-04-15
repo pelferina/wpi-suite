@@ -66,38 +66,41 @@ public class OverviewPanel extends JPanel implements Refreshable {
 				  JTable target = (JTable)e.getSource();
 			      int row = target.getSelectedRow();
 			      int column = target.getSelectedColumn();
-				    if (e.getClickCount() == 2) {
-				      int gameID = (Integer)((JTableModel)target.getModel()).getIDFromRow(row);
-				      List<GameSession> games = gameModel.getGames();
-				      GameSession clickedGame = null;
-				      for (GameSession gm: games){
-				    	  if (gm.getGameID() == gameID){
-				    		  clickedGame = gm;
-				    	  }
-				      }
-				      if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.DRAFT){
-				    	  ViewEventController.getInstance().editGameTab(clickedGame); // Make this edit insteadS
-				      }
-				      else if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.ACTIVE){
-				    	  ViewEventController.getInstance().playGameTab(clickedGame);
-				      }
-				    }
-				    if(e.getClickCount() == 1){
-				    	
-				    	int ownerID = ((JTableModel)(target.getModel())).getOwnerID(row);
-				    	int gameID = ((JTableModel)(target.getModel())).getGameID(row);
-				    	User currentUser = GetCurrentUser.getInstance().getCurrentUser();
-				    	if(currentUser.getIdNum() == ownerID){
-					    	ViewEventController.getInstance().setEditGameButtonVisible(gameID);
-				    		ViewEventController.getInstance().setEndGameButtonVisible(gameID);
-				    	}else{
-					    	ViewEventController.getInstance().setEditGameButtonInVisible();
-				    		ViewEventController.getInstance().setEndGameButtonInvisible();
-				    	}
-				    	
-		
-				    }
-				  }
+			      if (table.getModel() instanceof JTableModel){
+				      
+					    if (e.getClickCount() == 2) {
+					      int gameID = (Integer)((JTableModel)target.getModel()).getIDFromRow(row);
+					      List<GameSession> games = gameModel.getGames();
+					      GameSession clickedGame = null;
+					      for (GameSession gm: games){
+					    	  if (gm.getGameID() == gameID){
+					    		  clickedGame = gm;
+					    	  }
+					      }
+					      if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.DRAFT){
+					    	  ViewEventController.getInstance().editGameTab(clickedGame); // Make this edit insteadS
+					      }
+					      else if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.ACTIVE){
+					    	  ViewEventController.getInstance().playGameTab(clickedGame);
+					      }
+					    }
+					    if(e.getClickCount() == 1){
+					    	
+					    	int ownerID = ((JTableModel)(target.getModel())).getOwnerID(row);
+					    	int gameID = ((JTableModel)(target.getModel())).getGameID(row);
+					    	User currentUser = GetCurrentUser.getInstance().getCurrentUser();
+					    	if(currentUser.getIdNum() == ownerID){
+						    	ViewEventController.getInstance().setEditGameButtonVisible(gameID);
+					    		ViewEventController.getInstance().setEndGameButtonVisible(gameID);
+					    	}else{
+						    	ViewEventController.getInstance().setEditGameButtonInVisible();
+					    		ViewEventController.getInstance().setEndGameButtonInvisible();
+					    	}
+					    	
+			
+					    }
+					  }
+			  		}
 				});
 		table.setToolTipText("Double Click to Edit");
 		
@@ -159,7 +162,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	public void updateTable(String s){
 		
 		List<GameSession> sessions = new ArrayList<GameSession>();
-				
+		boolean showingGame = false;
 		if (s.equals("Drafts")){
 			sessions = gameModel.getDraftGameSessions();
 		} else if (s.equals("Active Games")){
@@ -182,11 +185,14 @@ public class OverviewPanel extends JPanel implements Refreshable {
 			}
 			
 			if (game!=null){ // if game is found
+				showingGame = true;
     			splitPane.remove(table);
     			RTableModel rtab = new RTableModel(game);
-    			table = new JTable(rtab);
-    			splitPane.setRightComponent(table);
-			}
+    			table.setModel(rtab);
+    			rtab.fireTableStructureChanged();
+    			rtab.fireTableDataChanged();
+    			rtab.fireTableStructureChanged();			
+    		}
 		}
 		
 		if (table.getModel() instanceof JTableModel){
@@ -194,6 +200,15 @@ public class OverviewPanel extends JPanel implements Refreshable {
 			jModel.update((ArrayList<GameSession>)sessions);
 			table.setModel(jModel);
 			jModel.fireTableDataChanged();
+			jModel.fireTableStructureChanged();
+
+		} else if (!showingGame) {
+			splitPane.remove(table);
+			JTableModel jtab = new JTableModel(sessions.toArray(new GameSession[0]));
+			table.setModel(jtab);
+			jtab.fireTableStructureChanged();
+			jtab.fireTableDataChanged();
+			updateTable(s);
 		}
 		
 	}
