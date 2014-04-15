@@ -88,6 +88,9 @@ public class OverviewPanel extends JPanel implements Refreshable {
 				    	  ViewEventController.getInstance().editGameTab(clickedGame);; // Make this edit insteadS
 				      }
 				    }
+				    if(e.getClickCount() == 1){
+				    	ViewEventController.getInstance().setEndGameButtonVisible();
+				    }
 				  }
 				});
 		table.setToolTipText("Double Click to Edit");

@@ -102,4 +102,17 @@ public class ViewEventController {
 	public void options() {
 		main.addEmailAddress();
 	}
+	
+	/**
+	 * Set the end game button in tool bar visible 
+	 */
+	public void setEndGameButtonVisible(){
+		toolbar.setEndGameVisible();
+	}
+	/**
+	 * Set the end game button in tool bar invisible 
+	 */
+	public void setEndGameButtonInvisible(){
+		toolbar.setEndGameInvisible();
+	}
 }

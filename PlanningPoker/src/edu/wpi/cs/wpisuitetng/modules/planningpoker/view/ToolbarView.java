@@ -10,16 +10,9 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 
-import java.awt.GridLayout;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.border.EtchedBorder;
-
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.DefaultToolbarView;
-import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.EditButtonsPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.EndGameButtonPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerButtonsPanel;
 
 /**
@@ -34,6 +27,7 @@ public class ToolbarView  extends DefaultToolbarView {
 //	TODO: Cancel Game
 	public EditButtonsPanel editButton = new EditButtonsPanel();
 	public PlanningPokerButtonsPanel gameButton = new PlanningPokerButtonsPanel();
+	public EndGameButtonPanel endGameButton = new EndGameButtonPanel();
 	
 	/**
 	 * Creates and positions option buttons in upper toolbar
@@ -42,25 +36,28 @@ public class ToolbarView  extends DefaultToolbarView {
 	public ToolbarView(boolean visible) {
 		this.addGroup(gameButton);
 		this.addGroup(editButton);
-		
-//		this.addGroup(editButton);
+		this.addGroup(endGameButton);
 
 	}
 	
 	/**
 	 * Method getEditButton.
-	
 	 * @return EditButtonsPanel */
 	public EditButtonsPanel getEditButton(){
 		return editButton;
 	}
-	
-
 	/**
 	 * Method getReqButton.
 	
 	 * @return GameButtonsPanel */
 	public PlanningPokerButtonsPanel getReqButton() {
 		return gameButton;
+	}
+	
+	public void setEndGameVisible(){
+		endGameButton.setEndGameButtonVisible();
+	}
+	public void setEndGameInvisible(){
+		endGameButton.setEndGameButtonInvisible();
 	}
 }
