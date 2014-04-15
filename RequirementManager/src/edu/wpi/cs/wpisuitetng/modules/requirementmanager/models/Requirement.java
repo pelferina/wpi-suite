@@ -914,7 +914,7 @@ public class Requirement extends AbstractModel {
 		///if (this.notes.equals(o.getNotes()))
 		if (this.iteration.equals(o.getIteration()))
 		if (this.parentID == this.getParentID())
-		if (this.assignedTo.equals(o.getAssignedTo()))
+		//if (this.assignedTo.equals(o.getAssignedTo()))
 		//if (this.tasks.equals(o.getTasks()))
 		//if (this.tests.equals(o.getTests()))
 		//if (this.attachments.equals(o.getAttachments()))

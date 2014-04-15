@@ -107,7 +107,7 @@ public class MainView extends JTabbedPane {
 				add(newGame, open);
 			}
 			else if (tabType.equals("Edit Game")){
-				NewGameDistributedPanel newEdit = new NewGameDistributedPanel(reqs, btnClose);
+				NewGameDistributedPanel newEdit = new NewGameDistributedPanel(game, btnClose);
 				myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newEdit, 1);
 				newGames.add(newEdit);
 				add(newEdit, open);
