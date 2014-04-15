@@ -26,7 +26,11 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 
-
+/**
+ * This method manages refresh requests
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
+ */
 public class RefreshManager {
 	
 	GetGamesController gameController;
@@ -79,6 +83,9 @@ public class RefreshManager {
 		r.start();
 	}
 	
+	/**
+	 * This method updates games
+	 */
 	private void updateGames()
 	{
 		//Make a request to the database
