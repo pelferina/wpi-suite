@@ -608,11 +608,11 @@ public class NewGameInputDistributedPanel extends JPanel {
 			deadlineCheckBox.setSelected(true);;
 			setDeadlineVisibility(true);
 			
-			int year_index = currentGameSession.getEndDate().getYear();
+			int year_index = currentGameSession.getEndDate().getYear() + 1900;
 		
 			int month_index = currentGameSession.getEndDate().getMonth();
 		
-			int day_index = currentGameSession.getEndDate().getDay();
+			int day_index = currentGameSession.getEndDate().getDate();
 			datePicker.getModel().setDate(year_index, month_index, day_index);
 
 			setDeadlineDate();
