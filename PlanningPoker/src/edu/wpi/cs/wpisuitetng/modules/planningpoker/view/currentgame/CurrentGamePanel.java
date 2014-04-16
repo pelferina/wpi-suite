@@ -52,8 +52,8 @@ public class CurrentGamePanel extends JPanel {
 	 * This method sets the layout and designs the panel
 	 */
 	private void setPanel(){
-		SpringLayout springLayout = new SpringLayout();
-		JScrollPane activeLstScrollPane = new JScrollPane(activeGameList);
+		final SpringLayout springLayout = new SpringLayout();
+		final JScrollPane activeLstScrollPane = new JScrollPane(activeGameList);
 		
 		activeLstScrollPane.setPreferredSize(new Dimension(1000,300));
 		btnEdit = new JButton("Edit");
@@ -63,10 +63,10 @@ public class CurrentGamePanel extends JPanel {
 		{
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int tempIndex = activeGameList.getSelectedIndex();
+				final int tempIndex = activeGameList.getSelectedIndex();
 				if (tempIndex == -1)
 					return;
-				GameSession tempGame = listOfGames.get(tempIndex);		
+				final GameSession tempGame = listOfGames.get(tempIndex);		
 				ViewEventController.getInstance().editGameTab(tempGame);
 			}	
 		});

@@ -22,9 +22,9 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
  * @version $Revision: 1.0 $
  */
 public class JTableView extends JScrollPane {
-	private JTable table;
+	private final JTable table;
 	public JTableView(){
-		GameSession[] blank = {};
+		final GameSession[] blank = {};
 		table = new JTable(new JTableModel(blank));
 		setViewportView(table);
 		add(table);

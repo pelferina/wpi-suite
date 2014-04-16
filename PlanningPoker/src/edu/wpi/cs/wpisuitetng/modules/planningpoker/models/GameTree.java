@@ -19,8 +19,8 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class GameTree extends DefaultMutableTreeNode {
 	
-	private DefaultMutableTreeNode top;
-	private GameModel gameModel;
+	private final DefaultMutableTreeNode top;
+	private final GameModel gameModel;
 
 	/**
 	 * This constructor creates a tree system and its highest node as well as populating variables
@@ -35,7 +35,7 @@ public class GameTree extends DefaultMutableTreeNode {
 
 	private void createNodes(DefaultMutableTreeNode top) {
 		//build tree for draft games
-		DefaultMutableTreeNode drafts = new DefaultMutableTreeNode("Drafts");
+		final DefaultMutableTreeNode drafts = new DefaultMutableTreeNode("Drafts");
 		List<GameSession> draftGameSessionList = new ArrayList<GameSession>();
 		if (gameModel != null) {
 			draftGameSessionList = gameModel.getDraftGameSessions();
@@ -49,7 +49,7 @@ public class GameTree extends DefaultMutableTreeNode {
 			drafts.add(new DefaultMutableTreeNode("game model null :("));
 		}
 		//build tree for active games
-		DefaultMutableTreeNode activeGames = new DefaultMutableTreeNode("Active Games");
+		final DefaultMutableTreeNode activeGames = new DefaultMutableTreeNode("Active Games");
 		List<GameSession> activeGameSessionList = new ArrayList<GameSession>();
 		if (gameModel != null){
 			activeGameSessionList = gameModel.getActiveGameSessions();
@@ -61,7 +61,7 @@ public class GameTree extends DefaultMutableTreeNode {
 			activeGames.add(new DefaultMutableTreeNode("game model null :("));
 		}
 		
-		DefaultMutableTreeNode inProgressGames = new DefaultMutableTreeNode("In Progress Games");
+		final DefaultMutableTreeNode inProgressGames = new DefaultMutableTreeNode("In Progress Games");
 		List<GameSession> inProgressGameSessionList = new ArrayList<GameSession>();
 		if (gameModel != null){
 			inProgressGameSessionList = gameModel.getActiveGameSessions();
@@ -74,7 +74,7 @@ public class GameTree extends DefaultMutableTreeNode {
 		}
 		
 		//build tree for past games
-		DefaultMutableTreeNode completedGames = new DefaultMutableTreeNode("Completed Games");
+		final DefaultMutableTreeNode completedGames = new DefaultMutableTreeNode("Completed Games");
 		List<GameSession> CompletedGameSessionList  = new ArrayList<GameSession>();
 		if (gameModel != null){
 			CompletedGameSessionList = gameModel.getCompletedGameSessions();
@@ -86,7 +86,7 @@ public class GameTree extends DefaultMutableTreeNode {
 			completedGames.add(new DefaultMutableTreeNode("game model null :("));
 		}
 		
-		DefaultMutableTreeNode archivedGames = new DefaultMutableTreeNode("Archived Games");
+		final DefaultMutableTreeNode archivedGames = new DefaultMutableTreeNode("Archived Games");
 		List<GameSession> ArchivedGameSessionList  = new ArrayList<GameSession>();
 		if (gameModel != null){
 			ArchivedGameSessionList = gameModel.getArchivedGameSessions();

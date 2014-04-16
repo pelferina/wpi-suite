@@ -26,10 +26,10 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailAddressCo
 @SuppressWarnings("serial")
 public class AddEmailPanel extends JPanel {
 	
-	private JTextField emailField = new JTextField();
-	private JLabel emailLabel = new JLabel("Email: ");
-	private JButton submitButton = new JButton ("Submit");
-	private JButton close;
+	private final JTextField emailField = new JTextField();
+	private final JLabel emailLabel = new JLabel("Email: ");
+	private final JButton submitButton = new JButton ("Submit");
+	private final JButton close;
 	public boolean isNew = false;
 	
 	/**
@@ -45,7 +45,7 @@ public class AddEmailPanel extends JPanel {
 	 * This method sets up the panel layout and design
 	 */
 	private void setupPanel(){
-		SpringLayout springLayout = new SpringLayout();
+		final SpringLayout springLayout = new SpringLayout();
 		springLayout.putConstraint(SpringLayout.NORTH, submitButton, 21, SpringLayout.SOUTH, emailField);
 		springLayout.putConstraint(SpringLayout.WEST, submitButton, 189, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, emailField, -3, SpringLayout.NORTH, emailLabel);

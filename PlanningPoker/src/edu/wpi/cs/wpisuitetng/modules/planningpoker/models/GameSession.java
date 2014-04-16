@@ -32,7 +32,7 @@ public class GameSession extends AbstractModel {
 
 	/** The game */
 	private String gameName;
-	private String gameDescription;
+	private final String gameDescription;
 
 
 	private final int ownerID;
@@ -117,8 +117,8 @@ public class GameSession extends AbstractModel {
 	@Override
 	public String toString() {
 		// Format the date-time stamp
-		DateFormat dateFormat1 = new SimpleDateFormat("MM/dd/yy hh:mm a");
-		DateFormat dateFormat2 = new SimpleDateFormat("MM/dd/yy");
+		final DateFormat dateFormat1 = new SimpleDateFormat("MM/dd/yy hh:mm a");
+		final DateFormat dateFormat2 = new SimpleDateFormat("MM/dd/yy");
 		String returnStr = new String();
 		returnStr = gameName + "	";
 		if(creationdate != null){
@@ -206,7 +206,7 @@ public class GameSession extends AbstractModel {
 		if (!(other instanceof GameSession)){
 			return false;
 		}
-		GameSession o = (GameSession) other;
+		final GameSession o = (GameSession) other;
 		
 		if (gameName.equals(o.getGameName()))
 			if (gameDescription.equals(o.getGameDescription())){
@@ -259,11 +259,11 @@ public class GameSession extends AbstractModel {
 	 * This method calculates the statistics of the votes, such as mean and median
 	 */
 	public void calculateStats(){
-		int requirementNum = gameReqs.size();
-		int userNum = votes.size();
+		final int requirementNum = gameReqs.size();
+		final int userNum = votes.size();
 		mean = new ArrayList<Float>();
 		median = new ArrayList<Float>();
-		int[][] voteResult = new int[requirementNum][userNum];
+		final int[][] voteResult = new int[requirementNum][userNum];
 		for(int i=0; i < userNum; i++){
 			for(int j=0;j < requirementNum; j++){
 				voteResult[j][i] = votes.get(i).getVote().get(j);

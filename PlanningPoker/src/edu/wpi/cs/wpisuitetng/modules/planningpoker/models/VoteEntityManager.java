@@ -30,7 +30,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
  */
 public class VoteEntityManager implements EntityManager<Vote> {
 
-	private Data db;
+	private final Data db;
 
 	/**
 	 * This constructor populates the database variable with input
@@ -43,7 +43,7 @@ public class VoteEntityManager implements EntityManager<Vote> {
 	@Override
 	public Vote makeEntity(Session s, String content)
 			throws WPISuiteException {
-		Vote v = Vote.fromJson(content);
+		final Vote v = Vote.fromJson(content);
 		// update invalid information.
 		if (v.getUID() == -1) v.setUID(s.getUser().getIdNum());
 		// Check for duplication
@@ -68,9 +68,9 @@ public class VoteEntityManager implements EntityManager<Vote> {
 	 */
 	@Override
 	public Vote[] getEntity(Session s, String example) throws WPISuiteException {
-		Vote v = Vote.fromJson(example);
-		Vote[] vlist = (Vote[]) db.retrieve(Vote.class, "UID", v.getUID(), s.getProject()).toArray();
-		List<Vote> voteList = new ArrayList<Vote>();
+		final Vote v = Vote.fromJson(example);
+		final Vote[] vlist = (Vote[]) db.retrieve(Vote.class, "UID", v.getUID(), s.getProject()).toArray();
+		final List<Vote> voteList = new ArrayList<Vote>();
 		for(Vote vo : vlist) if(v.getGameID() == vo.getGameID())  voteList.add(vo);
 		return (Vote[]) voteList.toArray();
 	}
@@ -88,7 +88,7 @@ public class VoteEntityManager implements EntityManager<Vote> {
 	 */
 	@Override
 	public Vote update(Session s, String content) throws WPISuiteException {
-		Vote v = Vote.fromJson(content);
+		final Vote v = Vote.fromJson(content);
 		if(v.getVoteID() == -1) v.setVoteID(v.getUID() + v.getGameID()*100000);
 		db.update(Vote.class, "VoteID", v.getVoteID(), "Vote", v.getVote());
 		return v;

@@ -124,7 +124,7 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	@Override
 	public Boolean identify(Object o) {
 		if(o == null || o.getClass() != this.getClass()) return false;
-		Vote other = (Vote) o;
+		final Vote other = (Vote) o;
 		return (gameID == other.gameID && UID == other.UID);
 	}
 

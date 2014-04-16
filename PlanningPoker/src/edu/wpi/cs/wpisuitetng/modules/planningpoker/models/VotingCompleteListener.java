@@ -37,7 +37,7 @@ public class VotingCompleteListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		GameSession[] gameArray = {};
-		int numOfUser;
+		final int numOfUser;
 
 		gameArray = db.retrieveAll(
 				new GameSession(new String(), new String(), 0, 0, new Date(),
