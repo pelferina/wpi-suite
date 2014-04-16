@@ -15,6 +15,7 @@ import javax.swing.table.TableColumn;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.JTableModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -65,25 +66,37 @@ public class GameRequirements extends JSplitPane{
 		};
 		estimatesPending.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Name", "Description"}));
 		estimatesComplete.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Name", "Description"}));
-		init();
+		init(gameToPlay);
 	}
 
-	private void init(){
+	private void init(GameSession gameToPlay){
 		DefaultTableModel pendingModel = (DefaultTableModel) estimatesPending.getModel();
+		DefaultTableModel completedModel = (DefaultTableModel) estimatesComplete.getModel();
 		pendingModel.setNumRows(gameReqs.size());
 		pendingModel.setColumnCount(COLUMN_NUM);
 		setColumnWidth(estimatesPending);
 		
 		//Fills the pending table with the name and description of the requirements that are in the game
 		
-		for (int i = 0; i < gameReqs.size(); i++){
-			pendingModel.setValueAt(gameReqs.get(i).getId(), i, 0);
-			pendingModel.setValueAt(gameReqs.get(i).getName(), i, 1);
-			pendingModel.setValueAt(gameReqs.get(i).getDescription(), i, 2);
+		if (gameToPlay.getVotes().size() > 0){
+			pendingModel.setNumRows(0);
+			completedModel.setNumRows(gameReqs.size());
+			for (int i = 0; i < gameReqs.size(); i++){
+				completedModel.setValueAt(gameReqs.get(i).getId(), i, 0);
+				completedModel.setValueAt(gameReqs.get(i).getName(), i, 1);
+				completedModel.setValueAt(gameReqs.get(i).getDescription(), i, 2);
+			}
 		}
 		
-		DefaultTableModel completedModel = (DefaultTableModel) estimatesComplete.getModel();
-		completedModel.setNumRows(0);
+		else {
+			for (int i = 0; i < gameReqs.size(); i++){
+				pendingModel.setValueAt(gameReqs.get(i).getId(), i, 0);
+				pendingModel.setValueAt(gameReqs.get(i).getName(), i, 1);
+				pendingModel.setValueAt(gameReqs.get(i).getDescription(), i, 2);
+			}
+			completedModel.setNumRows(0);
+		}
+		
 		completedModel.setColumnCount(COLUMN_NUM);
 		setColumnWidth(estimatesComplete);
 		this.pendingPane = new JScrollPane(estimatesPending);
