@@ -49,7 +49,7 @@ public class GetUsersRequestObserver implements RequestObserver {
 	**/
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		User[] userList = fromJsonArray(iReq.getResponse().getBody());
+		final User[] userList = fromJsonArray(iReq.getResponse().getBody());
 		controller.receivedUserList(userList);
 	}
 	

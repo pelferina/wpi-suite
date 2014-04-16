@@ -35,7 +35,7 @@ public class GetCurrentUserRequestObserver implements RequestObserver {
 	**/
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		User user = User.fromJSON(iReq.getResponse().getBody());
+		final User user = User.fromJSON(iReq.getResponse().getBody());
 		getUser.setUser(user);
 	}
 	

@@ -31,7 +31,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  */
 public class GetRequirementsController extends RefreshableController implements ActionListener {
 
-	private GetRequirementsRequestObserver observer;
+	private final GetRequirementsRequestObserver observer;
 	private static GetRequirementsController instance;
 
 	/**

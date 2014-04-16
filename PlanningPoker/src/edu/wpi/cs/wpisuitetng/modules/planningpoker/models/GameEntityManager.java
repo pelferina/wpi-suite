@@ -80,7 +80,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	 */
 	@Override
 	public GameSession makeEntity(Session s, String content)
-			throws BadRequestException, ConflictException, WPISuiteException {
+			throws WPISuiteException {
 		
 		// Parse the message from JSON
 		final GameSession importedGame = GameSession.fromJson(content);
@@ -109,7 +109,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	 */
 	@Override
 	public GameSession[] getEntity(Session s, String id)
-			throws NotFoundException, WPISuiteException {
+			throws WPISuiteException {
 		// Throw an exception if an ID was specified, as this module does not support
 		// retrieving specific PostBoardMessages.
 		try{
@@ -128,7 +128,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getAll(edu.wpi.cs.wpisuitetng.Session)
 	 */
 	@Override
-	public GameSession[] getAll(Session s) throws WPISuiteException {
+	public GameSession[] getAll(Session s){
 		// Ask the database to retrieve all objects of the type PostBoardMessage.
 		// Passing a dummy PostBoardMessage lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
@@ -165,8 +165,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#save(edu.wpi.cs.wpisuitetng.Session, edu.wpi.cs.wpisuitetng.modules.Model)
 	 */
 	@Override
-	public void save(Session s, GameSession model)
-			throws WPISuiteException {
+	public void save(Session s, GameSession model){
 
 		// Save the given defect in the database
 		db.save(model);
@@ -194,8 +193,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	 * @param project the project
 	 * @throws UnsupportedEncodingException 
 	 */
-	public void sendUserEmails(String subject, String textToSend, Project project) throws UnsupportedEncodingException
-	{
+	public void sendUserEmails(String subject, String textToSend, Project project){
 		final String username = "fff8e7.email@gmail.com";
 		final String password = "fff8e7team5";
  
@@ -266,28 +264,25 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#Count()
 	 */
 	@Override
-	public int Count() throws WPISuiteException {
+	public int Count(){
 		// Return the number of PostBoardMessages currently in the database
 		return db.retrieveAll(new GameSession(null, null, 0, 0, null, null)).size();
 	}
 
 	@Override
-	public String advancedGet(Session s, String[] args)
-			throws WPISuiteException {
+	public String advancedGet(Session s, String[] args){
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String advancedPut(Session s, String[] args, String content)
-			throws WPISuiteException {
+	public String advancedPut(Session s, String[] args, String content){
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String advancedPost(Session s, String string, String content)
-			throws WPISuiteException {
+	public String advancedPost(Session s, String string, String content){
 		// TODO Auto-generated method stub
 		return null;
 	}

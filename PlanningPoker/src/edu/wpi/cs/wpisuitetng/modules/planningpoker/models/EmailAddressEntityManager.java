@@ -67,7 +67,7 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 	// content is not a json string, is just the address for the user.
 	@Override
 	public EmailAddressModel makeEntity(Session s, String content)
-			throws BadRequestException, ConflictException, WPISuiteException {
+			throws WPISuiteException {
 		
 		// Parse the message from JSON
 		final EmailAddressModel newEmailAddress = new EmailAddressModel(content);
@@ -125,7 +125,7 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 	 */
 	@Override
 	public EmailAddressModel[] getEntity(Session s, String id)
-			throws NotFoundException, WPISuiteException {
+			throws WPISuiteException {
 		throw new WPISuiteException();
 	}
 
@@ -154,8 +154,7 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#save(edu.wpi.cs.wpisuitetng.Session, edu.wpi.cs.wpisuitetng.modules.Model)
 	 */
 	@Override
-	public void save(Session s, EmailAddressModel model)
-			throws WPISuiteException {
+	public void save(Session s, EmailAddressModel model){
 
 		// Save the given defect in the database
 		db.save(model);
@@ -189,28 +188,25 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#Count()
 	 */
 	@Override
-	public int Count() throws WPISuiteException {
+	public int Count(){
 		// Return the number of EmailAddressModels currently in the database
 		return db.retrieveAll(EmailAddressModel.class).size();
 	}
 
 	@Override
-	public String advancedGet(Session s, String[] args)
-			throws WPISuiteException {
+	public String advancedGet(Session s, String[] args){
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String advancedPut(Session s, String[] args, String content)
-			throws WPISuiteException {
+	public String advancedPut(Session s, String[] args, String content){
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String advancedPost(Session s, String string, String content)
-			throws WPISuiteException {
+	public String advancedPost(Session s, String string, String content){
 		// TODO Auto-generated method stub
 		return null;
 	}

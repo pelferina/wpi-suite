@@ -21,7 +21,7 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
  */
 public class GetRequirementsRequestObserver implements RequestObserver {
 	
-	private GetRequirementsController controller;
+	private final GetRequirementsController controller;
 	
 	/**
 	 * Constructs the observer given a GetRequirementsController
@@ -39,7 +39,7 @@ public class GetRequirementsRequestObserver implements RequestObserver {
 	@Override
 	public void responseSuccess(IRequest iReq) {
 		// Convert the JSON array of requirements to a Requirement object array
-		Requirement[] requirements = Requirement.fromJsonArray(iReq.getResponse().getBody());
+		final Requirement[] requirements = Requirement.fromJsonArray(iReq.getResponse().getBody());
 		
 		// Pass these Requirements to the controller
 		controller.receivedRequirements(requirements);
@@ -60,7 +60,7 @@ public class GetRequirementsRequestObserver implements RequestObserver {
 	 */
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		Requirement[] errorRequirement = { new Requirement(6, "Error", "error desc") };
+		final Requirement[] errorRequirement = { new Requirement(6, "Error", "error desc") };
 		controller.receivedRequirements(errorRequirement);
 	}
 
