@@ -72,6 +72,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		selectedTable = new JTable();
 
 		List<Requirement> reqList = new ArrayList<Requirement>(reqs);
+		List<Requirement> reqsToRemove = new ArrayList<Requirement>();
 		List<Integer> selectedIDs = gameSession.getGameReqs();
 		
 		//Removes the selected reqs from the list of all the requirements. This is done to display only the requirements
@@ -82,10 +83,14 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 			for (int selectedReqID: selectedIDs) {
 				if (req.getId() == selectedReqID) {
 					int index = reqList.indexOf(req);
-					Requirement temp_req = reqList.remove(index); 
+					Requirement temp_req = reqList.get(index); 
+					reqsToRemove.add(temp_req);
 					this.selected.add(temp_req);
 				}
 			}	
+		}
+		for (Requirement r: reqsToRemove){
+			reqList.remove(r);
 		}
 		reqs = reqList;
 		init();
