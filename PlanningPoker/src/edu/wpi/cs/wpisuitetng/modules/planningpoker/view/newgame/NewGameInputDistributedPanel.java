@@ -621,7 +621,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 			System.out.println("T:" + currentGameSession.getEndDate().getHours());			
 			//	Sets the hour and minute combo boxes to the hour and minute in the game's deadline
 			if (currentGameSession.getEndDate().getHours() >= 11){
-				deadlineHourComboBox.setSelectedIndex(currentGameSession.getEndDate().getHours() - 12);
+				deadlineHourComboBox.setSelectedIndex(currentGameSession.getEndDate().getHours() - 13);
 				isAM = false;
 				PMButton.setSelected(true);
 				AMButton.setSelected(false);
