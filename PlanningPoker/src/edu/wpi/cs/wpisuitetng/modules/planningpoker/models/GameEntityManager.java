@@ -38,6 +38,7 @@ import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 
 
 /**
@@ -94,8 +95,12 @@ public class GameEntityManager implements EntityManager<GameSession> {
 		if (!db.save(newGame, s.getProject())) {
 			System.err.println("Game not saved");
 			throw new WPISuiteException();
+		}else{
+			System.out.println("Game saved");
+			if(newGame.getGameStatus().equals(GameStatus.ACTIVE)){
+				sendActiveNotification(newGame, s.getProject());
+			}
 		}
-		System.out.println("Game saved");
 		// Return the newly created message (this gets passed back to the client)
 		return newGame;
 	}
@@ -147,6 +152,25 @@ public class GameEntityManager implements EntityManager<GameSession> {
 
 		// Parse the message from JSON
 		final GameSession importedGame = GameSession.fromJson(content);
+		GameSession oldGame;
+		try {
+			GameSession[] games = (GameSession[])db.retrieve(GameSession.class, "GameID", importedGame.getGameID()).toArray();
+			if(games == null || games.length == 0){
+				System.err.println("Should not update a new created game which has not been saved before");
+				return importedGame;
+			}else{
+				if(games.length == 1){
+					if(games[0].getGameStatus().equals(GameStatus.DRAFT) && importedGame.getGameStatus().equals(GameStatus.ACTIVE)){
+						sendActiveNotification(importedGame, s.getProject());
+					}
+				}else{
+					System.err.println("Duplicated game ID");
+					return importedGame;
+				}
+			}
+		} catch (WPISuiteException e1) {
+			e1.printStackTrace();
+		}
 		System.out.println(importedGame);
 		try {
 			db.update(GameSession.class, "GameID", importedGame.getGameID(), "GameReqs", importedGame.getGameReqs());
@@ -186,6 +210,16 @@ public class GameEntityManager implements EntityManager<GameSession> {
 		}
 		
 	}
+	
+	private void sendActiveNotification(GameSession game, Project project){
+		String textToSend = "Hello user\r\n\t" + game.getGameName() + " just started. Please go to PlanningPoker to vote\r\nSent by fff8e7";
+		try {
+			sendUserEmails("New game", textToSend, project);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Sends a email message to the users in given session.
 	 * @param  textToSend the message to be sent
@@ -228,7 +262,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
  
 			Transport.send(message);
  
-			System.out.println("Done");
+			System.out.println("Send group emails. Content are'" + textToSend + "'");
  
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
