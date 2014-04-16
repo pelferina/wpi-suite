@@ -72,7 +72,7 @@ public class VoteEntityManager implements EntityManager<Vote> {
 	WPISuiteException {
 		Vote v = Vote.fromJson(example);
 		Vote[] vlist = (Vote[]) db.retrieve(Vote.class, "UID", v.getUID(), s.getProject()).toArray();
-		ArrayList<Vote> voteList = new ArrayList<Vote>();
+		List<Vote> voteList = new ArrayList<Vote>();
 		for(Vote vo : vlist) if(v.getGameID() == vo.getGameID())  voteList.add(vo);
 		return (Vote[]) voteList.toArray();
 	}

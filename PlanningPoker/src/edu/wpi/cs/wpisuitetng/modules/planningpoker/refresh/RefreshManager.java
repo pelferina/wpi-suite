@@ -35,8 +35,8 @@ public class RefreshManager {
 	
 	GetGamesController gameController;
 	GetRequirementsController reqController;
-	ArrayList<Requirement> reqCache;
-	ArrayList<GameSession> gameCache;
+	List<Requirement> reqCache;
+	List<GameSession> gameCache;
 	
 	public RefreshManager() {
 		gameController = GetGamesController.getInstance();

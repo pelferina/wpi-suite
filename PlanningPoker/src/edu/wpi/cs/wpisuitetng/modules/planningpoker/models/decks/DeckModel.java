@@ -33,7 +33,7 @@ public class DeckModel extends AbstractListModel {
 	/**
 	 * The list in which all the Decks for a single project are contained
 	 */
-	private ArrayList<Deck> listOfDecks;
+	private List<Deck> listOfDecks;
 	private int nextID; // the next available ID number for the Decks that
 						// are added.
 	
