@@ -228,7 +228,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 				System.out.println("Waiting for users");
 			}
 			catch(Exception e){
-				
+				System.err.println(e.getMessage());
 			}
 		}
 		users = guc.getUsers();

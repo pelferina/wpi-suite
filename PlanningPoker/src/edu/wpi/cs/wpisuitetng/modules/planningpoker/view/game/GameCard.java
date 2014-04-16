@@ -34,7 +34,9 @@ public class GameCard {
 		this.value = value;
 		try {
 			img  = ImageIO.read(getClass().getResource("planningpokercard.png"));
-		} catch (IOException ex) {}
+		} catch (IOException ex) {
+			System.err.println(ex.getMessage());
+		}
 	}
 	
 	public BufferedImage getImg()

@@ -121,7 +121,7 @@ public class JTableModel extends AbstractTableModel {
 				System.out.println("Waiting for users");
 			}
 			catch(Exception e){
-				
+				System.out.println("Exception thrown in JTableModel");
 			}
 		}
 		users = guc.getUsers();

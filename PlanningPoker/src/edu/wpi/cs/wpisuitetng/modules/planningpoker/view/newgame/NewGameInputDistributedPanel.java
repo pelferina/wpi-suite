@@ -16,7 +16,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,7 +23,6 @@ import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -160,7 +158,9 @@ public class NewGameInputDistributedPanel extends JPanel {
 		    
 			img = ImageIO.read(getClass().getResource("activate.png"));
 		    activateGameButton.setIcon(new ImageIcon(img));		    
-		} catch (IOException ex) {}
+		} catch (IOException ex) {
+			System.err.println(ex.getMessage());
+		}
 	}
 
 	/**
