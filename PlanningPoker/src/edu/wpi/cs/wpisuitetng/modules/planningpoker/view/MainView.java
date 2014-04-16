@@ -267,5 +267,6 @@ public class MainView extends JTabbedPane {
 	public void addEmailAddress() {
 		this.addTab("Add Email", new GameSession(null, null, 0, 0, null, null));
 		
-	}   
+	}
+
 }

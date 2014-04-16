@@ -92,6 +92,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 				importedGame.getGameReqs());
 		newGame.setGameStatus(importedGame.getGameStatus());
 		newGame.setProject(s.getProject());
+
 		// Save the message in the database if possible, otherwise throw an
 		// exception
 		// We want the message to be associated with the project the user logged
@@ -189,6 +190,10 @@ public class GameEntityManager implements EntityManager<GameSession> {
 								GameStatus.ACTIVE)) {
 					sendActiveNotification(importedGame, s.getProject());
 				}
+				if ((oldGame.getGameStatus().equals(GameStatus.ACTIVE) || oldGame.getGameStatus().equals(GameStatus.INPROGRESS))
+						&& importedGame.getGameStatus().equals(GameStatus.COMPLETED)) {
+					sendEndNotification(importedGame, s.getProject());
+				}
 
 			}
 		} catch (WPISuiteException e1) {
@@ -250,9 +255,19 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	private void sendActiveNotification(GameSession game, Project project) {
 		String textToSend = "Hello user\r\n\t"
 				+ game.getGameName()
-				+ " just started. Please go to PlanningPoker to vote\r\nSent by fff8e7";
+				+ " just started. Please go to PlanningPoker to vote.\r\nSent by fff8e7";
 		try {
 			sendUserEmails("New game", textToSend, project);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+	}
+	private void sendEndNotification(GameSession game, Project project) {
+		String textToSend = "Hello user\r\n\t"
+				+ game.getGameName()
+				+ " just ended.\r\nSent by fff8e7";
+		try {
+			sendUserEmails("Game Ended", textToSend, project);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}

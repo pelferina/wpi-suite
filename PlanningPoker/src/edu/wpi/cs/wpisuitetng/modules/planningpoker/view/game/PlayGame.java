@@ -22,6 +22,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddVoteController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.VoteModel;
@@ -62,6 +63,11 @@ public class PlayGame extends JPanel{
 			estimates.add(-1);
 		}
 		userEstimates = new Vote(estimates, currentGame.getGameID());
+		for (Vote v: gameToPlay.getVotes()){
+			if (v.getUID() == GetCurrentUser.getInstance().getCurrentUser().getIdNum()){
+				userEstimates = v;
+			}
+		}
 		submit.setEnabled(false);
 		this.gv = agv;
 		List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
@@ -71,8 +77,6 @@ public class PlayGame extends JPanel{
 		for (Requirement r: allReqs){
 			if (r.getId() == gameReqs.get(0)){
 				currentReq = r;
-				System.out.println("R: " + r.getId());
-				System.out.println("Current: " + currentReq.getId());
 				break;
 			}
 		}
@@ -80,6 +84,9 @@ public class PlayGame extends JPanel{
 		//Sets the description and name text fields to the first requirement in the to estimate table
 		reqNameTextField.setText(currentReq.getName());
 		reqDescTextArea.setText(currentReq.getDescription());
+		if (gameToPlay.getVotes().size() > 0){
+			estimateTextField.setText(Integer.toString(gameToPlay.getVotes().get(0).getVote().get(currentReq.getId())));
+		}
 		reqNameTextField.setEditable(false);
 		reqDescTextArea.setEditable(false);
 		

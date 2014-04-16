@@ -335,7 +335,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		String description = descriptionTextField.getText();
 		
 		@SuppressWarnings("deprecation")
-		Date deadlineDate = new Date(deadlineYear, deadlineMonth , deadlineDay, hourTime, minuteTime);
+		Date deadlineDate = new Date(deadlineYear - 1900, deadlineMonth , deadlineDay, hourTime, minuteTime);
 		
 		//If just saving the game, set deadline to null
 		if(!deadlineCheckBox.isSelected())
@@ -633,7 +633,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		
 			int month_index = currentGameSession.getEndDate().getMonth();
 		
-			int day_index = currentGameSession.getEndDate().getDay();
+			int day_index = currentGameSession.getEndDate().getDate();
 			datePicker.getModel().setDate(year_index, month_index, day_index);
 
 			setDeadlineDate();

@@ -79,6 +79,9 @@ public class OverviewPanel extends JPanel implements Refreshable {
 				      else if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.ACTIVE){
 				    	  ViewEventController.getInstance().playGameTab(clickedGame);
 				      }
+				      else if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.INPROGRESS){
+				    	  ViewEventController.getInstance().playGameTab(clickedGame);
+				      }
 				    }
 				    if(e.getClickCount() == 1){
 				    	System.out.println("In mouse listener " + row);
