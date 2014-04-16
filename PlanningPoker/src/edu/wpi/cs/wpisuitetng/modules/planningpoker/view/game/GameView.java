@@ -37,7 +37,7 @@ public class GameView extends JSplitPane{
 		gameReqs = new GameRequirements(gameToPlay, this);
 		playGame = new PlayGame(gameToPlay, this);
 		addImpl(gameReqs, JSplitPane.LEFT, 1);
-		Dimension minimumSize = new Dimension(600, 200);
+		final Dimension minimumSize = new Dimension(600, 200);
 		leftComponent.setMinimumSize(minimumSize);
 		addImpl(playGame, JSplitPane.RIGHT, 2);
 		setDividerLocation(400);
@@ -59,6 +59,9 @@ public class GameView extends JSplitPane{
 		gameReqs.updateTables(r);
 	}
 
+	/**
+	 * clears the game view's boxes
+	 */
 	public void clearBoxes() {
 		playGame.clear();
 	}

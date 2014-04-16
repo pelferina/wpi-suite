@@ -49,6 +49,8 @@ public class EmailAddressModel extends AbstractModel {
 
 	/**
 	 * sets the address
+	 * @param address a string address to be set
+	 * @return EmailAddressModel, the email address that is being set
 	 */
 	public EmailAddressModel setAddress(String address) {
 		this.address = address;
@@ -64,6 +66,8 @@ public class EmailAddressModel extends AbstractModel {
 
 	/**
 	 * sets the userID
+	 * @param userID the user ID to be set, integer
+	 * @return EmailAddressModel, the EmailAddressModel that the user is being set for
 	 */
 	public EmailAddressModel setUserID(int userID) {
 		this.userID = userID;

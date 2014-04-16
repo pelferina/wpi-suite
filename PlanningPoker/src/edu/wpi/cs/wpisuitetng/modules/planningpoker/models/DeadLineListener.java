@@ -53,7 +53,7 @@ public class DeadLineListener implements ActionListener{
 		
 		gameArray = db.retrieveAll(new GameSession(new String(), new String(), 0 , 0, new Date(), null)).toArray(new GameSession[0]);
 
-		Date today = new Date();
+		final Date today = new Date();
 		
 		for(int i=0; i<gameArray.length; i++){
 			if (gameArray[i].getEndDate() != null){

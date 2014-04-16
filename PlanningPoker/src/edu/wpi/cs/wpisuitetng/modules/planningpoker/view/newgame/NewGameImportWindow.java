@@ -49,9 +49,9 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 public class NewGameImportWindow {
 	Requirement currentSelectedReq;
 	JDialog importWindow;
-	private JRootPane mainPanel = new JRootPane();
-	private JButton finishButton = new JButton("Finish");
-	private String[] listValue;
+	private final JRootPane mainPanel = new JRootPane();
+	private final JButton finishButton = new JButton("Finish");
+	private final String[] listValue;
 	private final JComboBox reqList = new JComboBox();
 	private final List<Requirement> requirements;
 	private final JLabel promptLabel = new JLabel("Please select a requirement to import:");
@@ -76,7 +76,7 @@ public class NewGameImportWindow {
 		}
 		finishButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				int tempIndex = reqList.getSelectedIndex();
+				final int tempIndex = reqList.getSelectedIndex();
 				if (tempIndex!=-1){
 					currentSelectedReq = requirements.get(tempIndex);
 				}
@@ -94,7 +94,7 @@ public class NewGameImportWindow {
 		importWindow.getContentPane().setLayout(null);
 		mainPanel.setBounds(0, 0, 434, 262);
 		importWindow.getContentPane().add(mainPanel);
-		SpringLayout sl_mainPanel = new SpringLayout();
+		final SpringLayout sl_mainPanel = new SpringLayout();
 		sl_mainPanel.putConstraint(SpringLayout.HORIZONTAL_CENTER, finishButton, 0, SpringLayout.HORIZONTAL_CENTER, mainPanel);
 		sl_mainPanel.putConstraint(SpringLayout.SOUTH, finishButton, -25, SpringLayout.SOUTH, mainPanel);
 		mainPanel.setLayout(sl_mainPanel);
@@ -108,7 +108,7 @@ public class NewGameImportWindow {
 		
 		importWindow.setSize(450, 300);
 		
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		importWindow.setLocation(dim.width/2-importWindow.getSize().width/2, dim.height/2-importWindow.getSize().height/2);
 		
 		importWindow.setVisible(true);

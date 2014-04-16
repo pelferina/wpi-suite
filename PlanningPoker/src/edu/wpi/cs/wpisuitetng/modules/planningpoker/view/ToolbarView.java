@@ -58,6 +58,9 @@ public class ToolbarView  extends DefaultToolbarView {
 	public void setEndGameVisible(int gameID){
 		endGameButton.setEndGameButtonVisible(gameID);
 	}
+	/**
+	 * sets the endgame button to be invisible
+	 */
 	public void setEndGameInvisible(){
 		endGameButton.setEndGameButtonInvisible();
 	}

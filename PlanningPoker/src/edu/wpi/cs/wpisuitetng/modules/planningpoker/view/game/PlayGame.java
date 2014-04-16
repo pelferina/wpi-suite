@@ -40,19 +40,19 @@ import javax.swing.event.DocumentListener;
  */
 public class PlayGame extends JPanel{
 
-	private List<Integer> gameReqs;
+	private final List<Integer> gameReqs;
 	private final JLabel reqName = new JLabel("Requirement Name:");
 	private final JLabel reqDesc = new JLabel("Requirement Description:");
 	private final JLabel estimateLabel = new JLabel("Input Estimate");
-	private JTextField estimateTextField = new JTextField();
-	private JTextField reqNameTextField = new JTextField();
-	private JTextArea reqDescTextArea = new JTextArea();
+	private final JTextField estimateTextField = new JTextField();
+	private final JTextField reqNameTextField = new JTextField();
+	private final JTextArea reqDescTextArea = new JTextArea();
 	private final JButton submit = new JButton("Submit All Estimates");
 	private final JButton voteButton = new JButton("Vote");
-	private Vote userEstimates;
+	private final Vote userEstimates;
 	private Requirement currentReq;
-	private GameView gv;
-	private GameSession currentGame;
+	private final GameView gv;
+	private final GameSession currentGame;
 	//private GameCard[] gameCards = {new GameCard(1), new GameCard(2), new GameCard(5)};
 	
 	/**
@@ -63,7 +63,7 @@ public class PlayGame extends JPanel{
 	public PlayGame(GameSession gameToPlay, GameView agv){
 		currentGame = gameToPlay;
 		gameReqs = currentGame.getGameReqs();
-		ArrayList<Integer> estimates = new ArrayList<Integer>();
+		final ArrayList<Integer> estimates = new ArrayList<Integer>();
 		System.out.println(gameReqs.size());
 		for (int i = 0; i < gameReqs.size(); i++){
 			estimates.add(-1);
@@ -71,7 +71,7 @@ public class PlayGame extends JPanel{
 		userEstimates = new Vote(estimates, currentGame.getGameID());
 		submit.setEnabled(false);
 		gv = agv;
-		List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
+		final List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
 		
 		//Finds the requirement that is first in the to estimate table. The play game screen will default to displaying the first requirement
 		//in the estimates pending table
@@ -112,7 +112,7 @@ public class PlayGame extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e){
-				int estimate = Integer.parseInt(estimateTextField.getText());
+				final int estimate = Integer.parseInt(estimateTextField.getText());
 				if (estimate < 0){
 					//TODO error message
 					return;
@@ -138,12 +138,12 @@ public class PlayGame extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e){
-				AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
+				final AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
 				msgr.sendVote(userEstimates);
 			}
 		});
 		
-		SpringLayout springLayout = new SpringLayout();
+		final SpringLayout springLayout = new SpringLayout();
 		
 		//Spring layout placement for vote button
 		springLayout.putConstraint(SpringLayout.NORTH, voteButton, 6, SpringLayout.SOUTH, estimateTextField);
@@ -226,7 +226,7 @@ public class PlayGame extends JPanel{
 				break;
 			}
 		}
-		int estimate = userEstimates.getVote().get(i);
+		final int estimate = userEstimates.getVote().get(i);
 		if (estimate > -1) {
 			estimateTextField.setText(Integer.toString(estimate));
 		} else {
@@ -244,7 +244,11 @@ public class PlayGame extends JPanel{
 		gv.updateReqTables(r);
 	}
 	
-	//Helper function for checking if the estimate text box contains an integer
+	/**
+	 * Helper function for checking if the estimate text box contains an integer
+	 * @param s the string to be checking
+	 * @return boolean true if integer, false if otherwise
+	 */
 	public static boolean isInteger(String s) {
 	    try { 
 	        Integer.parseInt(s); 
@@ -255,14 +259,18 @@ public class PlayGame extends JPanel{
 	    return true;
 	}
 
-	//This function is called when the user estimates all of the requirements, it clears the name and description boxes
+	/**
+	 * This function is called when the user estimates all of the requirements, it clears the name and description boxes
+	 */
 	public void clear() {
 		reqNameTextField.setText("");
 		reqDescTextArea.setText("");
 		estimateTextField.setText("");
 	}
 	
-	
+	/**
+	 * changes whether or not the user can submit vote
+	 */
 	public void checkCanSubmit(){
 		boolean canSubmit = true;
 		for (int estimate: userEstimates.getVote()){

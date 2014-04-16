@@ -21,11 +21,11 @@ import javax.swing.*;
  */
 @SuppressWarnings("serial")
 public class NewGameInitialPanel extends JPanel{
-	private JLabel gameNameLabel = new JLabel("Game Name:");
-	private JTextField gameNameInput = new JTextField();
-	private JRadioButton liveButton = new JRadioButton("Live");
-	private JRadioButton distributedButton = new JRadioButton("Distributed");
-	private ButtonGroup gameType  = new ButtonGroup();
+	private final JLabel gameNameLabel = new JLabel("Game Name:");
+	private final JTextField gameNameInput = new JTextField();
+	private final JRadioButton liveButton = new JRadioButton("Live");
+	private final JRadioButton distributedButton = new JRadioButton("Distributed");
+	private final ButtonGroup gameType  = new ButtonGroup();
 	
 	public NewGameInitialPanel(){
 		setPanel();
@@ -41,7 +41,7 @@ public class NewGameInitialPanel extends JPanel{
 		gameType.add(liveButton);
 		gameType.add(distributedButton);
 		
-		SpringLayout sl_mainPanel = new SpringLayout();
+		final SpringLayout sl_mainPanel = new SpringLayout();
 		sl_mainPanel.putConstraint(SpringLayout.SOUTH, gameNameLabel, -30, SpringLayout.NORTH, liveButton);
 		sl_mainPanel.putConstraint(SpringLayout.NORTH, gameNameInput, -3, SpringLayout.NORTH, gameNameLabel);
 		sl_mainPanel.putConstraint(SpringLayout.WEST, gameNameInput, 0, SpringLayout.WEST, distributedButton);

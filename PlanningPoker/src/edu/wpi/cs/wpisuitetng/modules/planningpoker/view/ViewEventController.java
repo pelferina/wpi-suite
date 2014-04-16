@@ -124,12 +124,18 @@ public class ViewEventController {
 	public void setEndGameButtonInvisible(){
 		toolbar.setEndGameInvisible();
 	}
-	
+	/**
+	 * sets the edit game button to be visible
+	 * @param gameID the id of the game to change the button for
+	 */
 	public void setEditGameButtonVisible(int gameID)
 	{
 		toolbar.getEditButton().setButtonToEdit();
 	}
 
+	/**
+	 * sets the edit game button to be invisible
+	 */
 	public void setEditGameButtonInVisible() {
 		toolbar.getEditButton().setVisible(false);		
 	}

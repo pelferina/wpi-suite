@@ -51,7 +51,7 @@ public class GameSession extends AbstractModel {
 	private final Date creationdate;
 	/** The date that the game will end, if there is no end time then this value is null*/
 	private Date endDate;
-	private boolean emailSent = false;
+	private final boolean emailSent = false;
 	private List<Float> median;
 	private List<Float> mean;
 	
@@ -168,6 +168,11 @@ public class GameSession extends AbstractModel {
 		return endDate;
 	}
 
+	/**
+	 * sets an end date for game session
+	 * @param endDate the date
+	 * @return GameSession, the game session we are changing
+	 */
 	public GameSession setEndDate(Date endDate) {
 		this.endDate = endDate;
 		return this;
@@ -177,6 +182,11 @@ public class GameSession extends AbstractModel {
 		return gameStatus;
 	}
 
+	/**
+	 * sets the game status of the game session
+	 * @param gameStatus the game status to set to
+	 * @return GameSession the game session being changed
+	 */
 	public GameSession setGameStatus(GameStatus gameStatus) {
 		this.gameStatus = gameStatus;
 		return this;
@@ -186,6 +196,11 @@ public class GameSession extends AbstractModel {
 		return gameReqs;
 	}
 
+	/**
+	 * sets the game requirements of a game session
+	 * @param gameReqs the list of requirements to set
+	 * @return GameSession the session being set
+	 */
 	public GameSession setGameReqs(List<Integer> gameReqs) {
 		this.gameReqs = gameReqs;
 		return this;
@@ -196,6 +211,11 @@ public class GameSession extends AbstractModel {
 	public String getGameDescription(){
 		return gameDescription;
 	}
+	/**
+	 * sets the name of the game
+	 * @param gameName the name of the game
+	 * @return GameSession the session of the game to set the name of
+	 */
 	public GameSession setGameName(String gameName) {
 		this.gameName = gameName;
 		return this;
@@ -231,6 +251,11 @@ public class GameSession extends AbstractModel {
 		
 	}
 
+	/**
+	 * sets the votes of the game session
+	 * @param v the list of votes to be set
+	 * @return GameSession the game session to be changed
+	 */
 	public GameSession setVotes(List<Vote> v){
 		votes = v;
 		return this;

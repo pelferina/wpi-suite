@@ -20,9 +20,19 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.JTableModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
+/**
+ * This is a table listener for determining when a table is selected
+ * 
+ * @author fff8e7
+ * @version $Revision: 1.0 $
+ */
 public class TableSelectListener implements ListSelectionListener{
 	private final JTable table;
 
+	/**
+	 * Constructor for TableSelectListener
+	 * @param table the table to listen to
+	 */
 	public TableSelectListener(JTable table){
 		this.table = table;
 	}

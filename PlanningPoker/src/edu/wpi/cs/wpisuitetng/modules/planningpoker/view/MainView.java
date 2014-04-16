@@ -51,13 +51,13 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
  */
 @SuppressWarnings("serial")
 public class MainView extends JTabbedPane {
-	private OverviewPanel overviewPanel;
+	private final OverviewPanel overviewPanel;
 	private GameModel gameModel;
 	private int newGameTabs = 0;
 	private GetRequirementsRequestObserver refresher;
 	private int j = 0;
-	private List<Integer> openTabs = new ArrayList<Integer>();
-	private List<NewGameDistributedPanel> newGames = new ArrayList<NewGameDistributedPanel>();
+	private final List<Integer> openTabs = new ArrayList<Integer>();
+	private final List<NewGameDistributedPanel> newGames = new ArrayList<NewGameDistributedPanel>();
 	final int PERMANANT_TABS = 1;
 	
 	public MainView() {
@@ -98,42 +98,42 @@ public class MainView extends JTabbedPane {
 		}
 
 		private void addTab(String tabType, GameSession game){
-			int open = this.getTabCount();
+			final int open = this.getTabCount();
 			MyCloseActionHandler myCloseActionHandler = null;
 			overviewPanel.refreshGames();
 			GetRequirementsController.getInstance().retrieveRequirements();
 			openTabs.add(newGameTabs, j);
-			JButton btnClose = new JButton("x");
-			List<Requirement> reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
+			final JButton btnClose = new JButton("x");
+			final List<Requirement> reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
 			if (tabType.equals("New Game")){
-				NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose);
+				final NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose);
 				myCloseActionHandler = new MyCloseActionHandler(tabType, j, this, newGame, 0);
 				newGames.add(newGame);
 				add(newGame, open);
 			}
 			else if (tabType.equals("Edit Game")){
-				NewGameDistributedPanel newEdit = new NewGameDistributedPanel(game, btnClose);
+				final NewGameDistributedPanel newEdit = new NewGameDistributedPanel(game, btnClose);
 				myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newEdit, 1);
 				newGames.add(newEdit);
 				add(newEdit, open);
 			}
 			else if (tabType.equals("Play Game")){
-				GameView newGameView = new GameView(game);
+				final GameView newGameView = new GameView(game);
 				myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newGameView, 2);
 				add(newGameView, open);
 			}
 			else if (tabType.equals("Add Email")){
-				AddEmailPanel addEmailPanel = new AddEmailPanel(btnClose);
+				final AddEmailPanel addEmailPanel = new AddEmailPanel(btnClose);
 				myCloseActionHandler = new MyCloseActionHandler("options", j, this, addEmailPanel, 3);
 				add(addEmailPanel, open);
 			}
-			JPanel pnlTab = new JPanel(new GridBagLayout());
+			final JPanel pnlTab = new JPanel(new GridBagLayout());
 			pnlTab.setOpaque(false);
-			JLabel lblTitle = new JLabel(tabLabler(tabType, game));
+			final JLabel lblTitle = new JLabel(tabLabler(tabType, game));
 			if (tabType.equals("Add Email")) lblTitle.setText("Options");
 			btnClose.setMargin(new Insets(0, 0, 0, 0));
 			btnClose.setFont(btnClose.getFont().deriveFont((float) 8));
-			GridBagConstraints gbc = new GridBagConstraints();
+			final GridBagConstraints gbc = new GridBagConstraints();
 
 			gbc.gridx = 0;
 			gbc.gridy = 0;
@@ -193,13 +193,13 @@ public class MainView extends JTabbedPane {
 	 */
 	public class MyCloseActionHandler implements ActionListener {
 
-	    private String tabName;
-	    private int index;
+	    private final String tabName;
+	    private final int index;
 	    //0 - New Game
 	    //1 - Edit Game
 	    //2 - Game View
-	    private int type;
-	    private MainView mv;
+	    private final int type;
+	    private final MainView mv;
 	    private GameView gameView;
 	    private NewGameDistributedPanel ngdp;
 	    private AddEmailPanel addEmailPanel;
@@ -277,7 +277,7 @@ public class MainView extends JTabbedPane {
 	    public void actionPerformed(ActionEvent evt) {
 	    	 if (type == 0 || type == 1) {
 		        	if (!ngdp.isNew){
-						int option = JOptionPane.showOptionDialog(ngdp, "Discard unsaved changes and close tab?", "Discard changes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+						final int option = JOptionPane.showOptionDialog(ngdp, "Discard unsaved changes and close tab?", "Discard changes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 						if (option == 0){
 							ViewEventController.getInstance().getMain().remove(ngdp);
 						}
@@ -289,7 +289,7 @@ public class MainView extends JTabbedPane {
 
 	        else if (type == 2){
 	        	if(!gameView.isNew){
-	        		int option = JOptionPane.showOptionDialog(gameView, "Discard unsaved changes and close tab?", "Discard changes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+	        		final int option = JOptionPane.showOptionDialog(gameView, "Discard unsaved changes and close tab?", "Discard changes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 					if (option == 0){
 						ViewEventController.getInstance().getMain().remove(gameView);
 					}
@@ -299,7 +299,7 @@ public class MainView extends JTabbedPane {
 				}
 			} else if (type == 3){
 				if (!addEmailPanel.isNew) {
-					int option = JOptionPane.showOptionDialog(addEmailPanel,
+					final int option = JOptionPane.showOptionDialog(addEmailPanel,
 							"Discard unsaved changes and close tab?",
 							"Discard changes?", JOptionPane.YES_NO_OPTION,
 							JOptionPane.QUESTION_MESSAGE, null, null, null);
