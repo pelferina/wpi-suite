@@ -83,6 +83,9 @@ public class ViewEventController {
 		main.addPlayGameTab(gameSession);
 	}
 	
+	public void viewGameTab(GameSession gameSession){
+		main.addPlayGameTab(gameSession);
+	}
 	/**
 	 * Opens a new tab for the creation of a game.
 	 */
@@ -121,10 +124,11 @@ public class ViewEventController {
 	
 	public void setEditGameButtonVisible(int gameID)
 	{
-		toolbar.getEditButton().setButtonToEdit();
+		toolbar.getEditButton().setEditGameButtonVisible(gameID);
+		
 	}
 
 	public void setEditGameButtonInVisible() {
-		toolbar.getEditButton().setVisible(false);		
+		toolbar.getEditButton().setEditGameButtonInvisible();		
 	}
 }

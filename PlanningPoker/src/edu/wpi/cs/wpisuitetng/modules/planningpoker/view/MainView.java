@@ -28,6 +28,7 @@ import javax.swing.event.ChangeListener;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame.CurrentGamePanel;
@@ -79,7 +80,14 @@ public class MainView extends JTabbedPane {
 
 		//Adds a new game view tab
 		public void addPlayGameTab(GameSession gametoPlay){
-			addTab("Play Game", gametoPlay);
+			if(gametoPlay.getGameStatus() == GameStatus.COMPLETED)
+			{
+				addTab("View Estimates", gametoPlay);
+			}
+			else
+			{
+				addTab("Play Game", gametoPlay);
+			}
 		}
 
 		private void addTab(String tabType, GameSession game){
@@ -107,9 +115,14 @@ public class MainView extends JTabbedPane {
 				myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newGameView, 2);
 				add(newGameView, open);
 			}
+			else if (tabType.equals("View Estimates")){
+				GameView newGameView = new GameView(game);
+				myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newGameView, 3);
+				add(newGameView, open);
+			}
 			else if (tabType.equals("Add Email")){
 				AddEmailPanel addEmailPanel = new AddEmailPanel(btnClose);
-				myCloseActionHandler = new MyCloseActionHandler("options", j, this, addEmailPanel, 3);
+				myCloseActionHandler = new MyCloseActionHandler("options", j, this, addEmailPanel, 4);
 				add(addEmailPanel, open);
 			}
 			JPanel pnlTab = new JPanel(new GridBagLayout());
@@ -247,6 +260,14 @@ public class MainView extends JTabbedPane {
 	        		ViewEventController.getInstance().getMain().remove(gameView);
 				}
 			} else if (type == 3){
+				if (!gameView.isNew) {
+						ViewEventController.getInstance().getMain()
+								.remove(gameView);
+				} else {
+					ViewEventController.getInstance().getMain().remove(gameView);
+				}
+			}
+			else if (type == 4){
 				if (!addEmailPanel.isNew) {
 					int option = JOptionPane.showOptionDialog(addEmailPanel,
 							"Discard unsaved changes and close tab?",
