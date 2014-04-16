@@ -44,7 +44,7 @@ public class GameModel extends AbstractListModel {
 	/**
 	 * Constructs a new board with no games.
 	 */
-	private GameModel() {
+	public GameModel() {
 		games = new ArrayList<GameSession>();
 	}
 
