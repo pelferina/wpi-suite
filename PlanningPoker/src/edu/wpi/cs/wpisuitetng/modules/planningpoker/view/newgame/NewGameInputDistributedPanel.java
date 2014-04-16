@@ -16,7 +16,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,9 +23,9 @@ import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateGameController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
@@ -348,10 +347,17 @@ public class NewGameInputDistributedPanel extends JPanel {
 			request.setBody("newGame" + newGame.getGameName());
 			request.send(); // send the request
 		}
-		 
 		GameModel model = GameModel.getInstance();
-		AddGameController msgr = new AddGameController(model);
-		msgr.sendGame(newGame);	
+		if(!editMode)
+		{
+			AddGameController msgr = new AddGameController(model);
+			msgr.sendGame(newGame);
+		}
+		else
+		{
+			UpdateGameController msgr = new UpdateGameController();
+			msgr.sendGame(newGame);
+		}
 	}
 	/**
 	 * This timer is used to check if the game can be activated.
