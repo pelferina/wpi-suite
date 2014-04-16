@@ -56,6 +56,7 @@ public class DeadLineListener implements ActionListener{
 					// change the status of gameSession
 					try {
 						db.update(GameSession.class, "GameID", gameArray[i].getGameID(), "GameStatus",  GameStatus.COMPLETED);
+						//entityManager.endGame(gameArray[i].getGameID(), gameArray[i].getProject());
 					} catch (WPISuiteException ex) {
 						System.err.println("fail to set the gameStatus to completed");
 						ex.printStackTrace();

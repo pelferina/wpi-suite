@@ -89,6 +89,8 @@ public class GameEntityManager implements EntityManager<GameSession> {
 		GameSession newGame = new GameSession(importedGame.getGameName(), importedGame.getGameDescription(), s.getUser().getIdNum(), games.length+1, importedGame.getEndDate(), importedGame.getGameReqs());
 		newGame.setGameStatus(importedGame.getGameStatus());
 		newGame.setProject(s.getProject());
+		Date endDate = newGame.getEndDate();
+		System.out.println(newGame.getDeadlineString());
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
 		if (!db.save(newGame, s.getProject())) {

@@ -326,7 +326,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		String description = descriptionTextField.getText();
 		
 		@SuppressWarnings("deprecation")
-		Date deadlineDate = new Date(deadlineYear, deadlineMonth , deadlineDay, hourTime, minuteTime);
+		Date deadlineDate = new Date(deadlineYear - 1900, deadlineMonth , deadlineDay, hourTime, minuteTime);
 		
 		//If just saving the game, set deadline to null
 		if(!deadlineCheckBox.isSelected())
@@ -608,7 +608,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 			deadlineCheckBox.setSelected(true);;
 			setDeadlineVisibility(true);
 			
-			int year_index = currentGameSession.getEndDate().getYear() + 1900;
+			int year_index = currentGameSession.getEndDate().getYear();
 		
 			int month_index = currentGameSession.getEndDate().getMonth();
 		
