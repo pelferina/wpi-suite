@@ -297,9 +297,19 @@ public class NewGameInputDistributedPanel extends JPanel {
 		saveGameButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				saveOrActivateGame();
-				JOptionPane gameCreated = new JOptionPane("Game Created");
-				JOptionPane.showMessageDialog(gameCreated, "Game has been created", "Game created", JOptionPane.INFORMATION_MESSAGE);
-				newGameP.close.doClick();
+				if(editMode)
+				{
+					JOptionPane gameCreated = new JOptionPane("Game Updated");
+					JOptionPane.showMessageDialog(gameCreated, "Game has been updated", "Game updated", JOptionPane.INFORMATION_MESSAGE);
+					newGameP.close.doClick();
+				}
+				else
+				{
+					JOptionPane gameCreated = new JOptionPane("Game Created");
+					JOptionPane.showMessageDialog(gameCreated, "Game has been created", "Game created", JOptionPane.INFORMATION_MESSAGE);
+					newGameP.close.doClick();
+				}
+				
 			}
 		});
 
@@ -336,25 +346,33 @@ public class NewGameInputDistributedPanel extends JPanel {
 		for (int i=0; i<reqsSelected.size(); i++){
 			selectionsMade.add(reqsSelected.get(i).getId());
 		}
-		GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
-		System.out.println(newGame.toString());
-		//If activating: Set game status to active and Send an activation email 
-		
-		if(this.activate == true)
-		{   
-			newGame.setGameStatus(GameStatus.ACTIVE);
-		}
 		GameModel model = GameModel.getInstance();
+		//If activating: Set game status to active and Send an activation email 
 		if(!editMode)
 		{
+			GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
+			if(this.activate == true)
+			{
+				newGame.setGameStatus(GameStatus.ACTIVE);
+			}
+//			System.out.println(newGame.toString());
 			AddGameController msgr = new AddGameController(model);
 			msgr.sendGame(newGame);
+			
 		}
 		else
 		{
+			currentGameSession.setGameName(name);
+			currentGameSession.setGameDescription(description);
+			currentGameSession.setGameReqs(selectionsMade);
+			currentGameSession.setEndDate(deadlineDate);
+			if(this.activate == true)
+			{
+				currentGameSession.setGameStatus(GameStatus.ACTIVE);
+			}
 			UpdateGameController msgr = new UpdateGameController();
-			msgr.sendGame(newGame);
-		}
+			msgr.sendGame(currentGameSession);
+		}		
 	}
 	/**
 	 * This timer is used to check if the game can be activated.
