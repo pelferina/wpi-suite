@@ -23,7 +23,6 @@ import javax.swing.tree.DefaultTreeModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameTree;
@@ -31,6 +30,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.JTableModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.TableSelectListener;
 
 
 @SuppressWarnings("serial")
@@ -82,23 +82,27 @@ public class OverviewPanel extends JPanel implements Refreshable {
 				      }
 				    }
 				    if(e.getClickCount() == 1){
-				    	
+				    	System.out.println("In mouse listener " + row);
+				    	/*
 				    	int ownerID = ((JTableModel)(target.getModel())).getOwnerID(row);
 				    	int gameID = ((JTableModel)(target.getModel())).getGameID(row);
+				    	GameStatus status = ((JTableModel)(target.getModel())).getGameStatus(row);
 				    	User currentUser = GetCurrentUser.getInstance().getCurrentUser();
-				    	if(currentUser.getIdNum() == ownerID){
+				    	if(currentUser.getIdNum() == ownerID && (status.equals(GameStatus.ACTIVE) || status.equals(GameStatus.INPROGRESS))){
 					    	ViewEventController.getInstance().setEditGameButtonVisible(gameID);
 				    		ViewEventController.getInstance().setEndGameButtonVisible(gameID);
 				    	}else{
 					    	ViewEventController.getInstance().setEditGameButtonInVisible();
 				    		ViewEventController.getInstance().setEndGameButtonInvisible();
 				    	}
-				    	
-		
+				    	*/
+
 				    }
 				  }
 				});
 		table.setToolTipText("Double Click to Edit");
+		table.getSelectionModel().addListSelectionListener(new TableSelectListener(table));
+		
 		
 		tableView = new JScrollPane(table);
 		setLayout(new BorderLayout(0, 0));

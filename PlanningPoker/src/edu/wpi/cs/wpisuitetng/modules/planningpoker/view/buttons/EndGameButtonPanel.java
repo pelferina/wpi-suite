@@ -36,6 +36,7 @@ public class EndGameButtonPanel extends ToolbarGroupView{
 	
 	private final JPanel contentPanel = new JPanel();
 	private JButton endGameButton = new JButton("<html>End<br />Game</html>");
+	private ActionListener listener = null;
 	
 	public EndGameButtonPanel(){
 		super("");
@@ -47,7 +48,7 @@ public class EndGameButtonPanel extends ToolbarGroupView{
 		endGameButton.setVisible(false);
 		
 		try {
-		    Image img = ImageIO.read(getClass().getResource("endGame.png"));
+		    Image img = ImageIO.read(getClass().getResource("cancel.png"));
 		    endGameButton.setIcon(new ImageIcon(img));
 		} catch (IOException ex) {}
 		
@@ -72,27 +73,11 @@ public class EndGameButtonPanel extends ToolbarGroupView{
 	public void setEndGameButtonVisible(int gameID){
 		endGameButton.setVisible(true);
 		endGameButton.setEnabled(true);
-		endGameButton.addActionListener(new endGameActionListener(gameID));
-	}
-}
-class endGameActionListener implements ActionListener{
-	int gameID;
-	public endGameActionListener(int gameID){
-		this.gameID = gameID;
-	}
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		List<GameSession> games = GameModel.getInstance().getGames();
-		for(GameSession g: games){
-			if(g.getGameID() == gameID){
-				g.setGameStatus(GameStatus.ARCHIVED);
-				final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.POST); // POST == UPDATE
-				request.setBody(g.toJSON()); // put the new session in the body of the request
-				request.addObserver(new UpdateGameRequestObserver()); // add an observer to process the response
-				request.send(); // send the request
-			}
+		if(listener != null){
+			endGameButton.removeActionListener(listener);
 		}
-		
+		listener = new EndGameActionListener(gameID);
+		endGameButton.addActionListener(listener);
 	}
-	
 }
+

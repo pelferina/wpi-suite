@@ -48,17 +48,16 @@ public class DeadLineListener implements ActionListener{
 		Date today = new Date();
 		
 		for(int i=0; i<gameArray.length; i++){
-			//System.err.println("Name "+gameArray[i].getGameName() + " Deadline: " + gameArray[i].getEndDate() + " " +today.toString());
 			if (gameArray[i].getEndDate() != null){
-				if (gameArray[i].getEndDate().before(today) && (gameArray[i].getGameStatus().compareTo(GameStatus.ARCHIVED) != 0)){
-					System.err.println("Name "+gameArray[i].getGameName() + " reaches deadline at" + today);
+				GameStatus status = gameArray[i].getGameStatus();
+				if (gameArray[i].getEndDate().before(today) && (status.equals(GameStatus.ACTIVE) || status.equals(GameStatus.INPROGRESS))){
+					System.out.println("Name "+gameArray[i].getGameName() + " reaches deadline at" + today);
 					
 					// change the status of gameSession
 					try {
-						db.update(GameSession.class, "GameID", gameArray[i].getGameID(), "GameStatus",  GameStatus.ARCHIVED);
+						db.update(GameSession.class, "GameID", gameArray[i].getGameID(), "GameStatus",  GameStatus.COMPLETED);
 					} catch (WPISuiteException ex) {
-						System.err.println("fail to set the gameStatus to archived");
-						// TODO Auto-generated catch block
+						System.err.println("fail to set the gameStatus to completed");
 						ex.printStackTrace();
 					}
 					// send notification email.
@@ -68,7 +67,6 @@ public class DeadLineListener implements ActionListener{
 						this.entityManager.sendUserEmails("End game notification",  textToSend, gameArray[i].getProject());
 					} catch (UnsupportedEncodingException e1) {
 						System.out.println("fail to send end notification email");
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
