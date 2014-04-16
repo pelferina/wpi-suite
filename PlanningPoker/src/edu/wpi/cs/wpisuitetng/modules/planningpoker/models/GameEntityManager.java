@@ -66,7 +66,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 		deadlineCheck.start();
 		// set up and start a timer to check if all users has voted every 3
 		// seconds.
-		votingCompleteCheck = new Timer(3000, new VotingCompleteListener(db));
+		votingCompleteCheck = new Timer(3000, new VotingCompleteListener(db, this));
 		votingCompleteCheck.start();
 	}
 
@@ -204,6 +204,8 @@ public class GameEntityManager implements EntityManager<GameSession> {
 					"GameName", importedGame.getGameName());
 			db.update(GameSession.class, "GameID", importedGame.getGameID(),
 					"GameStatus", importedGame.getGameStatus());
+			db.update(GameSession.class, "GameID", importedGame.getGameID(),
+					"GameDescription", importedGame.getGameDescription());
 		} catch (WPISuiteException e) {
 			e.printStackTrace();
 		}

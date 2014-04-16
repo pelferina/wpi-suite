@@ -179,6 +179,10 @@ public class GameSession extends AbstractModel {
 		this.gameReqs = gameReqs;
 		return this;
 	}
+	public GameSession setGameDescription(String description){
+		this.gameDescription = description;
+		return this;
+	}
 	public String getGameName() {
 		return gameName;
 	}
