@@ -40,7 +40,7 @@ public class GetGamesController extends RefreshableController implements ActionL
 	/**
 	 * This constructor populates the model variable with the instance of GameModel
 	 */
-	public GetGamesController() {
+	private GetGamesController() {
 		model = GameModel.getInstance();
 	}
 	

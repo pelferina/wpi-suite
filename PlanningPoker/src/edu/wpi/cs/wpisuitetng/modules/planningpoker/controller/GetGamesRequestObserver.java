@@ -24,7 +24,7 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
  */
 public class GetGamesRequestObserver implements RequestObserver {
 	
-	public GetGamesController controller;
+	private GetGamesController controller;
 	
 	/**
 	 * This constructor populates the controller variable with the instance of GetGamesController

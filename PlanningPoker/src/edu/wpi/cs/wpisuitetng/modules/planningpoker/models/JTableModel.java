@@ -150,9 +150,9 @@ public class JTableModel extends AbstractTableModel {
     }
 
     @Override public Object getValueAt(final int rowIndex, final int columnIndex) {
-       	if (rowIndex>=size)
+       	if (rowIndex>=size){
     		return "";
-    	
+       	}
             /*Adding components*/
         switch (columnIndex) {
             case 0: 

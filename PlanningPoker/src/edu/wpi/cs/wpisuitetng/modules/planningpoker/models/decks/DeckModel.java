@@ -40,12 +40,12 @@ public class DeckModel extends AbstractListModel {
 	private final Deck defaultDeck;
 	
 	// the static object to allow the Deck model to be
-	private static DeckModel instance;
+	private static DeckModel instance = null;
 
 	/**
 	 * Constructs an list of Decks with a default deck for game creation
 	 */
-	public DeckModel() {
+	private DeckModel() {
 		defaultDeck = new Deck();
 		listOfDecks = new ArrayList<Deck>(Arrays.asList(defaultDeck));
 		nextID = 1;

@@ -385,7 +385,7 @@ class RefreshTask extends TimerTask {
 	Timer timer;
 	NewGameReqPanel ngrp;
 
-	public RefreshTask(Timer timer, NewGameReqPanel ngrp){
+	private RefreshTask(Timer timer, NewGameReqPanel ngrp){
 		this.timer = timer;
 		this.ngrp = ngrp;
 	}

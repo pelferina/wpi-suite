@@ -32,7 +32,6 @@ public class Deck extends AbstractModel {
 	 */
 	public Deck()
 	{
-		super();
 		id = 0;
 		cards = Arrays.asList(0,1,1,2,3,5,8,13); 
 	}
@@ -44,7 +43,6 @@ public class Deck extends AbstractModel {
 	 */
 	public Deck(int id, List<Integer> cards)
 	{
-		super();
 		this.id = id;
 		this.cards = cards;
 	}

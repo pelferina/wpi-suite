@@ -25,7 +25,7 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 */
 public class GetUsersRequestObserver implements RequestObserver {
 	
-	public GetUsersController controller;
+	private GetUsersController controller;
 	
 	/**
 	 * This constructor populates the controller variable with the instance of GetUsersController

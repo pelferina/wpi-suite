@@ -163,7 +163,7 @@ public class DeckEntityManager implements EntityManager<Deck> {
 	 * @return number of Decks stored * @throws WPISuiteException * @throws WPISuiteException * @throws WPISuiteException
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#Count() */
 	@Override
-	public int Count() throws WPISuiteException {
+	public int Count(){
 		return db.retrieveAll(new Deck()).size();
 	}
 

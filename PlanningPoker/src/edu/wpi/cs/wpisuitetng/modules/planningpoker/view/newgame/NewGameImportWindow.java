@@ -17,27 +17,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
+
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
+
 import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
+
+
 import javax.swing.JRootPane;
-import javax.swing.JScrollPane;
-import javax.swing.JWindow;
+
+
 import javax.swing.SpringLayout;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+
+
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridLayout;
+
+
+
 
 
 
@@ -77,8 +77,9 @@ public class NewGameImportWindow {
 		finishButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				int tempIndex = reqList.getSelectedIndex();
-				if (tempIndex!=-1)
+				if (tempIndex!=-1){
 					currentSelectedReq = requirements.get(tempIndex);
+				}
 				importWindow.dispose();
 			}
 		});

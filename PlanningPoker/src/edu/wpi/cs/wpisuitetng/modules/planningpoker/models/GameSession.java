@@ -51,7 +51,7 @@ public class GameSession extends AbstractModel {
 	private final Date creationdate;
 	/** The date that the game will end, if there is no end time then this value is null*/
 	private Date endDate;
-	public boolean emailSent = false;
+	private boolean emailSent = false;
 	private List<Float> median;
 	private List<Float> mean;
 	
@@ -208,7 +208,7 @@ public class GameSession extends AbstractModel {
 		}
 		final GameSession o = (GameSession) other;
 		
-		if (gameName.equals(o.getGameName()))
+		if (gameName.equals(o.getGameName())){
 			if (gameDescription.equals(o.getGameDescription())){
 				if (ownerID == o.getOwnerID()){
 					if (gameID == o.getGameID()){
@@ -224,6 +224,7 @@ public class GameSession extends AbstractModel {
 					}
 				}
 			}
+		}
 		
 		return false;
 		
@@ -272,10 +273,12 @@ public class GameSession extends AbstractModel {
 		for(int i=0; i <requirementNum; i++){
 			Arrays.sort(voteResult[i]);
 			// calculate median
-			if(userNum%2 == 0)
+			if(userNum%2 == 0){
 				median.add(((float)voteResult[i][(userNum-1)/2] + voteResult[i][(userNum-1)/2+1])/2);
-			else
+			}
+			else{
 				median.add((float)voteResult[i][(userNum-1)/2+1]);
+			}
 			// calculate mean
 			int sum = 0;
 			for(int j=0; j < userNum; j++){

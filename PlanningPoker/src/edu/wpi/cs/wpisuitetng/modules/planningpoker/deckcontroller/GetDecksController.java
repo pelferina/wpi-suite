@@ -30,7 +30,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class GetDecksController implements ActionListener {
 
 	final private GetDecksRequestObserver observer;
-	private static GetDecksController instance;
+	private static GetDecksController instance = null;
 
 	/**
 	 * Constructs the controller given a DeckModel

@@ -165,7 +165,7 @@ public class EditButtonsPanel extends ToolbarGroupView{
 		 * Constructor to poulate gameID
 		 * @param gameID
 		 */
-		public activateGameActionListener(int gameID){
+		private activateGameActionListener(int gameID){
 			this.gameID = gameID;
 		}
 		@Override
@@ -194,7 +194,7 @@ public class EditButtonsPanel extends ToolbarGroupView{
 		 * Constructor that populates gameID
 		 * @param gameID
 		 */
-		public endGameActionListener(int gameID){
+		private endGameActionListener(int gameID){
 			this.gameID = gameID;
 		}
 		@Override

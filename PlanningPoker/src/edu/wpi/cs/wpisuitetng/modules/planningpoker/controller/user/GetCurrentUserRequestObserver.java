@@ -23,7 +23,7 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 */
 public class GetCurrentUserRequestObserver implements RequestObserver {
 	
-	public GetCurrentUser getUser;
+	private GetCurrentUser getUser;
 	
 	public GetCurrentUserRequestObserver() {
 		getUser = GetCurrentUser.getInstance();

@@ -252,7 +252,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 			public void insertUpdate(DocumentEvent e){
 				updateSave(e);
 			}
-			public void updateSave(DocumentEvent e) {
+			private void updateSave(DocumentEvent e) {
 				newGameP.isNew = false;
 				if (nameTextField.getText().length() != 0){
 					nameError.setVisible(false);		
@@ -342,7 +342,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
 
 		//If activating: Set game status to active and Send an activation email 
-		if(activate == true)
+		if(activate)
 		{   
 			System.out.println("Requirements Selected:" + selectionsMade);
 			newGame.setGameStatus(GameStatus.ACTIVE);
@@ -544,7 +544,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 	{
 		currentDate = Calendar.getInstance();
 		//Initialize date picker
-		if (datePicker.getModel().isSelected() == false){
+		if (!datePicker.getModel().isSelected()){
 			datePicker.getModel().setDate(currentDate.get(Calendar.YEAR), 
 					currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DAY_OF_MONTH));
 		}
@@ -648,11 +648,13 @@ public class NewGameInputDistributedPanel extends JPanel {
 		// Check if the user has changed the deadline
 		@SuppressWarnings("deprecation")
 		Date deadlineDate = new Date(deadlineYear, deadlineMonth - 1, deadlineDay, getHour(hourTime), minuteTime);
-		if(deadlineCheckBox.isSelected() && !deadlineDate.equals(currentGameSession.getEndDate()))
+		if(deadlineCheckBox.isSelected() && !deadlineDate.equals(currentGameSession.getEndDate())){
 			return true;
+		}
 		// Check if the user has changed the requirements
-		if (!selectionsMade.containsAll(currentGameSession.getGameReqs()))
+		if (!selectionsMade.containsAll(currentGameSession.getGameReqs())){
 			return true;
+		}
 		// Check if the user has changed the deck
 //		if (!(deckBox.getSelectedItem().equals(currentGameSession.getDeck()))){
 //			return true;}
@@ -661,7 +663,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 	//TODO: Account for midnight	
 	//Sets the hour based on the AM or PM combo box selection
 	private int getHour(int hour){
-		if (isAM == true){
+		if (isAM){
 			return hour;
 		}
 		else {
@@ -673,11 +675,13 @@ public class NewGameInputDistributedPanel extends JPanel {
 	private boolean canActivate(){
 		if (nameInputted() && descInputted() && hasReqs()){
 			//Activate if deadline checkbox is not selected
-			if(!deadlineCheckBox.isSelected())
+			if(!deadlineCheckBox.isSelected()){
 				return true;
+			}
 			//Activate if deadline is valid
-			if(hasDeadline())
+			if(hasDeadline()){
 				return true;
+			}
 		}
 		return false;
 	}

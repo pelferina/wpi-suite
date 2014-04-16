@@ -8,7 +8,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ToolbarView;
+
 
 /**
  * Provides an interface for interaction with the main GUI elements

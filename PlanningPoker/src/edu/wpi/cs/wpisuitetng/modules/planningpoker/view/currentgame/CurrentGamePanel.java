@@ -64,8 +64,9 @@ public class CurrentGamePanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				final int tempIndex = activeGameList.getSelectedIndex();
-				if (tempIndex == -1)
+				if (tempIndex == -1){
 					return;
+				}
 				final GameSession tempGame = listOfGames.get(tempIndex);		
 				ViewEventController.getInstance().editGameTab(tempGame);
 			}	

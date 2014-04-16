@@ -68,9 +68,10 @@ public class NewGameInitialPanel extends JPanel{
 	 * @return returns the type of game as an integer
 	 */
 	public int getGameType(){
-		if (liveButton.isSelected())
+		if (liveButton.isSelected()){
 			return 1; // flag for live game
-		else return 2; // flag for distributed game
+		}
+		return 2; // flag for distributed game
 	}
 	
 	// Added by Ruofan

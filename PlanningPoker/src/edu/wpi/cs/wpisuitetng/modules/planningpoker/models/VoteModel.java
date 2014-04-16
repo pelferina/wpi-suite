@@ -22,10 +22,6 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
  */
 public class VoteModel implements Model {
 	private static VoteModel instance = null;
-
-	public VoteModel() {
-		// TODO Auto-generated constructor stub
-	}
 	
 	/**
 	

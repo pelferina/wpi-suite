@@ -10,7 +10,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game;
 
-import java.awt.Graphics;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 

@@ -128,8 +128,9 @@ public class OverviewPanel extends JPanel implements Refreshable {
 			public void valueChanged(TreeSelectionEvent e) {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode)gameTree.getLastSelectedPathComponent();
 	            
-	            if (node == null)
-	            return;
+	            if (node == null){
+	            	return;
+	            }
 
 	            Object nodeInfo = node.getUserObject();
 	            updateTable((String)nodeInfo);
@@ -182,9 +183,9 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		} else if (s.equals("Completed Games")){
 			sessions = gameModel.getCompletedGameSessions();
 		} else if (s.equals("Archived Games")){
-			sessions = (ArrayList<GameSession>) gameModel.getArchivedGameSessions();
+			sessions =  gameModel.getArchivedGameSessions();
 		} else if (s.equals("Planning Poker")) {
-			sessions = (ArrayList<GameSession>) gameModel.getGames();
+			sessions =  gameModel.getGames();
 		}
 		JTableModel jModel = (JTableModel)table.getModel();
 		jModel.update((ArrayList<GameSession>)sessions);

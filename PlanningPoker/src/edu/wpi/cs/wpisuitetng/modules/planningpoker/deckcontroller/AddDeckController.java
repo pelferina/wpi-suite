@@ -30,7 +30,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  */
 public class AddDeckController implements ActionListener {
 	
-	private static AddDeckController instance;
+	private static AddDeckController instance = null;
 	final private AddDeckRequestObserver observer;
 	
 	/**
