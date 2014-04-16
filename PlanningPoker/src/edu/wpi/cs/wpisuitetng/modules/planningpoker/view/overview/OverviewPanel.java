@@ -45,7 +45,6 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	GameTree gameTreeModel;
 	JTree gameTree;
 	TableRowSorter<JTableModel> sorter;
-	Timer deadlineCheck;
 	
 	public OverviewPanel(){
 		
@@ -83,20 +82,6 @@ public class OverviewPanel extends JPanel implements Refreshable {
 				    }
 				    if(e.getClickCount() == 1){
 				    	System.out.println("In mouse listener " + row);
-				    	/*
-				    	int ownerID = ((JTableModel)(target.getModel())).getOwnerID(row);
-				    	int gameID = ((JTableModel)(target.getModel())).getGameID(row);
-				    	GameStatus status = ((JTableModel)(target.getModel())).getGameStatus(row);
-				    	User currentUser = GetCurrentUser.getInstance().getCurrentUser();
-				    	if(currentUser.getIdNum() == ownerID && (status.equals(GameStatus.ACTIVE) || status.equals(GameStatus.INPROGRESS))){
-					    	ViewEventController.getInstance().setEditGameButtonVisible(gameID);
-				    		ViewEventController.getInstance().setEndGameButtonVisible(gameID);
-				    	}else{
-					    	ViewEventController.getInstance().setEditGameButtonInVisible();
-				    		ViewEventController.getInstance().setEndGameButtonInvisible();
-				    	}
-				    	*/
-
 				    }
 				  }
 				});
@@ -206,28 +191,6 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	//Refreshes the view event controller whenever a new game tab is created
 	public void refresh(){
 		ViewEventController.getInstance();
-	}
-	
-	private int getUserID(String userName){
-		GetUsersController guc = GetUsersController.getInstance();
-		User users[];
-		guc.actionPerformed();
-		while (guc.getUsers() == null){
-			try{
-				Thread.sleep(100);
-				System.out.println("Waiting for users");
-			}
-			catch(Exception e){
-				
-			}
-		}
-		users = guc.getUsers();
-		for (User u : users){
-			if (u.getUsername().equals(userName)){
-				return u.getIdNum();
-			}
-		}
-		return -1;
 	}
 	
 }

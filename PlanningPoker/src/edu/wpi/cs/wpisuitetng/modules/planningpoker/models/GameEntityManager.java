@@ -13,8 +13,6 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
-
-
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,7 +36,7 @@ import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
-
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 
 /**
  * This is the entity manager for the Planning Poker Module.
@@ -51,88 +49,111 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	Timer deadlineCheck; // Timer for checking deadline
 	Timer votingCompleteCheck;
 
-	
 	/**
 	 * Constructs the entity manager. This constructor is called by
 	 * {@link edu.wpi.cs.wpisuitetng.ManagerLayer#ManagerLayer()}. To make sure
-	 * this happens, be sure to place add this entity manager to the map in
-	 * the ManagerLayer file.
+	 * this happens, be sure to place add this entity manager to the map in the
+	 * ManagerLayer file.
 	 * 
-	 * @param db a reference to the persistent database
+	 * @param db
+	 *            a reference to the persistent database
 	 */
 	public GameEntityManager(Data db) {
 		this.db = db;
 
-		//set up and start timer to check deadline every 3 seconds.
+		// set up and start timer to check deadline every 3 seconds.
 		deadlineCheck = new Timer(3000, new DeadLineListener(db, this));
 		deadlineCheck.start();
-		//set up and start a timer to check if all users has voted every 3 seconds.
-		votingCompleteCheck = new Timer(3000, new VotingCompleteListener(db));
+		// set up and start a timer to check if all users has voted every 3
+		// seconds.
+		votingCompleteCheck = new Timer(3000, new VotingCompleteListener(db, this));
 		votingCompleteCheck.start();
 	}
 
 	/*
 	 * Saves a PostBoardMessage when it is received from a client
 	 * 
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#makeEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#makeEntity(edu.wpi.cs.
+	 * wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
 	public GameSession makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
-		
+
 		// Parse the message from JSON
 		final GameSession importedGame = GameSession.fromJson(content);
-		
+
 		System.out.println("Adding: " + content);
 		GameSession[] games = getAll(s);
-		
-		GameSession newGame = new GameSession(importedGame.getGameName(), importedGame.getGameDescription(), s.getUser().getIdNum(), games.length+1, importedGame.getEndDate(), importedGame.getGameReqs());
+
+		GameSession newGame = new GameSession(importedGame.getGameName(),
+				importedGame.getGameDescription(), s.getUser().getIdNum(),
+				games.length + 1, importedGame.getEndDate(),
+				importedGame.getGameReqs());
 		newGame.setGameStatus(importedGame.getGameStatus());
 		newGame.setProject(s.getProject());
-		// Save the message in the database if possible, otherwise throw an exception
-		// We want the message to be associated with the project the user logged in to
+		// Save the message in the database if possible, otherwise throw an
+		// exception
+		// We want the message to be associated with the project the user logged
+		// in to
 		if (!db.save(newGame, s.getProject())) {
 			System.err.println("Game not saved");
 			throw new WPISuiteException();
+		} else {
+			System.out.println("Game saved");
+			if (newGame.getGameStatus().equals(GameStatus.ACTIVE)) {
+				sendActiveNotification(newGame, s.getProject());
+			}
 		}
-		System.out.println("Game saved");
-		// Return the newly created message (this gets passed back to the client)
+		// Return the newly created message (this gets passed back to the
+		// client)
 		return newGame;
 	}
 
 	/*
-	 * Individual messages cannot be retrieved. This message always throws an exception.
+	 * Individual messages cannot be retrieved. This message always throws an
+	 * exception.
 	 * 
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
+	 * @see
+	 * edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(edu.wpi.cs.wpisuitetng
+	 * .Session, java.lang.String)
 	 */
 	@Override
 	public GameSession[] getEntity(Session s, String id)
 			throws NotFoundException, WPISuiteException {
-		// Throw an exception if an ID was specified, as this module does not support
+		// Throw an exception if an ID was specified, as this module does not
+		// support
 		// retrieving specific PostBoardMessages.
-		try{
+		try {
 			int ID = Integer.parseInt(id);
 			GameSession aSample = new GameSession(null, null, 0, 0, null, null);
 			return (GameSession[]) db.retrieveAll(aSample).toArray();
-		}catch(NumberFormatException e)
-		{
+		} catch (NumberFormatException e) {
 			throw new WPISuiteException(e.getMessage());
 		}
 	}
 
-	/* 
+	/*
 	 * Returns all of the messages that have been stored.
 	 * 
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getAll(edu.wpi.cs.wpisuitetng.Session)
+	 * @see
+	 * edu.wpi.cs.wpisuitetng.modules.EntityManager#getAll(edu.wpi.cs.wpisuitetng
+	 * .Session)
 	 */
 	@Override
 	public GameSession[] getAll(Session s) throws WPISuiteException {
-		// Ask the database to retrieve all objects of the type PostBoardMessage.
-		// Passing a dummy PostBoardMessage lets the db know what type of object to retrieve
+		// Ask the database to retrieve all objects of the type
+		// PostBoardMessage.
+		// Passing a dummy PostBoardMessage lets the db know what type of object
+		// to retrieve
 		// Passing the project makes it only get messages from that project
 
-		GameSession[] messages = db.retrieveAll(new GameSession(new String(), new String(), 0 , 0, new Date(), new ArrayList<Integer>()), s.getProject()).toArray(new GameSession[0]);
-		                                        //GameSession(String game, int OwnerID, int GameID, Date date, List<> gameReqs)
+		GameSession[] messages = db.retrieveAll(
+				new GameSession(new String(), new String(), 0, 0, new Date(),
+						new ArrayList<Integer>()), s.getProject()).toArray(
+				new GameSession[0]);
+		// GameSession(String game, int OwnerID, int GameID, Date date, List<>
+		// gameReqs)
 		// Return the list of messages as an array
 		return (messages);
 	}
@@ -140,19 +161,51 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	/*
 	 * Message cannot be updated. This method always throws an exception.
 	 * 
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
+	 * @see
+	 * edu.wpi.cs.wpisuitetng.modules.EntityManager#update(edu.wpi.cs.wpisuitetng
+	 * .Session, java.lang.String)
 	 */
 	@Override
-	public GameSession update(Session s, String content){
+	public GameSession update(Session s, String content) {
 
 		// Parse the message from JSON
 		final GameSession importedGame = GameSession.fromJson(content);
+		GameSession oldGame = null;
+		try {
+			GameSession[] games = getAll(s);
+			for (GameSession g : games) {
+				if (g.getGameID() == importedGame.getGameID()) {
+					oldGame = g;
+					break;
+				}
+			}
+			if (oldGame == null) {
+				System.err.println("Should not update a new created game which has not been saved before");
+				return importedGame;
+			} else {
+
+				if (oldGame.getGameStatus().equals(GameStatus.DRAFT)
+						&& importedGame.getGameStatus().equals(
+								GameStatus.ACTIVE)) {
+					sendActiveNotification(importedGame, s.getProject());
+				}
+
+			}
+		} catch (WPISuiteException e1) {
+			e1.printStackTrace();
+		}
 		System.out.println(importedGame);
 		try {
-			db.update(GameSession.class, "GameID", importedGame.getGameID(), "GameReqs", importedGame.getGameReqs());
-			db.update(GameSession.class, "GameID", importedGame.getGameID(), "EndDate", importedGame.getEndDate());
-			db.update(GameSession.class, "GameID", importedGame.getGameID(), "GameName", importedGame.getGameName());
-			db.update(GameSession.class, "GameID", importedGame.getGameID(), "GameStatus", importedGame.getGameStatus());
+			db.update(GameSession.class, "GameID", importedGame.getGameID(),
+					"GameReqs", importedGame.getGameReqs());
+			db.update(GameSession.class, "GameID", importedGame.getGameID(),
+					"EndDate", importedGame.getEndDate());
+			db.update(GameSession.class, "GameID", importedGame.getGameID(),
+					"GameName", importedGame.getGameName());
+			db.update(GameSession.class, "GameID", importedGame.getGameID(),
+					"GameStatus", importedGame.getGameStatus());
+			db.update(GameSession.class, "GameID", importedGame.getGameID(),
+					"GameDescription", importedGame.getGameDescription());
 		} catch (WPISuiteException e) {
 			e.printStackTrace();
 		}
@@ -160,76 +213,102 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	}
 
 	/*
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#save(edu.wpi.cs.wpisuitetng.Session, edu.wpi.cs.wpisuitetng.modules.Model)
+	 * @see
+	 * edu.wpi.cs.wpisuitetng.modules.EntityManager#save(edu.wpi.cs.wpisuitetng
+	 * .Session, edu.wpi.cs.wpisuitetng.modules.Model)
 	 */
 	@Override
-	public void save(Session s, GameSession model)
-			throws WPISuiteException {
+	public void save(Session s, GameSession model) throws WPISuiteException {
 
 		// Save the given defect in the database
 		db.save(model);
 	}
+
 	/**
 	 * Ends a game
-	 * @param gameID the game to be ended
-	 * @param s  	 the session info from which this was called
-	 * @throws WPISuiteException 
-	 * @throws  
+	 * 
+	 * @param gameID
+	 *            the game to be ended
+	 * @param s
+	 *            the session info from which this was called
+	 * @throws WPISuiteException
+	 * @throws
 	 */
-	public void endGame(int gameID, Project project) throws WPISuiteException{
+	public void endGame(int gameID, Project project) throws WPISuiteException {
 		db.update(GameSession.class, "GameID", gameID, "Status", 3);
 		try {
-			sendUserEmails("Planning Poker Alert","Planning Poker voting has ended for game: "+gameID, project);
+			sendUserEmails("Planning Poker Alert",
+					"Planning Poker voting has ended for game: " + gameID,
+					project);
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
-			throw new WPISuiteException(e.toString()); 
+			throw new WPISuiteException(e.toString());
 		}
-		
+
 	}
+
+	private void sendActiveNotification(GameSession game, Project project) {
+		String textToSend = "Hello user\r\n\t"
+				+ game.getGameName()
+				+ " just started. Please go to PlanningPoker to vote\r\nSent by fff8e7";
+		try {
+			sendUserEmails("New game", textToSend, project);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Sends a email message to the users in given session.
-	 * @param  textToSend the message to be sent
-	 * @throws UnsupportedEncodingException 
+	 * 
+	 * @param textToSend
+	 *            the message to be sent
+	 * @throws UnsupportedEncodingException
 	 */
-	public void sendUserEmails(String subject, String textToSend, Project project) throws UnsupportedEncodingException
-	{
+	public void sendUserEmails(String subject, String textToSend,
+			Project project) throws UnsupportedEncodingException {
 		final String username = "fff8e7.email@gmail.com";
 		final String password = "fff8e7team5";
- 
+
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.port", "587");
- 
+
 		javax.mail.Session session = javax.mail.Session.getInstance(props,
-		  new javax.mail.Authenticator() {
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
-			}
-		  });
- 
+				new javax.mail.Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(username, password);
+					}
+				});
+
 		try {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("fff8e7.email@gmail.com"));
-			
-			List<Model> model_emails = db.retrieveAll(new EmailAddressModel(""), project);
-			EmailAddressModel[] emails = model_emails.toArray(new EmailAddressModel[0]);
-			
-			message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(username)); /** TODO find a more elegent solution can't send only bcc's */
-			
-			for (EmailAddressModel email : emails)
-			{
-				message.addRecipients(Message.RecipientType.BCC, InternetAddress.parse(email.getAddress()));
+
+			List<Model> model_emails = db.retrieveAll(
+					new EmailAddressModel(""), project);
+			EmailAddressModel[] emails = model_emails
+					.toArray(new EmailAddressModel[0]);
+
+			message.addRecipients(Message.RecipientType.TO,
+					InternetAddress.parse(username));
+			/** TODO find a more elegent solution can't send only bcc's */
+
+			for (EmailAddressModel email : emails) {
+				message.addRecipients(Message.RecipientType.BCC,
+						InternetAddress.parse(email.getAddress()));
 			}
-			
+
 			message.setSubject(subject);
 			message.setText(textToSend);
- 
+
 			Transport.send(message);
- 
-			System.out.println("Done");
- 
+
+			System.out.println("Send group emails. Content are'" + textToSend
+					+ "'");
+
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
@@ -238,24 +317,30 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	/*
 	 * Messages cannot be deleted
 	 * 
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
+	 * @see
+	 * edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteEntity(edu.wpi.cs.
+	 * wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
 
-		// This module does not allow PostBoardMessages to be deleted, so throw an exception
+		// This module does not allow PostBoardMessages to be deleted, so throw
+		// an exception
 		throw new WPISuiteException();
 	}
 
 	/*
 	 * Messages cannot be deleted
 	 * 
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteAll(edu.wpi.cs.wpisuitetng.Session)
+	 * @see
+	 * edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteAll(edu.wpi.cs.wpisuitetng
+	 * .Session)
 	 */
 	@Override
 	public void deleteAll(Session s) throws WPISuiteException {
 
-		// This module does not allow PostBoardMessages to be deleted, so throw an exception
+		// This module does not allow PostBoardMessages to be deleted, so throw
+		// an exception
 		throw new WPISuiteException();
 	}
 
@@ -265,7 +350,8 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	@Override
 	public int Count() throws WPISuiteException {
 		// Return the number of PostBoardMessages currently in the database
-		return db.retrieveAll(new GameSession(null, null, 0, 0, null, null)).size();
+		return db.retrieveAll(new GameSession(null, null, 0, 0, null, null))
+				.size();
 	}
 
 	@Override

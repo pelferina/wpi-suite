@@ -11,6 +11,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 import edu.wpi.cs.wpisuitetng.database.Data;
@@ -20,9 +21,11 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
 
 public class VotingCompleteListener implements ActionListener {
 	Data db;
+	GameEntityManager manager;
 
-	public VotingCompleteListener(Data db) {
+	public VotingCompleteListener(Data db, GameEntityManager manager) {
 		this.db = db;
+		this.manager = manager;
 	}
 
 	@Override
@@ -46,11 +49,18 @@ public class VotingCompleteListener implements ActionListener {
 							gameArray[i].getGameID(), "GameStatus",
 							GameStatus.COMPLETED);
 				} catch (WPISuiteException ex) {
-					System.err
-							.println("fail to set the gameStatus to completed");
-					// TODO Auto-generated catch block
+					System.err.println("fail to set the gameStatus to completed");
 					ex.printStackTrace();
 				}
+				// send out notification email
+				try {
+					String textToSend;
+					textToSend = "Hello user\r\n\tThe game '"+ gameArray[i].getGameName() + "' has received votes from all users, and the game is completed" +"\r\n" + "Sent by fff8e7";
+					this.manager.sendUserEmails("End game notification",  textToSend, gameArray[i].getProject());
+				} catch (UnsupportedEncodingException e1) {
+					e1.printStackTrace();
+				}
+
 			}
 		}
 	}

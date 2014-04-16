@@ -129,6 +129,9 @@ public class EditButtonsPanel extends ToolbarGroupView{
 			createEditButton.setIcon(editImg);}
 		createEditButton.setText("<html>Edit<br />Games</html>");
 		createEditButton.setEnabled(true);
+		createEditButton.setVisible(true);
+		
+		createCancelButton.setEnabled(false);
 		createCancelButton.setVisible(false);
 	}
 	public void setButtonToActivate(){
