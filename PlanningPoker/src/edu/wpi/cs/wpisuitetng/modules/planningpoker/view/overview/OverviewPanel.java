@@ -59,7 +59,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	
 	public OverviewPanel(){
 		
-		this.gameModel = GameModel.getInstance();
+		gameModel = GameModel.getInstance();
 		ggc = GetGamesController.getInstance();
 		ggc.addRefreshable(this);
 		GameSession[] sessions = {};

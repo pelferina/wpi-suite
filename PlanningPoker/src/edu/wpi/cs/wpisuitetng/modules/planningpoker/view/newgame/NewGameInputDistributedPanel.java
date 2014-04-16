@@ -133,8 +133,8 @@ public class NewGameInputDistributedPanel extends JPanel {
 	 */
 	public NewGameInputDistributedPanel(NewGameDistributedPanel ngdp, GameSession gameSession)
 	{
-		this.currentGameSession = gameSession;
-		this.editMode = true;
+		currentGameSession = gameSession;
+		editMode = true;
 		saveGameButton = new JButton("Update Game");
 		init(ngdp);
 		System.out.println("Editing Game: "+ gameSession.getGameName());
@@ -342,7 +342,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
 
 		//If activating: Set game status to active and Send an activation email 
-		if(this.activate == true)
+		if(activate == true)
 		{   
 			System.out.println("Requirements Selected:" + selectionsMade);
 			newGame.setGameStatus(GameStatus.ACTIVE);

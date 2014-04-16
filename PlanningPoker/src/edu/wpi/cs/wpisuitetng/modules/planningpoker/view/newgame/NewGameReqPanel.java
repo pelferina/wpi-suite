@@ -84,7 +84,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 				if (req.getId() == selectedReqID) {
 					int index = reqList.indexOf(req);
 					Requirement temp_req = reqList.remove(index); 
-					this.selected.add(temp_req);
+					selected.add(temp_req);
 				}
 			}	
 		}
@@ -348,27 +348,27 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	}
 	
 	public JTable getReqsTable(){
-		return this.unselectedTable;
+		return unselectedTable;
 	}
 	
 	public JButton getAddOneButton(){
-		return this.btnAddOne;
+		return btnAddOne;
 	}
 	
 	public JButton getAddAllButton(){
-		return this.btnAddAll;
+		return btnAddAll;
 	}
 	
 	public JButton getRemoveOneButton(){
-		return this.btnRemoveOne;
+		return btnRemoveOne;
 	}
 	
 	public JButton getRemoveAllButton(){
-		return this.btnRemoveAll;
+		return btnRemoveAll;
 	}
 
 	public JTable getSelectedTabel() {
-		return this.selectedTable;
+		return selectedTable;
 	}
 
 	@Override
