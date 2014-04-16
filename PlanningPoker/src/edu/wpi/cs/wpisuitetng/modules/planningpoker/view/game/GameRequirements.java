@@ -58,8 +58,8 @@ public class GameRequirements extends JSplitPane{
 	 */
 	public GameRequirements(GameSession gameToPlay, GameView agv) {
 		List<Requirement> allReqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
-		this.gameReqIDs = gameToPlay.getGameReqs();
-		this.gv = agv;
+		gameReqIDs = gameToPlay.getGameReqs();
+		gv = agv;
 		setTopComponent(new JScrollPane(estimatesPending));
 		setBottomComponent(new JScrollPane(estimatesComplete));
 		//Gets all the requirements and adds the requirements that are in the game to gameReqs
@@ -107,8 +107,8 @@ public class GameRequirements extends JSplitPane{
 		completedModel.setNumRows(0);
 		completedModel.setColumnCount(COLUMN_NUM);
 		setColumnWidth(estimatesComplete);
-		this.pendingPane = new JScrollPane(estimatesPending);
-		this.completePane = new JScrollPane(estimatesComplete);
+		pendingPane = new JScrollPane(estimatesPending);
+		completePane = new JScrollPane(estimatesComplete);
 		setOrientation(JSplitPane.VERTICAL_SPLIT);
 		addImpl(pendingPane, JSplitPane.TOP, 1);
 		addImpl(completePane, JSplitPane.BOTTOM, 1);
@@ -182,7 +182,7 @@ public class GameRequirements extends JSplitPane{
 		 * @param table the table to listen to
 		 */
 		public tableListener(JTable table){
-			this.tableClicked = table;
+			tableClicked = table;
 		}
 		
 

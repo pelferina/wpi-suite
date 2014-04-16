@@ -62,7 +62,7 @@ public class PlayGame extends JPanel{
 	 */
 	public PlayGame(GameSession gameToPlay, GameView agv){
 		currentGame = gameToPlay;
-		this.gameReqs = currentGame.getGameReqs();
+		gameReqs = currentGame.getGameReqs();
 		ArrayList<Integer> estimates = new ArrayList<Integer>();
 		System.out.println(gameReqs.size());
 		for (int i = 0; i < gameReqs.size(); i++){
@@ -70,7 +70,7 @@ public class PlayGame extends JPanel{
 		}
 		userEstimates = new Vote(estimates, currentGame.getGameID());
 		submit.setEnabled(false);
-		this.gv = agv;
+		gv = agv;
 		List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
 		
 		//Finds the requirement that is first in the to estimate table. The play game screen will default to displaying the first requirement

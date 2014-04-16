@@ -47,9 +47,9 @@ public class NewGameDistributedPanel extends JSplitPane {
 	public NewGameDistributedPanel(GameSession gameSession, JButton close)
 	{
 		this.close = close;
-		this.newGameReqPanel = new NewGameReqPanel(gameSession);
+		newGameReqPanel = new NewGameReqPanel(gameSession);
 		GetRequirementsController.getInstance().addRefreshable(newGameReqPanel); /** TODO this adds a refreshable whenever a new game tab is created.  We need to clean up refreshables when the tab is closed*/
-		this.newGameInputPanel = new NewGameInputDistributedPanel(this, gameSession);
+		newGameInputPanel = new NewGameInputDistributedPanel(this, gameSession);
 		setPanel();
 	}
 	/**
@@ -60,7 +60,7 @@ public class NewGameDistributedPanel extends JSplitPane {
 	public NewGameDistributedPanel(List<Requirement> reqs, JButton close) {
 		newGameReqPanel = new NewGameReqPanel();
 		GetRequirementsController.getInstance().addRefreshable(newGameReqPanel);
-		this.newGameInputPanel = new NewGameInputDistributedPanel(this);
+		newGameInputPanel = new NewGameInputDistributedPanel(this);
 		this.close = close;
 		
 		setEnabled(false);

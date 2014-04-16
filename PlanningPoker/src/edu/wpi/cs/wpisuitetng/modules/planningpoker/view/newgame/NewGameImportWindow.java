@@ -64,13 +64,13 @@ public class NewGameImportWindow {
 	public NewGameImportWindow(List<Requirement> theRequirements, Window parentFrame)
 	{
 		importWindow = new JDialog((Frame) parentFrame, "Import", true);
-		this.requirements = theRequirements;
+		requirements = theRequirements;
 		listValue = new String[requirements.size()];
 		
 		//Get the string names for the import window JList
-		for (int i = 0; i < this.requirements.size(); i++) 
+		for (int i = 0; i < requirements.size(); i++) 
 		{
-			Requirement req = this.requirements.get(i);
+			Requirement req = requirements.get(i);
 			listValue[i] = req.getName();
 			reqList.addItem(listValue[i]);
 		}

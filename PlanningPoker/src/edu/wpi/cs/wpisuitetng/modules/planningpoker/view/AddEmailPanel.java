@@ -38,7 +38,7 @@ public class AddEmailPanel extends JPanel {
 	 */
 	public AddEmailPanel(JButton btnClose){
 		setupPanel();
-		this.close = btnClose;
+		close = btnClose;
 	}
 	
 	/**

@@ -34,8 +34,8 @@ public class GameView extends JSplitPane{
 	 * @param gameToPlay the active game to be viewing
 	 */
 	public GameView (GameSession gameToPlay){
-		this.gameReqs = new GameRequirements(gameToPlay, this);
-		this.playGame = new PlayGame(gameToPlay, this);
+		gameReqs = new GameRequirements(gameToPlay, this);
+		playGame = new PlayGame(gameToPlay, this);
 		addImpl(gameReqs, JSplitPane.LEFT, 1);
 		Dimension minimumSize = new Dimension(600, 200);
 		leftComponent.setMinimumSize(minimumSize);

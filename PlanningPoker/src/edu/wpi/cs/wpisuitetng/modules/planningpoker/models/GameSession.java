@@ -231,7 +231,7 @@ public class GameSession extends AbstractModel {
 	}
 
 	public GameSession setVotes(List<Vote> v){
-		this.votes = v;
+		votes = v;
 		return this;
 	}
 

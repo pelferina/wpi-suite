@@ -230,7 +230,7 @@ public class MainView extends JTabbedPane {
 	    public MyCloseActionHandler(String tabName, int index, MainView mv, GameView gv, int type){
 	    	this.tabName = tabName;
 	    	this.index = index;
-	    	this.gameView = gv;
+	    	gameView = gv;
 	    	this.type = type;
 	    	this.mv = mv;
 	    }
