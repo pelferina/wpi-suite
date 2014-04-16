@@ -86,9 +86,9 @@ public class GameEntityManager implements EntityManager<GameSession> {
 		final GameSession importedGame = GameSession.fromJson(content);
 		
 		System.out.println("Adding: " + content);
-		final GameSession[] games = getAll(s);
+		GameSession[] games = getAll(s);
 		
-		final GameSession newGame = new GameSession(importedGame.getGameName(), importedGame.getGameDescription(), s.getUser().getIdNum(), games.length+1, importedGame.getEndDate(), importedGame.getGameReqs());
+		GameSession newGame = new GameSession(importedGame.getGameName(), importedGame.getGameDescription(), s.getUser().getIdNum(), games.length+1, importedGame.getEndDate(), importedGame.getGameReqs());
 		newGame.setGameStatus(importedGame.getGameStatus());
 		newGame.setProject(s.getProject());
 		// Save the message in the database if possible, otherwise throw an exception
@@ -113,8 +113,8 @@ public class GameEntityManager implements EntityManager<GameSession> {
 		// Throw an exception if an ID was specified, as this module does not support
 		// retrieving specific PostBoardMessages.
 		try{
-			final int ID = Integer.parseInt(id);
-			final GameSession aSample = new GameSession(null, null, 0, 0, null, null);
+			int ID = Integer.parseInt(id);
+			GameSession aSample = new GameSession(null, null, 0, 0, null, null);
 			return (GameSession[]) db.retrieveAll(aSample).toArray();
 		}catch(NumberFormatException e)
 		{
@@ -133,7 +133,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 		// Passing a dummy PostBoardMessage lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
 
-		final GameSession[] messages = db.retrieveAll(new GameSession(new String(), new String(), 0 , 0, new Date(), new ArrayList<Integer>()), s.getProject()).toArray(new GameSession[0]);
+		GameSession[] messages = db.retrieveAll(new GameSession(new String(), new String(), 0 , 0, new Date(), new ArrayList<Integer>()), s.getProject()).toArray(new GameSession[0]);
 		                                        //GameSession(String game, int OwnerID, int GameID, Date date, List<> gameReqs)
 		// Return the list of messages as an array
 		return (messages);
@@ -180,7 +180,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 		db.update(GameSession.class, "GameID", gameID, "Status", 3);
 		try {
 			sendUserEmails("Planning Poker Alert","Planning Poker voting has ended for game: "+gameID, project);
-		} catch (UnsupportedEncodingException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			throw new WPISuiteException(e.toString()); 
 		}
@@ -197,13 +197,13 @@ public class GameEntityManager implements EntityManager<GameSession> {
 		final String username = "fff8e7.email@gmail.com";
 		final String password = "fff8e7team5";
  
-		final Properties props = new Properties();
+		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.port", "587");
  
-		final javax.mail.Session session = javax.mail.Session.getInstance(props,
+		javax.mail.Session session = javax.mail.Session.getInstance(props,
 		  new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
 				return new PasswordAuthentication(username, password);
@@ -211,11 +211,11 @@ public class GameEntityManager implements EntityManager<GameSession> {
 		  });
  
 		try {
-			final Message message = new MimeMessage(session);
+			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("fff8e7.email@gmail.com"));
 			
-			final List<Model> model_emails = db.retrieveAll(new EmailAddressModel(""), project);
-			final EmailAddressModel[] emails = model_emails.toArray(new EmailAddressModel[0]);
+			List<Model> model_emails = db.retrieveAll(new EmailAddressModel(""), project);
+			EmailAddressModel[] emails = model_emails.toArray(new EmailAddressModel[0]);
 			
 			message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(username)); /** TODO find a more elegent solution can't send only bcc's */
 			
