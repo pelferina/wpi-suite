@@ -32,6 +32,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.RTableModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.TableSelectListener;
 
 
 @SuppressWarnings("serial")
@@ -103,6 +104,8 @@ public class OverviewPanel extends JPanel implements Refreshable {
 			  		}
 				});
 		table.setToolTipText("Double Click to Edit");
+		table.getSelectionModel().addListSelectionListener(new TableSelectListener(table));
+		
 		
 		tableView = new JScrollPane(table);
 		setLayout(new BorderLayout(0, 0));
