@@ -42,7 +42,7 @@ public class VoteEntityManager implements EntityManager<Vote> {
 
 	@Override
 	public Vote makeEntity(Session s, String content)
-			throws BadRequestException, ConflictException, WPISuiteException {
+			throws WPISuiteException {
 		Vote v = Vote.fromJson(content);
 		// update invalid information.
 		if (v.getUID() == -1) v.setUID(s.getUser().getIdNum());
@@ -67,8 +67,7 @@ public class VoteEntityManager implements EntityManager<Vote> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
-	public Vote[] getEntity(Session s, String example) throws NotFoundException,
-	WPISuiteException {
+	public Vote[] getEntity(Session s, String example) throws WPISuiteException {
 		Vote v = Vote.fromJson(example);
 		Vote[] vlist = (Vote[]) db.retrieve(Vote.class, "UID", v.getUID(), s.getProject()).toArray();
 		List<Vote> voteList = new ArrayList<Vote>();
@@ -77,7 +76,7 @@ public class VoteEntityManager implements EntityManager<Vote> {
 	}
 
 	@Override
-	public Vote[] getAll(Session s) throws WPISuiteException {
+	public Vote[] getAll(Session s) {
 		// TODO Auto-generated method stub
 		return (Vote[]) db.retrieveAll(new Vote(null,0,0), s.getProject()).toArray();
 	}
@@ -96,46 +95,43 @@ public class VoteEntityManager implements EntityManager<Vote> {
 	}
 
 	@Override
-	public void save(Session s, Vote model) throws WPISuiteException {
+	public void save(Session s, Vote model) {
 		db.save(model, s.getProject());
 
 	}
 
 	@Override
-	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
+	public boolean deleteEntity(Session s, String id) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public String advancedGet(Session s, String[] args)
-			throws WPISuiteException {
+	public String advancedGet(Session s, String[] args){
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void deleteAll(Session s) throws WPISuiteException {
+	public void deleteAll(Session s){
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public int Count() throws WPISuiteException {
+	public int Count(){
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public String advancedPut(Session s, String[] args, String content)
-			throws WPISuiteException {
+	public String advancedPut(Session s, String[] args, String content){
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String advancedPost(Session s, String string, String content)
-			throws WPISuiteException {
+	public String advancedPost(Session s, String string, String content){
 		// TODO Auto-generated method stub
 		return null;
 	}
