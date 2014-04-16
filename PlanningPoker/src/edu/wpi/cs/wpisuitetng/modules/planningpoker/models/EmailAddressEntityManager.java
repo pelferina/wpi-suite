@@ -74,7 +74,7 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 		
 		if(content.contains("endGame")){
 			System.err.println("Game Ended");
-			List<Model> emails = db.retrieveAll(newEmailAddress, s.getProject());
+			final List<Model> emails = db.retrieveAll(newEmailAddress, s.getProject());
 			for(Model e: emails){
 				sendEmail(((EmailAddressModel)e).getAddress(), "A game ended", content.substring(7) + " just ended");
 			}
@@ -83,7 +83,7 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 		
 		else if(content.contains("newGame")){
 			System.err.println("Game Ended");
-			List<Model> emails = db.retrieveAll(newEmailAddress, s.getProject());
+			final List<Model> emails = db.retrieveAll(newEmailAddress, s.getProject());
 			for(Model e: emails){
 				sendEmail(((EmailAddressModel)e).getAddress(), "A game started", content.substring(7) + " just started");
 			}
@@ -92,7 +92,7 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 
 		
 		newEmailAddress.setUserID(s.getUser().getIdNum());
-		List<Model> emails = db.retrieveAll(newEmailAddress, s.getProject());
+		final List<Model> emails = db.retrieveAll(newEmailAddress, s.getProject());
 
 		for(Model e: emails){			
 			if(((EmailAddressModel)e).getUserID() == s.getUser().getIdNum()){
@@ -222,13 +222,13 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 		final String username = "fff8e7.email@gmail.com";
 		final String password = "fff8e7team5";
  
-		Properties props = new Properties();
+		final Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.port", "587");
  
-		javax.mail.Session session = javax.mail.Session.getInstance(props,
+		final javax.mail.Session session = javax.mail.Session.getInstance(props,
 		  new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
 				return new PasswordAuthentication(username, password);
@@ -237,7 +237,7 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
  
 		try {
  
-			Message message = new MimeMessage(session);
+			final Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("fff8e7.email@gmail.com"));
 			message.setRecipients(Message.RecipientType.TO,
 				InternetAddress.parse(sent_to));

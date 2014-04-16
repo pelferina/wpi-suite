@@ -33,7 +33,7 @@ public class DeckModel extends AbstractListModel {
 	/**
 	 * The list in which all the Decks for a single project are contained
 	 */
-	private List<Deck> listOfDecks;
+	private final List<Deck> listOfDecks;
 	private int nextID; // the next available ID number for the Decks that
 						// are added.
 	
@@ -123,7 +123,7 @@ public class DeckModel extends AbstractListModel {
 	 */
 	public void emptyModel() {
 		final int oldSize = getSize();
-		Iterator<Deck> iterator = listOfDecks.iterator();
+		final Iterator<Deck> iterator = listOfDecks.iterator();
 		while (iterator.hasNext()) {
 			iterator.next();
 			iterator.remove();
