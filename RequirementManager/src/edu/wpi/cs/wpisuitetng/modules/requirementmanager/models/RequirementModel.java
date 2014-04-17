@@ -91,14 +91,16 @@ public class RequirementModel extends AbstractListModel{
 	public Requirement getRequirement(int id)
 	{
 		Requirement temp = null;
+		System.out.println(this.requirements.size());
 		// iterate through list of requirements until id is found
 		for (int i=0; i < this.requirements.size(); i++){
 			temp = requirements.get(i);
 			if (temp.getId() == id){
-				break;
+				return temp;
 			}
 		}
-		return temp;
+		return null;
+		
 	}
 	/**
 	 * Removes the requirement with the given ID

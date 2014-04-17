@@ -28,13 +28,14 @@ public class RTableModel extends AbstractTableModel {
 		game.calculateStats();
 		Data = new Object[gs.getGameReqs().size()][COLUMN_NAMES.length];
 		requirements = new Requirement[gs.getGameReqs().size()];
-		
+		System.out.println(RequirementModel.getInstance().getRequirements());
 		int j=0;
 		for (Integer i : gs.getGameReqs()){
-			requirements[j] = RequirementModel.getInstance().getRequirement(i);
+			
+			requirements[j] = RequirementModel.getInstance().getRequirement(i);	
+			System.out.println(i);
 			j++;
 		}
-			
 		reqIDs = new Integer[requirements.length];
     	size = requirements.length;
     	for (int i=0; i<requirements.length; i++){
@@ -46,9 +47,7 @@ public class RTableModel extends AbstractTableModel {
     		Data[i] = curRow;
     		reqIDs[i] = requirements[i].getId();
     	}
-	}
-	
-	
+	}	
 
     @Override public int getColumnCount() {
         return COLUMN_NAMES.length;

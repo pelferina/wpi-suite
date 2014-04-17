@@ -84,7 +84,6 @@ public class RefreshManager {
 	{
 		//Make a request to the database
 		reqController.actionPerformed(null);	
-
 		
 		if (differentList(reqCache, RequirementModel.getInstance().getRequirements())){
 			reqController.refresh();

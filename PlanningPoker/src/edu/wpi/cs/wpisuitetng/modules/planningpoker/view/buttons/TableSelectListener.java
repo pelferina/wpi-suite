@@ -7,6 +7,7 @@ import javax.swing.event.ListSelectionListener;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.JTableModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.RTableModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
@@ -19,11 +20,16 @@ public class TableSelectListener implements ListSelectionListener{
 	
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
+		if (table.getModel() instanceof RTableModel){
+			return;
+		}
+		
 	    int row =  table.getSelectedRow();
 	    if(row < 0){ // The table is not selected
 	    	ViewEventController.getInstance().setEndGameButtonInvisible();
 	    	return;
 	    }
+	    
 	    JTableModel model = (JTableModel)table.getModel();
 		int ownerID = model.getOwnerID(row);
     	int gameID = model.getGameID(row);

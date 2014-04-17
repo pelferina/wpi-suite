@@ -242,6 +242,12 @@ public class GameSession extends AbstractModel {
 		this.mean = new ArrayList<Float>();
 		this.median = new ArrayList<Float>();
 		int[][] voteResult = new int[requirementNum][userNum];
+		if (userNum == 0){
+			mean.add(0f);
+			median.add(0f);
+			return;
+		}
+		
 		for(int i=0; i < userNum; i++){
 			for(int j=0;j < requirementNum; j++){
 				voteResult[j][i] = votes.get(i).getVote().get(j);
