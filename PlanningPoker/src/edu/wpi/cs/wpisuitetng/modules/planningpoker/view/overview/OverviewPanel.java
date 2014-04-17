@@ -23,7 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
-import javax.swing.Timer;
+
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.table.TableRowSorter;
@@ -91,7 +91,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 				    	  }
 				      }
 				      if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.DRAFT){
-				    	  User currentUser = GetCurrentUser.getInstance().getCurrentUser();
+				    	  final User currentUser = GetCurrentUser.getInstance().getCurrentUser();
 					      //End game button
 					      if(currentUser.getIdNum() == clickedGame.getOwnerID())
 					    	  ViewEventController.getInstance().editGameTab(clickedGame); // Make this edit insteadS

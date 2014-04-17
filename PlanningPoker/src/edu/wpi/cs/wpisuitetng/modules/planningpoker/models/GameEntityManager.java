@@ -87,9 +87,9 @@ public class GameEntityManager implements EntityManager<GameSession> {
 
 		System.out.println("Adding: " + content);
 
-		GameSession[] games = getAll(s);
+		final GameSession[] games = getAll(s);
 
-		GameSession newGame = new GameSession(importedGame.getGameName(),
+		final GameSession newGame = new GameSession(importedGame.getGameName(),
 				importedGame.getGameDescription(), s.getUser().getIdNum(),
 				games.length + 1, importedGame.getEndDate(),
 				importedGame.getGameReqs());
@@ -124,13 +124,13 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	 */
 	@Override
 	public GameSession[] getEntity(Session s, String id)
-			throws NotFoundException, WPISuiteException {
+			throws WPISuiteException {
 		// Throw an exception if an ID was specified, as this module does not
 		// support
 		// retrieving specific PostBoardMessages.
 		try {
-			int ID = Integer.parseInt(id);
-			GameSession aSample = new GameSession(null, null, 0, 0, null, null);
+			final int ID = Integer.parseInt(id);
+			final GameSession aSample = new GameSession(null, null, 0, 0, null, null);
 
 			return (GameSession[]) db.retrieveAll(aSample).toArray();
 		} catch (NumberFormatException e) {
@@ -153,7 +153,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 		// to retrieve
 		// Passing the project makes it only get messages from that project
 
-		GameSession[] messages = db.retrieveAll(
+		final GameSession[] messages = db.retrieveAll(
 				new GameSession(new String(), new String(), 0, 0, new Date(),
 						new ArrayList<Integer>()), s.getProject()).toArray(
 				new GameSession[0]);
@@ -177,7 +177,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 		final GameSession importedGame = GameSession.fromJson(content);
 		GameSession oldGame = null;
 		try {
-			GameSession[] games = getAll(s);
+			final GameSession[] games = getAll(s);
 			for (GameSession g : games) {
 				if (g.getGameID() == importedGame.getGameID()) {
 					oldGame = g;
@@ -236,12 +236,9 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	/**
 	 * Ends a game
 	 * 
-	 * @param gameID
-	 *            the game to be ended
-	 * @param s
-	 *            the session info from which this was called
+	 * @param gameID the game to be ended
+	 * @param project the project from which this was called
 	 * @throws WPISuiteException
-	 * @throws
 	 */
 	public void endGame(int gameID, Project project) throws WPISuiteException {
 		db.update(GameSession.class, "GameID", gameID, "Status", 3);
@@ -257,7 +254,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	}
 
 	private void sendActiveNotification(GameSession game, Project project) {
-		String textToSend = "Hello user\r\n\t"
+		final String textToSend = "Hello user\r\n\t"
 				+ game.getGameName()
 				+ " just started. Please go to PlanningPoker to vote.\r\nSent by fff8e7";
 		try {
@@ -267,7 +264,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 		}
 	}
 	private void sendEndNotification(GameSession game, Project project) {
-		String textToSend = "Hello user\r\n\t"
+		final String textToSend = "Hello user\r\n\t"
 				+ game.getGameName()
 				+ " just ended.\r\nSent by fff8e7";
 		try {
@@ -280,8 +277,9 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	/**
 	 * Sends a email message to the users in given session.
 	 * 
-	 * @param textToSend
-	 *            the message to be sent
+	 * @param textToSend the message to be sent
+	 * @param subject the subject of the email
+	 * @param project the project it is being called from
 	 * @throws UnsupportedEncodingException
 	 */
 	public void sendUserEmails(String subject, String textToSend,
@@ -289,13 +287,13 @@ public class GameEntityManager implements EntityManager<GameSession> {
 		final String username = "fff8e7.email@gmail.com";
 		final String password = "fff8e7team5";
 
-		Properties props = new Properties();
+		final Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.port", "587");
 
-		javax.mail.Session session = javax.mail.Session.getInstance(props,
+		final javax.mail.Session session = javax.mail.Session.getInstance(props,
 				new javax.mail.Authenticator() {
 					protected PasswordAuthentication getPasswordAuthentication() {
 						return new PasswordAuthentication(username, password);
@@ -306,9 +304,9 @@ public class GameEntityManager implements EntityManager<GameSession> {
 			final Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("fff8e7.email@gmail.com"));
 
-			List<Model> model_emails = db.retrieveAll(
+			final List<Model> model_emails = db.retrieveAll(
 					new EmailAddressModel(""), project);
-			EmailAddressModel[] emails = model_emails
+			final EmailAddressModel[] emails = model_emails
 					.toArray(new EmailAddressModel[0]);
 
 			message.addRecipients(Message.RecipientType.TO,

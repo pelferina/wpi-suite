@@ -122,7 +122,7 @@ public class GameSession extends AbstractModel {
 	@Override
 	public String toString() {
 		// Format the date-time stamp
-		DateFormat dateFormat1 = new SimpleDateFormat("MM/dd/yy hh:mm a");
+		final DateFormat dateFormat1 = new SimpleDateFormat("MM/dd/yy hh:mm a");
 		String returnStr = new String();
 		returnStr = gameName + "	";
 		if(creationdate != null){
@@ -149,7 +149,7 @@ public class GameSession extends AbstractModel {
 	 */
 	public String getDeadlineString()
 	{
-		DateFormat dateFormat1 = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+		final DateFormat dateFormat1 = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 		return dateFormat1.format(endDate);
 	}
 
@@ -218,8 +218,13 @@ public class GameSession extends AbstractModel {
 		this.gameReqs = gameReqs;
 		return this;
 	}
+	/**
+	 * This is sets the game session description
+	 * @param description the string you want to set as the description
+	 * @return returns the game session called on
+	 */
 	public GameSession setGameDescription(String description){
-		this.gameDescription = description;
+		gameDescription = description;
 		return this;
 	}
 	public String getGameName() {

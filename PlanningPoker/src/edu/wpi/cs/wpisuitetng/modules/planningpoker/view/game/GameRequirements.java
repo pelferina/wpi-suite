@@ -25,10 +25,10 @@ import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.JTableModel;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+
+
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -92,8 +92,8 @@ public class GameRequirements extends JSplitPane{
 	}
 
 	private void init(GameSession gameToPlay){
-		DefaultTableModel pendingModel = (DefaultTableModel) estimatesPending.getModel();
-		DefaultTableModel completedModel = (DefaultTableModel) estimatesComplete.getModel();
+		final DefaultTableModel pendingModel = (DefaultTableModel) estimatesPending.getModel();
+		final DefaultTableModel completedModel = (DefaultTableModel) estimatesComplete.getModel();
 		pendingModel.setNumRows(gameReqs.size());
 		pendingModel.setColumnCount(COLUMN_NUM);
 		setColumnWidth(estimatesPending);

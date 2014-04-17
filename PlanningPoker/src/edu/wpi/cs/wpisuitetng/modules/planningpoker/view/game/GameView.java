@@ -37,14 +37,14 @@ public class GameView extends JSplitPane{
 	 * @param gameToPlay the active game to be viewing
 	 */
 	public GameView (GameSession gameToPlay){
-		this.gameReqs = new GameRequirements(gameToPlay, this);
+		gameReqs = new GameRequirements(gameToPlay, this);
 		if(gameToPlay.getGameStatus() == GameStatus.COMPLETED)
 		{
-			this.viewGame = new ViewGame(gameToPlay, this);
+			viewGame = new ViewGame(gameToPlay, this);
 		}
 		else
 		{
-			this.playGame = new PlayGame(gameToPlay, this);
+			playGame = new PlayGame(gameToPlay, this);
 		}
 		addImpl(gameReqs, JSplitPane.LEFT, 1);
 		final Dimension minimumSize = new Dimension(600, 200);
@@ -68,6 +68,10 @@ public class GameView extends JSplitPane{
 		playGame.chooseReq(r);
 	}
 	
+	/**
+	 * This sends a requirement to view of play game
+	 * @param r the Requirement to send
+	 */
 	public void sendReqToView(Requirement r) {
 		playGame.chooseReq(r);
 	}

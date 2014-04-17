@@ -29,9 +29,9 @@ import javax.swing.JTabbedPane;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame.CurrentGamePanel;
+
+
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
@@ -131,12 +131,12 @@ public class MainView extends JTabbedPane {
 				add(newGameView, open);
 			}
 			else if (tabType.equals("View Estimates")){
-				GameView newGameView = new GameView(game);
+				final GameView newGameView = new GameView(game);
 				myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newGameView, 3);
 				add(newGameView, open);
 			}
 			else if (tabType.equals("Add Email")){
-				AddEmailPanel addEmailPanel = new AddEmailPanel(btnClose);
+				final AddEmailPanel addEmailPanel = new AddEmailPanel(btnClose);
 				myCloseActionHandler = new MyCloseActionHandler("options", j, this, addEmailPanel, 4);
 				add(addEmailPanel, open);
 			}

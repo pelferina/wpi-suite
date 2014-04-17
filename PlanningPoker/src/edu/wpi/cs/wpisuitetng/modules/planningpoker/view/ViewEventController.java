@@ -86,6 +86,10 @@ public class ViewEventController {
 		main.addPlayGameTab(gameSession);
 	}
 	
+	/**
+	 * adds a playGameTab linked to the given gameSession
+	 * @param gameSession the gameSession to add a playGameTab of
+	 */
 	public void viewGameTab(GameSession gameSession){
 		main.addPlayGameTab(gameSession);
 	}

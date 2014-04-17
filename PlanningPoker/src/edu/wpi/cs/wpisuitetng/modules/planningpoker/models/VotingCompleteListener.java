@@ -31,6 +31,7 @@ public class VotingCompleteListener implements ActionListener {
 	/**
 	 * Constructor to create the listener for a database
 	 * @param db the database to be listening to
+	 * @param manager the GameEntityManager that is listened to
 	 */
 	public VotingCompleteListener(Data db, GameEntityManager manager) {
 		this.db = db;
@@ -65,7 +66,7 @@ public class VotingCompleteListener implements ActionListener {
 				try {
 					String textToSend;
 					textToSend = "Hello user\r\n\tThe game '"+ gameArray[i].getGameName() + "' has received votes from all users, and the game is completed" +"\r\n" + "Sent by fff8e7";
-					this.manager.sendUserEmails("End game notification",  textToSend, gameArray[i].getProject());
+					manager.sendUserEmails("End game notification",  textToSend, gameArray[i].getProject());
 				} catch (UnsupportedEncodingException e1) {
 					e1.printStackTrace();
 				}

@@ -162,6 +162,9 @@ public class EditButtonsPanel extends ToolbarGroupView{
 		createEditButton.setEnabled(false);
 		createEditButton.setVisible(false);
 	}
+	/**
+	 * This sets the button to say activate games
+	 */
 	public void setButtonToActivate(){
 		if (saveImg != null){
 			createEditButton.setIcon(saveImg);}
