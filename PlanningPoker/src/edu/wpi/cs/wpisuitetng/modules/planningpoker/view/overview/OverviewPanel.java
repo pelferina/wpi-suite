@@ -61,7 +61,6 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	GameTree gameTreeModel;
 	JTree gameTree;
 	TableRowSorter<JTableModel> sorter;
-	Timer deadlineCheck;
 	
 	public OverviewPanel(){
 		
@@ -99,20 +98,6 @@ public class OverviewPanel extends JPanel implements Refreshable {
 				    }
 				    if(e.getClickCount() == 1){
 				    	System.out.println("In mouse listener " + row);
-				    	/*
-				    	int ownerID = ((JTableModel)(target.getModel())).getOwnerID(row);
-				    	int gameID = ((JTableModel)(target.getModel())).getGameID(row);
-				    	GameStatus status = ((JTableModel)(target.getModel())).getGameStatus(row);
-				    	User currentUser = GetCurrentUser.getInstance().getCurrentUser();
-				    	if(currentUser.getIdNum() == ownerID && (status.equals(GameStatus.ACTIVE) || status.equals(GameStatus.INPROGRESS))){
-					    	ViewEventController.getInstance().setEditGameButtonVisible(gameID);
-				    		ViewEventController.getInstance().setEndGameButtonVisible(gameID);
-				    	}else{
-					    	ViewEventController.getInstance().setEditGameButtonInVisible();
-				    		ViewEventController.getInstance().setEndGameButtonInvisible();
-				    	}
-				    	*/
-
 				    }
 				  }
 				});
@@ -248,5 +233,4 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		}
 		return -1;
 	}
-	
 }

@@ -1,12 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2014 -- WPI Suite
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game;
 
@@ -18,6 +9,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -26,6 +18,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddVoteController
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.VoteModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -51,9 +44,8 @@ public class PlayGame extends JPanel{
 	private final JButton voteButton = new JButton("Vote");
 	private final Vote userEstimates;
 	private Requirement currentReq;
-	private final GameView gv;
-	private final GameSession currentGame;
-	//private GameCard[] gameCards = {new GameCard(1), new GameCard(2), new GameCard(5)};
+	private GameView gv;
+	private GameSession currentGame;
 	
 	/**
 	 * Constructor for a PlayGame panel
@@ -134,12 +126,16 @@ public class PlayGame extends JPanel{
 			
 		});
 		
+		//adds the action listener for controlling the submit button
 		submit.addActionListener(new ActionListener(){
-			
 			@Override
 			public void actionPerformed(ActionEvent e){
-				final AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
-				msgr.sendVote(userEstimates);
+				int option = JOptionPane.showOptionDialog(gv, "Do you wish to submit your current votes?", "Save Votes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+				if (option == 0){
+					AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
+					msgr.sendVote(userEstimates);
+					ViewEventController.getInstance().getMain().remove(gv);
+				}
 			}
 		});
 		
@@ -281,13 +277,4 @@ public class PlayGame extends JPanel{
 		}
 		submit.setEnabled(canSubmit);
 	}
-	
-/*	@Override
-    protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		g.drawImage(, 0, 0, null);
-	}
-*/
-
-
 }
