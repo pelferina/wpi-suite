@@ -33,6 +33,7 @@ import javax.swing.tree.DefaultTreeModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameTree;
@@ -90,10 +91,19 @@ public class OverviewPanel extends JPanel implements Refreshable {
 				    	  }
 				      }
 				      if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.DRAFT){
-				    	  ViewEventController.getInstance().editGameTab(clickedGame); // Make this edit insteadS
+				    	  User currentUser = GetCurrentUser.getInstance().getCurrentUser();
+					      //End game button
+					      if(currentUser.getIdNum() == clickedGame.getOwnerID())
+					    	  ViewEventController.getInstance().editGameTab(clickedGame); // Make this edit insteadS
 				      }
 				      else if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.ACTIVE){
 				    	  ViewEventController.getInstance().playGameTab(clickedGame);
+				      }
+				      else if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.INPROGRESS){
+				    	  ViewEventController.getInstance().playGameTab(clickedGame);
+				      }
+				      else if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.COMPLETED){
+				    	  ViewEventController.getInstance().viewGameTab(clickedGame);
 				      }
 				    }
 				    if(e.getClickCount() == 1){

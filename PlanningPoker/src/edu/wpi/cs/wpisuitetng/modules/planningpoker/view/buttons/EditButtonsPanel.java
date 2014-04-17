@@ -42,6 +42,7 @@ public class EditButtonsPanel extends ToolbarGroupView{
 	private final JPanel contentPanel = new JPanel();
 	JButton createEditButton = new JButton("<html>Edit<br />Games</html>");
 	final JButton createCancelButton = new JButton("<html>Cancel<br />Games</html>");
+	private ActionListener listener = null;
 	private ImageIcon editImg = null;
 	private ImageIcon saveImg = null;
 	
@@ -134,12 +135,33 @@ public class EditButtonsPanel extends ToolbarGroupView{
 		if (editImg != null){
 			createEditButton.setIcon(editImg);}
 		createEditButton.setText("<html>Edit<br />Games</html>");
-		createEditButton.setEnabled(true);
+		createCancelButton.setEnabled(false);
 		createCancelButton.setVisible(false);
 	}
 	/**
 	 * This method sets the button to read "activate"
+	 *
+	 * Enables the end game button, and add a action listener
+	 * to this game
+	 * @param gameID 
 	 */
+	public void setEditGameButtonVisible(int gameID){
+		createEditButton.setVisible(true);
+		createEditButton.setEnabled(true);
+		if(listener != null){
+			createEditButton.removeActionListener(listener);
+		}
+		listener = new EditGameActionListener(gameID);
+		createEditButton.addActionListener(listener);
+	}
+	
+	/**
+	 *  disables the end game button 
+	 */
+	public void setEditGameButtonInvisible() {
+		createEditButton.setEnabled(false);
+		createEditButton.setVisible(false);
+	}
 	public void setButtonToActivate(){
 		if (saveImg != null){
 			createEditButton.setIcon(saveImg);}

@@ -15,6 +15,7 @@ import java.awt.Dimension;
 import javax.swing.JSplitPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
@@ -27,6 +28,8 @@ public class GameView extends JSplitPane{
 
 	GameRequirements gameReqs;
 	PlayGame playGame;
+	ViewGame viewGame;
+	
 	public boolean isNew = false;
 	
 	/**
@@ -34,12 +37,26 @@ public class GameView extends JSplitPane{
 	 * @param gameToPlay the active game to be viewing
 	 */
 	public GameView (GameSession gameToPlay){
-		gameReqs = new GameRequirements(gameToPlay, this);
-		playGame = new PlayGame(gameToPlay, this);
+		this.gameReqs = new GameRequirements(gameToPlay, this);
+		if(gameToPlay.getGameStatus() == GameStatus.COMPLETED)
+		{
+			this.viewGame = new ViewGame(gameToPlay, this);
+		}
+		else
+		{
+			this.playGame = new PlayGame(gameToPlay, this);
+		}
 		addImpl(gameReqs, JSplitPane.LEFT, 1);
 		final Dimension minimumSize = new Dimension(600, 200);
 		leftComponent.setMinimumSize(minimumSize);
-		addImpl(playGame, JSplitPane.RIGHT, 2);
+		if(gameToPlay.getGameStatus() == GameStatus.COMPLETED)
+		{
+			addImpl(viewGame, JSplitPane.RIGHT, 2);
+		}
+		else
+		{
+			addImpl(playGame, JSplitPane.RIGHT, 2);
+		}
 		setDividerLocation(400);
 	}
 
@@ -50,6 +67,10 @@ public class GameView extends JSplitPane{
 	public void sendReqToPlay(Requirement r) {
 		playGame.chooseReq(r);
 	}
+	
+	public void sendReqToView(Requirement r) {
+		playGame.chooseReq(r);
+	}
 
 	/**
 	 * This method updates the requirement tables with a requirement
@@ -58,7 +79,6 @@ public class GameView extends JSplitPane{
 	public void updateReqTables(Requirement r) {
 		gameReqs.updateTables(r);
 	}
-
 	/**
 	 * clears the game view's boxes
 	 */

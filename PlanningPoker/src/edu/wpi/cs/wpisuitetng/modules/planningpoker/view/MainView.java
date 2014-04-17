@@ -28,9 +28,10 @@ import javax.swing.JTabbedPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
-
-
-
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.currentgame.CurrentGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
@@ -94,7 +95,14 @@ public class MainView extends JTabbedPane {
 		 * @param gametoPlay the game session to play
 		 */
 		public void addPlayGameTab(GameSession gametoPlay){
-			addTab("Play Game", gametoPlay);
+			if(gametoPlay.getGameStatus() == GameStatus.COMPLETED)
+			{
+				addTab("View Estimates", gametoPlay);
+			}
+			else
+			{
+				addTab("Play Game", gametoPlay);
+			}
 		}
 
 		private void addTab(String tabType, GameSession game){
@@ -122,9 +130,14 @@ public class MainView extends JTabbedPane {
 				myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newGameView, 2);
 				add(newGameView, open);
 			}
+			else if (tabType.equals("View Estimates")){
+				GameView newGameView = new GameView(game);
+				myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newGameView, 3);
+				add(newGameView, open);
+			}
 			else if (tabType.equals("Add Email")){
-				final AddEmailPanel addEmailPanel = new AddEmailPanel(btnClose);
-				myCloseActionHandler = new MyCloseActionHandler("options", j, this, addEmailPanel, 3);
+				AddEmailPanel addEmailPanel = new AddEmailPanel(btnClose);
+				myCloseActionHandler = new MyCloseActionHandler("options", j, this, addEmailPanel, 4);
 				add(addEmailPanel, open);
 			}
 			final JPanel pnlTab = new JPanel(new GridBagLayout());
@@ -179,7 +192,7 @@ public class MainView extends JTabbedPane {
 		else if (tabType.equals("New Game")){
 			return "New Game";
 		}
-		else if (tabType.equals("edit Game")){
+		else if (tabType.equals("Edit Game")){
 			return game.getGameName();
 		}
 		else return "help";
@@ -298,6 +311,14 @@ public class MainView extends JTabbedPane {
 	        		ViewEventController.getInstance().getMain().remove(gameView);
 				}
 			} else if (type == 3){
+				if (!gameView.isNew) {
+						ViewEventController.getInstance().getMain()
+								.remove(gameView);
+				} else {
+					ViewEventController.getInstance().getMain().remove(gameView);
+				}
+			}
+			else if (type == 4){
 				if (!addEmailPanel.isNew) {
 					final int option = JOptionPane.showOptionDialog(addEmailPanel,
 							"Discard unsaved changes and close tab?",
@@ -321,5 +342,6 @@ public class MainView extends JTabbedPane {
 	public void addEmailAddress() {
 		this.addTab("Add Email", new GameSession(null, null, 0, 0, null, null));
 		
-	}   
+	}
+
 }

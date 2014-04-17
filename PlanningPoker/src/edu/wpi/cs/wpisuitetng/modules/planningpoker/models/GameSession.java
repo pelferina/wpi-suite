@@ -6,6 +6,11 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
+<<<<<<< HEAD
+=======
+ * Contributors:
+ * Team Cosmic Latte
+>>>>>>> f2fd47508740055fc6e2dde62e642129f09fed52
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
@@ -32,7 +37,7 @@ public class GameSession extends AbstractModel {
 
 	/** The game */
 	private String gameName;
-	private final String gameDescription;
+	private String gameDescription;
 
 
 	private final int ownerID;
@@ -117,8 +122,7 @@ public class GameSession extends AbstractModel {
 	@Override
 	public String toString() {
 		// Format the date-time stamp
-		final DateFormat dateFormat1 = new SimpleDateFormat("MM/dd/yy hh:mm a");
-		final DateFormat dateFormat2 = new SimpleDateFormat("MM/dd/yy");
+		DateFormat dateFormat1 = new SimpleDateFormat("MM/dd/yy hh:mm a");
 		String returnStr = new String();
 		returnStr = gameName + "	";
 		if(creationdate != null){
@@ -138,6 +142,15 @@ public class GameSession extends AbstractModel {
 			}
 		}
 		return returnStr;
+	}
+	
+	/**
+	 * @return String Deadline 
+	 */
+	public String getDeadlineString()
+	{
+		DateFormat dateFormat1 = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+		return dateFormat1.format(endDate);
 	}
 
 	/*
@@ -203,6 +216,10 @@ public class GameSession extends AbstractModel {
 	 */
 	public GameSession setGameReqs(List<Integer> gameReqs) {
 		this.gameReqs = gameReqs;
+		return this;
+	}
+	public GameSession setGameDescription(String description){
+		this.gameDescription = description;
 		return this;
 	}
 	public String getGameName() {

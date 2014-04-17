@@ -44,15 +44,23 @@ public class TableSelectListener implements ListSelectionListener{
 	    	ViewEventController.getInstance().setEndGameButtonInvisible();
 	    	return;
 	    }
-	    final JTableModel model = (JTableModel)table.getModel();
-		final int ownerID = model.getOwnerID(row);
-    	final int gameID = model.getGameID(row);
-    	final GameStatus status = model.getGameStatus(row);
-    	final User currentUser = GetCurrentUser.getInstance().getCurrentUser();
+	    JTableModel model = (JTableModel)table.getModel();
+		int ownerID = model.getOwnerID(row);
+    	int gameID = model.getGameID(row);
+    	GameStatus status = model.getGameStatus(row);
+    	User currentUser = GetCurrentUser.getInstance().getCurrentUser();
+    	//End game button
     	if(currentUser.getIdNum() == ownerID && (status.equals(GameStatus.ACTIVE) || status.equals(GameStatus.INPROGRESS))){
     		ViewEventController.getInstance().setEndGameButtonVisible(gameID);
     	}else{
     		ViewEventController.getInstance().setEndGameButtonInvisible();
+    	}
+    	
+    	//Edit game button
+    	if(currentUser.getIdNum() == ownerID && (status.equals(GameStatus.ACTIVE) || status.equals(GameStatus.DRAFT))){
+    		ViewEventController.getInstance().setEditGameButtonVisible(gameID);
+    	}else{
+    		ViewEventController.getInstance().setEditGameButtonInVisible();
     	}
 	}
 

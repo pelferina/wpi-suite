@@ -25,6 +25,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateGameController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -296,11 +297,20 @@ public class NewGameInputDistributedPanel extends JPanel {
 		saveGameButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				saveOrActivateGame();
-				final JOptionPane gameCreated = new JOptionPane("Game Created");
-				JOptionPane.showMessageDialog(gameCreated, "Game has been created", "Game created", JOptionPane.INFORMATION_MESSAGE);
-				newGameP.close.doClick();
+				if(editMode)
+				{
+					JOptionPane gameCreated = new JOptionPane("Game Updated");
+					JOptionPane.showMessageDialog(gameCreated, "Game has been updated", "Game updated", JOptionPane.INFORMATION_MESSAGE);
+					newGameP.close.doClick();
+				}
+				else
+				{
+					JOptionPane gameCreated = new JOptionPane("Game Created");
+					JOptionPane.showMessageDialog(gameCreated, "Game has been created", "Game created", JOptionPane.INFORMATION_MESSAGE);
+					newGameP.close.doClick();
+				}
+				
 			}
-			
 		});
 
 		//Checks to see if all the fields are properly filled, and then sends the game object to the database if done.
@@ -325,7 +335,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		final String description = descriptionTextField.getText();
 		
 		@SuppressWarnings("deprecation")
-		Date deadlineDate = new Date(deadlineYear, deadlineMonth - 1, deadlineDay, getHour(hourTime), minuteTime);
+		Date deadlineDate = new Date(deadlineYear - 1900, deadlineMonth , deadlineDay, hourTime, minuteTime);
 		
 		//If just saving the game, set deadline to null
 		if(!deadlineCheckBox.isSelected())
@@ -336,18 +346,33 @@ public class NewGameInputDistributedPanel extends JPanel {
 		for (int i=0; i<reqsSelected.size(); i++){
 			selectionsMade.add(reqsSelected.get(i).getId());
 		}
-		final GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
-
+		GameModel model = GameModel.getInstance();
 		//If activating: Set game status to active and Send an activation email 
-
-		if(this.activate == true)
-		{   
-			newGame.setGameStatus(GameStatus.ACTIVE);
+		if(!editMode)
+		{
+			GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
+			if(this.activate == true)
+			{
+				newGame.setGameStatus(GameStatus.ACTIVE);
+			}
+//			System.out.println(newGame.toString());
+			AddGameController msgr = new AddGameController(model);
+			msgr.sendGame(newGame);
+			
 		}
-		 
-		final GameModel model = GameModel.getInstance();
-		final AddGameController msgr = new AddGameController(model);
-		msgr.sendGame(newGame);	
+		else
+		{
+			currentGameSession.setGameName(name);
+			currentGameSession.setGameDescription(description);
+			currentGameSession.setGameReqs(selectionsMade);
+			currentGameSession.setEndDate(deadlineDate);
+			if(this.activate == true)
+			{
+				currentGameSession.setGameStatus(GameStatus.ACTIVE);
+			}
+			UpdateGameController msgr = new UpdateGameController();
+			msgr.sendGame(currentGameSession);
+		}		
 	}
 	/**
 	 * This timer is used to check if the game can be activated.
@@ -365,6 +390,11 @@ public class NewGameInputDistributedPanel extends JPanel {
 				}
 				else if (!canActivate()){
 					activateGameButton.setEnabled(false);
+				}
+				// updates deadline time for Afternoons				
+				if(deadlineCheckBox.isSelected())
+				{
+					hasDeadline();
 				}
 				//Display Update button if game has been changed in edit mode
 				if(editMode && anythingChanged())
@@ -407,9 +437,9 @@ public class NewGameInputDistributedPanel extends JPanel {
 		//Get deadline date
 		currentDate = Calendar.getInstance();
 		setDeadlineDate();
-		hourTime = getHour(deadlineHourComboBox.getSelectedIndex());
-		minuteTime = deadlineMinuteComboBox.getSelectedIndex()-1;
-		final Calendar deadline = Calendar.getInstance();
+		hourTime = getHour(deadlineHourComboBox.getSelectedIndex() + 1);
+		minuteTime = deadlineMinuteComboBox.getSelectedIndex();
+		Calendar deadline = Calendar.getInstance();
 		deadline.set(deadlineYear, deadlineMonth, deadlineDay, hourTime, minuteTime);
 		
 //		System.out.println(deadline.get(Calendar.DAY_OF_MONTH)+"/"+deadline.get(Calendar.MONTH)+"/"+deadline.get(Calendar.YEAR)+ "     " 
@@ -500,8 +530,8 @@ public class NewGameInputDistributedPanel extends JPanel {
 		deadlineHourComboBox.addActionListener(new ActionListener() {
 			@Override 
 			public void actionPerformed(ActionEvent e){
-				final int hourIndex = deadlineHourComboBox.getSelectedIndex();
-				if (hourIndex != 12 && hourIndex != 0){
+				int hourIndex = deadlineHourComboBox.getSelectedIndex();
+				if (hourIndex != 11){
 					hourTime = deadlineHourComboBox.getSelectedIndex() + 1;
 				}
 				else{
@@ -552,8 +582,8 @@ public class NewGameInputDistributedPanel extends JPanel {
         final String hour = hourDateFormat.format(currentDate.getTime());
         final String minute = minuteDateFormat.format(currentDate.getTime());
         hourTime = Integer.parseInt(hour);
-        minuteTime = Integer.parseInt(minute)+1;
-        deadlineHourComboBox.setSelectedIndex(hourTime);
+        minuteTime = Integer.parseInt(minute) + 1;
+        deadlineHourComboBox.setSelectedIndex(hourTime-1);
         deadlineMinuteComboBox.setSelectedIndex(minuteTime);
         if (currentDate.get(Calendar.AM_PM) == Calendar.PM) {
         	PMButton.setSelected(true);
@@ -595,23 +625,39 @@ public class NewGameInputDistributedPanel extends JPanel {
 	{
 		//Gets the deadline from the game
 		if (currentGameSession.getEndDate() != null){
-			final int year_index = currentGameSession.getEndDate().getYear();
+			
+			deadlineCheckBox.setSelected(true);;
+			setDeadlineVisibility(true);
+			
+			int year_index = currentGameSession.getEndDate().getYear() + 1900;
 		
 			final int month_index = currentGameSession.getEndDate().getMonth();
 		
-			final int day_index = currentGameSession.getEndDate().getDay();
+			int day_index = currentGameSession.getEndDate().getDate();
 			datePicker.getModel().setDate(year_index, month_index, day_index);
+
+			setDeadlineDate();
 		
-		//Sets the hour and minute combo boxes to the hour and minute in the game's deadline
-		
-			if (currentGameSession.getEndDate().getHours() > 11){
-				deadlineHourComboBox.setSelectedIndex(currentGameSession.getEndDate().getHours() - 12);
+			setupDeadlineTime();
+			System.out.println("T:" + currentGameSession.getEndDate().getHours());			
+			//	Sets the hour and minute combo boxes to the hour and minute in the game's deadline
+			if (currentGameSession.getEndDate().getHours() >= 11){
+				deadlineHourComboBox.setSelectedIndex(currentGameSession.getEndDate().getHours() - 13);
+				isAM = false;
+				PMButton.setSelected(true);
+				AMButton.setSelected(false);
 			}
 			else if (currentGameSession.getEndDate().getHours() == 0){
-				deadlineHourComboBox.setSelectedIndex(12);
+				deadlineHourComboBox.setSelectedIndex(11);
+				AMButton.setSelected(true);
+				isAM = true;
+				PMButton.setSelected(false);
 			}
 			else {
-				deadlineHourComboBox.setSelectedIndex(currentGameSession.getEndDate().getHours());
+				deadlineHourComboBox.setSelectedIndex(currentGameSession.getEndDate().getHours()-1);
+				AMButton.setSelected(true);
+				isAM = true;
+				PMButton.setSelected(false);
 			}
 			deadlineMinuteComboBox.setSelectedIndex(currentGameSession.getEndDate().getMinutes());
 		}
@@ -641,7 +687,8 @@ public class NewGameInputDistributedPanel extends JPanel {
 		}
 		// Check if the user has changed the deadline
 		@SuppressWarnings("deprecation")
-		final Date deadlineDate = new Date(deadlineYear, deadlineMonth - 1, deadlineDay, getHour(hourTime), minuteTime);
+
+		Date deadlineDate = new Date(deadlineYear, deadlineMonth, deadlineDay, getHour(hourTime), minuteTime);
 		if(deadlineCheckBox.isSelected() && !deadlineDate.equals(currentGameSession.getEndDate())){
 			return true;
 		}
@@ -689,7 +736,6 @@ public class NewGameInputDistributedPanel extends JPanel {
 	private boolean descInputted(){
 		return  (descriptionTextField.getText().length() > 0);
 	}
-	
 	
 	/**
 	 * a lot of Window Builder generated UI
@@ -836,5 +882,4 @@ public class NewGameInputDistributedPanel extends JPanel {
 		add(reqError);
 		add(activateGameButton);
 	}
-
 }
