@@ -26,7 +26,6 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailAddressController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.mock.MockData;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.MockNetwork;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
@@ -66,10 +65,6 @@ public class PlanningPokerEntityManagerTest {
 		p_manager = new GameEntityManager(db);
 		e_manager = new EmailAddressEntityManager(db);
 		eController = new AddEmailAddressController();
-		
-		Network.initNetwork(new MockNetwork());
-		Network.getInstance().setDefaultNetworkConfiguration(
-				new NetworkConfiguration("http://wpisuitetng"));
 
 	}	
 	//@Test

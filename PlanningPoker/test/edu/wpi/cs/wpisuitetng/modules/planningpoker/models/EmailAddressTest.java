@@ -25,7 +25,6 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailAddressController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.mock.MockData;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.MockNetwork;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
@@ -64,23 +63,11 @@ public class EmailAddressTest {
 		p_manager = new GameEntityManager(db);
 		e_manager = new EmailAddressEntityManager(db);
 		eController = new AddEmailAddressController();
-		
-		Network.initNetwork(new MockNetwork());
-		Network.getInstance().setDefaultNetworkConfiguration(
-				new NetworkConfiguration("http://wpisuitetng"));
-
 	}	
 	
 	@Test
 	public void testSendEmail() throws UnsupportedEncodingException{
 		GameSession gs = new GameSession("Test Game", "Test Description", 0, 1, new Date(1, 1, 1), new ArrayList<Integer>());
-		
-//		EmailAddressModel newEmailAddress = new EmailAddressModel("rhhayne@wpi.edu");
-//		newEmailAddress.setUserID(27);
-//		db.save(newEmailAddress, testProject);
-		
-		eController.saveEmail("rhhayne@wpi.edu");
-		
 		//Fixed accordin to http://stackoverflow.com/questions/10944448/instanceof-vs-isinstance
 		
 		
