@@ -19,11 +19,13 @@ import java.util.Date;
 import java.util.List;
 
 
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+
 
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
@@ -32,10 +34,10 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
 
 
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.completedgame.CompleteView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -131,9 +133,9 @@ public class MainView extends JTabbedPane {
 				add(newGameView, open);
 			}
 			else if (tabType.equals("View Estimates")){
-				final GameView newGameView = new GameView(game);
-				myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newGameView, 3);
-				add(newGameView, open);
+				final CompleteView newCompleteView = new CompleteView(game);
+				myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newCompleteView, 3);
+				add(newCompleteView, open);
 			}
 			else if (tabType.equals("Add Email")){
 				final AddEmailPanel addEmailPanel = new AddEmailPanel(btnClose);
@@ -195,6 +197,9 @@ public class MainView extends JTabbedPane {
 		else if (tabType.equals("Edit Game")){
 			return game.getGameName();
 		}
+		else if (tabType.equals("View Estimates")){
+			return game.getGameName();
+		}
 		else return "help";
 	}
 			
@@ -211,9 +216,11 @@ public class MainView extends JTabbedPane {
 	    //0 - New Game
 	    //1 - Edit Game
 	    //2 - Game View
+	    //3 - Complete Game
 	    private final int type;
 	    private final MainView mv;
 	    private GameView gameView;
+	    private CompleteView completeView;
 	    private NewGameDistributedPanel ngdp;
 	    private AddEmailPanel addEmailPanel;
 	    
@@ -246,6 +253,14 @@ public class MainView extends JTabbedPane {
 	    	gameView = gv;
 	    	this.type = type;
 	    	this.mv = mv;
+	    }
+	    
+	    public MyCloseActionHandler(String tabName, int index, MainView mv, CompleteView cv, int type) {
+	        this.tabName = tabName;
+	        this.index = index;
+	        this.completeView = cv;
+	        this.type = type;
+	        this.mv = mv;
 	    }
 	    
 	    /**

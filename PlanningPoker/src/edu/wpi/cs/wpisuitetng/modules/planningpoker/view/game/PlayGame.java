@@ -65,7 +65,6 @@ public class PlayGame extends JPanel{
 		currentGame = gameToPlay;
 		gameReqs = currentGame.getGameReqs();
 		final ArrayList<Integer> estimates = new ArrayList<Integer>();
-		System.out.println(gameReqs.size());
 		for (int i = 0; i < gameReqs.size(); i++){
 			estimates.add(-1);
 		}
