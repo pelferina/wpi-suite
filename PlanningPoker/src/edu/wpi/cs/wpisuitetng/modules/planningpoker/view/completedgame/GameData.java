@@ -59,6 +59,8 @@ public class GameData extends JPanel{
 		completedGame = gs;
 		gameNameTextBox.setText(gs.getGameName());
 		descriptionTextArea.setText(gs.getGameDescription());
+		gameNameTextBox.setEnabled(false);
+		descriptionTextArea.setEnabled(false);
 		gameReqIDs = gs.getGameReqs();
 		
 		for (Requirement r: allReqs){
