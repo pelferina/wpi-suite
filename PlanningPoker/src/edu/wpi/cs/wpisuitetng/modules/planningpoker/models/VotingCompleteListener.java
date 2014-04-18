@@ -38,9 +38,9 @@ public class VotingCompleteListener implements ActionListener {
 		numOfUser = db.retrieveAll(new User(null, null, null, 0)).size();
 		//System.out.println(numOfUser);
 		for (int i = 0; i < gameArray.length; i++) {
-			System.out.println("GameID being processed" + gameArray[i].getGameID());
-			System.out.println("GameVoteList being is of size" + 
-					VoteModel.getInstance().getVotes(gameArray[i].getGameID()).size());
+//			System.out.println("GameID being processed" + gameArray[i].getGameID());
+//			System.out.println("GameVoteList being is of size" + 
+//					VoteModel.getInstance().getVotes(gameArray[i].getGameID()).size());
 			if (VoteModel.getInstance().getVotes(gameArray[i].getGameID()) != null 
 					&& VoteModel.getInstance().getVotes(gameArray[i].getGameID()).size() == numOfUser
 					&& (gameArray[i].getGameStatus().equals(GameStatus.ACTIVE) || 
