@@ -18,26 +18,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
-
-
-
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameView;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.PlayDeckGame;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
-
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -60,6 +57,8 @@ public class MainView extends JTabbedPane {
 	private final List<Integer> openTabs = new ArrayList<Integer>();
 	private final List<NewGameDistributedPanel> newGames = new ArrayList<NewGameDistributedPanel>();
 	final int PERMANANT_TABS = 1;
+	//private PlayDeckGame deckGamePanel = new PlayDeckGame();
+	private DeckPanel deckPanel = new DeckPanel(DeckModel.getInstance());
 	
 	public MainView() {
 		overviewPanel = new OverviewPanel();
@@ -67,6 +66,8 @@ public class MainView extends JTabbedPane {
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
 		addTab("Overview", overviewPanel);
+		//addTab("Deck Game", deckGamePanel);
+		addTab("DeckPanel", deckPanel);
 		
 		ViewEventController.getInstance().setMainView(this);
 	}

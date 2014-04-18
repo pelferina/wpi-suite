@@ -59,6 +59,7 @@ public class GameSession extends AbstractModel {
 	private final boolean emailSent = false;
 	private List<Float> median;
 	private List<Float> mean;
+	private int deckId;
 	
 	/**
 	 * This constructor generates a game session
@@ -82,6 +83,7 @@ public class GameSession extends AbstractModel {
 		votes = (new ArrayList<Vote>());
 		median = null;
 		mean = null;
+		deckId = -1;
 	}
 
 	/**
@@ -339,6 +341,14 @@ public class GameSession extends AbstractModel {
 	}
 	public List<Float> getMedian(){
 		return median;
+	}
+	
+	public void setDeckId(int deckId){
+		this.deckId = deckId;
+	}
+	
+	public int getDeckId(){
+		return deckId;
 	}
 	
 }

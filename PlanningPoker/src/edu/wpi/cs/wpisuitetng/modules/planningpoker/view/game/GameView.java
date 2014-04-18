@@ -28,6 +28,7 @@ public class GameView extends JSplitPane{
 
 	GameRequirements gameReqs;
 	PlayGame playGame;
+	PlayDeckGame playDeckGame;
 	ViewGame viewGame;
 	
 	public boolean isNew = false;
@@ -42,9 +43,13 @@ public class GameView extends JSplitPane{
 		{
 			viewGame = new ViewGame(gameToPlay, this);
 		}
-		else
-		{
-			playGame = new PlayGame(gameToPlay, this);
+		else{
+			if (gameToPlay.getDeckId() == -1){
+				playGame = new PlayGame(gameToPlay, this);
+			}
+			else {
+				playDeckGame = new PlayDeckGame(gameToPlay, this);
+			}
 		}
 		addImpl(gameReqs, JSplitPane.LEFT, 1);
 		final Dimension minimumSize = new Dimension(600, 200);
@@ -55,7 +60,12 @@ public class GameView extends JSplitPane{
 		}
 		else
 		{
-			addImpl(playGame, JSplitPane.RIGHT, 2);
+			if (gameToPlay.getDeckId() == -1){
+				addImpl(playGame, JSplitPane.RIGHT, 2);
+			}
+			else {
+				addImpl(playDeckGame, JSplitPane.RIGHT, 2);
+			}
 		}
 		setDividerLocation(400);
 	}

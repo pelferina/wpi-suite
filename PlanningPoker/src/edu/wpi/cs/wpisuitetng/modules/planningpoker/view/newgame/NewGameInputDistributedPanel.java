@@ -370,6 +370,9 @@ public class NewGameInputDistributedPanel extends JPanel {
 			{
 				currentGameSession.setGameStatus(GameStatus.ACTIVE);
 			}
+			if (deckCheckBox.isSelected()){
+				currentGameSession.setDeckId(0);
+			}
 			final UpdateGameController msgr = new UpdateGameController();
 			msgr.sendGame(currentGameSession);
 		}		

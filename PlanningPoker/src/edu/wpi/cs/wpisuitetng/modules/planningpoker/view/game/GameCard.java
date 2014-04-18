@@ -15,28 +15,43 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JToggleButton;
 
 /**
  * Creates a card for the game voting
  * @author Anthony
  * @version $Revision: 1.0 $
  */
-public class GameCard {
+@SuppressWarnings("serial")
+public class GameCard extends JToggleButton{
 	
-	int value;
-	BufferedImage img;
+	private Integer value;
+	private BufferedImage img;
+	//private JToggleButton cardButton;
 	
 	/**
 	 * Constructor to create the card with the given value
 	 * @param value
 	 */
-	public GameCard(int value){
+	public GameCard(Integer value){
 		this.value = value;
 		try {
 			img  = ImageIO.read(getClass().getResource("planningpokercard.png"));
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
+		String cardText = value.toString();
+		ImageIcon cardIcon = new ImageIcon(img);
+		//cardButton = new JToggleButton (cardText, cardIcon, false);
+		this.setText(cardText);
+		this.setIcon(cardIcon);
+		this.setSelected(false);
+	}
+	
+	public int getValue(){
+		return value;
 	}
 	
 	public BufferedImage getImg()
