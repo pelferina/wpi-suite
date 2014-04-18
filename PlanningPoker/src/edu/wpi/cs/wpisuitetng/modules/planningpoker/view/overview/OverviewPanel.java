@@ -120,7 +120,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		
 		//Initializes the game tree
 		
-		gameTreeModel = new GameTree(new DefaultMutableTreeNode("Planning Poker"));
+		gameTreeModel = new GameTree(new DefaultMutableTreeNode("All Games"));
 		gameTree = new JTree(gameTreeModel.getTop());
 		
 		//Refreshes the table whenever the tree is selected
@@ -174,8 +174,54 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	public void updateTable(String s){
 		
 		List<GameSession> sessions = new ArrayList<GameSession>();
-				
-		if (s.equals("Drafts")){
+		
+		if (s.equals("All Games"))
+			sessions = gameModel.getGames();
+		else if (s.equals("My Games"))
+		{
+			//
+		}
+		else if (s.equals("Drafts"))
+		{
+			//
+		}
+		else if (s.equals("Active"))
+		{
+			//
+		}
+		else if (s.equals("Complete"))
+		{
+			//
+		}
+		else if (s.equals("In Progress"))
+		{
+			sessions = gameModel.getActiveGameSessions();
+			sessions.addAll(gameModel.getInProgressGameSessions());
+		}
+		else if (s.equals("Needs Vote"))
+		{
+			sessions = gameModel.getActiveGameSessions();
+		}
+		else if (s.equals("Voted"))
+		{
+			sessions = gameModel.getInProgressGameSessions();
+		}
+		else if (s.equals("History"))
+		{
+			sessions = gameModel.getArchivedGameSessions();
+			sessions.addAll(gameModel.getCompletedGameSessions());
+		}
+		else if (s.equals("Completed"))
+		{
+			sessions = gameModel.getCompletedGameSessions();
+		}
+		else if (s.equals("Archived"))
+		{
+			sessions = gameModel.getArchivedGameSessions();
+		}	
+		
+		
+		if (s.equals("My Games")){
 			sessions = gameModel.getDraftGameSessions();
 		} else if (s.equals("Active Games")){
 			sessions = gameModel.getActiveGameSessions();
@@ -185,7 +231,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 			sessions = gameModel.getCompletedGameSessions();
 		} else if (s.equals("Archived Games")){
 			sessions =  gameModel.getArchivedGameSessions();
-		} else if (s.equals("Planning Poker")) {
+		} else if (s.equals("All Games")) {
 			sessions =  gameModel.getGames();
 		}
 		final JTableModel jModel = (JTableModel)table.getModel();
