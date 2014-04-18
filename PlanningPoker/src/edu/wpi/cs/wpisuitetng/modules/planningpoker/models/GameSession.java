@@ -23,6 +23,7 @@ import java.util.List;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetVoteController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
@@ -48,7 +49,6 @@ public class GameSession extends AbstractModel {
 	
 	/** The date-time stamp of the creation */
 	private List<Integer> gameReqs;
-	private List<Vote> votes;
 	private final Date creationdate;
 	/** The date that the game will end, if there is no end time then this value is null*/
 	private Date endDate;
@@ -66,7 +66,6 @@ public class GameSession extends AbstractModel {
 		this.gameReqs = gameReqs;
 		this.gameStatus = GameStatus.DRAFT;
 		creationdate = new Date();
-		votes = (new ArrayList<Vote>());
 		this.median = null;
 		this.mean = null;
 	}
@@ -204,39 +203,21 @@ public class GameSession extends AbstractModel {
 		if (this.endDate.equals(o.getEndDate()))
 		if (this.gameReqs.equals(o.getGameReqs()))
 		if (this.gameStatus == o.getGameStatus())
-		if (this.votes.equals(o.getVotes()))
 			return true;
 		
 		return false;
 		
 		
 	}
-	public GameSession setVotes(List<Vote> v){
-		this.votes = v;
-		return this;
-	}
 
 	/**Gets the votes
 	 * @return the votes
 	 */
 	public List<Vote> getVotes() {
-		return votes;
+		return VoteModel.getInstance().getVotes(gameID);
 	}
-	/**
-	 * Clears the votes
-	 */
-	public void clearVotes(){
-		votes = (new ArrayList<Vote>());
-	}
-	/** Adds a vote
-	 * @param v the vote to be added.
-	 */
-	public void addVote(Vote v){
-		if(votes.contains(v)) votes.remove(v);
-		votes.add(v);
-	}
-	
 	public void calculateStats(){
+		List<Vote> votes = this.getVotes();
 		int requirementNum = gameReqs.size();
 		int userNum = votes.size();
 		this.mean = new ArrayList<Float>();

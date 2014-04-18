@@ -166,5 +166,10 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	public static int toHash(Vote v){
 		return v.gameID* 100000 + v.UID;
 	}
+
+	public static Vote[] fromJsonArray(String json) {
+		final Gson parser = new Gson();
+		return parser.fromJson(json, Vote[].class);
+	}
 	
 }

@@ -29,6 +29,7 @@ public class VotingCompleteListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		GameSession[] gameArray = {};
 		int numOfUser;
+		VoteModel.getInstance().addVotes(db.retrieveAll(new Vote(null,0)).toArray(new Vote[0]));
 
 		gameArray = db.retrieveAll(
 				new GameSession(new String(), new String(), 0, 0, new Date(),
@@ -37,7 +38,11 @@ public class VotingCompleteListener implements ActionListener {
 		numOfUser = db.retrieveAll(new User(null, null, null, 0)).size();
 		//System.out.println(numOfUser);
 		for (int i = 0; i < gameArray.length; i++) {
-			if (gameArray[i].getVotes() != null && gameArray[i].getVotes().size() == numOfUser
+			System.out.println("GameID being processed" + gameArray[i].getGameID());
+			System.out.println("GameVoteList being is of size" + 
+					VoteModel.getInstance().getVotes(gameArray[i].getGameID()).size());
+			if (VoteModel.getInstance().getVotes(gameArray[i].getGameID()) != null 
+					&& VoteModel.getInstance().getVotes(gameArray[i].getGameID()).size() == numOfUser
 					&& (gameArray[i].getGameStatus().equals(GameStatus.ACTIVE) || 
 							gameArray[i].getGameStatus().equals(GameStatus.INPROGRESS))) {
 				// change the status of gameSession

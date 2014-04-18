@@ -154,7 +154,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 		final GameSession importedGame = GameSession.fromJson(content);
 		GameSession oldGame;
 		try {
-			GameSession[] games = (GameSession[])db.retrieve(GameSession.class, "GameID", importedGame.getGameID()).toArray();
+			GameSession[] games = db.retrieve(GameSession.class, "GameID", importedGame.getGameID()).toArray(new GameSession[0]);
 			if(games == null || games.length == 0){
 				System.err.println("Should not update a new created game which has not been saved before");
 				return importedGame;

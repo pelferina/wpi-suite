@@ -28,7 +28,7 @@ public class VoteEntityManager implements EntityManager<Vote> {
 		Vote v = Vote.fromJson(content);
 		// update invalid information.
 		if (v.getUID() == -1) v.setUID(s.getUser().getIdNum());
-		// Check for duplication
+		// Check for valid game.
 		GameSession[] session = null;
 		try {
 			session = db.retrieve(GameSession.class, "GameID", v.getGameID(), s.getProject()).toArray(new GameSession[0]);
@@ -36,10 +36,19 @@ public class VoteEntityManager implements EntityManager<Vote> {
 			e.printStackTrace();
 		}
 		if(session.length != 1) throw new WPISuiteException();
-		session[0].addVote(v);
-		session[0].setGameStatus(GameStatus.INPROGRESS);
-		db.update(GameSession.class, "GameID", session[0].getGameID(), "Votes", session[0].getVotes());
-		db.update(GameSession.class, "GameID", session[0].getGameID(), "GameStatus", session[0].getGameStatus());
+		// Delete previous votes with this voteID
+		Vote[] prevVote = db.retrieve(Vote.class, "VoteID", v.getVoteID()).toArray(new Vote[0]);
+		if(prevVote.length != 0){
+			db.delete(prevVote[0]);
+		}
+		//check that vote saves properly
+		if (!db.save(v, s.getProject())) {
+			System.err.println("Vote not saved");
+			throw new WPISuiteException();
+		}else{
+			System.out.println("Vote saved");
+			}
+		// Return the newly created vote
 		return v;
 	}
 
@@ -61,7 +70,7 @@ public class VoteEntityManager implements EntityManager<Vote> {
 	@Override
 	public Vote[] getAll(Session s) throws WPISuiteException {
 		// TODO Auto-generated method stub
-		return (Vote[]) db.retrieveAll(new Vote(null,0,0), s.getProject()).toArray();
+		return db.retrieveAll(new Vote(null,0,0), s.getProject()).toArray(new Vote[0]);
 	}
 	//TODO Overload update in order to not parse the same game twice
 	/**Updates a vote
