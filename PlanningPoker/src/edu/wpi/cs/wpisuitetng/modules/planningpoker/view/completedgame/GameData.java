@@ -11,9 +11,13 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.completedgame;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -22,9 +26,11 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+
 import javax.swing.SpringLayout;
 
 public class GameData extends JPanel{
@@ -41,13 +47,20 @@ public class GameData extends JPanel{
 	private List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
 	private GameSession completedGame;
 	private CompleteView completeView;
+	private HashMap<Integer, Integer> requirementIndexHash = new HashMap<Integer, Integer>();
 	
+	/**
+	 * Constructor for the GameData class
+	 * @param gs, the completed game session that is going to be viewed
+	 * @param cv, the CompleteView that called the constructor for GameData
+	 */
 	public GameData(GameSession gs, CompleteView cv){
 		completeView = cv;
 		completedGame = gs;
 		gameNameTextBox.setText(gs.getGameName());
 		descriptionTextArea.setText(gs.getGameDescription());
 		gameReqIDs = gs.getGameReqs();
+		
 		for (Requirement r: allReqs){
 			if (gameReqIDs.contains(r.getId())){
 				gameReqs.add(r);
@@ -66,12 +79,16 @@ public class GameData extends JPanel{
 		init();	
 	}
 	
+	/**
+	 * Places the GUI components for the panel, as well as filling the table with the requirements that are in the game name and descriptions
+	 */
 	private void init(){
 		DefaultTableModel reqTableModel = (DefaultTableModel) gameReqsTable.getModel();
 		reqTableModel.setRowCount(gameReqs.size());
 		
 		//Adds the game requirements names and descriptions to the table
 		for (int i = 0; i < gameReqs.size(); i++){
+			requirementIndexHash.put(gameReqs.get(i).getId(), i);
 			reqTableModel.setValueAt(gameReqs.get(i).getName(), i, 0);
 			reqTableModel.setValueAt(gameReqs.get(i).getDescription(), i, 1);
 		}
@@ -123,11 +140,52 @@ public class GameData extends JPanel{
 		
 	}
 
+	/**
+	 * A getter for gameReqs
+	 * @return
+	 */
 	public List<Requirement> getGameReqs() {
 		// TODO Auto-generated method stub
 		return gameReqs;
 	}
 	
+	/**
+	 * Returns the index of the given requirement id
+	 * @param id, the requirement id
+	 * @return
+	 */
+	public int getReqIndex(int id){
+		return requirementIndexHash.get(id);
+	}
+	
+public class tableListener extends MouseAdapter{
+		
+		JTable tableClicked;
+		
+		/**
+		 * constructor for the table listener
+		 * @param table the table to listen to
+		 */
+		public tableListener(JTable table){
+			tableClicked = table;
+		}
+		
+		public void mouseClicked(MouseEvent e) {
+			if (e.getClickCount() == 1){
+				final JTable target = (JTable)e.getSource();
+			    final int row = target.getSelectedRow();
+			    final int column = target.getSelectedColumn();
+				final List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
+				Requirement req = null;
+				for (Requirement r: allReqs){
+					if (r.getId() == (int)tableClicked.getValueAt(row, 0)){
+						req = r;
+					}
+				}
+				completeView.sendReqToView(req);
+			}
+		}
+	}
 	
 	
 }
