@@ -10,6 +10,9 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.wpi.cs.wpisuitetng.Permission;
 import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
@@ -22,6 +25,10 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
  */
 public class VoteModel implements Model {
 	private static VoteModel instance = null;
+	private List<Vote> votes;
+	private VoteModel() {
+		votes = new ArrayList<Vote>();
+	}
 	
 	/**
 	
@@ -81,6 +88,32 @@ public class VoteModel implements Model {
 	public void setProject(Project p) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public void emptyModel() {
+		votes = new ArrayList<Vote>();
+	}
+
+	public void addVotes(Vote[] votes) {
+		this.emptyModel();
+		for(Vote v : votes){
+			this.votes.add(v);
+		}
+	}
+
+	public List<Vote> getVotes() {
+		return votes;
+	}
+
+	public List<Vote> getVotes(int gameID) {
+		ArrayList<Vote> ret = new ArrayList<Vote>();
+		for(Vote v : votes){ 
+			if(v.getGameID() == gameID) {
+				ret.add(v);
+				}
+			}
+		
+		return ret;
 	}
 
 }

@@ -63,6 +63,9 @@ public class GetGamesController extends RefreshableController implements ActionL
 		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.GET); // GET == read
 		request.addObserver(new GetGamesRequestObserver()); // add an observer to process the response
 		request.send(); // send the request
+		
+		//Update votes too!
+		GetVoteController.getInstance().actionPerformed(e);
 	}
 	
 	/**
