@@ -80,12 +80,12 @@ public class VoteData extends JPanel{
 		descriptionTextArea.setText(currentReq.getDescription());
 		descriptionTextArea.setWrapStyleWord(true);
 		descriptionTextArea.setEnabled(false);
-		//gs.calculateStats();
+		gs.calculateStats();
 		
 		//Sets the statistic text fields to the stats of the first requirement in the game, and disables user edits
-		//meanTextField.setText(Float.toString(completedGame.getMean().get(reqIndex)));
+		meanTextField.setText(Float.toString(completedGame.getMean().get(reqIndex)));
 		meanTextField.setEnabled(false);
-		//medianTextField.setText(Float.toString(completedGame.getMedian().get(reqIndex)));
+		medianTextField.setText(Float.toString(completedGame.getMedian().get(reqIndex)));
 		medianTextField.setEnabled(false);
 		init();
 	}
@@ -106,6 +106,7 @@ public class VoteData extends JPanel{
 		
 		estimatesTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"User Name", "Estimate"}));
 		DefaultTableModel estimatesModel = (DefaultTableModel) estimatesTable.getModel();
+		estimatesModel.setRowCount(completedGame.getVotes().size());
 		
 		int i = 0;
 		for (Vote v: completedGame.getVotes()){

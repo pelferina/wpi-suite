@@ -21,8 +21,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 public class CompleteView extends JSplitPane {
 
-	GameData gameData;
-	VoteData voteData;
+	private GameData gameData;
+	private VoteData voteData;
 
 	/**
 	 * The constructor for CompleteView
@@ -64,5 +64,13 @@ public class CompleteView extends JSplitPane {
 	 */
 	public int getIndex(int id){
 		return gameData.getReqIndex(id);
+	}
+	
+	public GameData getGameData(){
+		return gameData;
+	}
+	
+	public VoteData getVoteData(){
+		return voteData;
 	}
 }

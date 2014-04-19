@@ -100,6 +100,7 @@ public class GameData extends JPanel{
 		gameReqsTable.getColumnModel().getColumn(0).setMaxWidth(200);
 		gameReqsTable.getColumnModel().getColumn(0).setPreferredWidth(150);
 		
+		gameReqsTable.addMouseListener(new tableListener(gameReqsTable));
 		
 		SpringLayout springLayout = new SpringLayout();
 		
@@ -159,7 +160,24 @@ public class GameData extends JPanel{
 	public int getReqIndex(int id){
 		return requirementIndexHash.get(id);
 	}
-	
+
+	public JTextField getGameNameTextBox() {
+		return gameNameTextBox;
+	}
+
+	public void setGameNameTextBox(JTextField gameNameTextBox) {
+		this.gameNameTextBox = gameNameTextBox;
+	}
+
+	public JTextArea getDescriptionTextArea() {
+		return descriptionTextArea;
+	}
+
+	public void setDescriptionTextArea(JTextArea descriptionTextArea) {
+		this.descriptionTextArea = descriptionTextArea;
+	}
+
+
 public class tableListener extends MouseAdapter{
 		
 		JTable tableClicked;
@@ -180,7 +198,7 @@ public class tableListener extends MouseAdapter{
 				final List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
 				Requirement req = null;
 				for (Requirement r: allReqs){
-					if (r.getId() == (int)tableClicked.getValueAt(row, 0)){
+					if (r.getName().equals(tableClicked.getValueAt(row, 0))){
 						req = r;
 					}
 				}

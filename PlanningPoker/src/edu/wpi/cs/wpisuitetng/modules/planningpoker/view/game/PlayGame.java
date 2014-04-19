@@ -74,6 +74,8 @@ public class PlayGame extends JPanel{
 				userEstimates = v;
 			}
 		}
+		reqDescTextArea.setWrapStyleWord(true);
+		voteButton.setEnabled(false);
 		submit.setEnabled(false);
 		gv = agv;
 		final List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
