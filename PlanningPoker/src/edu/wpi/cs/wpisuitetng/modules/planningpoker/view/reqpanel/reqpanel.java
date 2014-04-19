@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.SpringLayout;
@@ -31,13 +32,14 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 import javax.swing.JComboBox;
 
 
 public class reqpanel extends JPanel {
 	private Requirement currentRequirement;
 	private JTextField nameField;
-	private JTextField descriptionField;
+	private JTextArea descriptionField;
 	private final JLabel nameLabel = new JLabel("Requirement Name: ");
 	private final JLabel descriptionLabel = new JLabel("Description: ");
 	private final JButton CreateRequirementButton = new JButton("Create Requirement");
@@ -45,18 +47,28 @@ public class reqpanel extends JPanel {
 	private JComboBox<RequirementPriority> priorityComboBox;
 	private JComboBox<RequirementType> typeComboBox;
 	
+	/**
+	 * Creates the tab for the new requirement to be specified and created
+	 * @param btnClose
+	 */
 	public reqpanel(JButton btnClose){
 		priorityComboBox = new JComboBox<RequirementPriority>(RequirementPriority.values());
 		typeComboBox = new JComboBox<RequirementType>(RequirementType.values());
-		setupPanel();
+		panelSetup();
 		close = btnClose;
 		currentRequirement= new Requirement();
 		
 	}
 	
-	public void setupPanel() {
+	/**
+	 * Sets up the panel for the requirement to be created -
+	 * 		creates name field
+	 * 		creates description field
+	 * 		places and sizes everything
+	 */
+	public void panelSetup() {
 		nameField = new JTextField();
-		descriptionField = new JTextField();
+		descriptionField = new JTextArea();
 
 		JLabel lblPriority = new JLabel("Priority");
 
@@ -121,12 +133,17 @@ public class reqpanel extends JPanel {
 		CreateRequirementButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				updateRequirement();
+				close.doClick();
 			}
 		});
 		setLayout(groupLayout);
 		
 		
 	}
+	
+	/**
+	 * Adds the new requirement to the requirement manager
+	 */
 	private void updateRequirement(){
 		currentRequirement.setId(RequirementModel.getInstance().getNextID());
 		currentRequirement.setWasCreated(true);		
