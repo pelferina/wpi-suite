@@ -206,6 +206,9 @@ public class MainView extends JTabbedPane {
 		else if (tabType.equals("View Estimates")){
 			return game.getGameName();
 		}
+		else if (tabType.equals("Req Tab")){
+			return "New Requirement";
+		}
 		else return "help";
 	}
 			

@@ -52,10 +52,14 @@ public class reqpanel extends JPanel {
 	 * @param btnClose
 	 */
 	public reqpanel(JButton btnClose){
+//		CreateRequirementButton.setEnabled(false);
 		priorityComboBox = new JComboBox<RequirementPriority>(RequirementPriority.values());
 		typeComboBox = new JComboBox<RequirementType>(RequirementType.values());
 		panelSetup();
 		close = btnClose;
+//		if(nameField.getText().length() > 0 && descriptionField.getText().length() > 0){
+//			CreateRequirementButton.setEnabled(true);
+//		}
 		currentRequirement= new Requirement();
 		
 	}
@@ -130,6 +134,9 @@ public class reqpanel extends JPanel {
 					.addComponent(CreateRequirementButton)
 					.addContainerGap(368, Short.MAX_VALUE))
 		);
+		if(nameInputted()&&descInputted()){
+			CreateRequirementButton.setEnabled(true);
+		}
 		CreateRequirementButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				updateRequirement();
@@ -173,6 +180,14 @@ public class reqpanel extends JPanel {
 
 		ViewEventController.getInstance().refreshTable();
 		ViewEventController.getInstance().refreshTree();
+	}
+	private boolean nameInputted(){
+		return (nameField.getText().length() > 0);
+	}
+	
+	//Returns true if the description text field has text
+	private boolean descInputted(){
+		return  (descriptionField.getText().length() > 0);
 	}
 }
 	
