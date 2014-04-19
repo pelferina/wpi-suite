@@ -195,7 +195,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 				}
 				if ((oldGame.getGameStatus().equals(GameStatus.ACTIVE) || oldGame.getGameStatus().equals(GameStatus.INPROGRESS))
 						&& importedGame.getGameStatus().equals(GameStatus.COMPLETED)) {
-					sendEndNotification(importedGame, s.getProject());
+					//sendEndNotification(importedGame, s.getProject());
 				}
 
 			}

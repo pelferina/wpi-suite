@@ -289,11 +289,11 @@ public class GameSession extends AbstractModel {
 		for(int i=0; i < requirementNum; i++){
 			Arrays.sort(voteResult[i]);
 			// calculate median
-			if(userNum%2 == 0 && userNum > 1){
+			if(userNum%2 == 0){
 				median.add(((float)voteResult[i][(userNum-1)/2] + voteResult[i][(userNum-1)/2+1])/2);
 			}
 			else if (userNum > 1){
-				median.add((float)voteResult[i][(userNum-1)/2+1]);
+				median.add((float)voteResult[i][(userNum-1)/2]);
 			}
 			else {
 				median.add((float)voteResult[i][userNum-1]);
