@@ -20,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -54,6 +55,8 @@ public class PlayGame extends JPanel{
 	private final JTextField reqNameTextField = new JTextField();
 	private final JTextArea gameDescTextArea = new JTextArea();
 	private final JTextArea reqDescTextArea = new JTextArea();
+	private final JScrollPane nd = new JScrollPane(gameDescTextArea);
+	private final JScrollPane rd = new JScrollPane(reqDescTextArea);
 	private final JButton submit = new JButton("Submit");
 	private final JButton voteButton = new JButton("Vote");
 	private Vote userEstimates;
@@ -108,6 +111,7 @@ public class PlayGame extends JPanel{
 		reqDescTextArea.setEditable(false);
 		gameDescTextArea.setLineWrap(true);
 		gameDescTextArea.setWrapStyleWord(true);
+		
 		reqDescTextArea.setLineWrap(true);
 		reqDescTextArea.setWrapStyleWord(true);
 		
@@ -189,34 +193,34 @@ public class PlayGame extends JPanel{
 		
 		//Spring layout placement for estimateTextField
 		springLayout.putConstraint(SpringLayout.NORTH, estimateTextField, 0, SpringLayout.NORTH, estimateLabel);
-		springLayout.putConstraint(SpringLayout.WEST, estimateTextField, 0, SpringLayout.WEST, reqDescTextArea);
+		springLayout.putConstraint(SpringLayout.WEST, estimateTextField, 0, SpringLayout.WEST, rd);
 		springLayout.putConstraint(SpringLayout.EAST, estimateTextField, 40, SpringLayout.WEST, estimateTextField);
 		
 		//Spring layout for placement of gameNameTextField
-		springLayout.putConstraint(SpringLayout.WEST, gameNameTextField, 0, SpringLayout.WEST, reqDescTextArea);
+		springLayout.putConstraint(SpringLayout.WEST, gameNameTextField, 0, SpringLayout.WEST, rd);
 		springLayout.putConstraint(SpringLayout.EAST, gameNameTextField, 600, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, gameNameTextField, 0, SpringLayout.NORTH, gameName);
 		
 		//Spring layout for placement of reqNameTextField
-		springLayout.putConstraint(SpringLayout.WEST, reqNameTextField, 0, SpringLayout.WEST, reqDescTextArea);
+		springLayout.putConstraint(SpringLayout.WEST, reqNameTextField, 0, SpringLayout.WEST, rd);
 		springLayout.putConstraint(SpringLayout.EAST, reqNameTextField, 600, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, reqNameTextField, 0, SpringLayout.NORTH, reqName);
 		
 		//Spring layout for estimateLabel
-		springLayout.putConstraint(SpringLayout.NORTH, estimateLabel, 30, SpringLayout.SOUTH, reqDescTextArea);
+		springLayout.putConstraint(SpringLayout.NORTH, estimateLabel, 30, SpringLayout.SOUTH, rd);
 		springLayout.putConstraint(SpringLayout.WEST, estimateLabel, 0, SpringLayout.WEST, reqDesc);
 		
-		//Spring layout for gameDescTextArea
-		springLayout.putConstraint(SpringLayout.NORTH, gameDescTextArea, 0, SpringLayout.NORTH, gameDesc);
-		springLayout.putConstraint(SpringLayout.WEST, gameDescTextArea, 0, SpringLayout.WEST, reqDescTextArea);
-		springLayout.putConstraint(SpringLayout.EAST, gameDescTextArea, -30, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, gameDescTextArea, 125, SpringLayout.NORTH, gameDescTextArea);
+		//Spring layout for nd
+		springLayout.putConstraint(SpringLayout.NORTH, nd, 0, SpringLayout.NORTH, gameDesc);
+		springLayout.putConstraint(SpringLayout.WEST, nd, 0, SpringLayout.WEST, rd);
+		springLayout.putConstraint(SpringLayout.EAST, nd, -30, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, nd, 125, SpringLayout.NORTH, nd);
 		
-		//Spring layout for reqDescTextArea
-		springLayout.putConstraint(SpringLayout.NORTH, reqDescTextArea, 0, SpringLayout.NORTH, reqDesc);
-		springLayout.putConstraint(SpringLayout.WEST, reqDescTextArea, 10, SpringLayout.EAST, reqDesc);
-		springLayout.putConstraint(SpringLayout.EAST, reqDescTextArea, -30, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, reqDescTextArea, 125, SpringLayout.NORTH, reqDescTextArea);
+		//Spring layout for rd
+		springLayout.putConstraint(SpringLayout.NORTH, rd, 0, SpringLayout.NORTH, reqDesc);
+		springLayout.putConstraint(SpringLayout.WEST, rd, 10, SpringLayout.EAST, reqDesc);
+		springLayout.putConstraint(SpringLayout.EAST, rd, -30, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, rd, 125, SpringLayout.NORTH, rd);
 		
 		//Spring layout for reqDesc label
 		springLayout.putConstraint(SpringLayout.NORTH, reqDesc, 15, SpringLayout.SOUTH, reqName);
@@ -238,8 +242,8 @@ public class PlayGame extends JPanel{
 		add(estimateTextField);
 		add(gameNameTextField);
 		add(reqNameTextField);
-		add(gameDescTextArea);
-		add(reqDescTextArea);
+		add(nd);
+		add(rd);
 	}
 	
 	/**
