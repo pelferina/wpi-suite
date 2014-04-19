@@ -49,7 +49,7 @@ public class PlayGame extends JPanel{
 	private final JTextField estimateTextField = new JTextField();
 	private final JTextField reqNameTextField = new JTextField();
 	private final JTextArea reqDescTextArea = new JTextArea();
-	private final JButton submit = new JButton("Submit All Estimates");
+	private final JButton submit = new JButton("Submit All");
 	private final JButton voteButton = new JButton("Vote");
 	private Vote userEstimates;
 	private Requirement currentReq;
