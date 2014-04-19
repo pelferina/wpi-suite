@@ -44,8 +44,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 
-
-
 /**
  * Main view of the PlanningPoker module
  * @author Cosmic Latte
@@ -326,16 +324,11 @@ public class MainView extends JTabbedPane {
 	        		ViewEventController.getInstance().getMain().remove(gameView);
 				}
 			} else if (type == 3){
-<<<<<<< HEAD
-					ViewEventController.getInstance().getMain().remove(completeView);
-=======
 				if (!completeView.isNew) {
-						ViewEventController.getInstance().getMain()
-								.remove(completeView);
+						ViewEventController.getInstance().getMain().remove(completeView);
 				} else {
 					ViewEventController.getInstance().getMain().remove(completeView);
 				}
->>>>>>> aa5a3aaa2cd61a23344c9cc859e6d9908f6f3c55
 			}
 			else if (type == 4){
 				if (!userPreferences.isNew) {
