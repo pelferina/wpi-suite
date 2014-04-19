@@ -42,24 +42,26 @@ public class reqpanel extends JPanel {
 	private final JLabel descriptionLabel = new JLabel("Description: ");
 	private final JButton CreateRequirementButton = new JButton("Create Requirement");
 	private final JButton close;
+	private JComboBox<RequirementPriority> priorityComboBox;
+	private JComboBox<RequirementType> typeComboBox;
 	
 	public reqpanel(JButton btnClose){
+		priorityComboBox = new JComboBox<RequirementPriority>(RequirementPriority.values());
+		typeComboBox = new JComboBox<RequirementType>(RequirementType.values());
 		setupPanel();
 		close = btnClose;
 		currentRequirement= new Requirement();
+		
 	}
 	
 	public void setupPanel() {
 		nameField = new JTextField();
 		descriptionField = new JTextField();
-		
-		JComboBox<RequirementPriority> priorityComboBox = new JComboBox<RequirementPriority>(RequirementPriority.values());
-		
+
 		JLabel lblPriority = new JLabel("Priority");
-		
-		JComboBox<RequirementType> typeComboBox = new JComboBox<RequirementType>(RequirementType.values()));
-		
+
 		JLabel lblType = new JLabel("Type");
+		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
@@ -134,17 +136,17 @@ public class reqpanel extends JPanel {
 		String stringDescription = this.descriptionField.getText();
 
 		String stringIteration = "Backlog";
+		
 
-		RequirementPriority priority;
 		RequirementStatus status = RequirementStatus.NEW;
-		RequirementType type = RequirementType.USERSTORY;
-
+		RequirementType type = (RequirementType) typeComboBox.getSelectedItem();
+		RequirementPriority priority = (RequirementPriority) priorityComboBox.getSelectedItem();
 
 		currentRequirement.setName(stringName);
 
 		currentRequirement.setDescription(stringDescription);
 		currentRequirement.setStatus(status);
-		currentRequirement.setPriority(RequirementPriority.MEDIUM);
+		currentRequirement.setPriority(priority);
 
 		currentRequirement.setIteration(stringIteration);
 		currentRequirement.setType(type);
