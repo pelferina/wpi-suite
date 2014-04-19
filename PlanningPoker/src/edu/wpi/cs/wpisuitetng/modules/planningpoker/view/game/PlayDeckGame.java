@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.AbstractButton;
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -54,12 +54,12 @@ public class PlayDeckGame extends JPanel{
 	private final JButton voteButton = new JButton("Vote");
 	private Vote userEstimates;
 	private Requirement currentReq;
-	
 	private GameView gv;
 	private GameSession currentGame;
 	private int deckId;
 	private List<Integer> gameCardList = new ArrayList<Integer>();
 	private Integer votesSoFarInt = 0;
+	private JLabel votesSoFarNameLabel = new JLabel("Estimate: ");
 	private JLabel votesSoFarLabel = new JLabel("0");
 	//List of buttons associated with the cards. First element -> lowest card val
 	private final List<GameCard> cardButtons = new ArrayList<GameCard>();
@@ -75,7 +75,7 @@ public class PlayDeckGame extends JPanel{
 		deckId = currentGame.getDeckId();
 		deckId = 0;
 		gameCardList = DeckModel.getInstance().getDeck(deckId).getCards();
-		addButtons();
+		generateButtons();
 		final ArrayList<Integer> estimates = new ArrayList<Integer>();
 		System.out.println(gameReqs.size());
 		for (int i = 0; i < gameReqs.size(); i++){
@@ -163,7 +163,63 @@ public class PlayDeckGame extends JPanel{
 				}
 			}
 		});
-		
+		//set layout
+		GroupLayout layout = new GroupLayout(this);
+		this.setLayout(layout);
+		layout.setAutoCreateContainerGaps(true);
+		layout.setAutoCreateGaps(true);
+		layout.setHorizontalGroup(
+				layout.createSequentialGroup()
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						.addComponent(reqName)
+						.addComponent(reqDesc)
+						.addComponent(cardButtons.get(0))
+						.addComponent(cardButtons.get(4))
+						.addComponent(votesSoFarNameLabel))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						.addComponent(reqNameTextField)
+						.addComponent(reqDescTextArea)
+						.addGroup(layout.createSequentialGroup()
+								.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+										.addComponent(cardButtons.get(1))
+										.addComponent(cardButtons.get(5)))
+								.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+										.addComponent(cardButtons.get(2))
+										.addComponent(cardButtons.get(6)))
+								.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+										.addComponent(cardButtons.get(3))
+										.addComponent(cardButtons.get(7))))
+						.addGroup(layout.createSequentialGroup()
+								.addComponent(votesSoFarLabel)
+								.addComponent(voteButton)
+								.addComponent(submit))).addComponent(voteButton)
+								.addComponent(submit)
+				);
+		layout.setVerticalGroup(
+				layout.createSequentialGroup()
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+						.addComponent(reqName)
+						.addComponent(reqNameTextField))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+						.addComponent(reqDesc)
+						.addComponent(reqDescTextArea))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+						.addComponent(cardButtons.get(0))
+						.addComponent(cardButtons.get(1))
+						.addComponent(cardButtons.get(2))
+						.addComponent(cardButtons.get(3)))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+						.addComponent(cardButtons.get(4))
+						.addComponent(cardButtons.get(5))
+						.addComponent(cardButtons.get(6))
+						.addComponent(cardButtons.get(7)))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+						.addComponent(votesSoFarNameLabel)
+						.addComponent(votesSoFarLabel)
+						.addComponent(voteButton)
+						.addComponent(submit))
+		);
+		/*
 		final SpringLayout springLayout = new SpringLayout();
 		
 		//Spring layout placement for vote button
@@ -204,21 +260,24 @@ public class PlayDeckGame extends JPanel{
 		springLayout.putConstraint(SpringLayout.NORTH, reqName, 35, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, reqName, 25, SpringLayout.WEST, this);
 		setLayout(springLayout);
-	
-		add(voteButton);
-		add(submit);
+	*/
 		add(reqName);
+		add(reqNameTextField);
 		add(reqDesc);
 		//add(estimateLabel);
 		//add(estimateTextField);
-		add(reqNameTextField);
 		add(reqDescTextArea);
+		addButtons();
+		add(votesSoFarNameLabel);
+		add(votesSoFarLabel);
+		add(voteButton);
+		add(submit);
 	}
 	
 	/**
-	 * This function cycles through available cards and adds the appropriate buttons to the view
+	 * This function cycles through available cards and generate the appropriate buttons
 	 */
-	private void addButtons(){
+	private void generateButtons(){
 
 		final Iterator<Integer> cardIterator = gameCardList.iterator();
 		final Iterator<GameCard> buttonIterator = cardButtons.iterator();
@@ -235,12 +294,16 @@ public class PlayDeckGame extends JPanel{
 		System.out.println("v2:"+gameCardList);
 		//This loop will cycle through all of the buttons that have been created and display them
 		
+	}
+	/**
+	 * This function cycles through available cards and add the appropriate buttons
+	 */
+	private void addButtons(){
 		for(int i=0; i < cardButtons.size(); i++)
 		{
 		   GameCard c = cardButtons.get(i);
 		   add(c);
 		}
-		
 	}
 	
 	//This function is used when a requirement is double clicked in one of the two requirement tables, and it sets the name and description fields to the 
