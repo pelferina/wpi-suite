@@ -340,13 +340,10 @@ public class NewGameInputDistributedPanel extends JPanel {
 		GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
 		System.out.println(newGame.toString());
 		//If activating: Set game status to active and Send an activation email 
+		
 		if(this.activate == true)
 		{   
-			System.out.println("Requirements Selected:" + selectionsMade);
 			newGame.setGameStatus(GameStatus.ACTIVE);
-			final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.PUT); // PUT == create
-			request.setBody("newGame" + newGame.getGameName());
-			request.send(); // send the request
 		}
 		 
 		GameModel model = GameModel.getInstance();
