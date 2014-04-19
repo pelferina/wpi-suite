@@ -25,6 +25,7 @@ import java.util.List;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetVoteController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 
 
@@ -52,7 +53,6 @@ public class GameSession extends AbstractModel {
 	
 	/** The date-time stamp of the creation */
 	private List<Integer> gameReqs;
-	private List<Vote> votes;
 	private final Date creationdate;
 	/** The date that the game will end, if there is no end time then this value is null*/
 	private Date endDate;
@@ -79,9 +79,8 @@ public class GameSession extends AbstractModel {
 		this.gameReqs = gameReqs;
 		gameStatus = GameStatus.DRAFT;
 		creationdate = new Date();
-		votes = (new ArrayList<Vote>());
-		median = null;
-		mean = null;
+		this.median = null;
+		this.mean = null;
 	}
 
 	/**
@@ -249,7 +248,6 @@ public class GameSession extends AbstractModel {
 			return false;
 		}
 		final GameSession o = (GameSession) other;
-		
 		if (gameName.equals(o.getGameName())){
 			if (gameDescription.equals(o.getGameDescription())){
 				if (ownerID == o.getOwnerID()){
@@ -257,9 +255,7 @@ public class GameSession extends AbstractModel {
 						if (endDate.equals(o.getEndDate())){
 							if (gameReqs.equals(o.getGameReqs())){
 								if (gameStatus == o.getGameStatus()){
-									if (votes.equals(o.getVotes())){
 										return true;
-									}
 								}
 							}
 						}
@@ -272,46 +268,19 @@ public class GameSession extends AbstractModel {
 		
 		
 	}
-
-	/**
-	 * sets the votes of the game session
-	 * @param v the list of votes to be set
-	 * @return GameSession the game session to be changed
-	 */
-	public GameSession setVotes(List<Vote> v){
-		votes = v;
-		return this;
-	}
-
 	/**Gets the votes
 	 * @return the votes
 	 */
 	public List<Vote> getVotes() {
-		return votes;
+		return VoteModel.getInstance().getVotes(gameID);
 	}
-	/**
-	 * Clears the votes
-	 */
-	public void clearVotes(){
-		votes = (new ArrayList<Vote>());
-	}
-	/** Adds a vote
-	 * @param v the vote to be added.
-	 */
-	public void addVote(Vote v){
-		if(votes.contains(v)) votes.remove(v);
-		votes.add(v);
-	}
-	
-	/**
-	 * This method calculates the statistics of the votes, such as mean and median
-	 */
 	public void calculateStats(){
-		final int requirementNum = gameReqs.size();
-		final int userNum = votes.size();
-		mean = new ArrayList<Float>();
-		median = new ArrayList<Float>();
-		final int[][] voteResult = new int[requirementNum][userNum];
+		List<Vote> votes = this.getVotes();
+		int requirementNum = gameReqs.size();
+		int userNum = votes.size();
+		this.mean = new ArrayList<Float>();
+		this.median = new ArrayList<Float>();
+		int[][] voteResult = new int[requirementNum][userNum];
 		for(int i=0; i < userNum; i++){
 			for(int j=0;j < requirementNum; j++){
 				voteResult[j][i] = votes.get(i).getVote().get(j);

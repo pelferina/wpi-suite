@@ -21,13 +21,14 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
  *
  */
 public class AddVoteRequestObserver implements RequestObserver {
+	private AddVoteController controller;
 
 	/**
 	 * This constructor creates the AddVoteRequestObserverobject
 	 * @param addVoteController The addVoteController object to observe
 	 */
 	public AddVoteRequestObserver(AddVoteController addVoteController) {
-		// TODO Auto-generated constructor stub
+		controller = addVoteController;
 	}
 
 	@Override

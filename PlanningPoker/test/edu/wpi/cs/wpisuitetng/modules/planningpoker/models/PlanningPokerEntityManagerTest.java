@@ -100,11 +100,6 @@ public class PlanningPokerEntityManagerTest {
 		reqList.add(1);
 		reqList.add(2);
 		GameSession testGame = new GameSession("test game", null, 1, 1, null , reqList);
-		
-		testGame.addVote(vote1);
-		testGame.addVote(vote2);
-		
-		testGame.calculateStats();
 		System.out.println(testGame.getMean());
 		System.out.println(testGame.getMedian());
 		
