@@ -1,11 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2013 WPI-Suite
+ * Copyright (c) 2014 -- WPI Suite
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: Team Cosmic Latte
+ *
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
@@ -15,6 +15,12 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
+/**
+ * This controller handles game update calls
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
+ *
+ */
 public class UpdateGameController {
 	
 	private final GameModel model;
@@ -24,8 +30,12 @@ public class UpdateGameController {
 	 * @param model the model containing the games
 	 */
 	public UpdateGameController(){
-		this.model = GameModel.getInstance();
+		model = GameModel.getInstance();
 	}
+	/**
+	 * This method sends a request to update GameSession and adds an observer
+	 * @param ToSend the GameSession to send request about
+	 */
 	public void sendGame(GameSession ToSend){
 		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.POST); // PUT == create
 		request.setBody(ToSend.toJSON()); // put the new session in the body of the request

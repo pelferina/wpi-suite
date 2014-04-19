@@ -1,11 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2013 WPI-Suite
+ * Copyright (c) 2014 -- WPI Suite
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: Team Rolling Thunder
+ *
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
 
@@ -25,14 +25,15 @@ import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
- * @author justinhess
+ * Panel for buttons up top
+ * @author Cosmic Latte
  * @version $Revision: 1.0 $
  */
 @SuppressWarnings("serial")
 public class PlanningPokerButtonsPanel extends ToolbarGroupView{
 	
 	// initialize the main view toolbar buttons
-		private JButton createButton = new JButton("<html>Create<br />Game</html>");
+		private final JButton createButton = new JButton("<html>Create<br />Game</html>");
 		private final JButton optionsButton = new JButton("<html>Game<br />Options</html>");
 
 		private final JPanel contentPanel = new JPanel();
@@ -40,19 +41,21 @@ public class PlanningPokerButtonsPanel extends ToolbarGroupView{
 	public PlanningPokerButtonsPanel(){
 		super("");
 		
-		this.contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
+		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
 		this.setPreferredWidth(500);
 		
 	
-		this.createButton.setHorizontalAlignment(SwingConstants.CENTER);
+		createButton.setHorizontalAlignment(SwingConstants.CENTER);
 		try {
 		    Image img = ImageIO.read(getClass().getResource("newgameimage.png"));
-		    this.createButton.setIcon(new ImageIcon(img));
+		    createButton.setIcon(new ImageIcon(img));
 		    
 		    img = ImageIO.read(getClass().getResource("optionsimage.png"));
-		    this.optionsButton.setIcon(new ImageIcon(img));
+		    optionsButton.setIcon(new ImageIcon(img));
 		    
-		} catch (IOException ex) {}
+		} catch (IOException ex) {
+			System.out.println("IOException thrown in PlanningPokerButtonsPanel.");
+		}
 		
 		// the action listener for the Create Requirement Button
 		createButton.addActionListener(new ActionListener() {

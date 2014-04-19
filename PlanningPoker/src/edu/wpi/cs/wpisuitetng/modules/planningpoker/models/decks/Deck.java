@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 WPI-Suite
+ * Copyright (c) 2014 WPI-Suite
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,27 +18,31 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
 /**
  * A deck in a game. Decks can be assigned to a game.
- * 
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
 */
 public class Deck extends AbstractModel {
 
 	/** the ID of the deck */
-	private int id;
-	private List<Integer> cards;
+	private final int id;
+	private final List<Integer> cards;
 	
 	/**
 	 * Constructs a Deck with default cards
 	 */
 	public Deck()
 	{
-		super();
 		id = 0;
-		this.cards = Arrays.asList(0,1,1,2,3,5,8,13); 
+		cards = Arrays.asList(0,1,1,2,3,5,8,13); 
 	}
 	
+	/**
+	 * Constructs a deck with the given cards that has the given id
+	 * @param id the deck id number
+	 * @param cards the cards that should be in the deck
+	 */
 	public Deck(int id, List<Integer> cards)
 	{
-		super();
 		this.id = id;
 		this.cards = cards;
 	}
@@ -50,7 +54,7 @@ public class Deck extends AbstractModel {
 	 * @return boolean for equality */
 	// TODO: implement two decks being equal
 	public boolean equals(Deck that) {
-		return (this.id == that.id);
+		return (id == that.id);
 	}
 
 	/**
@@ -99,7 +103,7 @@ public class Deck extends AbstractModel {
 	 * @return the Iteration contained in the given JSON */
 	public static Deck fromJson(String body) {
 		final Gson parser = new Gson();
-		Deck test = parser.fromJson(body, Deck.class);
+		final Deck test = parser.fromJson(body, Deck.class);
 
 		return test;
 	}

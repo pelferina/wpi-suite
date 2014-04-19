@@ -24,13 +24,21 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
  * This is the action listener for entity manager to check deadline on each games.
  * It will be called every few seconds on server side
  * 
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
  */
 public class DeadLineListener implements ActionListener{
-	private Data db;
-	private GameEntityManager entityManager;
+	final private Data db;
+	final private GameEntityManager entityManager;
+	/**
+	 * This constructor creates a DeadLineListener with the given database and GameEntityManager
+	 * 
+	 * @param db The database to create with
+	 * @param ppem 
+	 */
 	public DeadLineListener(Data db, GameEntityManager ppem){
 		this.db = db;
-		this.entityManager = ppem;
+		entityManager = ppem;
 		System.err.println("create a listener");
 	}
 
@@ -45,30 +53,28 @@ public class DeadLineListener implements ActionListener{
 		
 		gameArray = db.retrieveAll(new GameSession(new String(), new String(), 0 , 0, new Date(), null)).toArray(new GameSession[0]);
 
-		Date today = new Date();
+		final Date today = new Date();
 		
 		for(int i=0; i<gameArray.length; i++){
-			//System.err.println("Name "+gameArray[i].getGameName() + " Deadline: " + gameArray[i].getEndDate() + " " +today.toString());
 			if (gameArray[i].getEndDate() != null){
-				if (gameArray[i].getEndDate().before(today) && (gameArray[i].getGameStatus().compareTo(GameStatus.ARCHIVED) != 0)){
-					System.err.println("Name "+gameArray[i].getGameName() + " reaches deadline at" + today);
+				GameStatus status = gameArray[i].getGameStatus();
+				if (gameArray[i].getEndDate().before(today) && (status.equals(GameStatus.ACTIVE) || status.equals(GameStatus.INPROGRESS))){
+					System.out.println("Name "+gameArray[i].getGameName() + " reaches deadline at" + today);
 					
 					// change the status of gameSession
 					try {
-						db.update(GameSession.class, "GameID", gameArray[i].getGameID(), "GameStatus",  GameStatus.ARCHIVED);
+						db.update(GameSession.class, "GameID", gameArray[i].getGameID(), "GameStatus",  GameStatus.COMPLETED);
 					} catch (WPISuiteException ex) {
-						System.err.println("fail to set the gameStatus to archived");
-						// TODO Auto-generated catch block
+						System.err.println("fail to set the gameStatus to completed");
 						ex.printStackTrace();
 					}
 					// send notification email.
 					try {
 						String textToSend;
 						textToSend = "The game '"+ gameArray[i].getGameName() + "' has reached its deadline at" + gameArray[i].getEndDate() +"\r\n" + "Sent by fff8e7";
-						this.entityManager.sendUserEmails("End game notification",  textToSend, gameArray[i].getProject());
-					} catch (UnsupportedEncodingException e1) {
+						entityManager.sendUserEmails("End game notification",  textToSend, gameArray[i].getProject());
+					} catch (Exception e1) {
 						System.out.println("fail to send end notification email");
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}

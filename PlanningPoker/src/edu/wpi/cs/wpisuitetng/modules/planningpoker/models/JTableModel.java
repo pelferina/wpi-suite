@@ -1,6 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
-import java.sql.Date;
+
 import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
@@ -10,6 +20,12 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersControlle
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 
+/**
+ * This is a model for the JTabel
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
+ *
+ */
 @SuppressWarnings("serial")
 public class JTableModel extends AbstractTableModel {
 
@@ -23,16 +39,28 @@ public class JTableModel extends AbstractTableModel {
     protected static final String[] COLUMN_NAMES = new String[] {"Name", "Deadline", "Owner", "Progress", "Status"};
     protected static final Class<?>[] COLUMN_TYPES = new Class<?>[] {String.class, String.class, String.class, String.class, String.class};
     
+    /**
+     * This constructor creates the JTableModel from an arrayList of sessions
+     * @param sessions an ArrayList<GameSession> of sessions to create the table from
+     */
     public JTableModel(ArrayList<GameSession> sessions){
     	this(sessions.toArray(new GameSession[0]));
     }
 
+    /**
+     * This constructor creates the JTableModel from an array of sessions
+     * @param sessions GameSession[] to create the table from
+     */
 	public JTableModel(GameSession[] sessions){
 		users = null;
 		guc = GetUsersController.getInstance();
     	setUpTable(sessions);
     }
 	
+	/**
+	 * This method sets up the JTableModel when given an array of GameSessions
+	 * @param sessions GameSession[] of sessions to create the model from
+	 */
 	private void setUpTable(GameSession[] sessions){
 		games = sessions;
 		Data = new Object[sessions.length][COLUMN_NAMES.length];
@@ -40,7 +68,7 @@ public class JTableModel extends AbstractTableModel {
     	size = sessions.length;
     	for (int i=0; i<sessions.length; i++){
     		Object[] curRow = {sessions[i].getGameName(),
-								sessions[i].getEndDate()!=null ? sessions[i].getEndDate().toString() : "No Deadline", 
+								sessions[i].getEndDate()!=null ? sessions[i].getDeadlineString() : "No Deadline", 
     							getUserFromID(sessions[i].getOwnerID()), 
     							"To Be Implemented", // Progress
     							sessions[i].getGameStatus().name()
@@ -48,8 +76,20 @@ public class JTableModel extends AbstractTableModel {
     		Data[i] = curRow;
     		gameIDs[i] = sessions[i].getGameID();
     	}
+
 	}
     
+	/**
+	 * This method returns the status of the game as a string.
+	 * "Draft" means it is being edited and not visible to the public yet.
+	 * "Active" means it has been released to the public but no one has voted yet, and it can be edited.
+	 * "In Progress" means at least one vote has been cast, but not everyone has voted yet.
+	 * "Completed" means all users have voted.
+	 * "Archived" means that the session has been rendered unchangeable.
+	 * 
+	 * @param game The session to check
+	 * @return A string "Draft", "Active", "In Progress", "Completed", or "Archived"
+	 */
 	private String gameStatus(GameSession game){
 		if (game.getGameStatus() == GameStatus.DRAFT){
 			return "Draft";
@@ -68,6 +108,11 @@ public class JTableModel extends AbstractTableModel {
 		}
 	}
 	
+	/**
+	 * This method returns a corresponding user when given an id number
+	 * @param userID the user ID number as an int
+	 * @return the String of the user's name
+	 */
 	private String getUserFromID(int userID){
 		guc.actionPerformed();
 		while (guc.getUsers() == null){
@@ -76,7 +121,7 @@ public class JTableModel extends AbstractTableModel {
 				System.out.println("Waiting for users");
 			}
 			catch(Exception e){
-				
+				System.out.println("Exception thrown in JTableModel");
 			}
 		}
 		users = guc.getUsers();
@@ -105,9 +150,9 @@ public class JTableModel extends AbstractTableModel {
     }
 
     @Override public Object getValueAt(final int rowIndex, final int columnIndex) {
-       	if (rowIndex>=size)
+       	if (rowIndex>=size){
     		return "";
-    	
+       	}
             /*Adding components*/
         switch (columnIndex) {
             case 0: 
@@ -122,13 +167,26 @@ public class JTableModel extends AbstractTableModel {
         }
     }
 
+    /**
+     * This method updates the table of sessions with a new array of sessions
+     * @param sessions the GameSession[] of sessions to populate the model with
+     */
 	public void update(GameSession[] sessions){
 		setUpTable(sessions);
 	}
+	/**
+     * This method updates the table of sessions with a new ArrayList<GameSession> of sessions
+     * @param sessions the ArrayList<GameSession> of sessions to populate the model with
+     */
 	public void update(ArrayList<GameSession> sessions){
 		setUpTable(sessions.toArray(new GameSession[0]));
 	}
 	
+	/**
+	 * This method gets the game ID from a given row
+	 * @param row the row number to check
+	 * @return the id of the game in that row
+	 */
 	public int getIDFromRow(int row){
 		return gameIDs[row];
 	}
@@ -149,4 +207,13 @@ public class JTableModel extends AbstractTableModel {
 	public int getGameID(int i){
 		return games[i].getGameID();
 	}
+	/**
+	 * 
+	 * @param i the row number
+	 * @return the game status of the ith row
+	 */
+	public GameStatus getGameStatus(int i){
+		return games[i].getGameStatus();
+	}
+	
 }

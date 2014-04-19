@@ -11,8 +11,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
+
+
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.RefreshableController;
@@ -31,8 +31,8 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  */
 public class GetRequirementsController extends RefreshableController implements ActionListener {
 
-	private GetRequirementsRequestObserver observer;
-	private static GetRequirementsController instance;
+	private final GetRequirementsRequestObserver observer;
+	private static GetRequirementsController instance = null;
 
 	/**
 	 * Constructs the controller given a RequirementModel

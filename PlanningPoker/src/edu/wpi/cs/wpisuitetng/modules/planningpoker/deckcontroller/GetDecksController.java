@@ -24,11 +24,13 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * from the server. This controller is called when the user
  * clicks the deck from the Drop-down menu.
  * 
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
  */
 public class GetDecksController implements ActionListener {
 
-	private GetDecksRequestObserver observer;
-	private static GetDecksController instance;
+	final private GetDecksRequestObserver observer;
+	private static GetDecksController instance = null;
 
 	/**
 	 * Constructs the controller given a DeckModel
@@ -79,7 +81,7 @@ public class GetDecksController implements ActionListener {
 	 * Add the given Decks to the local model (they were received from the core).
 	 * This method is called by the GetDecksRequestObserver
 	 * 
-	 * @param Decks array of Decks received from the server
+	 * @param decks array of Decks received from the server
 	 */
 	public void receivedDecks(Deck[] decks) {
 		// Make sure the response was not null

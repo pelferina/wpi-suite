@@ -1,9 +1,19 @@
+/*******************************************************************************
+ * Copyright (c) 2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashSet;
+
 import java.util.List;
 
 import javax.swing.Timer;
@@ -16,13 +26,17 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 
-
+/**
+ * This method manages refresh requests
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
+ */
 public class RefreshManager {
 	
 	GetGamesController gameController;
 	GetRequirementsController reqController;
-	ArrayList<Requirement> reqCache;
-	ArrayList<GameSession> gameCache;
+	List<Requirement> reqCache;
+	List<GameSession> gameCache;
 	
 	public RefreshManager() {
 		gameController = GetGamesController.getInstance();
@@ -42,7 +56,7 @@ public class RefreshManager {
 				}
 
 				catch(RuntimeException exception){
-					//System.err.println(exception.getMessage());
+					System.err.println(exception.getMessage());
 				}
 			}
 		};
@@ -57,18 +71,21 @@ public class RefreshManager {
 				}
 
 				catch(RuntimeException exception){
-					//System.err.println(exception.getMessage());
+					System.err.println(exception.getMessage());
 				}
 			}
 		};
 		
 		// Timer will update RefreshManager every 2 seconds
-		Timer g = new Timer(2000, gameCheck);
-		Timer r = new Timer(2000, reqCheck);
+		final Timer g = new Timer(2000, gameCheck);
+		final Timer r = new Timer(2000, reqCheck);
 		g.start();
 		r.start();
 	}
 	
+	/**
+	 * This method updates games
+	 */
 	private void updateGames()
 	{
 		//Make a request to the database
@@ -94,13 +111,22 @@ public class RefreshManager {
 	
 	
 	//Assumes list are in the same order
+	/**
+	 * Checks whether two lists are different or not. Assumes they are sorted in the same order
+	 * @param l1 the first list
+	 * @param l2 the second list
+	 * @return whether or not they are the same as a boolean
+	 */
 	public boolean differentList(List<?> l1, List<?> l2) {
-		if (l1.size() != l2.size() )
+		if (l1.size() != l2.size() ){
 			return true;
+		}
 		
-	    for (int i = 0; i < l1.size(); i++) 
-	    	if ( ! l1.get(i).equals(l2.get(i) ))
+	    for (int i = 0; i < l1.size(); i++){
+	    	if ( ! l1.get(i).equals(l2.get(i) )){
 	        	return true;
+	    	}
+	    }
 	    
 	    return false;
 	}

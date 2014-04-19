@@ -1,14 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2013 -- WPI Suite
+ * Copyright (c) 2014 -- WPI Suite
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
+<<<<<<< HEAD
+=======
  * Contributors:
- *    Chris Casola
- *    Andrew Hurle
+ * Team Cosmic Latte
+>>>>>>> f2fd47508740055fc6e2dde62e642129f09fed52
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
@@ -24,10 +26,12 @@ import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+
 
 /**
  * Model to contain a single game for the Planning Poker module
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
  */
 public class GameSession extends AbstractModel {
 
@@ -52,23 +56,32 @@ public class GameSession extends AbstractModel {
 	private final Date creationdate;
 	/** The date that the game will end, if there is no end time then this value is null*/
 	private Date endDate;
-	public boolean emailSent = false;
+	private final boolean emailSent = false;
 	private List<Float> median;
 	private List<Float> mean;
 	
+	/**
+	 * This constructor generates a game session
+	 * @param game the name of the game as a string
+	 * @param description the description of the game as a string
+	 * @param ownerID the id number of the owner as an int
+	 * @param gameID the id number of the game as an int
+	 * @param deadline the time of the deadline as a date
+	 * @param gameReqs the requirements of the game, as a List<Integers>
+	 */
 	public GameSession(String game, String description, int ownerID, int gameID, Date deadline, List<Integer> gameReqs){
-		this.gameName = game;
-		this.gameDescription = description;
+		gameName = game;
+		gameDescription = description;
 		this.ownerID = ownerID;
 		this.gameID = gameID;
-		this.endDate = deadline;
+		endDate = deadline;
 		//this.endDate.setMonth(endDate.getMonth());
 		this.gameReqs = gameReqs;
-		this.gameStatus = GameStatus.DRAFT;
+		gameStatus = GameStatus.DRAFT;
 		creationdate = new Date();
 		votes = (new ArrayList<Vote>());
-		this.median = null;
-		this.mean = null;
+		median = null;
+		mean = null;
 	}
 
 	/**
@@ -109,12 +122,12 @@ public class GameSession extends AbstractModel {
 	@Override
 	public String toString() {
 		// Format the date-time stamp
-		DateFormat dateFormat1 = new SimpleDateFormat("MM/dd/yy hh:mm a");
-		DateFormat dateFormat2 = new SimpleDateFormat("MM/dd/yy");
+		final DateFormat dateFormat1 = new SimpleDateFormat("MM/dd/yy hh:mm a");
 		String returnStr = new String();
 		returnStr = gameName + "	";
-		if(creationdate != null)
+		if(creationdate != null){
 			returnStr = returnStr + "     " + "	Start: " + dateFormat1.format(creationdate);
+		}
 		if(endDate != null){
 			returnStr = returnStr + "      " + "End:" + dateFormat1.format(endDate);
 		}	
@@ -130,6 +143,15 @@ public class GameSession extends AbstractModel {
 		}
 		return returnStr;
 	}
+	
+	/**
+	 * @return String Deadline 
+	 */
+	public String getDeadlineString()
+	{
+		final DateFormat dateFormat1 = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+		return dateFormat1.format(endDate);
+	}
 
 	/*
 	 * The methods below are required by the model interface, however they
@@ -143,7 +165,9 @@ public class GameSession extends AbstractModel {
 	public void delete() {}
 
 	@Override
-	public Boolean identify(Object o) {return null;}
+	public Boolean identify(Object o) {
+		return null;
+	}
 
 	public int getOwnerID() {
 		return ownerID;
@@ -157,6 +181,11 @@ public class GameSession extends AbstractModel {
 		return endDate;
 	}
 
+	/**
+	 * sets an end date for game session
+	 * @param endDate the date
+	 * @return GameSession, the game session we are changing
+	 */
 	public GameSession setEndDate(Date endDate) {
 		this.endDate = endDate;
 		return this;
@@ -166,6 +195,11 @@ public class GameSession extends AbstractModel {
 		return gameStatus;
 	}
 
+	/**
+	 * sets the game status of the game session
+	 * @param gameStatus the game status to set to
+	 * @return GameSession the game session being changed
+	 */
 	public GameSession setGameStatus(GameStatus gameStatus) {
 		this.gameStatus = gameStatus;
 		return this;
@@ -175,8 +209,22 @@ public class GameSession extends AbstractModel {
 		return gameReqs;
 	}
 
+	/**
+	 * sets the game requirements of a game session
+	 * @param gameReqs the list of requirements to set
+	 * @return GameSession the session being set
+	 */
 	public GameSession setGameReqs(List<Integer> gameReqs) {
 		this.gameReqs = gameReqs;
+		return this;
+	}
+	/**
+	 * This is sets the game session description
+	 * @param description the string you want to set as the description
+	 * @return returns the game session called on
+	 */
+	public GameSession setGameDescription(String description){
+		gameDescription = description;
 		return this;
 	}
 	public String getGameName() {
@@ -185,6 +233,11 @@ public class GameSession extends AbstractModel {
 	public String getGameDescription(){
 		return gameDescription;
 	}
+	/**
+	 * sets the name of the game
+	 * @param gameName the name of the game
+	 * @return GameSession the session of the game to set the name of
+	 */
 	public GameSession setGameName(String gameName) {
 		this.gameName = gameName;
 		return this;
@@ -192,27 +245,41 @@ public class GameSession extends AbstractModel {
 
 	@Override
 	public boolean equals(Object other){
-		if (!(other instanceof GameSession))
+		if (!(other instanceof GameSession)){
 			return false;
+		}
+		final GameSession o = (GameSession) other;
 		
-		GameSession o = (GameSession) other;
-		
-		if (this.gameName.equals(o.getGameName()))
-		if (this.gameDescription.equals(o.getGameDescription()))
-		if (this.ownerID == o.getOwnerID())
-		if (this.gameID == o.getGameID())
-		if (this.endDate.equals(o.getEndDate()))
-		if (this.gameReqs.equals(o.getGameReqs()))
-		if (this.gameStatus == o.getGameStatus())
-		if (this.votes.equals(o.getVotes()))
-			return true;
+		if (gameName.equals(o.getGameName())){
+			if (gameDescription.equals(o.getGameDescription())){
+				if (ownerID == o.getOwnerID()){
+					if (gameID == o.getGameID()){
+						if (endDate.equals(o.getEndDate())){
+							if (gameReqs.equals(o.getGameReqs())){
+								if (gameStatus == o.getGameStatus()){
+									if (votes.equals(o.getVotes())){
+										return true;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 		
 		return false;
 		
 		
 	}
+
+	/**
+	 * sets the votes of the game session
+	 * @param v the list of votes to be set
+	 * @return GameSession the game session to be changed
+	 */
 	public GameSession setVotes(List<Vote> v){
-		this.votes = v;
+		votes = v;
 		return this;
 	}
 
@@ -236,12 +303,15 @@ public class GameSession extends AbstractModel {
 		votes.add(v);
 	}
 	
+	/**
+	 * This method calculates the statistics of the votes, such as mean and median
+	 */
 	public void calculateStats(){
-		int requirementNum = gameReqs.size();
-		int userNum = votes.size();
-		this.mean = new ArrayList<Float>();
-		this.median = new ArrayList<Float>();
-		int[][] voteResult = new int[requirementNum][userNum];
+		final int requirementNum = gameReqs.size();
+		final int userNum = votes.size();
+		mean = new ArrayList<Float>();
+		median = new ArrayList<Float>();
+		final int[][] voteResult = new int[requirementNum][userNum];
 		for(int i=0; i < userNum; i++){
 			for(int j=0;j < requirementNum; j++){
 				voteResult[j][i] = votes.get(i).getVote().get(j);
@@ -250,10 +320,12 @@ public class GameSession extends AbstractModel {
 		for(int i=0; i <requirementNum; i++){
 			Arrays.sort(voteResult[i]);
 			// calculate median
-			if(userNum%2 == 0)
+			if(userNum%2 == 0){
 				median.add(((float)voteResult[i][(userNum-1)/2] + voteResult[i][(userNum-1)/2+1])/2);
-			else
+			}
+			else{
 				median.add((float)voteResult[i][(userNum-1)/2+1]);
+			}
 			// calculate mean
 			int sum = 0;
 			for(int j=0; j < userNum; j++){

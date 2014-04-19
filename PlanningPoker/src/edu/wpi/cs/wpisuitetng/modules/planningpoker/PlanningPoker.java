@@ -26,14 +26,20 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ToolbarView;
 
 
+/**
+ * This is the PlanningPoker module class.
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
+ */
 public class PlanningPoker implements IJanewayModule{
 
 	/** The tabs used by this module */
-	private ArrayList<JanewayTabModel> tabs;
+	private final List<JanewayTabModel> tabs;
+	
 	
 	private MainView mainPanel;
 	private JPanel buttonPanel;
-	private RefreshManager refresh;
+	final private RefreshManager refresh;
 	
 	
 	/**
@@ -45,13 +51,13 @@ public class PlanningPoker implements IJanewayModule{
 
 		tabs = new ArrayList<JanewayTabModel>();
 		
-		MainView mainPanel = new MainView();
-		ToolbarView toolBar = new ToolbarView(true);
+		final MainView mainPanel = new MainView();
+		final ToolbarView toolBar = new ToolbarView(true);
 				
 		ViewEventController.getInstance().setMainView(mainPanel);
 		ViewEventController.getInstance().setToolBar(toolBar);
 		
-		JanewayTabModel tab = new JanewayTabModel("PlanningPoker", new ImageIcon(), toolBar, mainPanel);
+		final JanewayTabModel tab = new JanewayTabModel("PlanningPoker", new ImageIcon(), toolBar, mainPanel);
 		tabs.add(tab);
 	}
 	

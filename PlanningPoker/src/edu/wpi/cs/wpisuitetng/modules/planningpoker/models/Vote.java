@@ -10,8 +10,9 @@ import com.google.gson.Gson;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
 /**
+ * This is the vote class, that stores information on the game it corresponds with, and which user cast the vote
  * @author Team FFF8E7
- *
+ * @version $Revision: 1.0 $
  */
 public class Vote extends AbstractModel implements Comparable<Vote>{
 
@@ -123,8 +124,8 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	@Override
 	public Boolean identify(Object o) {
 		if(o == null || o.getClass() != this.getClass()) return false;
-		Vote other = (Vote) o;
-		return (this.gameID == other.gameID && this.UID == other.UID);
+		final Vote other = (Vote) o;
+		return (gameID == other.gameID && UID == other.UID);
 	}
 
 	/**
@@ -137,7 +138,7 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	 * Sets the vote id with the tohash method
 	 */
 	public void setVoteID(){
-		this.VoteID = toHash(this);
+		VoteID = toHash(this);
 	}
 	/**
 	 * @param voteID the voteID to set
@@ -152,7 +153,7 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	@Override
 	public boolean equals(Object other){
 		if(other.getClass() != Vote.class) return false;
-		return ((Vote) other).VoteID == this.VoteID;
+		return ((Vote) other).VoteID == VoteID;
 		
 	}
 	/**
@@ -161,8 +162,13 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	 */
 	@Override
 	public int compareTo(Vote o) {
-		return o.VoteID - this.VoteID;
+		return o.VoteID - VoteID;
 	}
+	/**
+	 * This function takes a vote and returns it as an integer
+	 * @param v the vote to hash
+	 * @return the hashed vote as an integer
+	 */
 	public static int toHash(Vote v){
 		return v.gameID* 100000 + v.UID;
 	}

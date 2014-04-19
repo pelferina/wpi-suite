@@ -14,6 +14,11 @@ import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
+/**
+ * Observer for game updates
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
+ */
 public class UpdateGameRequestObserver implements RequestObserver {
 
 	/* (non-Javadoc)

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 WPI-Suite
+ * Copyright (c) 2014 WPI-Suite
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventControlle
  * 
  * 
  * @version $Revision: 1.0 $
- * @author justinhess
+ * @author Cosmic Latte
  */
 @SuppressWarnings({ "serial", "rawtypes" })
 public class DeckModel extends AbstractListModel {
@@ -33,19 +33,19 @@ public class DeckModel extends AbstractListModel {
 	/**
 	 * The list in which all the Decks for a single project are contained
 	 */
-	private ArrayList<Deck> listOfDecks;
+	private final List<Deck> listOfDecks;
 	private int nextID; // the next available ID number for the Decks that
 						// are added.
 	
 	private final Deck defaultDeck;
 	
 	// the static object to allow the Deck model to be
-	private static DeckModel instance;
+	private static DeckModel instance = null;
 
 	/**
 	 * Constructs an list of Decks with a default deck for game creation
 	 */
-	public DeckModel() {
+	private DeckModel() {
 		defaultDeck = new Deck();
 		listOfDecks = new ArrayList<Deck>(Arrays.asList(defaultDeck));
 		nextID = 1;
@@ -73,7 +73,7 @@ public class DeckModel extends AbstractListModel {
 		try {
 			AddDeckController.getInstance().addDeck(newDeck);
 		} catch (Exception e) {
-
+			System.out.println("Exception thrown in DeckModel");
 		}
 		//TODO:Change to Deck View
 		ViewEventController.getInstance().refreshTree();
@@ -98,7 +98,7 @@ public class DeckModel extends AbstractListModel {
 	 * 
 	 * @return the next open id number */
 	public int getNextID() {
-		return this.nextID++;
+		return nextID++;
 	}
 
 	/**
@@ -122,8 +122,8 @@ public class DeckModel extends AbstractListModel {
 	 * remove each Deck from the model.
 	 */
 	public void emptyModel() {
-		int oldSize = getSize();
-		Iterator<Deck> iterator = listOfDecks.iterator();
+		final int oldSize = getSize();
+		final Iterator<Deck> iterator = listOfDecks.iterator();
 		while (iterator.hasNext()) {
 			iterator.next();
 			iterator.remove();
@@ -142,7 +142,7 @@ public class DeckModel extends AbstractListModel {
 	public void addDecks(Deck[] Decks) {
 		System.out.println("Got decks.." + Decks.length);
 		for (int i = 0; i < Decks.length; i++) {
-			this.listOfDecks.add(Decks[i]);
+			listOfDecks.add(Decks[i]);
 			if (Decks[i].getId() >= nextID) nextID = Decks[i].getId() + 1;
 		}
 		

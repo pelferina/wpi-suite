@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
@@ -6,15 +16,25 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
+/**
+ * This controller responds when the user casts their vote during a game
+ * 
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
+ */
 public class AddVoteController {
 
 	private final VoteModel model;
 
+	/**
+	 * This constructor populates the model variable with the inputted model
+	 * @param model The VoteModel to control over
+	 */
 	public AddVoteController(VoteModel model) {
 		this.model = model;
 	}
 	
-	/** Sends a new vote obejct to the servah
+	/** Sends a new vote object to the server
 	 * @param v the vote to be sent
 	 */
 	public void sendVote(Vote v){
@@ -24,6 +44,10 @@ public class AddVoteController {
 		request.send(); // send the request
 	}
 	
+	/**
+	 * Getter for model
+	 * @return the model variable
+	 */
 	public VoteModel getModel() {
 		return model;
 	}

@@ -122,7 +122,9 @@ public class JDatePickerImpl extends JPanel implements JDatePicker {
 		try {
 		    Image img = ImageIO.read(getClass().getResource("calendar_icon.png"));
 		    this.button.setIcon(new ImageIcon(img));		    
-		} catch (IOException ex) {}
+		} catch (IOException ex) {
+			System.err.println(ex.getMessage());
+		}
 		add(button);
         layout.putConstraint(SpringLayout.WEST, button, 1, SpringLayout.EAST, formattedTextField);
         layout.putConstraint(SpringLayout.EAST, this, 0, SpringLayout.EAST, button);
