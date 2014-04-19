@@ -24,7 +24,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailAddressCo
  * @version $Revision: 1.0 $
  */
 @SuppressWarnings("serial")
-public class AddEmailPanel extends JPanel {
+public class PreferencesPanel extends JPanel {
 	
 	private final JTextField emailField = new JTextField();
 	private final JLabel emailLabel = new JLabel("Email: ");
@@ -36,7 +36,7 @@ public class AddEmailPanel extends JPanel {
 	 * Constructor to create panel with close button
 	 * @param btnClose button to close the panel
 	 */
-	public AddEmailPanel(JButton btnClose){
+	public PreferencesPanel(JButton btnClose){
 		setupPanel();
 		close = btnClose;
 	}
