@@ -369,15 +369,10 @@ public class NewGameInputDistributedPanel extends JPanel {
 			{
 				currentGameSession.setGameStatus(GameStatus.ACTIVE);
 			}
-<<<<<<< HEAD
 			if (deckCheckBox.isSelected()){
 				currentGameSession.setDeckId(0);
 			}
-=======
-//			final GameSession modifiedGame = new GameSession(currentGameSession.getGameName(), currentGameSession.getGameDescription(), 
-//					currentGameSession.getOwnerID(), currentGameSession.getGameID(), currentGameSession.getEndDate(), currentGameSession.getGameReqs());
-//			modifiedGame.setGameStatus(currentGameSession.getGameStatus());
->>>>>>> 10ef6d63f5741e1d2c2428f1565af562ac0f889d
+
 			final UpdateGameController msgr = new UpdateGameController();
 //			System.out.println("Attempting to send game to database"); // TODO: also remove this
 			msgr.sendGame(currentGameSession); //TODO: This is sending an error

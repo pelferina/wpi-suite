@@ -6,11 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
-<<<<<<< HEAD
-=======
  * Contributors:
  * Team Cosmic Latte
->>>>>>> f2fd47508740055fc6e2dde62e642129f09fed52
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
