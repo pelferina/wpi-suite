@@ -25,6 +25,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * @author Cosmic Latte
  * @version $Revision: 1.0 $
  */
+
 public class ArchiveGameActionListener implements ActionListener{
 	GameSession game;
 	/**
