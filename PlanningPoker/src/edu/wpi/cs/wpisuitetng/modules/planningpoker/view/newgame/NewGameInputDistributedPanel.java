@@ -316,7 +316,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		//Checks to see if all the fields are properly filled, and then sends the game object to the database if done.
 		activateGameButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				activate=true;
+				activate = true;
 				saveOrActivateGame();
 				final JOptionPane gameCreated = new JOptionPane("Game Created and Activated");
 				JOptionPane.showMessageDialog(gameCreated, "Game has been created and activated", "Game created", JOptionPane.INFORMATION_MESSAGE);
@@ -355,7 +355,6 @@ public class NewGameInputDistributedPanel extends JPanel {
 			{
 				newGame.setGameStatus(GameStatus.ACTIVE);
 			}
-//			System.out.println(newGame.toString());
 			final AddGameController msgr = new AddGameController(model);
 			msgr.sendGame(newGame);
 			
@@ -366,15 +365,22 @@ public class NewGameInputDistributedPanel extends JPanel {
 			currentGameSession.setGameDescription(description);
 			currentGameSession.setGameReqs(selectionsMade);
 			currentGameSession.setEndDate(deadlineDate);
-			if(activate == true)
+			if(activate)
 			{
 				currentGameSession.setGameStatus(GameStatus.ACTIVE);
 			}
+<<<<<<< HEAD
 			if (deckCheckBox.isSelected()){
 				currentGameSession.setDeckId(0);
 			}
+=======
+//			final GameSession modifiedGame = new GameSession(currentGameSession.getGameName(), currentGameSession.getGameDescription(), 
+//					currentGameSession.getOwnerID(), currentGameSession.getGameID(), currentGameSession.getEndDate(), currentGameSession.getGameReqs());
+//			modifiedGame.setGameStatus(currentGameSession.getGameStatus());
+>>>>>>> 10ef6d63f5741e1d2c2428f1565af562ac0f889d
 			final UpdateGameController msgr = new UpdateGameController();
-			msgr.sendGame(currentGameSession);
+//			System.out.println("Attempting to send game to database"); // TODO: also remove this
+			msgr.sendGame(currentGameSession); //TODO: This is sending an error
 		}		
 	}
 	/**
@@ -443,13 +449,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		hourTime = getHour(deadlineHourComboBox.getSelectedIndex() + 1);
 		minuteTime = deadlineMinuteComboBox.getSelectedIndex();
 		final Calendar deadline = Calendar.getInstance();
-		deadline.set(deadlineYear, deadlineMonth, deadlineDay, hourTime, minuteTime);
-		
-//		System.out.println(deadline.get(Calendar.DAY_OF_MONTH)+"/"+deadline.get(Calendar.MONTH)+"/"+deadline.get(Calendar.YEAR)+ "     " 
-//				 		+ currentDate.get(Calendar.DAY_OF_MONTH)+"/"+currentDate.get(Calendar.MONTH)+"/"+currentDate.get(Calendar.YEAR));
-//				 		SimpleDateFormat deadlineTimeFormat = new SimpleDateFormat("hh:mm aa");
-//				 		System.out.println(deadlineTimeFormat.format(deadline.getTime())+ "     "+ deadlineTimeFormat.format(currentDate.getTime()));
-				 
+		deadline.set(deadlineYear, deadlineMonth, deadlineDay, hourTime, minuteTime);		 
 		if (deadline.after(currentDate)){
 			deadlineError.setVisible(false);
 			return true;

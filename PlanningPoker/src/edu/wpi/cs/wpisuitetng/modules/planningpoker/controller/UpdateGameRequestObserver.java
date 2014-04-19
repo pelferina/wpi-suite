@@ -38,7 +38,7 @@ public class UpdateGameRequestObserver implements RequestObserver {
 	 */
 	@Override
 	public void responseError(IRequest iReq) {
-		System.err.println("The request to update a gamemodel failed.");
+		System.err.println("The request to update a gamemodel failed. (responseError)");
 
 	}
 
@@ -47,7 +47,7 @@ public class UpdateGameRequestObserver implements RequestObserver {
 	 */
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		System.err.println("The request to update a gamemodel failed.");
+		System.err.println("The request to update a gamemodel failed. (fail)");
 
 	}
 

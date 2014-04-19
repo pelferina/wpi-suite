@@ -172,7 +172,6 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	 */
 	@Override
 	public GameSession update(Session s, String content) {
-
 		// Parse the message from JSON
 		final GameSession importedGame = GameSession.fromJson(content);
 		GameSession oldGame = null;
@@ -192,7 +191,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 				if (oldGame.getGameStatus().equals(GameStatus.DRAFT)
 						&& importedGame.getGameStatus().equals(
 								GameStatus.ACTIVE)) {
-					sendActiveNotification(importedGame, s.getProject());
+					//sendActiveNotification(importedGame, s.getProject());
 				}
 				if ((oldGame.getGameStatus().equals(GameStatus.ACTIVE) || oldGame.getGameStatus().equals(GameStatus.INPROGRESS))
 						&& importedGame.getGameStatus().equals(GameStatus.COMPLETED)) {
@@ -211,11 +210,13 @@ public class GameEntityManager implements EntityManager<GameSession> {
 					"EndDate", importedGame.getEndDate());
 			db.update(GameSession.class, "GameID", importedGame.getGameID(),
 					"GameName", importedGame.getGameName());
+			System.out.println("Game Status" + importedGame.getGameStatus());
 			db.update(GameSession.class, "GameID", importedGame.getGameID(),
 					"GameStatus", importedGame.getGameStatus());
 			db.update(GameSession.class, "GameID", importedGame.getGameID(),
 					"GameDescription", importedGame.getGameDescription());
 		} catch (WPISuiteException e) {
+			System.out.println("Update Game Exception");
 			e.printStackTrace();
 		}
 		return importedGame;
