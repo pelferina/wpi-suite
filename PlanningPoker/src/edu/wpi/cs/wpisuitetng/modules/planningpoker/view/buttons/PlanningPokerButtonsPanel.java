@@ -34,7 +34,7 @@ public class PlanningPokerButtonsPanel extends ToolbarGroupView{
 	
 	// initialize the main view toolbar buttons
 		private final JButton createButton = new JButton("<html>Create<br />Game</html>");
-		private final JButton optionsButton = new JButton("<html>Game<br />Options</html>");
+		private final JButton optionsButton = new JButton("<html>User<br />Preferences</html>");
 
 		private final JPanel contentPanel = new JPanel();
 	
