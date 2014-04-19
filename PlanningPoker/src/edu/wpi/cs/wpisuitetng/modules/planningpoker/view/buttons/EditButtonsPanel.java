@@ -11,7 +11,6 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
 
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -40,7 +39,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class EditButtonsPanel extends ToolbarGroupView{
 	
 	private final JPanel contentPanel = new JPanel();
-	JButton editButton = new JButton("<html>Edit<br />Games</html>");
+	JButton editButton = new JButton("<html>Edit<br />Game</html>");
 	final JButton createCancelButton = new JButton("<html>Cancel<br />Games</html>");
 	private ActionListener listener = null;
 	private ImageIcon editImg = null;
@@ -63,7 +62,7 @@ public class EditButtonsPanel extends ToolbarGroupView{
 		super("");
 		
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
-		this.setPreferredWidth(500);
+		this.setPreferredWidth(150);
 		
 		editButton.setPreferredSize(new Dimension(150,50));	
 		
@@ -72,8 +71,8 @@ public class EditButtonsPanel extends ToolbarGroupView{
 		} catch (IOException ex) {
 			System.out.println("IOException thrown in EditButtonsPanel.");
 		}
-		
-		editButton.setVisible(true);
+		editButton.setIcon(editImg);
+		editButton.setVisible(false);
 		
 		contentPanel.add(editButton);
 		contentPanel.setOpaque(false);
@@ -89,16 +88,7 @@ public class EditButtonsPanel extends ToolbarGroupView{
 	public JButton getEditButton() {
 		return editButton;
 	}
-	/**
-	 * This method creates an edit button and enables it while disableing the cancel button
-	 */
-	public void setButtonToEdit(){
-		if (editImg != null){
-			editButton.setIcon(editImg);}
-		editButton.setText("<html>Edit<br />Games</html>");
-		createCancelButton.setEnabled(false);
-		createCancelButton.setVisible(false);
-	}
+
 	/**
 	 * This method sets the button to read "activate"
 	 *
@@ -122,36 +112,6 @@ public class EditButtonsPanel extends ToolbarGroupView{
 	public void setEditGameButtonInvisible() {
 		editButton.setEnabled(false);
 		editButton.setVisible(false);
-	}
-
-	/**
-	 * This listener watches for when a game is activated
-	 * @author Cosmic Latte
-	 * @version $Revision: 1.0 $
-	 */
-	class activateGameActionListener implements ActionListener{
-		int gameID;
-		/**
-		 * Constructor to poulate gameID
-		 * @param gameID
-		 */
-		private activateGameActionListener(int gameID){
-			this.gameID = gameID;
-		}
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			final List<GameSession> games = GameModel.getInstance().getGames();
-			for(GameSession g: games){
-				if(g.getGameID() == gameID){
-					g.setGameStatus(GameStatus.ACTIVE);
-					final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.POST); // POST == UPDATE
-					request.setBody(g.toJSON()); // put the new session in the body of the request
-					request.addObserver(new UpdateGameRequestObserver()); // add an observer to process the response
-					request.send(); // send the request
-				}
-			}
-			
-		}
 	}
 
 }

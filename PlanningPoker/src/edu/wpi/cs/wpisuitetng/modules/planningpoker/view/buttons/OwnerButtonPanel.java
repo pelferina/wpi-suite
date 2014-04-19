@@ -33,7 +33,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	private final JPanel contentPanel = new JPanel();
 	private final JButton ownerButton = new JButton();
 	private ActionListener listener = null;
-	private Image endImg, activateImg, archiveImg;
+	private ImageIcon endImg, activateImg, archiveImg;
 	
 	public OwnerButtonPanel(){
 		super("");
@@ -41,13 +41,13 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
 		this.setPreferredWidth(150);
 		
-		ownerButton.setPreferredSize(new Dimension(150,30));	
+		ownerButton.setPreferredSize(new Dimension(150,50));	
 		ownerButton.setVisible(false);
 		
 		try {
-		    endImg= ImageIO.read(getClass().getResource("cancel.png"));
-		    activateImg = ImageIO.read(getClass().getResource("cancel.png"));
-		    archiveImg = ImageIO.read(getClass().getResource("cancel.png"));
+		    endImg= new ImageIcon(ImageIO.read(getClass().getResource("cancel.png")));
+		    activateImg = new ImageIcon(ImageIO.read(getClass().getResource("cancel.png")));
+		    archiveImg =new ImageIcon( ImageIO.read(getClass().getResource("cancel.png")));
 		    
 		} catch (IOException ex) {
 			System.out.println("IOException thrown in EndGameButtonPanel");
@@ -74,7 +74,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	public void makeEndGameButtonVisible(GameSession game){
 		ownerButton.setVisible(true);
 		ownerButton.setEnabled(true);
-		ownerButton.setIcon(new ImageIcon(endImg));
+		ownerButton.setIcon(endImg);
 		ownerButton.setText("<html>End<br />Game</html>");
 		
 		
@@ -92,7 +92,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	public void makeActivateGameButtonVisible(GameSession game){
 		ownerButton.setVisible(true);
 		ownerButton.setEnabled(true);
-		ownerButton.setIcon(new ImageIcon(endImg));
+		ownerButton.setIcon(endImg);
 		ownerButton.setText("<html>Activate<br />Game</html>");
 		
 		
@@ -110,7 +110,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	public void makeArchiveGameButtonVisible(GameSession game){
 		ownerButton.setVisible(true);
 		ownerButton.setEnabled(true);
-		ownerButton.setIcon(new ImageIcon(endImg));
+		ownerButton.setIcon(endImg);
 		ownerButton.setText("<html>Archive<br />Game</html>");
 		
 		
