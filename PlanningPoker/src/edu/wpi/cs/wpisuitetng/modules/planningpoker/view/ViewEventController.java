@@ -1,22 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 WPI-Suite
+ * Copyright (c) 2014 WPI-Suite
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: Team Rolling Thunder
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ToolbarView;
+
 
 /**
  * Provides an interface for interaction with the main GUI elements
  * All actions on GUI elements should be conducted through this controller.
  * @version $Revision: 1.0 $
- * @author justinhess
+ * @author Cosmic Latte
  */
 
 public class ViewEventController {
@@ -74,15 +72,27 @@ public class ViewEventController {
 	
 	/**
 	 * Opens a new tab for editing a game
+	 * @param gameSession the GameSession the tab is editing
 	 */
 	public void editGameTab(GameSession gameSession) {
 		main.addEditGameTab(gameSession);
 	}
 	
+	/**
+	 * Opens a new tab for playing a game
+	 * @param gameSession the GameSession the user is playing
+	 */
 	public void playGameTab(GameSession gameSession){
 		main.addPlayGameTab(gameSession);
 	}
 	
+	/**
+	 * adds a playGameTab linked to the given gameSession
+	 * @param gameSession the gameSession to add a playGameTab of
+	 */
+	public void viewGameTab(GameSession gameSession){
+		main.addPlayGameTab(gameSession);
+	}
 	/**
 	 * Opens a new tab for the creation of a game.
 	 */
@@ -101,6 +111,9 @@ public class ViewEventController {
 		return main;
 	}
 
+	/**
+	 * Opens a new tab for creating a new game
+	 */
 	public void newGameTab() {
 		main.addNewGameTab();
 	}
@@ -118,13 +131,20 @@ public class ViewEventController {
 	public void setEndGameButtonInvisible(){
 		toolbar.setEndGameInvisible();
 	}
-	
+	/**
+	 * sets the edit game button to be visible
+	 * @param gameID the id of the game to change the button for
+	 */
 	public void setEditGameButtonVisible(int gameID)
 	{
-		toolbar.getEditButton().setButtonToEdit();
+		toolbar.getEditButton().setEditGameButtonVisible(gameID);
+		
 	}
 
+	/**
+	 * sets the edit game button to be invisible
+	 */
 	public void setEditGameButtonInVisible() {
-		toolbar.getEditButton().setVisible(false);		
+		toolbar.getEditButton().setEditGameButtonInvisible();		
 	}
 }

@@ -1,13 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2013 -- WPI Suite
+ * Copyright (c) 2014 -- WPI Suite
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *    Chris Casola
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
@@ -26,15 +24,15 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * adding the contents of the message text field to the model as a new
  * message.
  * 
- * @author Chris Casola
- *
+ * @author Cosmic Latte
+ * @version $Requirement: 1.0 $
  */
 public class AddEmailAddressController implements ActionListener {
 	private final JTextField view;
 	
 	/**
 	 * Construct an AddEmailAddressController for the given model, view pair
-	 * @param model the model containing the messages
+	 * 
 	 * @param view the view where the user enters new messages
 	 */
 	public AddEmailAddressController(JTextField view) {
@@ -47,7 +45,7 @@ public class AddEmailAddressController implements ActionListener {
 	 * @param view the view where the user enters new messages
 	 */
 	public AddEmailAddressController() {
-		this.view = null;
+		view = null;
 	}
 
 	/* *
@@ -64,23 +62,13 @@ public class AddEmailAddressController implements ActionListener {
 			return;
 		}
 		
-//		// Get the text that was entered
-//		String address = view.getEmail().getText();
-//		
-//		// Make sure there is text
-//		if (message.length() > 0) {
-//			// Clear the text field
-//			view.getTxtNewMessage().setText("");
-//			
-//			// Send a request to the core to save this message
-//			final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.PUT); // PUT == create
-//			request.setBody(new EmailModel(address).toJSON()); // put the new message in the body of the request
-//			request.addObserver(new AddMessageRequestObserver(this)); // add an observer to process the response
-//			request.send(); // send the request
-//		}
 		saveEmail(view.getText());
 	}
 
+	/**
+	 * This method creates a request to send and email, and adds an observer
+	 * @param address The address to send to
+	 */
 	public void saveEmail(String address)
 	{
 		// Send a request to the core to save this message

@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game;
 
 import java.awt.event.MouseAdapter;
@@ -6,22 +16,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.JTableModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
+
+
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
-import javax.swing.SpringLayout;
 
+
+/**
+ * The gameRequirements class that handles information on each game's requirements
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
+ *
+ */
 public class GameRequirements extends JSplitPane{
 	
 	private JTable estimatesPending;
@@ -30,15 +48,20 @@ public class GameRequirements extends JSplitPane{
 	private final JLabel reqsEstimated = new JLabel("Requirements estimated");
 	private JScrollPane pendingPane;
 	private JScrollPane completePane;
-	private List<Integer> gameReqIDs;
-	private List<Requirement> gameReqs = new ArrayList<Requirement>();
-	private GameView gv;
+	private final List<Integer> gameReqIDs;
+	private final List<Requirement> gameReqs = new ArrayList<Requirement>();
+	private final GameView gv;
 	final private int COLUMN_NUM = 3;
 	
+	/**
+	 * Constructor for GameRequirements
+	 * @param gameToPlay the game session
+	 * @param agv the active game view
+	 */
 	public GameRequirements(GameSession gameToPlay, GameView agv) {
-		List<Requirement> allReqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
-		this.gameReqIDs = gameToPlay.getGameReqs();
-		this.gv = agv;
+		final List<Requirement> allReqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
+		gameReqIDs = gameToPlay.getGameReqs();
+		gv = agv;
 		setTopComponent(new JScrollPane(estimatesPending));
 		setBottomComponent(new JScrollPane(estimatesComplete));
 		//Gets all the requirements and adds the requirements that are in the game to gameReqs
@@ -65,29 +88,50 @@ public class GameRequirements extends JSplitPane{
 		};
 		estimatesPending.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Name", "Description"}));
 		estimatesComplete.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Name", "Description"}));
-		init();
+		init(gameToPlay);
 	}
 
-	private void init(){
-		DefaultTableModel pendingModel = (DefaultTableModel) estimatesPending.getModel();
+	private void init(GameSession gameToPlay){
+		final DefaultTableModel pendingModel = (DefaultTableModel) estimatesPending.getModel();
+		final DefaultTableModel completedModel = (DefaultTableModel) estimatesComplete.getModel();
 		pendingModel.setNumRows(gameReqs.size());
 		pendingModel.setColumnCount(COLUMN_NUM);
 		setColumnWidth(estimatesPending);
 		
 		//Fills the pending table with the name and description of the requirements that are in the game
 		
-		for (int i = 0; i < gameReqs.size(); i++){
-			pendingModel.setValueAt(gameReqs.get(i).getId(), i, 0);
-			pendingModel.setValueAt(gameReqs.get(i).getName(), i, 1);
-			pendingModel.setValueAt(gameReqs.get(i).getDescription(), i, 2);
+		Vote userVote = null;
+		boolean hasVoted = false;
+		for (Vote v: gameToPlay.getVotes()){
+			if (v.getUID() == GetCurrentUser.getInstance().getCurrentUser().getIdNum()){
+				userVote = v;
+				hasVoted = true;
+			}
 		}
 		
-		DefaultTableModel completedModel = (DefaultTableModel) estimatesComplete.getModel();
-		completedModel.setNumRows(0);
+		if (hasVoted){
+			pendingModel.setNumRows(0);
+			completedModel.setNumRows(gameReqs.size());
+			for (int i = 0; i < userVote.getVote().size(); i++){
+				completedModel.setValueAt(gameReqs.get(i).getId(), i, 0);
+				completedModel.setValueAt(gameReqs.get(i).getName(), i, 1);
+				completedModel.setValueAt(gameReqs.get(i).getDescription(), i, 2);
+			}
+		}
+		
+		else {
+			for (int i = 0; i < gameReqs.size(); i++){
+				pendingModel.setValueAt(gameReqs.get(i).getId(), i, 0);
+				pendingModel.setValueAt(gameReqs.get(i).getName(), i, 1);
+				pendingModel.setValueAt(gameReqs.get(i).getDescription(), i, 2);
+			}
+			completedModel.setNumRows(0);
+		}
+		
 		completedModel.setColumnCount(COLUMN_NUM);
 		setColumnWidth(estimatesComplete);
-		this.pendingPane = new JScrollPane(estimatesPending);
-		this.completePane = new JScrollPane(estimatesComplete);
+		pendingPane = new JScrollPane(estimatesPending);
+		completePane = new JScrollPane(estimatesComplete);
 		setOrientation(JSplitPane.VERTICAL_SPLIT);
 		addImpl(pendingPane, JSplitPane.TOP, 1);
 		addImpl(completePane, JSplitPane.BOTTOM, 1);
@@ -106,17 +150,22 @@ public class GameRequirements extends JSplitPane{
 		table.getColumnModel().getColumn(0).setPreferredWidth(150);
 	}
 	
-	//This function will send the clicked requirement to the PlayGame panel
+	/**
+	 * This function sends the clicked requirement to the PlayGame panel
+	 * @param r the requirement to send
+	 */
 	public void sendReq(Requirement r){
 		gv.sendReqToPlay(r);
 	}
 
-	//This function is called when an estimate is completed, and it moves the requirement from the pending table to the completed table
-	
+	/**
+	 * This function updates the tables when an estimate is completed and it moves the requirement from the pending table to the completed table
+	 * @param r the requirement
+	 */
 	public void updateTables(Requirement r) {
-		DefaultTableModel reqNames = (DefaultTableModel) estimatesPending.getModel();
-		DefaultTableModel complete = (DefaultTableModel) estimatesComplete.getModel();
-		int numberofReqs = estimatesPending.getRowCount();
+		final DefaultTableModel reqNames = (DefaultTableModel) estimatesPending.getModel();
+		final DefaultTableModel complete = (DefaultTableModel) estimatesComplete.getModel();
+		final int numberofReqs = estimatesPending.getRowCount();
 		for (int i=0; i < numberofReqs; i++){
 			if (r.getId() == (int)reqNames.getValueAt(i, 0)){
 				int reqId = (int) reqNames.getValueAt(i, 0);
@@ -128,7 +177,7 @@ public class GameRequirements extends JSplitPane{
 			}
 		}
 		if (estimatesPending.getRowCount() > 0){
-			int nextID = (int) estimatesPending.getValueAt(0, 0);
+			final int nextID = (int) estimatesPending.getValueAt(0, 0);
 			for (Requirement req: gameReqs){
 				if (req.getId() == nextID){
 					gv.sendReqToPlay(req);
@@ -142,22 +191,30 @@ public class GameRequirements extends JSplitPane{
 	}
 	
 	
-	//This listener is used to select a requirement to estimate by double clicking on the estimate in the table
+	/**
+	 * This listener is used to select a requirement to estimate by double clicking on the estimate in the table
+	 * @author Cosmic Latte
+	 * @version $Revision: 1.0 $
+	 */
 	public class tableListener extends MouseAdapter{
 		
 		JTable tableClicked;
 		
+		/**
+		 * constructor for the table listener
+		 * @param table the table to listen to
+		 */
 		public tableListener(JTable table){
-			this.tableClicked = table;
+			tableClicked = table;
 		}
 		
 
 		public void mouseClicked(MouseEvent e) {
 			if (e.getClickCount() == 1){
-				JTable target = (JTable)e.getSource();
-			    int row = target.getSelectedRow();
-			    int column = target.getSelectedColumn();
-				List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
+				final JTable target = (JTable)e.getSource();
+			    final int row = target.getSelectedRow();
+			    final int column = target.getSelectedColumn();
+				final List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
 				Requirement req = null;
 				for (Requirement r: allReqs){
 					if (r.getId() == (int)tableClicked.getValueAt(row, 0)){

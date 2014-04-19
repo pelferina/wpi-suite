@@ -1,4 +1,3 @@
-
 /*******************************************************************************
  * Copyright (c) 2012-2014 -- WPI Suite
  *
@@ -28,7 +27,7 @@ import javax.swing.JComboBox;
  * Description
  *
  * @author Eric Faust; Dan Murray; Ayesha Fathima
- * @version Mar 24, 2014
+ * @version $Revision: 1.0 $
  */
 @SuppressWarnings({"serial"})
 public class DeckPanel extends JPanel {
@@ -38,8 +37,12 @@ public class DeckPanel extends JPanel {
 	private final JList deckList;
 	private final DeckModel lstDeckModel;
 
-	private JComboBox deckDropdown = new JComboBox();
+	private final JComboBox deckDropdown = new JComboBox();
 
+	/**
+	 * Constructs a panel with a given DeckModel
+	 * @param deckModel the DeckModel the panel will use
+	 */
 	public DeckPanel(DeckModel deckModel) {
 		
 		lstDeckModel = deckModel;
@@ -55,7 +58,7 @@ public class DeckPanel extends JPanel {
 
 
 	/**
-	 * this function displays the deck given to deck panel
+	 * This function displays the deck given to deck panel
 	 */
 	private void setPanel(){
 		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -64,7 +67,7 @@ public class DeckPanel extends JPanel {
 		addButtons();
 		prepareDropdown();
 
-		JButton submitButton = new JButton("Submit");
+		final JButton submitButton = new JButton("Submit");
 	}
 
 	/**
@@ -72,10 +75,10 @@ public class DeckPanel extends JPanel {
 	 */
 	private void addButtons(){
 		//List of buttons associated with the cards. First element -> lowest card val
-		List<JButton> cardButtons = new ArrayList<JButton>();
+		final List<JButton> cardButtons = new ArrayList<JButton>();
 
-		Iterator<Integer> cardIterator = testData.iterator();
-		Iterator<JButton> buttonIterator = cardButtons.iterator();
+		final Iterator<Integer> cardIterator = testData.iterator();
+		final Iterator<JButton> buttonIterator = cardButtons.iterator();
 
 		System.out.println(testData);
 		
@@ -104,7 +107,7 @@ public class DeckPanel extends JPanel {
 
 
 		//Add all the decks to the dropdown
-		Iterator<Deck> deckIterator = lstDeckModel.getDecks().iterator();
+		final Iterator<Deck> deckIterator = lstDeckModel.getDecks().iterator();
 		while(deckIterator.hasNext()){
 			//checks add's next deck.tostring to dropdown
 			deckDropdown.addItem(lstDeckModel.getDeck(deckIterator.next().getId()).getCards().toString());

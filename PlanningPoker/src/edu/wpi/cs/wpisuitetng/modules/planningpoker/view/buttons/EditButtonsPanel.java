@@ -1,13 +1,13 @@
-/**
- *  * Copyright (c) 2013 -- WPI Suite
+/*******************************************************************************
+ * Copyright (c) 2014 -- WPI Suite
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- */
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
 
 import java.awt.Dimension;
@@ -42,6 +42,7 @@ public class EditButtonsPanel extends ToolbarGroupView{
 	private final JPanel contentPanel = new JPanel();
 	JButton createEditButton = new JButton("<html>Edit<br />Games</html>");
 	final JButton createCancelButton = new JButton("<html>Cancel<br />Games</html>");
+	private ActionListener listener = null;
 	private ImageIcon editImg = null;
 	private ImageIcon saveImg = null;
 	
@@ -62,21 +63,23 @@ public class EditButtonsPanel extends ToolbarGroupView{
 	public EditButtonsPanel(){
 		super("");
 		
-		this.contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
+		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
 		this.setPreferredWidth(500);
 		
 		createEditButton.setPreferredSize(new Dimension(150,50));	
 		createCancelButton.setVisible(false);
 		
 		try {
-		    Image img = ImageIO.read(getClass().getResource("cancel.png"));
+		    final Image img = ImageIO.read(getClass().getResource("cancel.png"));
 		    createCancelButton.setIcon(new ImageIcon(img));
 		    
 		    editImg = new ImageIcon(ImageIO.read(getClass().getResource("edit.png")));
 		    createEditButton.setIcon(editImg);
 		    saveImg = new ImageIcon(ImageIO.read(getClass().getResource("save.png")));
 		    
-		} catch (IOException ex) {}
+		} catch (IOException ex) {
+			System.out.println("IOException thrown in EditButtonsPanel.");
+		}
 		
 		createEditButton.setVisible(true);
 		// the action listener for the Edit Games button
@@ -119,18 +122,49 @@ public class EditButtonsPanel extends ToolbarGroupView{
 	
 	/**
 	 * Method getEditButton.
-	
-	 * @return JButton */
+	 * @return JButton 
+	 * 
+	 */
 	public JButton getEditButton() {
-		return this.createEditButton;
+		return createEditButton;
 	}
+	/**
+	 * This method creates an edit button and enables it while disableing the cancel button
+	 */
 	public void setButtonToEdit(){
 		if (editImg != null){
 			createEditButton.setIcon(editImg);}
 		createEditButton.setText("<html>Edit<br />Games</html>");
-		createEditButton.setEnabled(true);
+		createCancelButton.setEnabled(false);
 		createCancelButton.setVisible(false);
 	}
+	/**
+	 * This method sets the button to read "activate"
+	 *
+	 * Enables the end game button, and add a action listener
+	 * to this game
+	 * @param gameID 
+	 */
+	public void setEditGameButtonVisible(int gameID){
+		createEditButton.setVisible(true);
+		createEditButton.setEnabled(true);
+		if(listener != null){
+			createEditButton.removeActionListener(listener);
+		}
+		listener = new EditGameActionListener(gameID);
+		createEditButton.addActionListener(listener);
+	}
+	
+	/**
+	 *  disables the end game button 
+	 */
+	public void setEditGameButtonInvisible() {
+		createEditButton.setEnabled(false);
+		createEditButton.setVisible(false);
+	}
+	/**
+	 * This sets the button to say activate games
+	 */
 	public void setButtonToActivate(){
 		if (saveImg != null){
 			createEditButton.setIcon(saveImg);}
@@ -138,17 +172,30 @@ public class EditButtonsPanel extends ToolbarGroupView{
 		createEditButton.setEnabled(false);
 		createCancelButton.setVisible(true);
 	}
+	/**
+	 * This method enables the edit button.
+	 * @param enabled whether the button should have enabled be true or false
+	 */
 	public void setActivateEnabled(boolean enabled){
 		createEditButton.setEnabled(enabled);
 	}
+	/**
+	 * This listener watches for when a game is activated
+	 * @author Cosmic Latte
+	 * @version $Revision: 1.0 $
+	 */
 	class activateGameActionListener implements ActionListener{
 		int gameID;
-		public activateGameActionListener(int gameID){
+		/**
+		 * Constructor to poulate gameID
+		 * @param gameID
+		 */
+		private activateGameActionListener(int gameID){
 			this.gameID = gameID;
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			List<GameSession> games = GameModel.getInstance().getGames();
+			final List<GameSession> games = GameModel.getInstance().getGames();
 			for(GameSession g: games){
 				if(g.getGameID() == gameID){
 					g.setGameStatus(GameStatus.ACTIVE);
@@ -161,14 +208,23 @@ public class EditButtonsPanel extends ToolbarGroupView{
 			
 		}
 	}
+	/**
+	 * This listener watches for the end of a game
+	 * @author Cosmic Latte
+	 * @version $Revision: 1.0 $
+	 */
 	class endGameActionListener implements ActionListener{
 		int gameID;
-		public endGameActionListener(int gameID){
+		/**
+		 * Constructor that populates gameID
+		 * @param gameID
+		 */
+		private endGameActionListener(int gameID){
 			this.gameID = gameID;
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			List<GameSession> games = GameModel.getInstance().getGames();
+			final List<GameSession> games = GameModel.getInstance().getGames();
 			for(GameSession g: games){
 				if(g.getGameID() == gameID){
 					g.setGameStatus(GameStatus.ARCHIVED);

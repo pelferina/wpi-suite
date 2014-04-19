@@ -10,7 +10,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user;
 
-import com.google.gson.Gson;
+
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
@@ -18,14 +18,15 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 /**
 * This observer handles responses to requests for current user
-*
+* @author Cosmic Latte
+* @version $Revision: 1.0 $
 */
 public class GetCurrentUserRequestObserver implements RequestObserver {
 	
-	public GetCurrentUser getUser;
+	private final GetCurrentUser getUser;
 	
 	public GetCurrentUserRequestObserver() {
-		this.getUser = GetCurrentUser.getInstance();
+		getUser = GetCurrentUser.getInstance();
 	}
 
 	
@@ -34,7 +35,7 @@ public class GetCurrentUserRequestObserver implements RequestObserver {
 	**/
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		User user = User.fromJSON(iReq.getResponse().getBody());
+		final User user = User.fromJSON(iReq.getResponse().getBody());
 		getUser.setUser(user);
 	}
 	

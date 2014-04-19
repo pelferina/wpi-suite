@@ -37,8 +37,8 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
  * This is the entity manager for the EmailAddressModel in the
  * PostBoard module.
  * 
- * @author Chris Casola
- *
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
  */
 public class EmailAddressEntityManager implements EntityManager<EmailAddressModel> {
 
@@ -67,14 +67,14 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 	// content is not a json string, is just the address for the user.
 	@Override
 	public EmailAddressModel makeEntity(Session s, String content)
-			throws BadRequestException, ConflictException, WPISuiteException {
+			throws WPISuiteException {
 		
 		// Parse the message from JSON
 		final EmailAddressModel newEmailAddress = new EmailAddressModel(content);
 		
 		if(content.contains("endGame")){
 			System.err.println("Game Ended");
-			List<Model> emails = db.retrieveAll(newEmailAddress, s.getProject());
+			final List<Model> emails = db.retrieveAll(newEmailAddress, s.getProject());
 			for(Model e: emails){
 				sendEmail(((EmailAddressModel)e).getAddress(), "A game ended", content.substring(7) + " just ended");
 			}
@@ -83,7 +83,7 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 		
 		else if(content.contains("newGame")){
 			System.err.println("Game Ended");
-			List<Model> emails = db.retrieveAll(newEmailAddress, s.getProject());
+			final List<Model> emails = db.retrieveAll(newEmailAddress, s.getProject());
 			for(Model e: emails){
 				sendEmail(((EmailAddressModel)e).getAddress(), "A game started", content.substring(7) + " just started");
 			}
@@ -92,7 +92,7 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 
 		
 		newEmailAddress.setUserID(s.getUser().getIdNum());
-		List<Model> emails = db.retrieveAll(newEmailAddress, s.getProject());
+		final List<Model> emails = db.retrieveAll(newEmailAddress, s.getProject());
 
 		for(Model e: emails){			
 			if(((EmailAddressModel)e).getUserID() == s.getUser().getIdNum()){
@@ -125,7 +125,7 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 	 */
 	@Override
 	public EmailAddressModel[] getEntity(Session s, String id)
-			throws NotFoundException, WPISuiteException {
+			throws WPISuiteException {
 		throw new WPISuiteException();
 	}
 
@@ -154,8 +154,7 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#save(edu.wpi.cs.wpisuitetng.Session, edu.wpi.cs.wpisuitetng.modules.Model)
 	 */
 	@Override
-	public void save(Session s, EmailAddressModel model)
-			throws WPISuiteException {
+	public void save(Session s, EmailAddressModel model){
 
 		// Save the given defect in the database
 		db.save(model);
@@ -189,45 +188,47 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#Count()
 	 */
 	@Override
-	public int Count() throws WPISuiteException {
+	public int Count(){
 		// Return the number of EmailAddressModels currently in the database
 		return db.retrieveAll(EmailAddressModel.class).size();
 	}
 
 	@Override
-	public String advancedGet(Session s, String[] args)
-			throws WPISuiteException {
+	public String advancedGet(Session s, String[] args){
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String advancedPut(Session s, String[] args, String content)
-			throws WPISuiteException {
+	public String advancedPut(Session s, String[] args, String content){
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String advancedPost(Session s, String string, String content)
-			throws WPISuiteException {
+	public String advancedPost(Session s, String string, String content){
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	
+	/**
+	 * This method sends an email.
+	 * @param sent_to The person to send the email to
+	 * @param send_subject The subject line of the email
+	 * @param send_text The text body of the email.
+	 */
 	public void sendEmail(String sent_to, String send_subject, String send_text) {
 		 
 		final String username = "fff8e7.email@gmail.com";
 		final String password = "fff8e7team5";
  
-		Properties props = new Properties();
+		final Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.port", "587");
  
-		javax.mail.Session session = javax.mail.Session.getInstance(props,
+		final javax.mail.Session session = javax.mail.Session.getInstance(props,
 		  new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
 				return new PasswordAuthentication(username, password);
@@ -236,7 +237,7 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
  
 		try {
  
-			Message message = new MimeMessage(session);
+			final Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("fff8e7.email@gmail.com"));
 			message.setRecipients(Message.RecipientType.TO,
 				InternetAddress.parse(sent_to));

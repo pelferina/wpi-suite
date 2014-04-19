@@ -1,13 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2013 -- WPI Suite
+ * Copyright (c) 2014 -- WPI Suite
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *    Chris Casola
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
@@ -25,21 +23,28 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * This controller responds when the user clicks the Submit button by
  * adding the contents of the Game text field to the model as a new
  * Game.
+ * 
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
  *
  */
 public class AddGameController implements ActionListener {
 	
 	private final GameModel model;
 	//TODO Remove depreciated methods once GUI is updated for new data definitions
+	
 	/**
 	 * Construct an AddGameController for the given model, view pair
 	 * @param model the model containing the Games
-	 * @param view the view where the user enters new Games
 	 */
-
 	public AddGameController(GameModel model) {
 		this.model = model;
 	}
+	
+	/**
+	 * This method sends a request and adds an observer to a GameSession
+	 * @param ToSend The GameSession to send a request for
+	 */
 	public void sendGame(GameSession ToSend){
 		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.PUT); // PUT == create
 		request.setBody(ToSend.toJSON()); // put the new session in the body of the request

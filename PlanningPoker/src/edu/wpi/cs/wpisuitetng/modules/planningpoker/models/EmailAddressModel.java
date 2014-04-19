@@ -19,8 +19,8 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 /**
  * This is a model for email addresses. 
  * 
- * @author Chris Casola
- *
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
  */
 @SuppressWarnings({"serial"})
 public class EmailAddressModel extends AbstractModel {
@@ -32,10 +32,12 @@ public class EmailAddressModel extends AbstractModel {
 	/**
 	 * Constructs a new email model with a provided address
 	 * Sets userID to -1 until on server side
+	 * 
+	 *  @param address This is the address to send the email to
 	 */
 	public EmailAddressModel(String address) {
 		this.address = address;
-		this.userID = -1;
+		userID = -1;
 	}
 
 	/**
@@ -47,6 +49,8 @@ public class EmailAddressModel extends AbstractModel {
 
 	/**
 	 * sets the address
+	 * @param address a string address to be set
+	 * @return EmailAddressModel, the email address that is being set
 	 */
 	public EmailAddressModel setAddress(String address) {
 		this.address = address;
@@ -62,6 +66,8 @@ public class EmailAddressModel extends AbstractModel {
 
 	/**
 	 * sets the userID
+	 * @param userID the user ID to be set, integer
+	 * @return EmailAddressModel, the EmailAddressModel that the user is being set for
 	 */
 	public EmailAddressModel setUserID(int userID) {
 		this.userID = userID;
@@ -101,5 +107,7 @@ public class EmailAddressModel extends AbstractModel {
 	public void delete() {}
 
 	@Override
-	public Boolean identify(Object o) {return null;}
+	public Boolean identify(Object o) {
+		return null;
+	}
 }

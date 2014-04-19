@@ -27,15 +27,16 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  * This class shows the requirements that are currently in the game
- *
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
  */
 @SuppressWarnings("serial")
 public class NewGameReqPanel extends JPanel implements Refreshable {
 
 	DefaultListModel<String> listValue = new DefaultListModel<String>();
 	private List<Requirement> selected = new ArrayList<Requirement>();
-	private JTable unselectedTable;
-	private JTable selectedTable;
+	private final JTable unselectedTable;
+	private final JTable selectedTable;
 	private Timer refresh;
 	private List<Requirement> reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
 	// Declarations and initializations of GUI components
@@ -61,9 +62,9 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	}
 
 	/**
-	 * 
-	 * @param requirements, the current requirements in the database
-	 * @param gameSession, the game to be edited
+	 * Constructor for the new game requirements panel
+	 *
+	 * @param gameSession the game to be edited
 	 */
 	//Constructor for edit games tab
 	public NewGameReqPanel(GameSession gameSession) {
@@ -71,8 +72,9 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		unselectedTable = new JTable();
 		selectedTable = new JTable();
 
-		List<Requirement> reqList = new ArrayList<Requirement>(reqs);
-		List<Integer> selectedIDs = gameSession.getGameReqs();
+		final List<Requirement> reqList = new ArrayList<Requirement>(reqs);
+		final List<Requirement> reqsToRemove = new ArrayList<Requirement>();
+		final List<Integer> selectedIDs = gameSession.getGameReqs();
 		
 		//Removes the selected reqs from the list of all the requirements. This is done to display only the requirements
 		//that are not in the game in the top table.
@@ -82,10 +84,14 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 			for (int selectedReqID: selectedIDs) {
 				if (req.getId() == selectedReqID) {
 					int index = reqList.indexOf(req);
-					Requirement temp_req = reqList.remove(index); 
-					this.selected.add(temp_req);
+					Requirement temp_req = reqList.get(index); 
+					reqsToRemove.add(temp_req);
+					selected.add(temp_req);
 				}
 			}	
+		}
+		for (Requirement r: reqsToRemove){
+			reqList.remove(r);
 		}
 		reqs = reqList;
 		init();
@@ -96,7 +102,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	private void init()
 	{	
 		
-		SpringLayout springLayout = new SpringLayout();
+		final SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 
 		// Observers
@@ -115,13 +121,13 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				if (unselectedTable.getSelectedRow() != -1){
-					int index = unselectedTable.getSelectedRow();
-					Requirement selectedReq = reqs.get(index);
+					final int index = unselectedTable.getSelectedRow();
+					final Requirement selectedReq = reqs.get(index);
 					selected.add(selectedReq);
 					reqs.remove(index);
-					String[] data = {selectedReq.getName(), selectedReq.getDescription()};
-					DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
-					DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
+					final String[] data = {selectedReq.getName(), selectedReq.getDescription()};
+					final DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
+					final DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
 					dtm.setRowCount(reqs.size());
 					for (int i = 0; i < reqs.size(); i++){
 						dtm.setValueAt(reqs.get(i).getName(), i, 0);
@@ -137,9 +143,9 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				if(reqs.size() != 0){
-					DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
-					DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
-					int size = reqs.size();
+					final DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
+					final DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
+					final int size = reqs.size();
 					for(int i=0; i < size; i++){
 						String[] data = {reqs.get(i).getName(), reqs.get(i).getDescription()};
 						dtm_1.addRow(data);
@@ -156,13 +162,13 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				if (selectedTable.getSelectedRow() != -1){
-					int index = selectedTable.getSelectedRow();
-					Requirement selectedReq = selected.get(index);
+					final int index = selectedTable.getSelectedRow();
+					final Requirement selectedReq = selected.get(index);
 					selected.remove(index);
 					reqs.add(selectedReq);
-					String[] data = {selectedReq.getName(), selectedReq.getDescription()};
-					DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
-					DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
+					final String[] data = {selectedReq.getName(), selectedReq.getDescription()};
+					final DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
+					final DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
 					dtm_1.setRowCount(selected.size());
 					for (int i = 0; i < selected.size(); i++){
 						dtm_1.setValueAt(selected.get(i).getName(), i, 0);
@@ -178,9 +184,9 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				if (selected.size() != 0){
-					DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
-					DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
-					int size = selected.size();
+					final DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
+					final DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
+					final int size = selected.size();
 					for(int i=0; i < size; i++){
 						String[] data = {selected.get(i).getName(), selected.get(i).getDescription()};
 						dtm.addRow(data);
@@ -253,7 +259,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		add(lblRequirementsSelected);
 		add(selected_table);
 
-		DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
+		final DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
 		dtm.setNumRows(reqs.size());
 		dtm.setColumnCount(2);
 
@@ -284,7 +290,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 						"Name", "Description"
 				}
 				));
-		DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
+		final DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
 		dtm_1.setNumRows(selected.size());
 		dtm_1.setColumnCount(2);
 		selected_table.setViewportView(selectedTable);
@@ -325,7 +331,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		for (int i = 0; i < selected.size(); i++){
 			reqs.remove(selected.get(i).getId());
 		}
-		DefaultTableModel dtm = (DefaultTableModel) unselectedTable.getModel();
+		final DefaultTableModel dtm = (DefaultTableModel) unselectedTable.getModel();
 		dtm.setRowCount(reqs.size());
 		for (int i = 0; i < reqs.size(); i++){
 				dtm.setValueAt(reqs.get(i).getName(), i, 0);
@@ -339,7 +345,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	private void getReqs() {
 		GetRequirementsController.getInstance().retrieveRequirements();
 		reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
-		ArrayList<Requirement> reqsCopy = new ArrayList<Requirement>(reqs);
+		final List<Requirement> reqsCopy = new ArrayList<Requirement>(reqs);
 		for (Requirement req : reqsCopy) {
 			System.out.println("Iteration: " + req.getIteration());
 			if (!req.getIteration().equals("Backlog")) reqs.remove(req);
@@ -347,27 +353,27 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	}
 	
 	public JTable getReqsTable(){
-		return this.unselectedTable;
+		return unselectedTable;
 	}
 	
 	public JButton getAddOneButton(){
-		return this.btnAddOne;
+		return btnAddOne;
 	}
 	
 	public JButton getAddAllButton(){
-		return this.btnAddAll;
+		return btnAddAll;
 	}
 	
 	public JButton getRemoveOneButton(){
-		return this.btnRemoveOne;
+		return btnRemoveOne;
 	}
 	
 	public JButton getRemoveAllButton(){
-		return this.btnRemoveAll;
+		return btnRemoveAll;
 	}
 
 	public JTable getSelectedTabel() {
-		return this.selectedTable;
+		return selectedTable;
 	}
 
 	@Override
@@ -379,12 +385,19 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 
 //The timer task for scheduling the initial refresh of the page
 
+/**
+ * This is a refresh task based on timer task, which refreshes everything based on a timer.
+ * 
+ * @author fff8e7
+ * @version $Revision: 1.0 $
+ *
+ */
 class RefreshTask extends TimerTask {
 
 	Timer timer;
 	NewGameReqPanel ngrp;
 
-	public RefreshTask(Timer timer, NewGameReqPanel ngrp){
+	private RefreshTask(Timer timer, NewGameReqPanel ngrp){
 		this.timer = timer;
 		this.ngrp = ngrp;
 	}

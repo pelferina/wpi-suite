@@ -14,18 +14,18 @@ import java.awt.event.MouseEvent;
 import javax.swing.*;
 
 /**
- * Description
+ * Initial panel for creating a new game
  *
  * @author Xi Wen; Anthony Dresser; Nathan Bryant
- * @version Mar 24, 2014
+ * @version $Revision: 1.0 $
  */
 @SuppressWarnings("serial")
 public class NewGameInitialPanel extends JPanel{
-	private JLabel gameNameLabel = new JLabel("Game Name:");
-	private JTextField gameNameInput = new JTextField();
-	private JRadioButton liveButton = new JRadioButton("Live");
-	private JRadioButton distributedButton = new JRadioButton("Distributed");
-	private ButtonGroup gameType  = new ButtonGroup();
+	private final JLabel gameNameLabel = new JLabel("Game Name:");
+	private final JTextField gameNameInput = new JTextField();
+	private final JRadioButton liveButton = new JRadioButton("Live");
+	private final JRadioButton distributedButton = new JRadioButton("Distributed");
+	private final ButtonGroup gameType  = new ButtonGroup();
 	
 	public NewGameInitialPanel(){
 		setPanel();
@@ -41,7 +41,7 @@ public class NewGameInitialPanel extends JPanel{
 		gameType.add(liveButton);
 		gameType.add(distributedButton);
 		
-		SpringLayout sl_mainPanel = new SpringLayout();
+		final SpringLayout sl_mainPanel = new SpringLayout();
 		sl_mainPanel.putConstraint(SpringLayout.SOUTH, gameNameLabel, -30, SpringLayout.NORTH, liveButton);
 		sl_mainPanel.putConstraint(SpringLayout.NORTH, gameNameInput, -3, SpringLayout.NORTH, gameNameLabel);
 		sl_mainPanel.putConstraint(SpringLayout.WEST, gameNameInput, 0, SpringLayout.WEST, distributedButton);
@@ -63,10 +63,15 @@ public class NewGameInitialPanel extends JPanel{
 		return gameNameInput;
 	}
 	
+	/**
+	 * This method returns either 1 or 2, for live or distributed game.
+	 * @return returns the type of game as an integer
+	 */
 	public int getGameType(){
-		if (liveButton.isSelected())
+		if (liveButton.isSelected()){
 			return 1; // flag for live game
-		else return 2; // flag for distributed game
+		}
+		return 2; // flag for distributed game
 	}
 	
 	// Added by Ruofan

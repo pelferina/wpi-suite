@@ -10,24 +10,22 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
 import java.awt.Dimension;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.util.List;
 
 import javax.swing.*;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+
 
 
 /**
  * The panel for creating a new live Planning Poker game, along with fields
  * that have the parameters for what a new game should have.
- *
- * 
+ * @author Cosmic Latte
+ * @version $Revision: 1.0 $
  */
 @SuppressWarnings("serial")
 
@@ -39,18 +37,28 @@ public class NewGameDistributedPanel extends JSplitPane {
 	public JButton close;
 	private GameSession editMode;
 	
+	/**
+	 * Constructor for NewGameDistributedPanel
+	 * @param gameSession the session to display
+	 * @param close the close button to close the panel
+	 */
 	public NewGameDistributedPanel(GameSession gameSession, JButton close)
 	{
 		this.close = close;
-		this.newGameReqPanel = new NewGameReqPanel(gameSession);
+		newGameReqPanel = new NewGameReqPanel(gameSession);
 		GetRequirementsController.getInstance().addRefreshable(newGameReqPanel); /** TODO this adds a refreshable whenever a new game tab is created.  We need to clean up refreshables when the tab is closed*/
-		this.newGameInputPanel = new NewGameInputDistributedPanel(this, gameSession);
+		newGameInputPanel = new NewGameInputDistributedPanel(this, gameSession);
 		setPanel();
 	}
+	/**
+	 * Constructor for NewGameDistributedPanel that gets requirements
+	 * @param reqs a List<Requirement> of requirements
+	 * @param close button to close the panel
+	 */
 	public NewGameDistributedPanel(List<Requirement> reqs, JButton close) {
 		newGameReqPanel = new NewGameReqPanel();
 		GetRequirementsController.getInstance().addRefreshable(newGameReqPanel);
-		this.newGameInputPanel = new NewGameInputDistributedPanel(this);
+		newGameInputPanel = new NewGameInputDistributedPanel(this);
 		this.close = close;
 		
 		setEnabled(false);
@@ -60,11 +68,11 @@ public class NewGameDistributedPanel extends JSplitPane {
 	 * This sets up the panels
 	 * Must be private so that it cannot be set up more than once
 	 * Only to be called in the constructor
-	 * <3
+	 * 
 	 */
 	private void setPanel(){
 		addImpl(newGameInputPanel, JSplitPane.LEFT, 1);
-		Dimension minimumSize = new Dimension(600, 200);
+		final Dimension minimumSize = new Dimension(600, 200);
 		leftComponent.setMinimumSize(minimumSize);
 		addImpl(newGameReqPanel, JSplitPane.RIGHT, 2);
 		

@@ -1,13 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2013 -- WPI Suite
+ * Copyright (c) 2014 -- WPI Suite
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *    Chris Casola
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
@@ -24,8 +22,9 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
  * This is a model for the game model. It contains all of the games
  * to be displayed on the board. It extends AbstractListModel so that
  * it can provide the model data to the JList component in the BoardPanel.
- * 
- * @author fff8e7
+ *
+ * @author Cosmic Latte
+ * @version $Revsion: 1.0 $
  * 
  */
 @SuppressWarnings({"serial"})
@@ -33,7 +32,7 @@ public class GameModel extends AbstractListModel {
 	private static GameModel instance = null;
 	
 	/** The list of games on the board */
-	private List<GameSession> games;
+	private final List<GameSession> games;
 	
 	/**
 	 * @return the games
@@ -95,8 +94,8 @@ public class GameModel extends AbstractListModel {
 	 * from the model.
 	 */
 	public void emptyModel() {
-		int oldSize = getSize();
-		Iterator<GameSession> iterator = games.iterator();
+		final int oldSize = getSize();
+		final Iterator<GameSession> iterator = games.iterator();
 		while (iterator.hasNext()) {
 			iterator.next();
 			iterator.remove();
@@ -111,10 +110,11 @@ public class GameModel extends AbstractListModel {
 	 * @return List<GameSession> List of draft games
 	 */
 	public List<GameSession> getDraftGameSessions(){
-		List<GameSession> draftGames = new ArrayList<GameSession>();
+		final List<GameSession> draftGames = new ArrayList<GameSession>();
 		for (GameSession possibleDraft: games){
-			if (possibleDraft.getGameStatus() == GameStatus.DRAFT)
+			if (possibleDraft.getGameStatus() == GameStatus.DRAFT){
 				draftGames.add(possibleDraft);
+			}
 		}
 		return draftGames;
 	}
@@ -126,10 +126,11 @@ public class GameModel extends AbstractListModel {
 	 * @return List<GameSession> List of active games
 	 */
 	public List<GameSession> getActiveGameSessions(){
-		List<GameSession> activeGames = new ArrayList<GameSession>();
+		final List<GameSession> activeGames = new ArrayList<GameSession>();
 		for (GameSession possibleActive: games){
-			if (possibleActive.getGameStatus() == GameStatus.ACTIVE)
+			if (possibleActive.getGameStatus() == GameStatus.ACTIVE){
 				activeGames.add(possibleActive);
+			}
 		}
 		return activeGames;
 	}
@@ -141,10 +142,11 @@ public class GameModel extends AbstractListModel {
 	 * @return List<GameSession> List of past games
 	 */
 	public List<GameSession> getInProgressGameSessions(){
-		List<GameSession> inProgressGames = new ArrayList<GameSession>();
+		final List<GameSession> inProgressGames = new ArrayList<GameSession>();
 		for (GameSession possibleInProgress: games){
-			if (possibleInProgress.getGameStatus() == GameStatus.INPROGRESS)
+			if (possibleInProgress.getGameStatus() == GameStatus.INPROGRESS){
 				inProgressGames.add(possibleInProgress);
+			}
 		}
 		return inProgressGames;
 	}
@@ -156,10 +158,11 @@ public class GameModel extends AbstractListModel {
 	 * @return List<GameSession> List of past games
 	 */
 	public List<GameSession> getCompletedGameSessions(){
-		List<GameSession> completedGames = new ArrayList<GameSession>();
+		final List<GameSession> completedGames = new ArrayList<GameSession>();
 		for (GameSession possibleCompleted: games){
-			if (possibleCompleted.getGameStatus() == GameStatus.COMPLETED)
+			if (possibleCompleted.getGameStatus() == GameStatus.COMPLETED){
 				completedGames.add(possibleCompleted);
+			}
 		}
 		return completedGames;
 	}
@@ -171,10 +174,11 @@ public class GameModel extends AbstractListModel {
 	 * @return List<GameSession> List of past games
 	 */
 	public List<GameSession> getArchivedGameSessions(){
-		List<GameSession> archivedGames = new ArrayList<GameSession>();
+		final List<GameSession> archivedGames = new ArrayList<GameSession>();
 		for (GameSession possibleArchived: games){
-			if (possibleArchived.getGameStatus() == GameStatus.ARCHIVED)
+			if (possibleArchived.getGameStatus() == GameStatus.ARCHIVED){
 				archivedGames.add(possibleArchived);
+			}
 		}
 		return archivedGames;
 	}

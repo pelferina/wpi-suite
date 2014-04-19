@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.BorderLayout;
@@ -13,7 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
-import javax.swing.Timer;
+
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.table.TableRowSorter;
@@ -23,6 +33,7 @@ import javax.swing.tree.DefaultTreeModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameTree;
@@ -33,6 +44,12 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.TableSelectListener;
 
 
+/**
+ * This is an OverviewPanel which extends JPanel and implements Refreshable
+ * 
+ * @author fff8e7
+ * @version $Revision: 1.0 $
+ */
 @SuppressWarnings("serial")
 public class OverviewPanel extends JPanel implements Refreshable {
 	GetGamesController ggc; 
@@ -48,10 +65,10 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	
 	public OverviewPanel(){
 		
-		this.gameModel = GameModel.getInstance();
+		gameModel = GameModel.getInstance();
 		ggc = GetGamesController.getInstance();
 		ggc.addRefreshable(this);
-		GameSession[] sessions = {};
+		final GameSession[] sessions = {};
 		
 		table = new JTable(new JTableModel(sessions));
 		sorter = new TableRowSorter<JTableModel>((JTableModel)table.getModel());
@@ -61,12 +78,12 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		
 		table.addMouseListener(new MouseAdapter() {
 			  public void mouseClicked(MouseEvent e) {
-				  JTable target = (JTable)e.getSource();
-			      int row = target.getSelectedRow();
-			      int column = target.getSelectedColumn();
+				  final JTable target = (JTable)e.getSource();
+			      final int row = target.getSelectedRow();
+			      final int column = target.getSelectedColumn();
 				    if (e.getClickCount() == 2) {
-				      int gameID = (Integer)((JTableModel)target.getModel()).getIDFromRow(row);
-				      List<GameSession> games = gameModel.getGames();
+				      final int gameID = (Integer)((JTableModel)target.getModel()).getIDFromRow(row);
+				      final List<GameSession> games = gameModel.getGames();
 				      GameSession clickedGame = null;
 				      for (GameSession gm: games){
 				    	  if (gm.getGameID() == gameID){
@@ -74,10 +91,19 @@ public class OverviewPanel extends JPanel implements Refreshable {
 				    	  }
 				      }
 				      if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.DRAFT){
-				    	  ViewEventController.getInstance().editGameTab(clickedGame); // Make this edit insteadS
+				    	  final User currentUser = GetCurrentUser.getInstance().getCurrentUser();
+					      //End game button
+					      if(currentUser.getIdNum() == clickedGame.getOwnerID())
+					    	  ViewEventController.getInstance().editGameTab(clickedGame); // Make this edit insteadS
 				      }
 				      else if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.ACTIVE){
 				    	  ViewEventController.getInstance().playGameTab(clickedGame);
+				      }
+				      else if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.INPROGRESS){
+				    	  ViewEventController.getInstance().playGameTab(clickedGame);
+				      }
+				      else if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.COMPLETED){
+				    	  ViewEventController.getInstance().viewGameTab(clickedGame);
 				      }
 				    }
 				    if(e.getClickCount() == 1){
@@ -101,12 +127,13 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		
 		gameTree.addTreeSelectionListener(    new TreeSelectionListener(){
 			public void valueChanged(TreeSelectionEvent e) {
-				DefaultMutableTreeNode node = (DefaultMutableTreeNode)gameTree.getLastSelectedPathComponent();
+				final DefaultMutableTreeNode node = (DefaultMutableTreeNode)gameTree.getLastSelectedPathComponent();
 	            
-	            if (node == null)
-	            return;
+	            if (node == null){
+	            	return;
+	            }
 
-	            Object nodeInfo = node.getUserObject();
+	            final Object nodeInfo = node.getUserObject();
 	            updateTable((String)nodeInfo);
 	    }});
 		
@@ -117,7 +144,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 			@Override
 			public void focusGained(FocusEvent e) {
 	            gameTreeModel.update();
-	            DefaultTreeModel model = (DefaultTreeModel) gameTree.getModel();
+	            final DefaultTreeModel model = (DefaultTreeModel) gameTree.getModel();
 	            model.setRoot(gameTreeModel.getTop());
 	            model.reload();
 				
@@ -136,14 +163,14 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		treeView = new JScrollPane(gameTree);
 		
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, treeView, tableView);
-		add(splitPane);
-		
-		
-		
+		add(splitPane);	
 	}
 	
-	// This is the function that updates the table with the current games that are stored in the database
-	
+
+	/**
+	 * This is the function that updates the table with the current games that are stored in the database
+	 * @param s the string to update the table with
+	 */
 	public void updateTable(String s){
 		
 		List<GameSession> sessions = new ArrayList<GameSession>();
@@ -157,11 +184,11 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		} else if (s.equals("Completed Games")){
 			sessions = gameModel.getCompletedGameSessions();
 		} else if (s.equals("Archived Games")){
-			sessions = (ArrayList<GameSession>) gameModel.getArchivedGameSessions();
+			sessions =  gameModel.getArchivedGameSessions();
 		} else if (s.equals("Planning Poker")) {
-			sessions = (ArrayList<GameSession>) gameModel.getGames();
+			sessions =  gameModel.getGames();
 		}
-		JTableModel jModel = (JTableModel)table.getModel();
+		final JTableModel jModel = (JTableModel)table.getModel();
 		jModel.update((ArrayList<GameSession>)sessions);
 		table.setModel(jModel);
 		jModel.fireTableDataChanged();
@@ -176,7 +203,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	@Override
 	public void refreshGames() {
 		gameTreeModel.update();
-        DefaultTreeModel model = (DefaultTreeModel) gameTree.getModel();
+        final DefaultTreeModel model = (DefaultTreeModel) gameTree.getModel();
         model.setRoot(gameTreeModel.getTop());
         model.reload();
         updateTable("");
@@ -188,9 +215,32 @@ public class OverviewPanel extends JPanel implements Refreshable {
         		
 	}
 
-	//Refreshes the view event controller whenever a new game tab is created
+	/**
+	 * Refreshes the view event controller whenever a new game tab is created
+	 */
 	public void refresh(){
 		ViewEventController.getInstance();
 	}
 	
+	private int getUserID(String userName){
+		final GetUsersController guc = GetUsersController.getInstance();
+		final User users[];
+		guc.actionPerformed();
+		while (guc.getUsers() == null){
+			try{
+				Thread.sleep(100);
+				System.out.println("Waiting for users");
+			}
+			catch(Exception e){
+				System.err.println(e.getMessage());
+			}
+		}
+		users = guc.getUsers();
+		for (User u : users){
+			if (u.getUsername().equals(userName)){
+				return u.getIdNum();
+			}
+		}
+		return -1;
+	}
 }

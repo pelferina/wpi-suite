@@ -1,15 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2014 WPI-Suite
+ * Copyright (c) 2012-2014 -- WPI Suite
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: Team Cosmic Latte
- ******************************************************************************/
+ *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game;
 
-import java.awt.Graphics;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -36,11 +35,10 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 /**
- * A panel for playing a game session
- * @author Cosmic Latte
+ * @author fff8e7
  * @version $Revision: 1.0 $
  */
-public class PlayGame extends JPanel{
+public class ViewGame extends JPanel{
 
 	private final List<Integer> gameReqs;
 	private final JLabel reqName = new JLabel("Requirement Name:");
@@ -53,15 +51,15 @@ public class PlayGame extends JPanel{
 	private final JButton voteButton = new JButton("Vote");
 	private Vote userEstimates;
 	private Requirement currentReq;
-	private GameView gv;
-	private GameSession currentGame;
+	private final GameView gv;
+	private final GameSession currentGame;
 	
 	/**
-	 * Constructor for a PlayGame panel
-	 * @param gameToPlay the game session that is being played
-	 * @param agv the active game view
+	 * ViewGame class
+	 * @param gameToPlay the GameSession that is being played
+	 * @param agv the GameView that is active
 	 */
-	public PlayGame(GameSession gameToPlay, GameView agv){
+	public ViewGame(GameSession gameToPlay, GameView agv){
 		currentGame = gameToPlay;
 		gameReqs = currentGame.getGameReqs();
 		final ArrayList<Integer> estimates = new ArrayList<Integer>();
@@ -145,9 +143,9 @@ public class PlayGame extends JPanel{
 		submit.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
-				int option = JOptionPane.showOptionDialog(gv, "Do you wish to submit your current votes?", "Save Votes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+				final int option = JOptionPane.showOptionDialog(gv, "Do you wish to submit your current votes?", "Save Votes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 				if (option == 0){
-					AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
+					final AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
 					msgr.sendVote(userEstimates);
 					ViewEventController.getInstance().getMain().remove(gv);
 				}
@@ -205,12 +203,8 @@ public class PlayGame extends JPanel{
 		add(reqDescTextArea);
 	}
 	
-	/**
-	 * This function is used when a requirement is double clicked in one of the two requirement tables 
-	 * and it sets the name and description fields to the selected requirement
-	 * 
-	 * @param reqToEstimate the requirement that is being estimated
-	 */
+	//This function checks to make sure an inputed estimate is valid, i.e is not blank and is an integer
+	//then enables the vote button
 	private void isValidEstimate(){
 		if (estimateTextField.getText().length() > 0 && isInteger(estimateTextField.getText())){
 			voteButton.setEnabled(true);
@@ -220,12 +214,11 @@ public class PlayGame extends JPanel{
 		}
 	}
 	
-	//This function is used when a requirement is double clicked in one of the two requirement tables, and it sets the name and description fields to the 
-	//selected requirement
+	
 	/**
-	 * This function is used when a requirement is double clicked in one of the two requirement tables, and it sets the name and description fields to the
+	 * This function is used when a requirement is double clicked in one of the two requirement tables, and it sets the name and description fields to the 
 	 * selected requirement
-	 * @param reqToEstimate the requirement to estimate
+	 * @param reqToEstimate the Requirement that is being estimated
 	 */
 	public void chooseReq(Requirement reqToEstimate){
 		currentReq = reqToEstimate;
@@ -245,20 +238,19 @@ public class PlayGame extends JPanel{
 		}
 	}
 	
-
+	
 	/**
-	 * This function will be used when the user submits an estimate for a requirement and it will notify GameRequirements to move the requirement from 
+	 * This function will be used when the user submits an estimate for a requirement, and it will notify GameRequirements to move the requirement from
 	 * to estimate table to the completed estimates table
-	 * @param r the requirement to send
+	 * @param r the Requirement to send to game view
 	 */
 	public void sendEstimatetoGameView(Requirement r){
 		gv.updateReqTables(r);
 	}
-	
 	/**
 	 * Helper function for checking if the estimate text box contains an integer
-	 * @param s the string to be checking
-	 * @return boolean true if integer, false if otherwise
+	 * @param s the String to check
+	 * @return true if the string can be parsed to an integer, false otherwise
 	 */
 	public static boolean isInteger(String s) {
 	    try { 
@@ -271,8 +263,8 @@ public class PlayGame extends JPanel{
 	}
 
 	/**
-	 * This function is called when the user estimates all of the requirements, it clears the name and description boxes
-	 */
+	* This function is called when the user estimates all of the requirements, it clears the name and description boxes
+	*/
 	public void clear() {
 		reqNameTextField.setText("");
 		reqDescTextArea.setText("");
@@ -280,7 +272,7 @@ public class PlayGame extends JPanel{
 	}
 	
 	/**
-	 * changes whether or not the user can submit vote
+	 * checks to see if the user has voted on all the requirements in a game, then enables the submit button
 	 */
 	public void checkCanSubmit(){
 		boolean canSubmit = true;
