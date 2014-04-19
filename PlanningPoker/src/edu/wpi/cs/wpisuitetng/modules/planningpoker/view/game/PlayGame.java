@@ -147,12 +147,9 @@ public class PlayGame extends JPanel{
 		submit.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
-				int option = JOptionPane.showOptionDialog(gv, "Do you wish to submit your current votes?", "Save Votes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-				if (option == 0){
-					AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
-					msgr.sendVote(userEstimates);
-					ViewEventController.getInstance().getMain().remove(gv);
-				}
+				AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
+				msgr.sendVote(userEstimates);
+				ViewEventController.getInstance().getMain().remove(gv);
 			}
 		});
 		
