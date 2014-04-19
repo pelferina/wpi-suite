@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -35,6 +36,9 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.PlayDeckGame;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -132,19 +136,19 @@ public class MainView extends JTabbedPane {
 				add(newGameView, open);
 			}
 			else if (tabType.equals("View Estimates")){
-				final GameView newGameView = new GameView(game);
-				myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newGameView, 3);
-				add(newGameView, open);
+				final CompleteView newCompleteView = new CompleteView(game);
+				myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newCompleteView, 3);
+				add(newCompleteView, open);
 			}
-			else if (tabType.equals("Add Email")){
-				final AddEmailPanel addEmailPanel = new AddEmailPanel(btnClose);
-				myCloseActionHandler = new MyCloseActionHandler("options", j, this, addEmailPanel, 4);
-				add(addEmailPanel, open);
+			else if (tabType.equals("User Preferences")){
+				final PreferencesPanel userPreferences = new PreferencesPanel(btnClose);
+				myCloseActionHandler = new MyCloseActionHandler("User Preferences", j, this, userPreferences, 4);
+				add(userPreferences, open);
 			}
 			final JPanel pnlTab = new JPanel(new GridBagLayout());
 			pnlTab.setOpaque(false);
 			final JLabel lblTitle = new JLabel(tabLabler(tabType, game));
-			if (tabType.equals("Add Email")) lblTitle.setText("Options");
+			if (tabType.equals("User Preferences")) lblTitle.setText("User Preferences");
 			btnClose.setMargin(new Insets(0, 0, 0, 0));
 			btnClose.setFont(btnClose.getFont().deriveFont((float) 8));
 			final GridBagConstraints gbc = new GridBagConstraints();
@@ -196,6 +200,9 @@ public class MainView extends JTabbedPane {
 		else if (tabType.equals("Edit Game")){
 			return game.getGameName();
 		}
+		else if (tabType.equals("View Estimates")){
+			return game.getGameName();
+		}
 		else return "help";
 	}
 			
@@ -212,11 +219,13 @@ public class MainView extends JTabbedPane {
 	    //0 - New Game
 	    //1 - Edit Game
 	    //2 - Game View
+	    //3 - Complete Game
 	    private final int type;
 	    private final MainView mv;
 	    private GameView gameView;
+	    private CompleteView completeView;
 	    private NewGameDistributedPanel ngdp;
-	    private AddEmailPanel addEmailPanel;
+	    private PreferencesPanel userPreferences;
 	    
 	    /**
 	     * Close action handler for NewGameDistributedPanel
@@ -249,20 +258,28 @@ public class MainView extends JTabbedPane {
 	    	this.mv = mv;
 	    }
 	    
+	    public MyCloseActionHandler(String tabName, int index, MainView mv, CompleteView cv, int type) {
+	        this.tabName = tabName;
+	        this.index = index;
+	        this.completeView = cv;
+	        this.type = type;
+	        this.mv = mv;
+	    }
+	    
 	    /**
-	     * Close action handler for email panel
+	     * Close action handler for preferences panel
 	     * 
 	     * @param tabName name of the tab being closed
 	     * @param index index of that tab on the tab list
 	     * @param mv the MainView
-	     * @param addEmailPanel the AddEmailPanel
+	     * @param userPreferences the UserPreferencesPanel
 	     * @param type integer for type
 	     */
 	    public MyCloseActionHandler(String tabName, int index, MainView mv,
-				AddEmailPanel addEmailPanel, int type) {
+				PreferencesPanel userPreferences, int type) {
 			this.tabName = tabName;
 	    	this.index = index;
-	    	this.addEmailPanel = addEmailPanel;
+	    	this.userPreferences = userPreferences;
 	    	this.type = type;
 	    	this.mv = mv;
 		}
@@ -312,25 +329,24 @@ public class MainView extends JTabbedPane {
 	        		ViewEventController.getInstance().getMain().remove(gameView);
 				}
 			} else if (type == 3){
-				if (!gameView.isNew) {
-						ViewEventController.getInstance().getMain()
-								.remove(gameView);
+				if (!completeView.isNew) {
+						ViewEventController.getInstance().getMain().remove(completeView);
 				} else {
-					ViewEventController.getInstance().getMain().remove(gameView);
+					ViewEventController.getInstance().getMain().remove(completeView);
 				}
 			}
 			else if (type == 4){
-				if (!addEmailPanel.isNew) {
-					final int option = JOptionPane.showOptionDialog(addEmailPanel,
+				if (!userPreferences.isNew) {
+					final int option = JOptionPane.showOptionDialog(userPreferences,
 							"Discard unsaved changes and close tab?",
 							"Discard changes?", JOptionPane.YES_NO_OPTION,
 							JOptionPane.QUESTION_MESSAGE, null, null, null);
 					if (option == 0) {
 						ViewEventController.getInstance().getMain()
-								.remove(addEmailPanel);
+								.remove(userPreferences);
 					}
 				} else {
-					ViewEventController.getInstance().getMain().remove(addEmailPanel);
+					ViewEventController.getInstance().getMain().remove(userPreferences);
 				}
 			}
 		}
@@ -338,10 +354,10 @@ public class MainView extends JTabbedPane {
 
 
 	/**
-	 * This method adds the "Add Email" tab
+	 * This method adds the "User Preferences" tab
 	 */
-	public void addEmailAddress() {
-		this.addTab("Add Email", new GameSession(null, null, 0, 0, null, null));
+	public void addPreferencesPanel() {
+		this.addTab("User Preferences", new GameSession(null, null, 0, 0, null, null));
 		
 	}
 
