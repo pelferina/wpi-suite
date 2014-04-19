@@ -13,8 +13,11 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.AddEmailPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -28,6 +31,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * @version $Requirement: 1.0 $
  */
 public class AddEmailAddressController implements ActionListener {
+	private final AddEmailPanel panel;
 	private final JTextField view;
 	
 	/**
@@ -35,8 +39,9 @@ public class AddEmailAddressController implements ActionListener {
 	 * 
 	 * @param view the view where the user enters new messages
 	 */
-	public AddEmailAddressController(JTextField view) {
-		this.view = view;
+	public AddEmailAddressController(AddEmailPanel panel) {
+		this.panel = panel;
+		this.view = panel.getView();
 	}
 	
 	/**
@@ -45,6 +50,7 @@ public class AddEmailAddressController implements ActionListener {
 	 * @param view the view where the user enters new messages
 	 */
 	public AddEmailAddressController() {
+		panel = null;
 		view = null;
 	}
 
@@ -61,7 +67,7 @@ public class AddEmailAddressController implements ActionListener {
 		{
 			return;
 		}
-		
+		ViewEventController.getInstance().getMain().remove(panel);
 		saveEmail(view.getText());
 	}
 
