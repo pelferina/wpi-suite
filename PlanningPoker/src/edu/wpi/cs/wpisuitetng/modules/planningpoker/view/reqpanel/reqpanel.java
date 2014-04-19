@@ -69,7 +69,7 @@ public class reqpanel extends JPanel {
 	public void panelSetup() {
 		nameField = new JTextField();
 		descriptionField = new JTextArea();
-
+		descriptionField.setLineWrap(true);
 		JLabel lblPriority = new JLabel("Priority");
 
 		JLabel lblType = new JLabel("Type");
