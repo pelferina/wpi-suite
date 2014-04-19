@@ -58,7 +58,12 @@ public class AddEmailPanel extends JPanel {
 		add(emailField);
 		add(submitButton);
 		
-		submitButton.addActionListener(new AddEmailAddressController(emailField));
+		submitButton.addActionListener(new AddEmailAddressController(this));
+	}
+	
+	public JTextField getView()
+	{
+		return emailField;
 	}
 
 }
