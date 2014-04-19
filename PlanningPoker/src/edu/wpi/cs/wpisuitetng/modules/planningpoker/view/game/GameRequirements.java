@@ -145,9 +145,9 @@ public class GameRequirements extends JSplitPane{
 	
 	//This function is used to set the preferred width of JTables
 	private void setColumnWidth(JTable table){
-		table.getColumnModel().getColumn(0).setMinWidth(100);
-		table.getColumnModel().getColumn(0).setMaxWidth(200);
-		table.getColumnModel().getColumn(0).setPreferredWidth(150);
+		table.getColumnModel().getColumn(0).setMinWidth(0);
+		table.getColumnModel().getColumn(0).setMaxWidth(0);
+		table.getColumnModel().getColumn(0).setPreferredWidth(0);
 	}
 	
 	/**

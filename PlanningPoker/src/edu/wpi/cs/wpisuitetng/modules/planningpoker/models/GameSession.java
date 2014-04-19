@@ -287,14 +287,17 @@ public class GameSession extends AbstractModel {
 				voteResult[j][i] = votes.get(i).getVote().get(j);
 			}
 		}
-		for(int i=0; i <requirementNum; i++){
+		for(int i=0; i < requirementNum; i++){
 			Arrays.sort(voteResult[i]);
 			// calculate median
-			if(userNum%2 == 0){
+			if(userNum%2 == 0 && userNum > 1){
 				median.add(((float)voteResult[i][(userNum-1)/2] + voteResult[i][(userNum-1)/2+1])/2);
 			}
-			else{
+			else if (userNum > 1){
 				median.add((float)voteResult[i][(userNum-1)/2+1]);
+			}
+			else {
+				median.add((float)voteResult[i][userNum-1]);
 			}
 			// calculate mean
 			int sum = 0;

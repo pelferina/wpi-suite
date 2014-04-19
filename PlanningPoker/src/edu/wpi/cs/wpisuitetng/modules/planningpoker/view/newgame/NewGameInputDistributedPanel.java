@@ -372,7 +372,6 @@ public class NewGameInputDistributedPanel extends JPanel {
 			if (deckCheckBox.isSelected()){
 				currentGameSession.setDeckId(0);
 			}
-
 			final UpdateGameController msgr = new UpdateGameController();
 //			System.out.println("Attempting to send game to database"); // TODO: also remove this
 			msgr.sendGame(currentGameSession); //TODO: This is sending an error
@@ -674,6 +673,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 	}
 	
 	private boolean anythingChanged() {
+	
 		if(currentGameSession.getGameStatus() == GameStatus.DRAFT)
 		{	
 			// Check if the user has changed the name
