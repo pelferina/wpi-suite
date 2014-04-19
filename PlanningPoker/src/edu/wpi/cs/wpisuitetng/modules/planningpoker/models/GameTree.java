@@ -22,6 +22,7 @@ public class GameTree extends DefaultMutableTreeNode {
 	private final DefaultMutableTreeNode top;
 	private final GameModel gameModel;
 
+
 	/*
 	 * 
 	 * My Games
@@ -40,6 +41,7 @@ public class GameTree extends DefaultMutableTreeNode {
 	
 	
 	
+
 	/**
 	 * This constructor creates a tree system and its highest node as well as populating variables
 	 * 
@@ -125,6 +127,7 @@ public class GameTree extends DefaultMutableTreeNode {
 //	}
 	
 	private void createNodes(DefaultMutableTreeNode top) {
+
 		final DefaultMutableTreeNode myGames = new DefaultMutableTreeNode("My Games");
 		final DefaultMutableTreeNode myDrafts = new DefaultMutableTreeNode("Drafts");
 		final DefaultMutableTreeNode myActive = new DefaultMutableTreeNode("Active");

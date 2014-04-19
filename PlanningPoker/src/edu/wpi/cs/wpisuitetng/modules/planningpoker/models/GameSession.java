@@ -248,6 +248,7 @@ public class GameSession extends AbstractModel {
 			return false;
 		}
 		final GameSession o = (GameSession) other;
+
 		if (gameName.equals(o.getGameName())){
 			if (gameDescription.equals(o.getGameDescription())){
 				if (ownerID == o.getOwnerID()){
@@ -274,6 +275,10 @@ public class GameSession extends AbstractModel {
 	public List<Vote> getVotes() {
 		return VoteModel.getInstance().getVotes(gameID);
 	}
+
+	/**
+	 * This method calculates the statistics of the votes, such as mean and median
+	 */
 	public void calculateStats(){
 		List<Vote> votes = this.getVotes();
 		int requirementNum = gameReqs.size();

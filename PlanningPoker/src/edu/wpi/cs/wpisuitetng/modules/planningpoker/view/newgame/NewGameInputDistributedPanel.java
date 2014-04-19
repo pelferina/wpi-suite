@@ -355,6 +355,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 			{
 				newGame.setGameStatus(GameStatus.ACTIVE);
 			}
+
 			final AddGameController msgr = new AddGameController(model);
 			msgr.sendGame(newGame);
 			

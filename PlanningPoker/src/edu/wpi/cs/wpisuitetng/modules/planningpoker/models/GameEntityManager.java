@@ -172,6 +172,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	 */
 	@Override
 	public GameSession update(Session s, String content) {
+
 		// Parse the message from JSON
 		final GameSession importedGame = GameSession.fromJson(content);
 		GameSession oldGame = null;
@@ -210,7 +211,6 @@ public class GameEntityManager implements EntityManager<GameSession> {
 					"EndDate", importedGame.getEndDate());
 			db.update(GameSession.class, "GameID", importedGame.getGameID(),
 					"GameName", importedGame.getGameName());
-			System.out.println("Game Status" + importedGame.getGameStatus());
 			db.update(GameSession.class, "GameID", importedGame.getGameID(),
 					"GameStatus", importedGame.getGameStatus());
 			db.update(GameSession.class, "GameID", importedGame.getGameID(),
@@ -264,6 +264,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 			e.printStackTrace();
 		}
 	}
+
 	private void sendEndNotification(GameSession game, Project project) {
 		final String textToSend = "Hello user\r\n\t"
 				+ game.getGameName()

@@ -93,6 +93,11 @@ public class ViewEventController {
 	public void viewGameTab(GameSession gameSession){
 		main.addPlayGameTab(gameSession);
 	}
+	
+	public void newReqTab(GameSession gameSession){
+		main.addReqTab(gameSession);
+	}
+	
 	/**
 	 * Opens a new tab for the creation of a game.
 	 */
