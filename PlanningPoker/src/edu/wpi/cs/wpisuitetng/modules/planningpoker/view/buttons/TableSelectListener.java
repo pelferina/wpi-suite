@@ -16,6 +16,7 @@ import javax.swing.event.ListSelectionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.JTableModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
@@ -41,27 +42,32 @@ public class TableSelectListener implements ListSelectionListener{
 	public void valueChanged(ListSelectionEvent e) {
 	    final int row =  table.getSelectedRow();
 	    if(row < 0){ // The table is not selected
-	    	ViewEventController.getInstance().setEndGameButtonInvisible();
+	    	ViewEventController.getInstance().makeOwnerButtonInvisible();
+	    	ViewEventController.getInstance().setEditGameButtonInVisible();
 	    	return;
 	    }
 	    final JTableModel model = (JTableModel)table.getModel();
 		final int ownerID = model.getOwnerID(row);
     	final int gameID = model.getGameID(row);
+    	final GameSession gameSelected = model.getGame(row);
     	final GameStatus status = model.getGameStatus(row);
     	final User currentUser = GetCurrentUser.getInstance().getCurrentUser();
-    	//End game button
-    	if(currentUser.getIdNum() == ownerID && (status.equals(GameStatus.ACTIVE) || status.equals(GameStatus.INPROGRESS))){
-    		ViewEventController.getInstance().setEndGameButtonVisible(gameID);
-    	}else{
-    		ViewEventController.getInstance().setEndGameButtonInvisible();
-    	}
+
     	
-    	//Edit game button
-    	if(currentUser.getIdNum() == ownerID && (status.equals(GameStatus.ACTIVE) || status.equals(GameStatus.DRAFT))){
-    		ViewEventController.getInstance().setEditGameButtonVisible(gameID);
-    	}else{
+    	if(currentUser.getIdNum() == ownerID){
+    		if(status.equals(GameStatus.ACTIVE) || status.equals(GameStatus.INPROGRESS)){
+    			ViewEventController.getInstance().makeEndGameButtonVisible(gameSelected);
+    		}else if(status.equals(GameStatus.DRAFT)){
+    			ViewEventController.getInstance().makeActivateGameButtonVisible(gameSelected);
+    		}else if(status.equals(GameStatus.COMPLETED)){
+    			ViewEventController.getInstance().makeArchiveGameButtonVisible(gameSelected);
+    		}
+    	}
+    	else{
+    		ViewEventController.getInstance().makeOwnerButtonInvisible();
     		ViewEventController.getInstance().setEditGameButtonInVisible();
     	}
+
 	}
 
 }

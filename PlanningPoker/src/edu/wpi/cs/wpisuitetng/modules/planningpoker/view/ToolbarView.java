@@ -9,8 +9,9 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.DefaultToolbarView;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.EditButtonsPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.EndGameButtonPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.OwnerButtonPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerButtonsPanel;
 
 /**
@@ -25,7 +26,7 @@ public class ToolbarView  extends DefaultToolbarView {
 //	TODO: Cancel Game
 	public EditButtonsPanel editButton = new EditButtonsPanel();
 	public PlanningPokerButtonsPanel gameButton = new PlanningPokerButtonsPanel();
-	public EndGameButtonPanel endGameButton = new EndGameButtonPanel();
+	public OwnerButtonPanel ownerGameButton = new OwnerButtonPanel();
 	
 	/**
 	 * Creates and positions option buttons in upper toolbar
@@ -34,7 +35,7 @@ public class ToolbarView  extends DefaultToolbarView {
 	public ToolbarView(boolean visible) {
 		this.addGroup(gameButton);
 		this.addGroup(editButton);
-		this.addGroup(endGameButton);
+		this.addGroup(ownerGameButton);
 
 	}
 	
@@ -53,15 +54,29 @@ public class ToolbarView  extends DefaultToolbarView {
 	}
 	/**
 	 * Enables the end game button
-	 * @param gameID the ID associated with this button
+	 * @param game the game associated with this button
 	 */
-	public void setEndGameVisible(int gameID){
-		endGameButton.setEndGameButtonVisible(gameID);
+	public void makeEndGameButtonVisible(GameSession game){
+		ownerGameButton.makeEndGameButtonVisible(game);
 	}
 	/**
-	 * sets the endgame button to be invisible
+	 * Enables the activate game button
+	 * @param game the game associated with this button
 	 */
-	public void setEndGameInvisible(){
-		endGameButton.setEndGameButtonInvisible();
+	public void makeActivateGameButtonVisible(GameSession game){
+		ownerGameButton.makeActivateGameButtonVisible(game);
+	}
+	/**
+	 * Enables the archive game button
+	 * @param game the game associated with this button
+	 */
+	public void makeArchiveGameButtonVisible(GameSession game){
+		ownerGameButton.makeArchiveGameButtonVisible(game);
+	}
+	/**
+	 * make the owner game button to be invisible
+	 */
+	public void makeOwnerButtonInvisible(){
+		ownerGameButton.makeOwnerButtonInvisible();
 	}
 }

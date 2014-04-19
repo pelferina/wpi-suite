@@ -26,27 +26,21 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * @version $Revision: 1.0 $
  */
 public class EndGameActionListener implements ActionListener{
-	int gameID;
+	GameSession game;
 	/**
 	 * Constructor to populate gameID
 	 * @param gameID
 	 */
-	public EndGameActionListener(int gameID){
-		this.gameID = gameID;
+	public EndGameActionListener(GameSession game){
+		this.game = game;
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		final List<GameSession> games = GameModel.getInstance().getGames();
-		for(GameSession g: games){
-			if(g.getGameID() == gameID){
-				g.setGameStatus(GameStatus.COMPLETED);
-				final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.POST); // POST == UPDATE
-				request.setBody(g.toJSON()); // put the new session in the body of the request
-				request.addObserver(new UpdateGameRequestObserver()); // add an observer to process the response
-				request.send(); // send the request
-			}
-		}
-		
+		game.setGameStatus(GameStatus.COMPLETED);
+		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.POST); // POST == UPDAT
+		request.setBody(game.toJSON()); // put the new session in the body of the request
+		request.addObserver(new UpdateGameRequestObserver()); // add an observer to process the response
+		request.send(); // send the request
 	}
 	
 }

@@ -125,17 +125,42 @@ public class ViewEventController {
 	
 	/**
 	 * Set the end game button in tool bar visible 
-	 * @param gameID 
+	 * @param game
 	 */
-	public void setEndGameButtonVisible(int gameID){
-		toolbar.setEndGameVisible(gameID);
+	public void makeEndGameButtonVisible(GameSession game){
+		toolbar.makeEndGameButtonVisible(game);
 	}
+	
+	/**
+	 * Set the activate game button in tool bar visible 
+	 * @param game
+	 */
+	public void makeActivateGameButtonVisible(GameSession game){
+		toolbar.makeActivateGameButtonVisible(game);
+	}
+	
+	/**
+	 * Set the archive game button in tool bar visible 
+	 * @param game
+	 */
+	public void makeArchiveGameButtonVisible(GameSession game){
+		toolbar.makeArchiveGameButtonVisible(game);
+	}
+	
+	
+	
 	/**
 	 * Set the end game button in tool bar invisible 
 	 */
-	public void setEndGameButtonInvisible(){
-		toolbar.setEndGameInvisible();
+	public void makeOwnerButtonInvisible(){
+		toolbar.makeOwnerButtonInvisible();
 	}
+
+	
+	
+	
+	
+	
 	/**
 	 * sets the edit game button to be visible
 	 * @param gameID the id of the game to change the button for

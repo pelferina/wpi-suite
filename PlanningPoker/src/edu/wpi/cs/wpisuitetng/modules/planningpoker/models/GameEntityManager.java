@@ -308,6 +308,10 @@ public class GameEntityManager implements EntityManager<GameSession> {
 
 			final List<Model> model_emails = db.retrieveAll(
 					new EmailAddressModel(""), project);
+			if(model_emails.size() == 0){
+				System.out.println("No email address has been set");
+				return;
+			}
 			final EmailAddressModel[] emails = model_emails
 					.toArray(new EmailAddressModel[0]);
 
