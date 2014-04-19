@@ -326,11 +326,11 @@ public class MainView extends JTabbedPane {
 	        		ViewEventController.getInstance().getMain().remove(gameView);
 				}
 			} else if (type == 3){
-				if (!gameView.isNew) {
+				if (!completeView.isNew) {
 						ViewEventController.getInstance().getMain()
-								.remove(gameView);
+								.remove(completeView);
 				} else {
-					ViewEventController.getInstance().getMain().remove(gameView);
+					ViewEventController.getInstance().getMain().remove(completeView);
 				}
 			}
 			else if (type == 4){
