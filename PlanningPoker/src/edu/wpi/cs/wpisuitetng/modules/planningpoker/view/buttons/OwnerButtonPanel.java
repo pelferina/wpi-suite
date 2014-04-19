@@ -99,7 +99,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		if(listener != null){
 			ownerButton.removeActionListener(listener);
 		}
-		listener = new EndGameActionListener(game);
+		listener = new ActivateGameActionListener(game);
 		ownerButton.addActionListener(listener);
 	}
 	/**
@@ -117,7 +117,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		if(listener != null){
 			ownerButton.removeActionListener(listener);
 		}
-		listener = new EndGameActionListener(game);
+		listener = new ArchiveGameActionListener(game);
 		ownerButton.addActionListener(listener);
 	}
 }

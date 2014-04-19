@@ -62,6 +62,9 @@ public class TableSelectListener implements ListSelectionListener{
     		}else if(status.equals(GameStatus.COMPLETED)){
     			ViewEventController.getInstance().makeArchiveGameButtonVisible(gameSelected);
     		}
+    		if(status.equals(GameStatus.ACTIVE)){
+    			ViewEventController.getInstance().setEditGameButtonVisible(gameID);
+    		}
     	}
     	else{
     		ViewEventController.getInstance().makeOwnerButtonInvisible();
