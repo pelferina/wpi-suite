@@ -95,6 +95,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 				importedGame.getGameReqs());
 		newGame.setGameStatus(importedGame.getGameStatus());
 		newGame.setProject(s.getProject());
+		newGame.setDeckId(importedGame.getDeckId());
 
 		// Save the message in the database if possible, otherwise throw an
 		// exception
@@ -215,6 +216,8 @@ public class GameEntityManager implements EntityManager<GameSession> {
 					"GameStatus", importedGame.getGameStatus());
 			db.update(GameSession.class, "GameID", importedGame.getGameID(),
 					"GameDescription", importedGame.getGameDescription());
+			db.update(GameSession.class, "GameID", importedGame.getGameID(),
+					"DeckId", importedGame.getDeckId());
 		} catch (WPISuiteException e) {
 			System.out.println("Update Game Exception");
 			e.printStackTrace();

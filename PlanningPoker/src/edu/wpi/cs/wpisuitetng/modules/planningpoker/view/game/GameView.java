@@ -39,6 +39,8 @@ public class GameView extends JSplitPane{
 	 */
 	public GameView (GameSession gameToPlay){
 		gameReqs = new GameRequirements(gameToPlay, this);
+		System.out.println("DeckID is " + gameToPlay.getDeckId());
+		
 		if(gameToPlay.getGameStatus() == GameStatus.COMPLETED)
 		{
 			viewGame = new ViewGame(gameToPlay, this);

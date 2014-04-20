@@ -314,8 +314,9 @@ public class GameSession extends AbstractModel {
 		return median;
 	}
 	
-	public void setDeckId(int deckId){
+	public GameSession setDeckId(int deckId){
 		this.deckId = deckId;
+		return this;
 	}
 	
 	public int getDeckId(){

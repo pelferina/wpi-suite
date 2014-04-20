@@ -350,10 +350,13 @@ public class NewGameInputDistributedPanel extends JPanel {
 		//If activating: Set game status to active and Send an activation email 
 		if(!editMode)
 		{
-			final GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
+			GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
 			if(activate == true)
 			{
 				newGame.setGameStatus(GameStatus.ACTIVE);
+			}
+			if (deckCheckBox.isSelected()){
+				newGame.setDeckId(0);
 			}
 			final AddGameController msgr = new AddGameController(model);
 			msgr.sendGame(newGame);
