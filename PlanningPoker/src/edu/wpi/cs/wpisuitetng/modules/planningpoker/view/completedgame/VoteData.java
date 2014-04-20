@@ -85,9 +85,11 @@ public class VoteData extends JPanel{
 		gs.calculateStats();
 		
 		//Sets the statistic text fields to the stats of the first requirement in the game, and disables user edits
-		meanTextField.setText(Float.toString(completedGame.getMean().get(reqIndex)));
+		float mean = completedGame.getMean().get(reqIndex);
+		meanTextField.setText(String.format("%.2f", mean));
 		meanTextField.setEnabled(false);
-		medianTextField.setText(Float.toString(completedGame.getMedian().get(reqIndex)));
+		float median = completedGame.getMedian().get(reqIndex);
+		medianTextField.setText(String.format("%.2f", median));
 		medianTextField.setEnabled(false);
 		init();
 	}
