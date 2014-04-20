@@ -50,27 +50,40 @@ public class TableSelectListener implements ListSelectionListener{
 		final int ownerID = model.getOwnerID(row);
     	final int gameID = model.getGameID(row);
     	final GameSession gameSelected = model.getGame(row);
-    	final GameStatus status = model.getGameStatus(row);
+    	final GameStatus status = gameSelected.getGameStatus();
     	final User currentUser = GetCurrentUser.getInstance().getCurrentUser();
 
-    	
+    	boolean hasCategory = false;
     	if(currentUser.getIdNum() == ownerID){
     		if(status.equals(GameStatus.ACTIVE) || status.equals(GameStatus.INPROGRESS)){
     			ViewEventController.getInstance().makeEndGameButtonVisible(gameSelected);
-    		}else if(status.equals(GameStatus.DRAFT)){
+    			hasCategory = true;
+    		}else if(status.equals(GameStatus.DRAFT) && isValid(gameSelected)){
     			ViewEventController.getInstance().makeActivateGameButtonVisible(gameSelected);
+    			hasCategory = true;
     		}else if(status.equals(GameStatus.COMPLETED)){
     			ViewEventController.getInstance().makeArchiveGameButtonVisible(gameSelected);
+    			hasCategory = true;
     		}
     		if(status.equals(GameStatus.ACTIVE)){
     			ViewEventController.getInstance().setEditGameButtonVisible(gameID);
+    			hasCategory = true;
     		}
     	}
-    	else{
+    	if (!hasCategory){
     		ViewEventController.getInstance().makeOwnerButtonInvisible();
     		ViewEventController.getInstance().setEditGameButtonInVisible();
     	}
 
+	}
+	
+	public boolean isValid(GameSession gs) { // if all neccessary fields are filled out, returns true
+		if (gs.getGameName().length()>0 && gs.getGameDescription().length()>0 && gs.getGameReqs().size()>0){
+			if (gs.getEndDate()==null || gs.getEndDate().getTime()>System.currentTimeMillis()){
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
