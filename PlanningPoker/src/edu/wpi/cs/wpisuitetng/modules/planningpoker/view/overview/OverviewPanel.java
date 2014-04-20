@@ -150,7 +150,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	 */
 	public void updateTable(String s){
 		/** TODO this should be in the constructor, but this panel gets loaded before a user logs in*/
-		currentUser = getUserID(GetCurrentUser.getInstance().getCurrentUser().getName());
+		currentUser = GetCurrentUser.getInstance().getCurrentUser().getIdNum();
 		
 		List<GameSession> sessions = new ArrayList<GameSession>();
 		
