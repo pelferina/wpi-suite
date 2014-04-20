@@ -40,6 +40,14 @@ public class GameModel extends AbstractListModel {
 	public List<GameSession> getGames() {
 		return games;
 	}
+	
+	/**
+	 * @param userID the user to get games for
+	 * @return the games for a current user
+	 */
+	public List<GameSession> getGames(int userID) {
+		return filterUsersGames(games, userID);
+	}
 
 	/**
 	 * Constructs a new board with no games.
@@ -183,8 +191,66 @@ public class GameModel extends AbstractListModel {
 		return archivedGames;
 	}
 	
+	/**
+	 * 
+	 * Return a list of all draft game sessions in this game model filtered by userID
+	 * @param userID the userID to filter games by
+	 * @return List<GameSession> List of draft games
+	 */
+	public List<GameSession> getDraftGameSessions(int userID){
+		return filterUsersGames(getDraftGameSessions(), userID);
+	}
 	
+	/**
+	 * 
+	 * Return a list of all active game sessions in this game model filtered by userID
+	 * @param userID the userID to filter games by
+	 * @return List<GameSession> List of active games
+	 */
+	public List<GameSession> getActiveGameSessions(int userID){
+		return filterUsersGames(getActiveGameSessions(), userID);
+	}
 	
+	/**
+	 * 
+	 * Return a list of all past game sessions in this game model filtered by userID
+	 * @param userID the userID to filter games by
+	 * @return List<GameSession> List of past games
+	 */
+	public List<GameSession> getInProgressGameSessions(int userID){
+		return filterUsersGames(getInProgressGameSessions(), userID);
+	}
+	
+	/**
+	 * 
+	 * Return a list of all past game sessions in this game model filtered by userID
+	 * @param userID the userID to filter games by
+	 * @return List<GameSession> List of past games
+	 */
+	public List<GameSession> getCompletedGameSessions(int userID){
+		return filterUsersGames(getCompletedGameSessions(), userID);
+	}
+	
+	/**
+	 * 
+	 * Return a list of all past game sessions in this game model filtered by userID
+	 * @param userID the userID to filter games by
+	 * @return List<GameSession> List of past games
+	 */
+	public List<GameSession> getArchivedGameSessions(int userID){
+		return filterUsersGames(getArchivedGameSessions(), userID);
+	}
+
+	private List<GameSession> filterUsersGames(List<GameSession> games, int userID)
+	{
+		final List<GameSession> usersGames = new ArrayList<GameSession>();
+		
+		for (GameSession game : games)
+			if (game.getOwnerID() == userID)
+				usersGames.add(game);
+		
+		return usersGames;
+	}
 	
 	/* 
 	 * Returns the Game at the given index. This method is called

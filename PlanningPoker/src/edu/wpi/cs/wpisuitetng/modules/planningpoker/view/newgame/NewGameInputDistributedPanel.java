@@ -299,14 +299,10 @@ public class NewGameInputDistributedPanel extends JPanel {
 				saveOrActivateGame();
 				if(editMode)
 				{
-					final JOptionPane gameCreated = new JOptionPane("Game Updated");
-					JOptionPane.showMessageDialog(gameCreated, "Game has been updated", "Game updated", JOptionPane.INFORMATION_MESSAGE);
 					newGameP.close.doClick();
 				}
 				else
 				{
-					final JOptionPane gameCreated = new JOptionPane("Game Created");
-					JOptionPane.showMessageDialog(gameCreated, "Game has been created", "Game created", JOptionPane.INFORMATION_MESSAGE);
 					newGameP.close.doClick();
 				}
 				
@@ -318,8 +314,6 @@ public class NewGameInputDistributedPanel extends JPanel {
 			public void actionPerformed(ActionEvent e){
 				activate = true;
 				saveOrActivateGame();
-				final JOptionPane gameCreated = new JOptionPane("Game Created and Activated");
-				JOptionPane.showMessageDialog(gameCreated, "Game has been created and activated", "Game created", JOptionPane.INFORMATION_MESSAGE);
 				newGameP.close.doClick();
 			}
 		});
@@ -358,6 +352,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 			if (deckCheckBox.isSelected()){
 				newGame.setDeckId(0);
 			}
+
 			final AddGameController msgr = new AddGameController(model);
 			msgr.sendGame(newGame);
 			

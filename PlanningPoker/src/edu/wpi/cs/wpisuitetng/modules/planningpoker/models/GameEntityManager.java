@@ -173,6 +173,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	 */
 	@Override
 	public GameSession update(Session s, String content) {
+
 		// Parse the message from JSON
 		final GameSession importedGame = GameSession.fromJson(content);
 		GameSession oldGame = null;
@@ -196,7 +197,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 				}
 				if ((oldGame.getGameStatus().equals(GameStatus.ACTIVE) || oldGame.getGameStatus().equals(GameStatus.INPROGRESS))
 						&& importedGame.getGameStatus().equals(GameStatus.COMPLETED)) {
-					sendEndNotification(importedGame, s.getProject());
+					//sendEndNotification(importedGame, s.getProject());
 				}
 
 			}
@@ -211,7 +212,6 @@ public class GameEntityManager implements EntityManager<GameSession> {
 					"EndDate", importedGame.getEndDate());
 			db.update(GameSession.class, "GameID", importedGame.getGameID(),
 					"GameName", importedGame.getGameName());
-			System.out.println("Game Status" + importedGame.getGameStatus());
 			db.update(GameSession.class, "GameID", importedGame.getGameID(),
 					"GameStatus", importedGame.getGameStatus());
 			db.update(GameSession.class, "GameID", importedGame.getGameID(),
@@ -267,6 +267,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 			e.printStackTrace();
 		}
 	}
+
 	private void sendEndNotification(GameSession game, Project project) {
 		final String textToSend = "Hello user\r\n\t"
 				+ game.getGameName()
@@ -310,6 +311,10 @@ public class GameEntityManager implements EntityManager<GameSession> {
 
 			final List<Model> model_emails = db.retrieveAll(
 					new EmailAddressModel(""), project);
+			if(model_emails.size() == 0){
+				System.out.println("No email address has been set");
+				return;
+			}
 			final EmailAddressModel[] emails = model_emails
 					.toArray(new EmailAddressModel[0]);
 

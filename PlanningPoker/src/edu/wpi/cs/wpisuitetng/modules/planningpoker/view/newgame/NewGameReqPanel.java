@@ -13,6 +13,8 @@ import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.reqpanel.reqpanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
@@ -20,6 +22,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
 
@@ -111,8 +114,9 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		btnAddReq.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
-
+				ViewEventController.getInstance().newReqTab(new GameSession(new String(), new String(), 0, 0, new Date(), new ArrayList<Integer>()));
 			}
+
 		});
 
 		//Adds the selected requirement in the unselected table and puts it into the selected table, as well as the list of 

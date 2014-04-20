@@ -11,7 +11,6 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
 
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -40,81 +39,42 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class EditButtonsPanel extends ToolbarGroupView{
 	
 	private final JPanel contentPanel = new JPanel();
-	JButton createEditButton = new JButton("<html>Edit<br />Games</html>");
+	JButton editButton = new JButton("<html>Edit<br />Game</html>");
 	final JButton createCancelButton = new JButton("<html>Cancel<br />Games</html>");
 	private ActionListener listener = null;
 	private ImageIcon editImg = null;
-	private ImageIcon saveImg = null;
 	
 	/**
 	 *  disables the Edit Games/ActivateGames button 
 	 */
 	public void disableCreateEditButton() {
-		createEditButton.setEnabled(false);
+		editButton.setEnabled(false);
 	}
 	
 	/**
 	 *  enables the Edit Games/ActivateGames button 
 	 */
 	public void enableCreateEditButton() {
-		createEditButton.setEnabled(true);
+		editButton.setEnabled(true);
 	}
 
 	public EditButtonsPanel(){
 		super("");
 		
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
-		this.setPreferredWidth(500);
+		this.setPreferredWidth(150);
 		
-		createEditButton.setPreferredSize(new Dimension(150,50));	
-		createCancelButton.setVisible(false);
+		editButton.setPreferredSize(new Dimension(150,50));	
 		
 		try {
-		    final Image img = ImageIO.read(getClass().getResource("cancel.png"));
-		    createCancelButton.setIcon(new ImageIcon(img));
-		    
-		    editImg = new ImageIcon(ImageIO.read(getClass().getResource("edit.png")));
-		    createEditButton.setIcon(editImg);
-		    saveImg = new ImageIcon(ImageIO.read(getClass().getResource("save.png")));
-		    
+		    editImg = new ImageIcon(ImageIO.read(getClass().getResource("edit.png")));		    
 		} catch (IOException ex) {
 			System.out.println("IOException thrown in EditButtonsPanel.");
 		}
+		editButton.setIcon(editImg);
+		editButton.setVisible(false);
 		
-		createEditButton.setVisible(true);
-		// the action listener for the Edit Games button
-		createEditButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// check to see if any other tab is currently open
-				// if (ViewEventController.getInstance().getMainView().getTabCount() == 1) {
-				
-					// toggle the editing overview table mode
-//					ViewEventController.getInstance().toggleEditingTable(false);
-//					// edits the Edit Button text based on whether in editing overview table mode or not
-//					if (ViewEventController.getInstance().getOverviewTable().getEditFlag()) {
-//						ViewEventController.getInstance().getOverviewTable().repaint();
-//						setButtonToActivate();
-////					}	
-//					else {
-						setButtonToEdit();
-//					}
-				}
-			//}
-		});
-		
-		createCancelButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// toggle the editing overview table mode
-//				ViewEventController.getInstance().toggleEditingTable(true);			
-				setButtonToEdit();
-				createEditButton.setEnabled(true);
-
-			}
-		});
-		contentPanel.add(createEditButton);
-		contentPanel.add(createCancelButton);
+		contentPanel.add(editButton);
 		contentPanel.setOpaque(false);
 		
 		this.add(contentPanel);
@@ -126,18 +86,9 @@ public class EditButtonsPanel extends ToolbarGroupView{
 	 * 
 	 */
 	public JButton getEditButton() {
-		return createEditButton;
+		return editButton;
 	}
-	/**
-	 * This method creates an edit button and enables it while disableing the cancel button
-	 */
-	public void setButtonToEdit(){
-		if (editImg != null){
-			createEditButton.setIcon(editImg);}
-		createEditButton.setText("<html>Edit<br />Games</html>");
-		createCancelButton.setEnabled(false);
-		createCancelButton.setVisible(false);
-	}
+
 	/**
 	 * This method sets the button to read "activate"
 	 *
@@ -146,96 +97,21 @@ public class EditButtonsPanel extends ToolbarGroupView{
 	 * @param gameID 
 	 */
 	public void setEditGameButtonVisible(int gameID){
-		createEditButton.setVisible(true);
-		createEditButton.setEnabled(true);
+		editButton.setVisible(true);
+		editButton.setEnabled(true);
 		if(listener != null){
-			createEditButton.removeActionListener(listener);
+			editButton.removeActionListener(listener);
 		}
 		listener = new EditGameActionListener(gameID);
-		createEditButton.addActionListener(listener);
+		editButton.addActionListener(listener);
 	}
 	
 	/**
 	 *  disables the end game button 
 	 */
 	public void setEditGameButtonInvisible() {
-		createEditButton.setEnabled(false);
-		createEditButton.setVisible(false);
+		editButton.setEnabled(false);
+		editButton.setVisible(false);
 	}
-	/**
-	 * This sets the button to say activate games
-	 */
-	public void setButtonToActivate(){
-		if (saveImg != null){
-			createEditButton.setIcon(saveImg);}
-		createEditButton.setText("<html>Activate<br />Games</html>");
-		createEditButton.setEnabled(false);
-		createCancelButton.setVisible(true);
-	}
-	/**
-	 * This method enables the edit button.
-	 * @param enabled whether the button should have enabled be true or false
-	 */
-	public void setActivateEnabled(boolean enabled){
-		createEditButton.setEnabled(enabled);
-	}
-	/**
-	 * This listener watches for when a game is activated
-	 * @author Cosmic Latte
-	 * @version $Revision: 1.0 $
-	 */
-	class activateGameActionListener implements ActionListener{
-		int gameID;
-		/**
-		 * Constructor to poulate gameID
-		 * @param gameID
-		 */
-		private activateGameActionListener(int gameID){
-			this.gameID = gameID;
-		}
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			final List<GameSession> games = GameModel.getInstance().getGames();
-			for(GameSession g: games){
-				if(g.getGameID() == gameID){
-					g.setGameStatus(GameStatus.ACTIVE);
-					final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.POST); // POST == UPDATE
-					request.setBody(g.toJSON()); // put the new session in the body of the request
-					request.addObserver(new UpdateGameRequestObserver()); // add an observer to process the response
-					request.send(); // send the request
-				}
-			}
-			
-		}
-	}
-	/**
-	 * This listener watches for the end of a game
-	 * @author Cosmic Latte
-	 * @version $Revision: 1.0 $
-	 */
-	class endGameActionListener implements ActionListener{
-		int gameID;
-		/**
-		 * Constructor that populates gameID
-		 * @param gameID
-		 */
-		private endGameActionListener(int gameID){
-			this.gameID = gameID;
-		}
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			final List<GameSession> games = GameModel.getInstance().getGames();
-			for(GameSession g: games){
-				if(g.getGameID() == gameID){
-					g.setGameStatus(GameStatus.ARCHIVED);
-					final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.POST); // POST == UPDATE
-					request.setBody(g.toJSON()); // put the new session in the body of the request
-					request.addObserver(new UpdateGameRequestObserver()); // add an observer to process the response
-					request.send(); // send the request
-				}
-			}
-			
-		}
-		
-	}
+
 }
