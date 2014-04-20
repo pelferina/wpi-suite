@@ -101,6 +101,7 @@ public class GameData extends JPanel{
 		gameReqsTable.getColumnModel().getColumn(0).setPreferredWidth(150);
 		
 		gameReqsTable.addMouseListener(new tableListener(gameReqsTable));
+		gameReqsTable.setRowSelectionInterval(0, 0);
 		
 		SpringLayout springLayout = new SpringLayout();
 		
@@ -177,6 +178,23 @@ public class GameData extends JPanel{
 		this.descriptionTextArea = descriptionTextArea;
 	}
 
+	public void nextRequirement() {
+		int selected = gameReqsTable.getSelectedRow();
+		gameReqsTable.removeRowSelectionInterval(selected, selected);
+		if (selected + 1 < gameReqs.size()){
+			gameReqsTable.addRowSelectionInterval(selected + 1, selected + 1);
+			Requirement req = null;
+			for (Requirement r: allReqs){
+				if (r.getName().equals(gameReqsTable.getValueAt(selected + 1, 0))){
+					req = r;
+				}
+			}
+			completeView.sendReqToView(req);
+		}
+		else {
+			gameReqsTable.addRowSelectionInterval(selected, selected);
+		}
+	}
 
 public class tableListener extends MouseAdapter{
 		
@@ -206,6 +224,5 @@ public class tableListener extends MouseAdapter{
 			}
 		}
 	}
-	
 	
 }

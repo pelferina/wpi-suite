@@ -9,6 +9,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -54,9 +55,13 @@ public class PlayGame extends JPanel{
 	private final JTextField reqNameTextField = new JTextField();
 	private final JTextArea gameDescTextArea = new JTextArea();
 	private final JTextArea reqDescTextArea = new JTextArea();
+<<<<<<< HEAD
 	private final JScrollPane nd = new JScrollPane(gameDescTextArea);
 	private final JScrollPane rd = new JScrollPane(reqDescTextArea);
 	private final JButton submit = new JButton("Submit");
+=======
+	private final JButton submit = new JButton("Submit All");
+>>>>>>> aedad5b1c17be9f5216bb7a6afcb332497bf23ac
 	private final JButton voteButton = new JButton("Vote");
 	private Vote userEstimates;
 	private Requirement currentReq;
@@ -76,12 +81,12 @@ public class PlayGame extends JPanel{
 		for (int i = 0; i < gameReqs.size(); i++){
 			estimates.add(-1);
 		}
+		userEstimates = new Vote(estimates, currentGame.getGameID());
 		for (Vote v: gameToPlay.getVotes()){
 			if (v.getUID() == GetCurrentUser.getInstance().getCurrentUser().getIdNum()){
 				userEstimates = v;
 			}
 		}
-		userEstimates = new Vote(estimates, currentGame.getGameID());
 		reqDescTextArea.setWrapStyleWord(true);
 		voteButton.setEnabled(false);
 		submit.setEnabled(false);
@@ -111,6 +116,7 @@ public class PlayGame extends JPanel{
 		reqDescTextArea.setEditable(false);
 		gameDescTextArea.setLineWrap(true);
 		gameDescTextArea.setWrapStyleWord(true);
+		
 		reqDescTextArea.setLineWrap(true);
 		reqDescTextArea.setWrapStyleWord(true);
 		

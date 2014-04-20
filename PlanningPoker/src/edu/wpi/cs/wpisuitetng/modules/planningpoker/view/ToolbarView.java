@@ -24,7 +24,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerBu
 public class ToolbarView  extends DefaultToolbarView {
 
 //	TODO: Cancel Game
-	public EditButtonsPanel editButton = new EditButtonsPanel();
+//	public EditButtonsPanel editButton = new EditButtonsPanel();
 	public PlanningPokerButtonsPanel gameButton = new PlanningPokerButtonsPanel();
 	public OwnerButtonPanel ownerGameButton = new OwnerButtonPanel();
 	

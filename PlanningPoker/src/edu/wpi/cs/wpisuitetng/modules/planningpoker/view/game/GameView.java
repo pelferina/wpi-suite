@@ -28,8 +28,9 @@ public class GameView extends JSplitPane{
 
 	GameRequirements gameReqs;
 	PlayGame playGame;
+	PlayDeckGame playDeckGame;
 	ViewGame viewGame;
-	
+	boolean isDeckGame = false;
 	public boolean isNew = false;
 	
 	/**
@@ -38,13 +39,21 @@ public class GameView extends JSplitPane{
 	 */
 	public GameView (GameSession gameToPlay){
 		gameReqs = new GameRequirements(gameToPlay, this);
+		System.out.println("DeckID is " + gameToPlay.getDeckId());
+		
 		if(gameToPlay.getGameStatus() == GameStatus.COMPLETED)
 		{
 			viewGame = new ViewGame(gameToPlay, this);
 		}
-		else
-		{
-			playGame = new PlayGame(gameToPlay, this);
+		else{
+			if (gameToPlay.getDeckId() == -1){
+				isDeckGame = false;
+				playGame = new PlayGame(gameToPlay, this);
+			}
+			else {
+				isDeckGame = true;
+				playDeckGame = new PlayDeckGame(gameToPlay, this);
+			}
 		}
 		addImpl(gameReqs, JSplitPane.LEFT, 1);
 		final Dimension minimumSize = new Dimension(600, 200);
@@ -55,7 +64,12 @@ public class GameView extends JSplitPane{
 		}
 		else
 		{
-			addImpl(playGame, JSplitPane.RIGHT, 2);
+			if (isDeckGame){
+				addImpl(playDeckGame, JSplitPane.RIGHT, 2);
+			}
+			else {
+				addImpl(playGame, JSplitPane.RIGHT, 2);
+			}
 		}
 		setDividerLocation(400);
 	}
@@ -65,7 +79,12 @@ public class GameView extends JSplitPane{
 	 * @param r the requirement
 	 */
 	public void sendReqToPlay(Requirement r) {
-		playGame.chooseReq(r);
+		if (isDeckGame){
+			playDeckGame.chooseReq(r);
+		}
+		else {
+			playGame.chooseReq(r);
+		}
 	}
 	
 	/**
@@ -73,7 +92,12 @@ public class GameView extends JSplitPane{
 	 * @param r the Requirement to send
 	 */
 	public void sendReqToView(Requirement r) {
-		playGame.chooseReq(r);
+		if (isDeckGame){
+			playDeckGame.chooseReq(r);
+		}
+		else {
+			playGame.chooseReq(r);
+		}
 	}
 
 	/**
@@ -87,7 +111,12 @@ public class GameView extends JSplitPane{
 	 * clears the game view's boxes
 	 */
 	public void clearBoxes() {
-		playGame.clear();
+		if (isDeckGame){
+			playDeckGame.clear();
+		}
+		else {
+			playGame.clear();
+		}	
 	}
 	
 }

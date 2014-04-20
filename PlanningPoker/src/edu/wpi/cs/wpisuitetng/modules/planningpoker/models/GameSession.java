@@ -6,11 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
-<<<<<<< HEAD
-=======
  * Contributors:
  * Team Cosmic Latte
->>>>>>> f2fd47508740055fc6e2dde62e642129f09fed52
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
@@ -59,6 +56,8 @@ public class GameSession extends AbstractModel {
 	private final boolean emailSent = false;
 	private List<Float> median;
 	private List<Float> mean;
+	private int deckId;
+	private List<Vote> votes;
 	
 	/**
 	 * This constructor generates a game session
@@ -75,10 +74,11 @@ public class GameSession extends AbstractModel {
 		this.ownerID = ownerID;
 		this.gameID = gameID;
 		endDate = deadline;
-		//this.endDate.setMonth(endDate.getMonth());
 		this.gameReqs = gameReqs;
 		gameStatus = GameStatus.DRAFT;
 		creationdate = new Date();
+		votes = (new ArrayList<Vote>());
+		deckId = -1;
 		this.median = null;
 		this.mean = null;
 	}
@@ -247,13 +247,14 @@ public class GameSession extends AbstractModel {
 		if (!(other instanceof GameSession)){
 			return false;
 		}
+		
 		final GameSession o = (GameSession) other;
 
 		if (gameName.equals(o.getGameName())){
 			if (gameDescription.equals(o.getGameDescription())){
 				if (ownerID == o.getOwnerID()){
 					if (gameID == o.getGameID()){
-						if (endDate.equals(o.getEndDate())){
+						if ((endDate == null && o.getEndDate()==null) || endDate.equals(o.getEndDate())){ // if both are null or they are equal
 							if (gameReqs.equals(o.getGameReqs())){
 								if (gameStatus == o.getGameStatus()){
 										return true;
@@ -316,6 +317,15 @@ public class GameSession extends AbstractModel {
 	}
 	public List<Float> getMedian(){
 		return median;
+	}
+	
+	public GameSession setDeckId(int deckId){
+		this.deckId = deckId;
+		return this;
+	}
+	
+	public int getDeckId(){
+		return deckId;
 	}
 	
 }

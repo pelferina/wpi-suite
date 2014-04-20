@@ -72,8 +72,10 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		final GameSession[] sessions = {};
 		
 		table = new JTable(new JTableModel(sessions));
-		sorter = new TableRowSorter<JTableModel>((JTableModel)table.getModel());
-		table.setRowSorter(sorter);
+		
+		//sort the table
+		//sorter = new TableRowSorter<JTableModel>((JTableModel)table.getModel());
+		//table.setRowSorter(sorter);
 		
 		//This is used to refresh the overview table
 		
@@ -150,7 +152,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	 */
 	public void updateTable(String s){
 		/** TODO this should be in the constructor, but this panel gets loaded before a user logs in*/
-		currentUser = getUserID(GetCurrentUser.getInstance().getCurrentUser().getName());
+		currentUser = GetCurrentUser.getInstance().getCurrentUser().getIdNum();
 		
 		List<GameSession> sessions = new ArrayList<GameSession>();
 		
