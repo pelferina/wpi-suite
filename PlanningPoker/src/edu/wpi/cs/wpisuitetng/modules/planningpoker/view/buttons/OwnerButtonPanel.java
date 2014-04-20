@@ -87,8 +87,8 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		}
 		listener = new EndGameActionListener(game);
 		ownerButton.addActionListener(listener);
-		
-		expireThisButtonIn((int)(game.getEndDate().getTime()-Calendar.getInstance().getTime().getTime()));
+		if (game.getEndDate()!=null)
+			expireThisButtonIn((int)(game.getEndDate().getTime()-Calendar.getInstance().getTime().getTime()));
 
 	}
 	/**
@@ -109,7 +109,8 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		listener = new ActivateGameActionListener(game);
 		ownerButton.addActionListener(listener);
 		
-		expireThisButtonIn((int)(game.getEndDate().getTime()-Calendar.getInstance().getTime().getTime()));
+		if (game.getEndDate()!=null)
+			expireThisButtonIn((int)(game.getEndDate().getTime()-Calendar.getInstance().getTime().getTime()));
 	}
 
 	/**
