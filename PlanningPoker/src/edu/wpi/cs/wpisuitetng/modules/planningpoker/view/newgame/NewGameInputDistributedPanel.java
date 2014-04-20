@@ -135,6 +135,9 @@ public class NewGameInputDistributedPanel extends JPanel {
 		editMode = true;
 		saveGameButton = new JButton("Update Game");
 		init(ngdp);
+		if (gameSession.getGameStatus().equals(GameStatus.ACTIVE)){
+			activateGameButton.setVisible(false);
+		}
 		System.out.println("Editing Game: "+ gameSession.getGameName());
 	}
 	
