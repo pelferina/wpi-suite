@@ -49,7 +49,7 @@ public class NewRequirementPanel extends JPanel {
 	private JTextField nameField;
 	private JTextArea descriptionField;
 	private final JLabel nameLabel = new JLabel("Requirement Name: ");
-	private final JLabel descriptionLabel = new JLabel("Description: ");
+	private final JLabel descriptionLabel = new JLabel("Requirement Description: ");
 	private final JButton CreateRequirementButton = new JButton("Create Requirement");
 	private final JButton cancelButton = new JButton("Cancel");
 	private JComboBox<RequirementPriority> priorityComboBox = new JComboBox<RequirementPriority>();
@@ -85,50 +85,52 @@ public class NewRequirementPanel extends JPanel {
 		descriptionField.setLineWrap(true);
 		SpringLayout springLayout = new SpringLayout();
 		
+		//Spring layout constraints for cancelButton
+		springLayout.putConstraint(SpringLayout.WEST, cancelButton, 29, SpringLayout.EAST, CreateRequirementButton);
+		springLayout.putConstraint(SpringLayout.SOUTH, cancelButton, -38, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, cancelButton, -149, SpringLayout.EAST, this);
+		
+		//Spring layout constraints for CreateRequirementButton
+		springLayout.putConstraint(SpringLayout.EAST, CreateRequirementButton, -286, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, CreateRequirementButton, -62, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, CreateRequirementButton, -39, SpringLayout.SOUTH, this);
+		
 		//Spring layout constraints for priorityComboBox
-		springLayout.putConstraint(SpringLayout.EAST, priorityComboBox, 24, SpringLayout.EAST, CreateRequirementButton);
-		springLayout.putConstraint(SpringLayout.NORTH, priorityComboBox, -3, SpringLayout.NORTH, lblPriority);
-		springLayout.putConstraint(SpringLayout.WEST, priorityComboBox, 6, SpringLayout.EAST, lblPriority);
+		springLayout.putConstraint(SpringLayout.NORTH, priorityComboBox, 43, SpringLayout.SOUTH, descriptionField);
+		springLayout.putConstraint(SpringLayout.WEST, priorityComboBox, 5, SpringLayout.EAST, lblPriority);
+		springLayout.putConstraint(SpringLayout.EAST, priorityComboBox, -350, SpringLayout.EAST, this);
+		
+		//Spring layout constraints for lblType
+		springLayout.putConstraint(SpringLayout.WEST, lblType, 273, SpringLayout.EAST, lblPriority);
+		springLayout.putConstraint(SpringLayout.NORTH, lblType, 46, SpringLayout.SOUTH, descriptionField);
 		
 		//Spring layout constraints for typeComboBox
-		springLayout.putConstraint(SpringLayout.NORTH, typeComboBox, -3, SpringLayout.NORTH, lblPriority);
+		springLayout.putConstraint(SpringLayout.NORTH, typeComboBox, 284, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, typeComboBox, 6, SpringLayout.EAST, lblType);
 		springLayout.putConstraint(SpringLayout.EAST, typeComboBox, -49, SpringLayout.EAST, this);
-	
-		//Spring layout constraints for cancelButton
-		springLayout.putConstraint(SpringLayout.NORTH, cancelButton, 0, SpringLayout.NORTH, CreateRequirementButton);
-		springLayout.putConstraint(SpringLayout.EAST, cancelButton, 0, SpringLayout.EAST, nameField);
+		
+		//Spring layout constraints for descriptionField
+		springLayout.putConstraint(SpringLayout.NORTH, descriptionField, 116, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, descriptionField, -44, SpringLayout.NORTH, typeComboBox);
+		springLayout.putConstraint(SpringLayout.WEST, descriptionField, 0, SpringLayout.WEST, nameLabel);
+		springLayout.putConstraint(SpringLayout.EAST, descriptionField, -45, SpringLayout.EAST, this);
+		
+		//Spring layout constraints for lblPriority
+		springLayout.putConstraint(SpringLayout.NORTH, lblPriority, 45, SpringLayout.SOUTH, descriptionField);
+		springLayout.putConstraint(SpringLayout.WEST, lblPriority, 53, SpringLayout.WEST, this);
+		
+		//Spring layout constraints for descriptionLabel
+		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 53, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, descriptionLabel, -16, SpringLayout.NORTH, descriptionField);
+		
+		//Spring layout constraints for nameField
+		springLayout.putConstraint(SpringLayout.WEST, nameField, 6, SpringLayout.EAST, nameLabel);
+		springLayout.putConstraint(SpringLayout.EAST, nameField, -45, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, nameField, -3, SpringLayout.NORTH, nameLabel);
 		
 		//Spring layout constraints for the nameLabel
 		springLayout.putConstraint(SpringLayout.NORTH, nameLabel, 29, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, nameLabel, 53, SpringLayout.WEST, this);
-		
-		//Spring layout constraints for nameField
-		springLayout.putConstraint(SpringLayout.NORTH, nameField, -3, SpringLayout.NORTH, nameLabel);
-		springLayout.putConstraint(SpringLayout.WEST, nameField, 6, SpringLayout.EAST, nameLabel);
-		springLayout.putConstraint(SpringLayout.EAST, nameField, 0, SpringLayout.EAST, descriptionField);
-		
-		//Spring layout constraints for lblPriority
-		springLayout.putConstraint(SpringLayout.WEST, lblPriority, 0, SpringLayout.WEST, nameLabel);
-		springLayout.putConstraint(SpringLayout.NORTH, lblPriority, 32, SpringLayout.SOUTH, descriptionField);
-		
-		//Spring layout constraints for lblType
-		springLayout.putConstraint(SpringLayout.NORTH, lblType, 0, SpringLayout.NORTH, lblPriority);
-		springLayout.putConstraint(SpringLayout.EAST, lblType, -158, SpringLayout.EAST, this);
-		
-		//Spring layout constraints for CreateRequirementButton
-		springLayout.putConstraint(SpringLayout.WEST, CreateRequirementButton, 43, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, CreateRequirementButton, -10, SpringLayout.SOUTH, this);
-		
-		//Spring layout constraints for descriptionLabel
-		springLayout.putConstraint(SpringLayout.NORTH, descriptionLabel, 17, SpringLayout.SOUTH, nameLabel);
-		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 0, SpringLayout.WEST, nameLabel);
-		
-		//Spring layout constraints for descriptionField
-		springLayout.putConstraint(SpringLayout.NORTH, descriptionField, 6, SpringLayout.SOUTH, descriptionLabel);
-		springLayout.putConstraint(SpringLayout.WEST, descriptionField, 0, SpringLayout.WEST, nameLabel);
-		springLayout.putConstraint(SpringLayout.SOUTH, descriptionField, 162, SpringLayout.SOUTH, descriptionLabel);
-		springLayout.putConstraint(SpringLayout.EAST, descriptionField, 336, SpringLayout.WEST, nameLabel);
 		
 		setLayout(springLayout);
 		add(cancelButton);
