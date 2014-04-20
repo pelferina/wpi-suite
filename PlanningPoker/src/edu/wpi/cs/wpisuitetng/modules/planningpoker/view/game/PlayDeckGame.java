@@ -41,12 +41,12 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
  * @author Cosmic Latte
  * @version $Revision: 1.0 $
  */
+@SuppressWarnings("serial")
 public class PlayDeckGame extends JPanel{
 
 	private final List<Integer> gameReqs;
 	private final JLabel reqName = new JLabel("Requirement Name:");
 	private final JLabel reqDesc = new JLabel("Requirement Description:");
-	private final JLabel estimateLabel = new JLabel("Input Estimate");
 	private final JTextField estimateTextField = new JTextField();
 	private final JTextField reqNameTextField = new JTextField();
 	private final JTextArea reqDescTextArea = new JTextArea();
@@ -58,7 +58,7 @@ public class PlayDeckGame extends JPanel{
 	private GameSession currentGame;
 	private int deckId;
 	private List<Integer> gameCardList = new ArrayList<Integer>();
-	private Integer votesSoFarInt = 0;
+	private int votesSoFarInt = 0;
 	private JLabel votesSoFarNameLabel = new JLabel("Estimate: ");
 	private JLabel votesSoFarLabel = new JLabel("0");
 	//List of buttons associated with the cards. First element -> lowest card val
@@ -104,7 +104,7 @@ public class PlayDeckGame extends JPanel{
 		reqNameTextField.setText(currentReq.getName());
 		reqDescTextArea.setText(currentReq.getDescription());
 		if (gameToPlay.getVotes().size() > 0){
-			estimateTextField.setText(Integer.toString(gameToPlay.getVotes().get(0).getVote().get(currentReq.getId())));
+			votesSoFarLabel.setText(Integer.toString(gameToPlay.getVotes().get(0).getVote().get(currentReq.getId())));
 		}
 		reqNameTextField.setEditable(false);
 		reqDescTextArea.setEditable(false);
@@ -114,10 +114,10 @@ public class PlayDeckGame extends JPanel{
 				public void itemStateChanged ( ItemEvent ie ) {
 					if (card.isSelected()) {
 						votesSoFarInt += card.getValue();
-						votesSoFarLabel.setText (votesSoFarInt.toString()) ;
+						votesSoFarLabel.setText (new Integer(votesSoFarInt).toString()) ;
 					} else {
 						votesSoFarInt -= card.getValue();
-						votesSoFarLabel.setText (votesSoFarInt.toString()) ;
+						votesSoFarLabel.setText (new Integer(votesSoFarInt).toString()) ;
 					}
 				}
 			});
@@ -129,8 +129,8 @@ public class PlayDeckGame extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e){
-				final int estimate = Integer.parseInt(estimateTextField.getText());
-				if (estimate < 0){
+				//final int estimate = Integer.parseInt(estimateTextField.getText());
+				if (votesSoFarInt < 0){
 					//TODO error message
 					return;
 				}
@@ -138,7 +138,7 @@ public class PlayDeckGame extends JPanel{
 					for(int i = 0; i < gameReqs.size(); i++){
 						if (gameReqs.get(i) == currentReq.getId()){
 							ArrayList<Integer> votes = (ArrayList<Integer>) userEstimates.getVote();
-							votes.set(i, estimate);
+							votes.set(i, votesSoFarInt);
 							userEstimates.setVote(votes);
 							break;
 						}
@@ -219,53 +219,10 @@ public class PlayDeckGame extends JPanel{
 						.addComponent(voteButton)
 						.addComponent(submit))
 		);
-		/*
-		final SpringLayout springLayout = new SpringLayout();
-		
-		//Spring layout placement for vote button
-		springLayout.putConstraint(SpringLayout.NORTH, voteButton, 6, SpringLayout.SOUTH, estimateTextField);
-		springLayout.putConstraint(SpringLayout.WEST, voteButton, 132, SpringLayout.WEST, this);		
-		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, voteButton, 0, springLayout.HORIZONTAL_CENTER, estimateTextField);
-		
-		//Spring layout placement for submit button
-		springLayout.putConstraint(SpringLayout.NORTH, submit, 30, SpringLayout.SOUTH, voteButton);
-		springLayout.putConstraint(SpringLayout.WEST, submit, 0, SpringLayout.WEST, voteButton);
-		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, submit, 0, springLayout.HORIZONTAL_CENTER, voteButton);
-		
-		//Spring layout placement for estimateTextField
-		springLayout.putConstraint(SpringLayout.NORTH, estimateTextField, 6, SpringLayout.SOUTH, estimateLabel);
-		springLayout.putConstraint(SpringLayout.WEST, estimateTextField, 0, SpringLayout.WEST, estimateLabel);
-		springLayout.putConstraint(SpringLayout.EAST, estimateTextField, 0, SpringLayout.EAST, estimateLabel);
-		
-		//Spring layout for placement of reqNameTextField
-		springLayout.putConstraint(SpringLayout.WEST, reqNameTextField, 32, SpringLayout.EAST, reqName);
-		springLayout.putConstraint(SpringLayout.EAST, reqNameTextField, -116, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, reqNameTextField, -3, SpringLayout.NORTH, reqName);
-		
-		//Spring layout for estimateLabel
-		springLayout.putConstraint(SpringLayout.NORTH, estimateLabel, 47, SpringLayout.SOUTH, reqDescTextArea);
-		springLayout.putConstraint(SpringLayout.WEST, estimateLabel, 155, SpringLayout.WEST, this);
-		
-		//Spring layout for reqDescTextArea
-		springLayout.putConstraint(SpringLayout.NORTH, reqDescTextArea, 0, SpringLayout.NORTH, reqDesc);
-		springLayout.putConstraint(SpringLayout.WEST, reqDescTextArea, 6, SpringLayout.EAST, reqDesc);
-		springLayout.putConstraint(SpringLayout.SOUTH, reqDescTextArea, 113, SpringLayout.SOUTH, reqName);
-		springLayout.putConstraint(SpringLayout.EAST, reqDescTextArea, 438, SpringLayout.WEST, this);
-		
-		//Spring layout for reqDesc label
-		springLayout.putConstraint(SpringLayout.NORTH, reqDesc, 16, SpringLayout.SOUTH, reqName);
-		springLayout.putConstraint(SpringLayout.WEST, reqDesc, 0, SpringLayout.WEST, reqName);
-		
-		//Spring layout for reqName label
-		springLayout.putConstraint(SpringLayout.NORTH, reqName, 35, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, reqName, 25, SpringLayout.WEST, this);
-		setLayout(springLayout);
-	*/
+
 		add(reqName);
 		add(reqNameTextField);
 		add(reqDesc);
-		//add(estimateLabel);
-		//add(estimateTextField);
 		add(reqDescTextArea);
 		addButtons();
 		add(votesSoFarNameLabel);
@@ -325,9 +282,9 @@ public class PlayDeckGame extends JPanel{
 		}
 		final int estimate = userEstimates.getVote().get(i);
 		if (estimate > -1) {
-			estimateTextField.setText(Integer.toString(estimate));
+			votesSoFarLabel.setText(Integer.toString(estimate));
 		} else {
-			estimateTextField.setText("");
+			votesSoFarLabel.setText("");
 		}
 	}
 	

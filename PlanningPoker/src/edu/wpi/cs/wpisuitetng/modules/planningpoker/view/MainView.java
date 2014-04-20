@@ -59,9 +59,6 @@ public class MainView extends JTabbedPane {
 	private final List<Integer> openTabs = new ArrayList<Integer>();
 	private final List<NewGameDistributedPanel> newGames = new ArrayList<NewGameDistributedPanel>();
 	final int PERMANANT_TABS = 1;
-	//private PlayDeckGame deckGamePanel = new PlayDeckGame();
-	private DeckPanel deckPanel = new DeckPanel(DeckModel.getInstance());
-	private PlayDeckGameTest playDeckGameTest;
 	
 	public MainView() {
 		overviewPanel = new OverviewPanel();
@@ -69,15 +66,6 @@ public class MainView extends JTabbedPane {
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
 		addTab("Overview", overviewPanel);
-		//addTab("Deck Game", deckGamePanel);
-		addTab("DeckPanel", deckPanel);
-		
-		//set up a testGameSession
-		List<Integer> testReqList = new ArrayList<Integer>();
-		testReqList.add(0);
-		GameSession testDeck = new GameSession("TestDeck", "test", 0, GameModel.getInstance().getSize()+1, null, testReqList);
-		playDeckGameTest = new PlayDeckGameTest(testDeck);
-		addTab("DeckGameTest", playDeckGameTest);
 		
 		ViewEventController.getInstance().setMainView(this);
 	}
