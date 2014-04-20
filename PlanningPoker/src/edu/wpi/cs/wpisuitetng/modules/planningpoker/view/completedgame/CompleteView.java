@@ -75,4 +75,9 @@ public class CompleteView extends JSplitPane {
 	public VoteData getVoteData(){
 		return voteData;
 	}
+
+	public void nextRequirement() {
+		gameData.nextRequirement();
+		
+	}
 }
