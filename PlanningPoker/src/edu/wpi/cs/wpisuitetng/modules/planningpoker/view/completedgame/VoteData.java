@@ -11,6 +11,9 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.completedgame;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -53,6 +56,7 @@ public class VoteData extends JPanel{
 	private List<Requirement> gameReqs;
 	private Requirement currentReq;
 	private int	reqIndex;
+	private Vote finalVote;
 	
 	/**
 	 * The constructor for the VoteData class
@@ -63,6 +67,11 @@ public class VoteData extends JPanel{
 		completeView = cv;
 		completedGame = gs;
 		gameReqs = cv.getGameRequirements();
+		ArrayList<Integer> estimates = new ArrayList<Integer>();
+		for (int i = 0; i < gameReqs.size(); i++){
+			estimates.add(-1);
+		}
+		finalVote = new Vote(estimates, completedGame.getGameID());
 		currentReq = gameReqs.get(0);
 		reqIndex = 0;
 		
@@ -92,6 +101,16 @@ public class VoteData extends JPanel{
 		medianTextField.setText(String.format("%.2f", median));
 		medianTextField.setEnabled(false);
 		init();
+		
+		//Action listener for the submit button that will save the final estimate for the requirement
+		finalSubmitButton.addActionListener(new ActionListener(){
+			
+			@Override
+			public void actionPerformed(ActionEvent e){
+				int finalEstimate = Integer.parseInt(finalEstimateText.getText());
+				finalVote.getVote().set(reqIndex, finalEstimate);
+			}
+		});
 	}
 	
 	/**
@@ -223,6 +242,12 @@ public class VoteData extends JPanel{
 			}
 			estimatesModel.setValueAt(v.getVote().get(reqIndex), i, 1);
 			i++;
+		}
+		if (finalVote.getVote().get(reqIndex) != -1){
+			finalEstimateText.setText(Integer.toString(finalVote.getVote().get(reqIndex)));
+		}
+		else {
+			finalEstimateText.setText("");
 		}
 		reqNameText.setText(req.getName());
 		descriptionTextArea.setText(req.getDescription());
