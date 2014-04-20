@@ -36,7 +36,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.completedgame.CompleteV
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.reqpanel.reqpanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.reqpanel.NewRequirementPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsRequestObserver;
@@ -143,11 +143,11 @@ public class MainView extends JTabbedPane {
 				myCloseActionHandler = new MyCloseActionHandler("User Preferences", j, this, userPreferences, 4);
 				add(userPreferences, open);
 			}
-			else if (tabType.equals("Req Tab")){
-				final reqpanel newReq = new reqpanel(btnClose);
+/*			else if (tabType.equals("Req Tab")){
+				final NewRequirementPanel newReq = new NewRequirementPanel(btnClose);
 				myCloseActionHandler = new MyCloseActionHandler("New Requirement", j, this, newReq, 5);
 				add(newReq, open);
-			}
+			}*/
 			final JPanel pnlTab = new JPanel(new GridBagLayout());
 			pnlTab.setOpaque(false);
 			final JLabel lblTitle = new JLabel(tabLabler(tabType, game));
@@ -233,7 +233,7 @@ public class MainView extends JTabbedPane {
 	    private CompleteView completeView;
 	    private NewGameDistributedPanel ngdp;
 	    private PreferencesPanel userPreferences;
-	    private reqpanel newReq;
+	    private NewRequirementPanel newReq;
 	    
 	    /**
 	     * Close action handler for NewGameDistributedPanel
@@ -251,7 +251,7 @@ public class MainView extends JTabbedPane {
 	        this.mv = mv;
 	    }
 	    
-	    public MyCloseActionHandler(String tabName, int index, MainView mv, reqpanel rp, int type) {
+	    public MyCloseActionHandler(String tabName, int index, MainView mv, NewRequirementPanel rp, int type) {
 	        this.tabName = tabName;
 	        this.index = index;
 	        this.newReq = rp;

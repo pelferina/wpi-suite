@@ -14,7 +14,7 @@ import javax.swing.*;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.reqpanel.reqpanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.reqpanel.NewRequirementPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
@@ -42,6 +42,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	private final JTable selectedTable;
 	private Timer refresh;
 	private List<Requirement> reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
+	private NewGameDistributedPanel newGamePanel;
 	// Declarations and initializations of GUI components
 	JLabel lblRequirementsAvailable = new JLabel("Requirements Available");
 	JButton btnAddReq = new JButton("Add New Requirement");
@@ -58,7 +59,8 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	 * @param requirements, the current requirements in the database
 	 */
 	//Constructor for new game tab
-	public NewGameReqPanel() {
+	public NewGameReqPanel(NewGameDistributedPanel ngdp) {
+		newGamePanel = ngdp;
 		unselectedTable = new JTable();
 		selectedTable = new JTable();
 		init();
@@ -70,8 +72,9 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	 * @param gameSession the game to be edited
 	 */
 	//Constructor for edit games tab
-	public NewGameReqPanel(GameSession gameSession) {
+	public NewGameReqPanel(NewGameDistributedPanel ngdp, GameSession gameSession) {
 
+		newGamePanel = ngdp;
 		unselectedTable = new JTable();
 		selectedTable = new JTable();
 
@@ -114,7 +117,8 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		btnAddReq.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
-				ViewEventController.getInstance().newReqTab(new GameSession(new String(), new String(), 0, 0, new Date(), new ArrayList<Integer>()));
+				newGamePanel.newReq();
+				//ViewEventController.getInstance().newReqTab(new GameSession(new String(), new String(), 0, 0, new Date(), new ArrayList<Integer>()));
 			}
 
 		});
