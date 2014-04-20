@@ -135,6 +135,9 @@ public class NewGameInputDistributedPanel extends JPanel {
 		editMode = true;
 		saveGameButton = new JButton("Update Game");
 		init(ngdp);
+		if (gameSession.getGameStatus().equals(GameStatus.ACTIVE)){
+			activateGameButton.setVisible(false);
+		}
 		System.out.println("Editing Game: "+ gameSession.getGameName());
 	}
 	
@@ -344,10 +347,13 @@ public class NewGameInputDistributedPanel extends JPanel {
 		//If activating: Set game status to active and Send an activation email 
 		if(!editMode)
 		{
-			final GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
+			GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
 			if(activate == true)
 			{
 				newGame.setGameStatus(GameStatus.ACTIVE);
+			}
+			if (deckCheckBox.isSelected()){
+				newGame.setDeckId(0);
 			}
 
 			final AddGameController msgr = new AddGameController(model);
@@ -364,9 +370,9 @@ public class NewGameInputDistributedPanel extends JPanel {
 			{
 				currentGameSession.setGameStatus(GameStatus.ACTIVE);
 			}
-//			final GameSession modifiedGame = new GameSession(currentGameSession.getGameName(), currentGameSession.getGameDescription(), 
-//					currentGameSession.getOwnerID(), currentGameSession.getGameID(), currentGameSession.getEndDate(), currentGameSession.getGameReqs());
-//			modifiedGame.setGameStatus(currentGameSession.getGameStatus());
+			if (deckCheckBox.isSelected()){
+				currentGameSession.setDeckId(0);
+			}
 			final UpdateGameController msgr = new UpdateGameController();
 //			System.out.println("Attempting to send game to database"); // TODO: also remove this
 			msgr.sendGame(currentGameSession); //TODO: This is sending an error
@@ -397,10 +403,12 @@ public class NewGameInputDistributedPanel extends JPanel {
 				//Display Update button if game has been changed in edit mode
 				if(editMode && anythingChanged())
 				{
+					isNew = false;
 					saveGameButton.setEnabled(true);
 				}
 				else if(editMode && !anythingChanged())
 				{
+					isNew = true;
 					saveGameButton.setEnabled(false);
 				}
 			}
@@ -668,6 +676,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 	}
 	
 	private boolean anythingChanged() {
+	
 		if(currentGameSession.getGameStatus() == GameStatus.DRAFT)
 		{	
 			// Check if the user has changed the name
