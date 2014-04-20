@@ -62,6 +62,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	GameTree gameTreeModel;
 	JTree gameTree;
 	TableRowSorter<JTableModel> sorter;
+	int currentUser;
 	
 	public OverviewPanel(){
 		
@@ -120,10 +121,8 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		
 		//Initializes the game tree
 		
-		gameTreeModel = new GameTree(new DefaultMutableTreeNode("Planning Poker"));
+		gameTreeModel = new GameTree(new DefaultMutableTreeNode("All Games"));
 		gameTree = new JTree(gameTreeModel.getTop());
-		
-		//Refreshes the table whenever the tree is selected
 		
 		gameTree.addTreeSelectionListener(    new TreeSelectionListener(){
 			public void valueChanged(TreeSelectionEvent e) {
@@ -136,34 +135,12 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	            final Object nodeInfo = node.getUserObject();
 	            updateTable((String)nodeInfo);
 	    }});
-		
-		//Refreshes the table when the focus is gained to the overview tab
-		
-		gameTree.addFocusListener(new FocusListener(){
 
-			@Override
-			public void focusGained(FocusEvent e) {
-	            gameTreeModel.update();
-	            final DefaultTreeModel model = (DefaultTreeModel) gameTree.getModel();
-	            model.setRoot(gameTreeModel.getTop());
-	            model.reload();
-				
-				
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				System.out.println("Focus Lost");
-			}
-			
-		});
-
-
-		
 		treeView = new JScrollPane(gameTree);
 		
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, treeView, tableView);
 		add(splitPane);	
+		
 	}
 	
 
@@ -172,22 +149,56 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	 * @param s the string to update the table with
 	 */
 	public void updateTable(String s){
+		/** TODO this should be in the constructor, but this panel gets loaded before a user logs in*/
+		currentUser = GetCurrentUser.getInstance().getCurrentUser().getIdNum();
 		
 		List<GameSession> sessions = new ArrayList<GameSession>();
-				
-		if (s.equals("Drafts")){
-			sessions = gameModel.getDraftGameSessions();
-		} else if (s.equals("Active Games")){
-			sessions = gameModel.getActiveGameSessions();
-		} else if (s.equals("In Progress Games")){
-			sessions = gameModel.getInProgressGameSessions();
-		} else if (s.equals("Completed Games")){
-			sessions = gameModel.getCompletedGameSessions();
-		} else if (s.equals("Archived Games")){
-			sessions =  gameModel.getArchivedGameSessions();
-		} else if (s.equals("Planning Poker")) {
-			sessions =  gameModel.getGames();
+		
+		if (s.equals("All Games"))
+		{
+			sessions = gameModel.getDraftGameSessions(currentUser);
+			sessions.addAll(gameModel.getActiveGameSessions());
+			sessions.addAll(gameModel.getInProgressGameSessions());
+			sessions.addAll(gameModel.getCompletedGameSessions());
+			sessions.addAll(gameModel.getArchivedGameSessions());
 		}
+		else if (s.equals("My Games"))
+		{
+			sessions = gameModel.getGames(currentUser);
+		}
+		else if (s.equals("Drafts"))
+		{
+			sessions = gameModel.getDraftGameSessions(currentUser);
+		}
+		else if (s.equals("Active"))
+		{
+			sessions = gameModel.getActiveGameSessions(currentUser);
+			sessions.addAll(gameModel.getInProgressGameSessions(currentUser));
+		}
+		else if (s.equals("Complete"))
+		{
+			sessions = gameModel.getCompletedGameSessions(currentUser);
+			sessions.addAll(gameModel.getArchivedGameSessions(currentUser));
+		}
+		else if (s.equals("In Progress"))
+		{
+			sessions = gameModel.getActiveGameSessions();
+			sessions.addAll(gameModel.getInProgressGameSessions());
+		}
+		else if (s.equals("Needs Vote"))
+			sessions = gameModel.getActiveGameSessions();
+		else if (s.equals("Voted"))
+			sessions = gameModel.getInProgressGameSessions();
+		else if (s.equals("History"))
+		{
+			sessions = gameModel.getArchivedGameSessions();
+			sessions.addAll(gameModel.getCompletedGameSessions());
+		}
+		else if (s.equals("Completed"))
+			sessions = gameModel.getCompletedGameSessions();
+		else if (s.equals("Archived"))
+			sessions = gameModel.getArchivedGameSessions();	
+		
 		final JTableModel jModel = (JTableModel)table.getModel();
 		jModel.update((ArrayList<GameSession>)sessions);
 		table.setModel(jModel);
@@ -206,13 +217,23 @@ public class OverviewPanel extends JPanel implements Refreshable {
         final DefaultTreeModel model = (DefaultTreeModel) gameTree.getModel();
         model.setRoot(gameTreeModel.getTop());
         model.reload();
-        updateTable("");
+        
+        //update the table for my selection.
+		final DefaultMutableTreeNode node = (DefaultMutableTreeNode)gameTree.getLastSelectedPathComponent();
+        if (node != null)
+        {
+            final Object nodeInfo = node.getUserObject();
+            updateTable((String)nodeInfo);        	
+        }
         
         System.out.println("Updating: Games are now " + table.getModel().getRowCount());
         
         gameTree.repaint();
         table.repaint();
-        		
+        
+		//Expand all folders
+		for (int i = 0; i < gameTree.getRowCount(); i++)
+	         gameTree.expandRow(i);
 	}
 
 	/**
@@ -222,6 +243,10 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		ViewEventController.getInstance();
 	}
 	
+	
+	/**
+	 * TODO should this be in another class?
+	 */
 	private int getUserID(String userName){
 		final GetUsersController guc = GetUsersController.getInstance();
 		final User users[];

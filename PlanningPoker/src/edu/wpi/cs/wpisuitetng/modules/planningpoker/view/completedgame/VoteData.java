@@ -21,6 +21,8 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
@@ -110,7 +112,11 @@ public class VoteData extends JPanel{
 		
 		int i = 0;
 		for (Vote v: completedGame.getVotes()){
-			estimatesModel.setValueAt(v.getUID(), i, 0);
+			for (User u: GetUsersController.getInstance().getUsers()){
+				if (u.getIdNum() == v.getUID()){
+					estimatesModel.setValueAt(u.getName(), i, 0);
+				}
+			}
 			estimatesModel.setValueAt(v.getVote().get(reqIndex), i, 1);
 			i++;
 		}
@@ -208,7 +214,11 @@ public class VoteData extends JPanel{
 		int i = 0;
 		DefaultTableModel estimatesModel = (DefaultTableModel) estimatesTable.getModel();
 		for (Vote v: completedGame.getVotes()){
-			estimatesModel.setValueAt(v.getUID(), i, 0);
+			for (User u: GetUsersController.getInstance().getUsers()){
+				if (u.getIdNum() == v.getUID()){
+					estimatesModel.setValueAt(u.getName(), i, 0);
+				}
+			}
 			estimatesModel.setValueAt(v.getVote().get(reqIndex), i, 1);
 			i++;
 		}

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game;
 
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -73,6 +72,7 @@ public class PlayGame extends JPanel{
 		currentGame = gameToPlay;
 		gameReqs = currentGame.getGameReqs();
 		final ArrayList<Integer> estimates = new ArrayList<Integer>();
+
 		for (int i = 0; i < gameReqs.size(); i++){
 			estimates.add(-1);
 		}
@@ -163,12 +163,9 @@ public class PlayGame extends JPanel{
 		submit.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
-				int option = JOptionPane.showOptionDialog(gv, "Do you wish to submit your current votes?", "Save Votes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-				if (option == 0){
-					AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
-					msgr.sendVote(userEstimates);
-					ViewEventController.getInstance().getMain().remove(gv);
-				}
+				AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
+				msgr.sendVote(userEstimates);
+				ViewEventController.getInstance().getMain().remove(gv);
 			}
 		});
 		

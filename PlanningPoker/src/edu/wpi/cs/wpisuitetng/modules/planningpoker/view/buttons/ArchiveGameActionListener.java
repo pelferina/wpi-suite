@@ -25,18 +25,19 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * @author Cosmic Latte
  * @version $Revision: 1.0 $
  */
-public class EndGameActionListener implements ActionListener{
+
+public class ArchiveGameActionListener implements ActionListener{
 	GameSession game;
 	/**
 	 * Constructor to populate gameID
 	 * @param gameID
 	 */
-	public EndGameActionListener(GameSession game){
+	public ArchiveGameActionListener(GameSession game){
 		this.game = game;
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		game.setGameStatus(GameStatus.COMPLETED);
+		game.setGameStatus(GameStatus.ARCHIVED);
 		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.POST); // POST == UPDAT
 		request.setBody(game.toJSON()); // put the new session in the body of the request
 		request.addObserver(new UpdateGameRequestObserver()); // add an observer to process the response

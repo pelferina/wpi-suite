@@ -216,4 +216,13 @@ public class JTableModel extends AbstractTableModel {
 		return games[i].getGameStatus();
 	}
 	
+	/**
+	 * get the game of the ith row
+	 * @param i the row number
+	 * @return the game of the ith row
+	 */
+	public GameSession getGame(int i){
+		return games[i];
+	}
+	
 }
