@@ -73,7 +73,6 @@ public class PlayDeckGame extends JPanel{
 		currentGame = gameToPlay;
 		gameReqs = currentGame.getGameReqs();
 		deckId = currentGame.getDeckId();
-		deckId = 0;
 		gameCardList = DeckModel.getInstance().getDeck(deckId).getCards();
 		generateButtons();
 		final ArrayList<Integer> estimates = new ArrayList<Integer>();
@@ -87,6 +86,7 @@ public class PlayDeckGame extends JPanel{
 				userEstimates = v;
 			}
 		}
+		reqDescTextArea.setWrapStyleWord(true);
 		submit.setEnabled(false);
 		gv = agv;
 		final List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
@@ -101,13 +101,17 @@ public class PlayDeckGame extends JPanel{
 		}
 		
 		//Sets the description and name text fields to the first requirement in the to estimate table
+		//gameNameTextField.setText(currentGame.getGameName());
 		reqNameTextField.setText(currentReq.getName());
+		//gameDescTextArea.setText(currentGame.getGameDescription());
 		reqDescTextArea.setText(currentReq.getDescription());
 		if (gameToPlay.getVotes().size() > 0){
 			votesSoFarLabel.setText(Integer.toString(gameToPlay.getVotes().get(0).getVote().get(currentReq.getId())));
 		}
 		reqNameTextField.setEditable(false);
 		reqDescTextArea.setEditable(false);
+		reqDescTextArea.setLineWrap(true);
+		reqDescTextArea.setWrapStyleWord(true);
 		//TODO add item listener to game cards;
 		for (final GameCard card: cardButtons){
 			card.addItemListener (new ItemListener() {
@@ -262,6 +266,16 @@ public class PlayDeckGame extends JPanel{
 		   add(c);
 		}
 	}
+	/**
+	 * This function cycles through available cards and unselect all of them
+	 */
+	private void uncheckButtons(){
+		for(int i=0; i < cardButtons.size(); i++)
+		{
+		   GameCard c = cardButtons.get(i);
+		   c.setSelected(false);
+		}
+	}
 	
 	//This function is used when a requirement is double clicked in one of the two requirement tables, and it sets the name and description fields to the 
 	//selected requirement
@@ -284,7 +298,8 @@ public class PlayDeckGame extends JPanel{
 		if (estimate > -1) {
 			votesSoFarLabel.setText(Integer.toString(estimate));
 		} else {
-			votesSoFarLabel.setText("");
+			votesSoFarLabel.setText("0");
+			uncheckButtons();
 		}
 	}
 	
@@ -319,7 +334,8 @@ public class PlayDeckGame extends JPanel{
 	public void clear() {
 		reqNameTextField.setText("");
 		reqDescTextArea.setText("");
-		estimateTextField.setText("");
+		votesSoFarLabel.setText("0");
+		uncheckButtons();
 	}
 	
 	/**

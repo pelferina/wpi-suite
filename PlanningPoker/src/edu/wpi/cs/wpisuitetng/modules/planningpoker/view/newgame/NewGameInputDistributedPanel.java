@@ -46,12 +46,12 @@ import javax.swing.event.DocumentListener;
  */
 @SuppressWarnings("serial")
 public class NewGameInputDistributedPanel extends JPanel {
-	
+
 	// TODO get rid of this, switch to GregorianCalendar data type
 	private Calendar currentDate; 
-	
+
 	private NewGameDistributedPanel newGameP;
-	
+
 	/*
 	 * Initializing optional Deadline
 	 */
@@ -61,7 +61,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 	private final UtilDateModel model = new UtilDateModel();
 	private final JDatePanelImpl datePanel = new JDatePanelImpl(model);
 	private final JDatePickerImpl datePicker = new JDatePickerImpl(datePanel);
-	
+
 	private final JLabel deadlineTime = new JLabel ("Deadline Time:");
 	private int hourTime;
 	private int minuteTime; 
@@ -74,18 +74,18 @@ public class NewGameInputDistributedPanel extends JPanel {
 	private final JRadioButton PMButton = new JRadioButton("PM");
 	private boolean isAM = true;
 	public boolean isNew = true;
-	
+
 	/*
 	 *  Initializing Requirement Selection	
 	 */
 	private final List<Integer> selectionsMade = new ArrayList<Integer>();
-	
+
 	/*
 	 *  Initializing Optional Deck Selection 
 	 */
 	private final JCheckBox deckCheckBox = new JCheckBox("Use Deck");
 	private final JComboBox<String> deckBox = new JComboBox<String>(); 
-	 
+
 	/*
 	 * Initializing name and description labels and text fields
 	 */
@@ -94,13 +94,13 @@ public class NewGameInputDistributedPanel extends JPanel {
 	private final JLabel deckLabel = new JLabel("Choose a deck:");
 	private final JTextField nameTextField = new JTextField();
 	private final JTextArea descriptionTextField = new JTextArea();
-	
+
 	/*
 	 *  Initializing editMode variables	
 	 */
 	private boolean editMode = false;
 	private GameSession currentGameSession = null;
-	
+
 	/*
 	 * Initializing error handling
 	 */
@@ -109,21 +109,21 @@ public class NewGameInputDistributedPanel extends JPanel {
 	private final JLabel deadlineError = new JLabel("Can not have a deadline in the past");
 	private final JLabel nameError = new JLabel("Enter a name for the game");
 	private final JLabel reqError = new JLabel("Can not have a game with no requirements");
-	
+
 	/*
 	 * Initializing Create/Update and Activate game buttons
 	 */
 	private final JButton saveGameButton;
 	private final JButton activateGameButton = new JButton("Activate Game");
-	
+
 	/*
 	 * Initializing Time Checker
 	 */
 	Timer canActivateChecker;
 
 	private boolean activate;
-	
-	
+
+
 	/**
 	 * Edit Tab constructor
 	 * @param ngdp the new game distributed panel that it was added from
@@ -140,7 +140,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		}
 		System.out.println("Editing Game: "+ gameSession.getGameName());
 	}
-	
+
 	/**
 	 * The constructor for the NewGameInputPanel
 	 * has void parameters
@@ -150,15 +150,15 @@ public class NewGameInputDistributedPanel extends JPanel {
 		saveGameButton = new JButton("Create Game");
 		init(ngdp);
 	}
-	
+
 	private void setupButtonIcons()
 	{
 		try {
 			Image img = ImageIO.read(getClass().getResource("create.png"));
 			saveGameButton.setIcon(new ImageIcon(img));
-		    
+
 			img = ImageIO.read(getClass().getResource("activate.png"));
-		    activateGameButton.setIcon(new ImageIcon(img));		    
+			activateGameButton.setIcon(new ImageIcon(img));		    
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
@@ -171,17 +171,17 @@ public class NewGameInputDistributedPanel extends JPanel {
 	private void init(NewGameDistributedPanel ngdp)
 	{
 		newGameP = ngdp;
-		
+
 		currentDate = Calendar.getInstance();
 
-		
+
 		setupButtonIcons();	
-		
+
 		saveGameButton.setEnabled(false);
 		activateGameButton.setEnabled(false);
-		
+
 		setPanel();
-				
+
 		// Set initial save/activate game visibility		
 		setSaveGameButtonVisibility(false);
 		setActivateGameButtonVisibility(false);
@@ -189,13 +189,13 @@ public class NewGameInputDistributedPanel extends JPanel {
 		//Set deadline and deck to not be visible
 		setDeadlineVisibility(false);	
 		setDeckVisibility(false);
-		
+
 		// Initialize the error Messages		
 		initializeErrorMessages();
-		
+
 		//Start timer to check if game can be activated
 		startCanActivateCheckerTimer();		
-		
+
 		//This is run if the game is opened in edit mode
 		if(editMode)
 		{
@@ -208,21 +208,21 @@ public class NewGameInputDistributedPanel extends JPanel {
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 					setDeadlineVisibility(true);
-			        datePicker.revalidate();
-			        datePicker.repaint();
-			        if(!editMode)
-			        {
-			        	// Initialize the deadline
-			        	initializeDeadline();
-			        }
+					datePicker.revalidate();
+					datePicker.repaint();
+					if(!editMode)
+					{
+						// Initialize the deadline
+						initializeDeadline();
+					}
 					setupDeadlineActionListeners();
-			    } else {
-			    	setDeadlineVisibility(false);
-			    }
+				} else {
+					setDeadlineVisibility(false);
+				}
 			}
-			
+
 		});
-		
+
 		//Display Deck selection only when checkbox is selected
 		deckCheckBox.addItemListener(new ItemListener()
 		{
@@ -232,12 +232,12 @@ public class NewGameInputDistributedPanel extends JPanel {
 					// Initialize the deck
 					initializeDeckComboBox();
 					setDeckVisibility(true);		        
-			    } else {
-			    	setDeckVisibility(false);
-			    }
+				} else {
+					setDeckVisibility(false);
+				}
 			}	
 		});
-		
+
 		//Adds a documentlistener to the name text field so that no name error can be handled, save button can be made visible  
 		//the pop-up will appear if the new game tab is closed.
 		nameTextField.getDocument().addDocumentListener(new DocumentListener(){
@@ -295,7 +295,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 				newGameP.isNew = false;
 			}
 		});
-			
+
 		//This button is for saving a game, and to do that, only the name is required		
 		saveGameButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -308,7 +308,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 				{
 					newGameP.close.doClick();
 				}
-				
+
 			}
 		});
 
@@ -327,13 +327,13 @@ public class NewGameInputDistributedPanel extends JPanel {
 		newGameP.isNew = true;
 
 		initializeErrorMessages();
-		
+
 		final String name = nameTextField.getText();
 		final String description = descriptionTextField.getText();
-		
+
 		@SuppressWarnings("deprecation")
 		Date deadlineDate = new Date(deadlineYear - 1900, deadlineMonth , deadlineDay, hourTime, minuteTime);
-		
+
 		//If just saving the game, set deadline to null
 		if(!deadlineCheckBox.isSelected())
 		{
@@ -353,12 +353,13 @@ public class NewGameInputDistributedPanel extends JPanel {
 				newGame.setGameStatus(GameStatus.ACTIVE);
 			}
 			if (deckCheckBox.isSelected()){
+				//TODO set correct deck
 				newGame.setDeckId(0);
 			}
 
 			final AddGameController msgr = new AddGameController(model);
 			msgr.sendGame(newGame);
-			
+
 		}
 		else
 		{
@@ -371,10 +372,13 @@ public class NewGameInputDistributedPanel extends JPanel {
 				currentGameSession.setGameStatus(GameStatus.ACTIVE);
 			}
 			if (deckCheckBox.isSelected()){
+				//TODO set correct deck
 				currentGameSession.setDeckId(0);
+			} else {
+				currentGameSession.setDeckId(-1);
 			}
 			final UpdateGameController msgr = new UpdateGameController();
-//			System.out.println("Attempting to send game to database"); // TODO: also remove this
+			//			System.out.println("Attempting to send game to database"); // TODO: also remove this
 			msgr.sendGame(currentGameSession); //TODO: This is sending an error
 		}		
 	}
@@ -433,7 +437,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 			return true;
 		}
 	}
-	
+
 	/**
 	 *  Handles the error messages for deadline time
 	 * @return true if invalid deadline is selected
@@ -470,7 +474,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		AMButton.setVisible(isVisible);
 		PMButton.setVisible(isVisible);
 	}
-	
+
 	/** Sets deck to either visible or not
 	 * @param isVisible
 	 */
@@ -488,7 +492,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 	{
 		saveGameButton.setEnabled(isVisible);
 	}
-	
+
 	/**
 	 * Sets the Activate game button visibility
 	 * @param isVisible
@@ -497,7 +501,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 	{
 		activateGameButton.setEnabled(isVisible);		
 	}
-	
+
 	/**
 	 * Initializes Error Messages to false
 	 */
@@ -509,7 +513,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		nameError.setVisible(false);
 		reqError.setVisible(false);
 	}
-	
+
 	/**
 	 * Sets up deadline related action listeners
 	 */
@@ -550,7 +554,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 				isAM = true;
 			}
 		});
-		
+
 		PMButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -559,7 +563,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 				isAM = false;
 			}
 		});		
-		
+
 	}
 	/**
 	 * Initialize date picker, hour and minute combo boxes
@@ -573,27 +577,27 @@ public class NewGameInputDistributedPanel extends JPanel {
 					currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DAY_OF_MONTH));
 		}
 		setDeadlineDate();
-		
+
 		setupDeadlineTime();
-		
+
 		//Default deadline hour and minute to a minute from the current time
 		final SimpleDateFormat hourDateFormat = new SimpleDateFormat("hh");
-        final SimpleDateFormat minuteDateFormat = new SimpleDateFormat("mm"); 
-        final String hour = hourDateFormat.format(currentDate.getTime());
-        final String minute = minuteDateFormat.format(currentDate.getTime());
-        hourTime = Integer.parseInt(hour);
-        minuteTime = Integer.parseInt(minute) + 1;
-        deadlineHourComboBox.setSelectedIndex(hourTime-1);
-        deadlineMinuteComboBox.setSelectedIndex(minuteTime);
-        if (currentDate.get(Calendar.AM_PM) == Calendar.PM) {
-        	PMButton.setSelected(true);
-        	isAM = false;
-        }        
-        else
-        {
-        	isAM = true;
-        	AMButton.setSelected(true);
-        }
+		final SimpleDateFormat minuteDateFormat = new SimpleDateFormat("mm"); 
+		final String hour = hourDateFormat.format(currentDate.getTime());
+		final String minute = minuteDateFormat.format(currentDate.getTime());
+		hourTime = Integer.parseInt(hour);
+		minuteTime = Integer.parseInt(minute) + 1;
+		deadlineHourComboBox.setSelectedIndex(hourTime-1);
+		deadlineMinuteComboBox.setSelectedIndex(minuteTime);
+		if (currentDate.get(Calendar.AM_PM) == Calendar.PM) {
+			PMButton.setSelected(true);
+			isAM = false;
+		}        
+		else
+		{
+			isAM = true;
+			AMButton.setSelected(true);
+		}
 	}
 	private void setDeadlineDate() {
 		deadlineYear = datePicker.getModel().getYear();
@@ -620,24 +624,24 @@ public class NewGameInputDistributedPanel extends JPanel {
 		//Initializes the deck combo box
 		deckBox.addItem("Default Deck");
 	}
-	
+
 	private void initializeEditMode()
 	{
 		//Gets the deadline from the game
 		if (currentGameSession.getEndDate() != null){
-			
+
 			deadlineCheckBox.setSelected(true);
 			setDeadlineVisibility(true);
-			
+
 			final int year_index = currentGameSession.getEndDate().getYear() + 1900;
-		
+
 			final int month_index = currentGameSession.getEndDate().getMonth();
-		
+
 			final int day_index = currentGameSession.getEndDate().getDate();
 			datePicker.getModel().setDate(year_index, month_index, day_index);
 
 			setDeadlineDate();
-		
+
 			setupDeadlineTime();
 			System.out.println("T:" + currentGameSession.getEndDate().getHours());			
 			//	Sets the hour and minute combo boxes to the hour and minute in the game's deadline
@@ -667,6 +671,13 @@ public class NewGameInputDistributedPanel extends JPanel {
 		}
 		nameTextField.setText(currentGameSession.getGameName());
 		descriptionTextField.setText(currentGameSession.getGameDescription());
+		//set the selected deck
+		if (currentGameSession.getDeckId() != -1){
+			deckCheckBox.setSelected(true);
+			initializeDeckComboBox();
+			setDeckVisibility(true);
+			//TODO set actual deck in combo box
+		}
 		//Puts the name of the game into the name text field, it can not be edited
 		if(currentGameSession.getGameStatus() != GameStatus.DRAFT)
 		{	
@@ -674,9 +685,9 @@ public class NewGameInputDistributedPanel extends JPanel {
 			descriptionTextField.setEditable(false);	
 		}
 	}
-	
+
 	private boolean anythingChanged() {
-	
+
 		if(currentGameSession.getGameStatus() == GameStatus.DRAFT)
 		{	
 			// Check if the user has changed the name
@@ -698,8 +709,11 @@ public class NewGameInputDistributedPanel extends JPanel {
 			return true;
 		}
 		// Check if the user has changed the deck
-//		if (!(deckBox.getSelectedItem().equals(currentGameSession.getDeck()))){
-//			return true;}
+		System.out.println("Current DeckID for game " + currentGameSession.getGameID() + " is " + currentGameSession.getDeckId());
+		if ((currentGameSession.getDeckId() != -1 && !deckCheckBox.isSelected())
+				|| (currentGameSession.getDeckId() == -1 && deckCheckBox.isSelected())){
+			return true;
+		}
 		return false;
 	}
 	//TODO: Account for midnight	
@@ -712,7 +726,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 			return hour + 12;
 		}
 	}
-	
+
 	//This function checks to see if everything necessary for activating a game has been entered by the user.
 	private boolean canActivate(){
 		if (nameInputted() && descInputted() && hasReqs()){
@@ -727,39 +741,39 @@ public class NewGameInputDistributedPanel extends JPanel {
 		}
 		return false;
 	}
-	
+
 	//Returns true if the name text field has text
 	private boolean nameInputted(){
 		return (nameTextField.getText().length() > 0);
 	}
-	
+
 	//Returns true if the description text field has text
 	private boolean descInputted(){
 		return  (descriptionTextField.getText().length() > 0);
 	}
-	
+
 	/**
 	 * a lot of Window Builder generated UI
 	 * for setting the NewGameInputPage
 	 */
-	
+
 	private void setPanel(){
-//		userList.setListData(listValue);
+		//		userList.setListData(listValue);
 		final SpringLayout springLayout = new SpringLayout();
-		
+
 		//Spring layout for the nameLabel
 		springLayout.putConstraint(SpringLayout.NORTH, nameLabel, 34, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, nameLabel, 23, SpringLayout.WEST, this);
-		
+
 		//Spring layout for the nameTextField
 		springLayout.putConstraint(SpringLayout.WEST, nameTextField, 100, SpringLayout.WEST, nameLabel);
 		springLayout.putConstraint(SpringLayout.EAST, nameTextField, 200, SpringLayout.EAST, nameLabel);
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameTextField, 0, SpringLayout.VERTICAL_CENTER, nameLabel);
-		
+
 		//Spring layout for the descriptionLabel
 		springLayout.putConstraint(SpringLayout.NORTH, descriptionLabel, 30, SpringLayout.NORTH, nameLabel);
 		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 23, SpringLayout.WEST, this);
-		
+
 		//Spring layout for the descTextArea
 		descriptionTextField.setRows(3);
 		descriptionTextField.setLineWrap(true);
@@ -767,7 +781,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, descriptionTextField, 0, SpringLayout.WEST, descriptionLabel);
 		springLayout.putConstraint(SpringLayout.EAST, descriptionTextField, -10, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, descriptionTextField, -15, SpringLayout.NORTH, deadlineCheckBox);
-		
+
 		//Spring layout for the deadlineCheckBox
 		springLayout.putConstraint(SpringLayout.SOUTH, deadlineCheckBox, -230, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, deadlineCheckBox, 0, SpringLayout.WEST, nameLabel);
@@ -780,102 +794,102 @@ public class NewGameInputDistributedPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.SOUTH, deckLabel, -230, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.NORTH, deckLabel, 0, SpringLayout.NORTH, deckCheckBox);
 		springLayout.putConstraint(SpringLayout.WEST, deckLabel, 20, SpringLayout.EAST, deckCheckBox);		
-		
+
 		//Spring layout for the deckBox
 		springLayout.putConstraint(SpringLayout.WEST, deckBox, 100, SpringLayout.WEST, deckLabel);
 		springLayout.putConstraint(SpringLayout.SOUTH, deckBox, 0, SpringLayout.SOUTH, deckLabel);
-		
+
 		//Spring layout for the deadlineLabel
 		springLayout.putConstraint(SpringLayout.SOUTH, deadlineLabel, -200, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, deadlineLabel, 0, SpringLayout.WEST, nameLabel);
-		
+
 		//Spring layout for the datePicker
 		springLayout.putConstraint(SpringLayout.WEST, datePicker, 75, SpringLayout.WEST, deadlineLabel);
 		springLayout.putConstraint(SpringLayout.NORTH, datePicker, 0, SpringLayout.NORTH, deadlineLabel);
-					
+
 		//Spring layout for the activateGameButton
 		springLayout.putConstraint(SpringLayout.SOUTH, saveGameButton, -10, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, saveGameButton, 180, SpringLayout.WEST, this);
-		
+
 		//Spring layout for the deadlineError
 		springLayout.putConstraint(SpringLayout.WEST, deadlineError, 50, SpringLayout.WEST, saveGameButton);
 		springLayout.putConstraint(SpringLayout.NORTH, deadlineError, -20, SpringLayout.NORTH, saveGameButton);
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameTextField, 0, SpringLayout.VERTICAL_CENTER, nameLabel);
 		deadlineError.setVisible(false);
-		
+
 		//Spring layout for the minuteError
 		springLayout.putConstraint(SpringLayout.WEST, minuteError, 0, SpringLayout.WEST, deadlineError);
 		springLayout.putConstraint(SpringLayout.NORTH, minuteError, 0, SpringLayout.NORTH, deadlineError);
 		minuteError.setVisible(false);
-		
+
 		//Spring layout for the hourError
 		springLayout.putConstraint(SpringLayout.WEST, hourError, 0, SpringLayout.WEST, deadlineError);
 		springLayout.putConstraint(SpringLayout.NORTH, hourError, 0, SpringLayout.NORTH, deadlineError);
 		hourError.setVisible(false);
-		
+
 		//Spring layout for the nameError
 		springLayout.putConstraint(SpringLayout.WEST, nameError, 0, SpringLayout.WEST, deadlineError);
 		springLayout.putConstraint(SpringLayout.NORTH, nameError, 0, SpringLayout.NORTH, deadlineError);
 		nameError.setVisible(false);
-		
+
 		//Spring layout for the reqError
 		springLayout.putConstraint(SpringLayout.WEST, reqError, 0, SpringLayout.WEST, deadlineError);
 		springLayout.putConstraint(SpringLayout.NORTH, reqError, 0, SpringLayout.NORTH, deadlineError);
-		
+
 		//Spring layout for timeLabel
-    	springLayout.putConstraint(SpringLayout.NORTH, deadlineTime, 45, SpringLayout.SOUTH, deadlineLabel);
-        springLayout.putConstraint(SpringLayout.WEST, deadlineTime, 0, SpringLayout.WEST, nameLabel);
-		    
+		springLayout.putConstraint(SpringLayout.NORTH, deadlineTime, 45, SpringLayout.SOUTH, deadlineLabel);
+		springLayout.putConstraint(SpringLayout.WEST, deadlineTime, 0, SpringLayout.WEST, nameLabel);
+
 		//Spring layout for deadlineHourComboBox
-        springLayout.putConstraint(SpringLayout.NORTH, deadlineHourComboBox, 0, SpringLayout.NORTH, deadlineTime);
-        springLayout.putConstraint(SpringLayout.WEST, deadlineHourComboBox, 100, SpringLayout.WEST, deadlineTime);
-        
-        //Spring layout for minuteComboBox
-        springLayout.putConstraint(SpringLayout.NORTH, deadlineMinuteComboBox, 0, SpringLayout.NORTH, deadlineHourComboBox);
-        springLayout.putConstraint(SpringLayout.WEST, deadlineMinuteComboBox, 40, SpringLayout.EAST, deadlineHourComboBox);
-        
-        //Spring layout for ampmButton
-        springLayout.putConstraint(SpringLayout.NORTH, AMButton, 10, SpringLayout.SOUTH, deadlineHourComboBox);
-        springLayout.putConstraint(SpringLayout.WEST, AMButton, 0, SpringLayout.WEST, deadlineHourComboBox);
-        springLayout.putConstraint(SpringLayout.NORTH, PMButton, 10, SpringLayout.SOUTH, deadlineMinuteComboBox);
-        springLayout.putConstraint(SpringLayout.WEST, PMButton, 0, SpringLayout.WEST, deadlineMinuteComboBox);
-		
+		springLayout.putConstraint(SpringLayout.NORTH, deadlineHourComboBox, 0, SpringLayout.NORTH, deadlineTime);
+		springLayout.putConstraint(SpringLayout.WEST, deadlineHourComboBox, 100, SpringLayout.WEST, deadlineTime);
+
+		//Spring layout for minuteComboBox
+		springLayout.putConstraint(SpringLayout.NORTH, deadlineMinuteComboBox, 0, SpringLayout.NORTH, deadlineHourComboBox);
+		springLayout.putConstraint(SpringLayout.WEST, deadlineMinuteComboBox, 40, SpringLayout.EAST, deadlineHourComboBox);
+
+		//Spring layout for ampmButton
+		springLayout.putConstraint(SpringLayout.NORTH, AMButton, 10, SpringLayout.SOUTH, deadlineHourComboBox);
+		springLayout.putConstraint(SpringLayout.WEST, AMButton, 0, SpringLayout.WEST, deadlineHourComboBox);
+		springLayout.putConstraint(SpringLayout.NORTH, PMButton, 10, SpringLayout.SOUTH, deadlineMinuteComboBox);
+		springLayout.putConstraint(SpringLayout.WEST, PMButton, 0, SpringLayout.WEST, deadlineMinuteComboBox);
+
 		//Spring layout for the saveGameButton
 		springLayout.putConstraint(SpringLayout.SOUTH, saveGameButton, -10, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, saveGameButton, 50, SpringLayout.WEST, this);
-		
+
 		//Spring layout for activateGameButton
 		springLayout.putConstraint(SpringLayout.WEST, activateGameButton, 100, SpringLayout.EAST, saveGameButton);
 		springLayout.putConstraint(SpringLayout.NORTH, activateGameButton, 0, SpringLayout.NORTH, saveGameButton);
-		
+
 		setLayout(springLayout);
-	
+
 		// Adds name and description labels and text fields
 		add(nameLabel);
 		add(nameTextField);
 		add(descriptionLabel);
 		add(descriptionTextField);
-		
+
 		//Adds time related components
 		add(deadlineTime);
 		add(deadlineHourComboBox);
 		add(deadlineMinuteComboBox);
 		add(AMButton);
 		add(PMButton);
-		
+
 		// Adds label for Deadline and date related labels and boxes
 		add(deadlineCheckBox);
 		add(deadlineLabel);
 		add(datePicker);
-		
+
 		// Adds deck GUI objects
 		add(deckLabel);
 		add(deckBox);
 		add(deckCheckBox);
-		
+
 		// Adds buttons at the bottom end of the GUI
 		add(saveGameButton);
-		
+
 		add(deadlineError);
 		add(hourError);
 		add(minuteError);
