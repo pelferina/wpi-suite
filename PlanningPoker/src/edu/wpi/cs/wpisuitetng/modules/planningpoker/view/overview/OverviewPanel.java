@@ -72,8 +72,10 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		final GameSession[] sessions = {};
 		
 		table = new JTable(new JTableModel(sessions));
-		sorter = new TableRowSorter<JTableModel>((JTableModel)table.getModel());
-		table.setRowSorter(sorter);
+		
+		//sort the table
+		//sorter = new TableRowSorter<JTableModel>((JTableModel)table.getModel());
+		//table.setRowSorter(sorter);
 		
 		//This is used to refresh the overview table
 		
