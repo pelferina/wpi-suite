@@ -85,12 +85,17 @@ public class NewGameDistributedPanel extends JSplitPane {
 	public List<Requirement> getSelected(){
 		return newGameReqPanel.getSelected();
 	}
+	
 	public void newReq() {
 		addImpl(newGameInputPanel, JSplitPane.LEFT, 1);
 		addImpl(newRequirement, JSplitPane.RIGHT, 3);
 		setDividerLocation(500);
 		newRequirement.setVisible(true);
 		newGameReqPanel.setVisible(false);
+	}
+	
+	public void sendCreatedReq(Requirement r){
+		newGameReqPanel.receiveCreatedReq(r);
 	}
 	
 	public void closeReq(){

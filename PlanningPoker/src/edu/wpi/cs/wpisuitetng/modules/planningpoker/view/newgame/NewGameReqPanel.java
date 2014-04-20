@@ -389,7 +389,15 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void receiveCreatedReq(Requirement r){
+		selected.add(r);
+		final DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
+		final String[] data = {r.getName(), r.getDescription()};
+		dtm_1.addRow(data);
+	}
 }
+
 
 //The timer task for scheduling the initial refresh of the page
 

@@ -38,7 +38,12 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JComboBox;
 
-
+/**
+ * This controls adding a new requirement from the new game tab.
+ * 
+ * @author FFF8E7
+ *@version $Revision: 1.0 $
+ */
 public class NewRequirementPanel extends JPanel {
 	private Requirement currentRequirement;
 	private JTextField nameField;
@@ -136,11 +141,10 @@ public class NewRequirementPanel extends JPanel {
 		add(CreateRequirementButton);
 		add(priorityComboBox);
 		add(typeComboBox);
-
-		if(nameInputted()&&descInputted()){
-			CreateRequirementButton.setEnabled(true);
-		}
 		
+		/**
+		 * Action listener for the createRequirementButton
+		 */
 		CreateRequirementButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				updateRequirement();
@@ -148,14 +152,17 @@ public class NewRequirementPanel extends JPanel {
 			}
 		});
 		
+		/**
+		 * Action listener for the cancelButton
+		 */
 		cancelButton.addActionListener(new ActionListener() {
-			
 			public void actionPerformed(ActionEvent e) {
 				newGamePanel.closeReq();
 			}
-			
 		});
-		
+		/**
+		 * Document listener for the nameField
+		 */
 		nameField.getDocument().addDocumentListener(new DocumentListener(){
 			@Override
 			public void changedUpdate(DocumentEvent e){
@@ -175,7 +182,9 @@ public class NewRequirementPanel extends JPanel {
 				CreateRequirementButton.setEnabled(isCreatable);
 			}
 		});
-		
+		/**
+		 * Document listener for the discriptionField
+		 */
 		descriptionField.getDocument().addDocumentListener(new DocumentListener(){
 			@Override
 			public void changedUpdate(DocumentEvent e){
@@ -230,19 +239,16 @@ public class NewRequirementPanel extends JPanel {
 
 		ViewEventController.getInstance().refreshTable();
 		ViewEventController.getInstance().refreshTree();
+		newGamePanel.sendCreatedReq(currentRequirement);
 	}
-	private boolean nameInputted(){
-		return (nameField.getText().length() > 0);
-	}
-	
-	//Returns true if the description text field has text
-	private boolean descInputted(){
-		return  (descriptionField.getText().length() > 0);
-	}
-
+	/**
+	 * This function clears all fields so that creating multiple requirments won't have the same fields
+	 */
 	public void clearFields() {
-		// TODO Auto-generated method stub
-		
+		nameField.setText("");
+		descriptionField.setText("");
+		priorityComboBox.setSelectedIndex(0);
+		typeComboBox.setSelectedIndex(0);
 	}
 
 }
