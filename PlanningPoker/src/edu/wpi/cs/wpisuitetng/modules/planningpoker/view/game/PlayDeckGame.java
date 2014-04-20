@@ -17,11 +17,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
@@ -45,11 +45,18 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 public class PlayDeckGame extends JPanel{
 
 	private final List<Integer> gameReqs;
+	private final JLabel gameName = new JLabel("Game Name:");
+	private final JLabel gameDesc = new JLabel("Game Description:");
 	private final JLabel reqName = new JLabel("Requirement Name:");
 	private final JLabel reqDesc = new JLabel("Requirement Description:");
-	private final JTextField estimateTextField = new JTextField();
+	private final JTextField gameNameTextField = new JTextField();
 	private final JTextField reqNameTextField = new JTextField();
+	private final JTextArea gameDescTextArea = new JTextArea();
 	private final JTextArea reqDescTextArea = new JTextArea();
+	private final JPanel deckAreaPanel = new JPanel();
+	private final JScrollPane deckArea = new JScrollPane(deckAreaPanel);
+	private final JScrollPane nd = new JScrollPane(gameDescTextArea);
+	private final JScrollPane rd = new JScrollPane(reqDescTextArea);
 	private final JButton submit = new JButton("Submit All Estimates");
 	private final JButton voteButton = new JButton("Vote");
 	private Vote userEstimates;
@@ -73,6 +80,7 @@ public class PlayDeckGame extends JPanel{
 		currentGame = gameToPlay;
 		gameReqs = currentGame.getGameReqs();
 		deckId = currentGame.getDeckId();
+		deckId = 0;
 		gameCardList = DeckModel.getInstance().getDeck(deckId).getCards();
 		generateButtons();
 		final ArrayList<Integer> estimates = new ArrayList<Integer>();
@@ -86,7 +94,6 @@ public class PlayDeckGame extends JPanel{
 				userEstimates = v;
 			}
 		}
-		reqDescTextArea.setWrapStyleWord(true);
 		submit.setEnabled(false);
 		gv = agv;
 		final List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
@@ -101,17 +108,19 @@ public class PlayDeckGame extends JPanel{
 		}
 		
 		//Sets the description and name text fields to the first requirement in the to estimate table
-		//gameNameTextField.setText(currentGame.getGameName());
+		gameNameTextField.setText(currentGame.getGameName());
 		reqNameTextField.setText(currentReq.getName());
-		//gameDescTextArea.setText(currentGame.getGameDescription());
+		gameDescTextArea.setText(currentGame.getGameDescription());
 		reqDescTextArea.setText(currentReq.getDescription());
-		if (gameToPlay.getVotes().size() > 0){
-			votesSoFarLabel.setText(Integer.toString(gameToPlay.getVotes().get(0).getVote().get(currentReq.getId())));
-		}
+		gameNameTextField.setEditable(false);
 		reqNameTextField.setEditable(false);
+		gameDescTextArea.setEditable(false);
 		reqDescTextArea.setEditable(false);
+		gameDescTextArea.setLineWrap(true);
+		gameDescTextArea.setWrapStyleWord(true);
 		reqDescTextArea.setLineWrap(true);
 		reqDescTextArea.setWrapStyleWord(true);
+		
 		//TODO add item listener to game cards;
 		for (final GameCard card: cardButtons){
 			card.addItemListener (new ItemListener() {
@@ -168,71 +177,84 @@ public class PlayDeckGame extends JPanel{
 			}
 		});
 		//set layout
-		GroupLayout layout = new GroupLayout(this);
-		this.setLayout(layout);
-		layout.setAutoCreateContainerGaps(true);
-		layout.setAutoCreateGaps(true);
-		layout.setHorizontalGroup(
-				layout.createSequentialGroup()
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-						.addComponent(reqName)
-						.addComponent(reqDesc)
-						.addComponent(cardButtons.get(0))
-						.addComponent(cardButtons.get(4))
-						.addComponent(votesSoFarNameLabel))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-						.addComponent(reqNameTextField)
-						.addComponent(reqDescTextArea)
-						.addGroup(layout.createSequentialGroup()
-								.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-										.addComponent(cardButtons.get(1))
-										.addComponent(cardButtons.get(5)))
-								.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-										.addComponent(cardButtons.get(2))
-										.addComponent(cardButtons.get(6)))
-								.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-										.addComponent(cardButtons.get(3))
-										.addComponent(cardButtons.get(7))))
-						.addGroup(layout.createSequentialGroup()
-								.addComponent(votesSoFarLabel)
-								.addComponent(voteButton)
-								.addComponent(submit))).addComponent(voteButton)
-								.addComponent(submit)
-				);
-		layout.setVerticalGroup(
-				layout.createSequentialGroup()
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-						.addComponent(reqName)
-						.addComponent(reqNameTextField))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-						.addComponent(reqDesc)
-						.addComponent(reqDescTextArea))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-						.addComponent(cardButtons.get(0))
-						.addComponent(cardButtons.get(1))
-						.addComponent(cardButtons.get(2))
-						.addComponent(cardButtons.get(3)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-						.addComponent(cardButtons.get(4))
-						.addComponent(cardButtons.get(5))
-						.addComponent(cardButtons.get(6))
-						.addComponent(cardButtons.get(7)))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-						.addComponent(votesSoFarNameLabel)
-						.addComponent(votesSoFarLabel)
-						.addComponent(voteButton)
-						.addComponent(submit))
-		);
-
-		add(reqName);
-		add(reqNameTextField);
-		add(reqDesc);
-		add(reqDescTextArea);
-		addButtons();
-		add(votesSoFarNameLabel);
-		add(votesSoFarLabel);
+		final SpringLayout springLayout = new SpringLayout();
+		
+		//Spring layout placement for gameName label
+		springLayout.putConstraint(SpringLayout.NORTH, gameName, 15, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, voteButton, 30, SpringLayout.WEST, this);
+		
+		//Spring layout placement for gameDesc label
+		springLayout.putConstraint(SpringLayout.NORTH, gameDesc, 15, SpringLayout.SOUTH, gameName);
+		springLayout.putConstraint(SpringLayout.WEST, gameDesc, 0, SpringLayout.WEST, gameName);
+		
+		//Spring layout placement for vote button
+		springLayout.putConstraint(SpringLayout.NORTH, voteButton, 0, SpringLayout.NORTH, votesSoFarLabel);
+		springLayout.putConstraint(SpringLayout.WEST, voteButton, 30, SpringLayout.EAST, votesSoFarLabel);
+		
+		//Spring layout placement for submit button
+		springLayout.putConstraint(SpringLayout.SOUTH, submit, -10, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, submit, -10, SpringLayout.EAST, this);
+		
+		//Spring layout for placement of gameNameTextField
+		springLayout.putConstraint(SpringLayout.WEST, gameNameTextField, 0, SpringLayout.WEST, rd);
+		springLayout.putConstraint(SpringLayout.EAST, gameNameTextField, 600, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, gameNameTextField, 0, SpringLayout.NORTH, gameName);
+		
+		//Spring layout for placement of reqNameTextField
+		springLayout.putConstraint(SpringLayout.WEST, reqNameTextField, 0, SpringLayout.WEST, rd);
+		springLayout.putConstraint(SpringLayout.EAST, reqNameTextField, 600, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, reqNameTextField, 0, SpringLayout.NORTH, reqName);
+		
+		//Spring layout for nd
+		springLayout.putConstraint(SpringLayout.NORTH, nd, 0, SpringLayout.NORTH, gameDesc);
+		springLayout.putConstraint(SpringLayout.WEST, nd, 0, SpringLayout.WEST, rd);
+		springLayout.putConstraint(SpringLayout.EAST, nd, -30, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, nd, 75, SpringLayout.NORTH, nd);
+		
+		//Spring layout for rd
+		springLayout.putConstraint(SpringLayout.NORTH, rd, 0, SpringLayout.NORTH, reqDesc);
+		springLayout.putConstraint(SpringLayout.WEST, rd, 10, SpringLayout.EAST, reqDesc);
+		springLayout.putConstraint(SpringLayout.EAST, rd, -30, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, rd, 75, SpringLayout.NORTH, rd);
+		
+		//Spring layout for reqDesc label
+		springLayout.putConstraint(SpringLayout.NORTH, reqDesc, 15, SpringLayout.SOUTH, reqName);
+		springLayout.putConstraint(SpringLayout.WEST, reqDesc, 0, SpringLayout.WEST, reqName);
+		
+		//Spring layout for reqName label
+		springLayout.putConstraint(SpringLayout.NORTH, reqName, 90, SpringLayout.SOUTH, gameDesc);
+		springLayout.putConstraint(SpringLayout.WEST, reqName, 0, SpringLayout.WEST, gameDesc);
+		
+		//Spring layout for deckArea
+		springLayout.putConstraint(SpringLayout.NORTH, deckArea, 15, SpringLayout.SOUTH, rd);
+		springLayout.putConstraint(SpringLayout.WEST, deckArea, 15, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.EAST, deckArea, -15, SpringLayout.EAST, this);
+		//springLayout.putConstraint(SpringLayout.SOUTH, deckArea, -15, SpringLayout.NORTH, submit);
+		
+		//Spring layout for votesSoFarNameLabel
+		springLayout.putConstraint(SpringLayout.NORTH, votesSoFarNameLabel, 15, SpringLayout.SOUTH, deckArea);
+		springLayout.putConstraint(SpringLayout.WEST, votesSoFarNameLabel, 0, SpringLayout.WEST, reqDesc);
+		
+		//Spring layout for votesSoFarLabel
+		springLayout.putConstraint(SpringLayout.NORTH, votesSoFarLabel, 0, SpringLayout.NORTH, votesSoFarNameLabel);
+		springLayout.putConstraint(SpringLayout.WEST, votesSoFarLabel, 5, SpringLayout.EAST, votesSoFarNameLabel);
+		
+		setLayout(springLayout);
+		
 		add(voteButton);
 		add(submit);
+		add(gameName);
+		add(gameDesc);
+		add(reqName);
+		add(reqDesc);
+		add(gameNameTextField);
+		add(reqNameTextField);
+		add(nd);
+		add(rd);
+		add(deckArea);
+		add(votesSoFarNameLabel);
+		add(votesSoFarLabel);
+
 	}
 	
 	/**
@@ -241,7 +263,7 @@ public class PlayDeckGame extends JPanel{
 	private void generateButtons(){
 
 		final Iterator<Integer> cardIterator = gameCardList.iterator();
-		final Iterator<GameCard> buttonIterator = cardButtons.iterator();
+		final Iterator<GameCard> btnIterator = cardButtons.iterator(); 
 
 		System.out.println(gameCardList);
 		
@@ -251,6 +273,12 @@ public class PlayDeckGame extends JPanel{
 		while(cardIterator.hasNext()){
 			cardButtons.add(new GameCard(cardIterator.next()));
 		}
+		
+		//Loops through all the cards, and adds it to the scroll pane's panel
+		for(GameCard i: cardButtons){
+			deckAreaPanel.add(i);
+		}
+		
 		System.out.println("CI:"+cardButtons);
 		System.out.println("v2:"+gameCardList);
 		//This loop will cycle through all of the buttons that have been created and display them
