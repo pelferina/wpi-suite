@@ -25,10 +25,13 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddVoteController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.VoteModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 import javax.swing.SpringLayout;
@@ -45,8 +48,8 @@ public class VoteData extends JPanel{
 	private JTextField finalEstimateText = new JTextField();
 	private JButton	finalSubmitButton = new JButton("Submit");
 	private JTextField reqNameText = new JTextField();
-	private JTextField meanTextField = new JTextField();
-	private JTextField medianTextField = new JTextField();
+	private JLabel meanTextField;
+	private JLabel medianTextField;
 	private JTextArea descriptionTextArea = new JTextArea();
 	private JScrollPane estimatesPane;
 	private JTable estimatesTable;
@@ -95,11 +98,9 @@ public class VoteData extends JPanel{
 		
 		//Sets the statistic text fields to the stats of the first requirement in the game, and disables user edits
 		float mean = completedGame.getMean().get(reqIndex);
-		meanTextField.setText(String.format("%.2f", mean));
-		meanTextField.setEnabled(false);
+		meanTextField = new JLabel(String.format("%.2f", mean));
 		float median = completedGame.getMedian().get(reqIndex);
-		medianTextField.setText(String.format("%.2f", median));
-		medianTextField.setEnabled(false);
+		medianTextField = new JLabel(String.format("%.2f", median));
 		init();
 		
 		//Action listener for the submit button that will save the final estimate for the requirement
@@ -107,8 +108,19 @@ public class VoteData extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e){
+				boolean allVotes = true;
 				int finalEstimate = Integer.parseInt(finalEstimateText.getText());
 				finalVote.getVote().set(reqIndex, finalEstimate);
+				for (int i: finalVote.getVote()){
+					if (i == -1){
+						allVotes = false;
+					}
+				}
+				if (allVotes){
+					AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
+					msgr.sendVote(finalVote);
+				}
+				completeView.nextRequirement();
 			}
 		});
 	}
