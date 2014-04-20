@@ -111,7 +111,6 @@ public class PlayGame extends JPanel{
 		reqDescTextArea.setEditable(false);
 		gameDescTextArea.setLineWrap(true);
 		gameDescTextArea.setWrapStyleWord(true);
-		
 		reqDescTextArea.setLineWrap(true);
 		reqDescTextArea.setWrapStyleWord(true);
 		
