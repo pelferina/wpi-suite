@@ -11,6 +11,9 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.completedgame;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -22,10 +25,13 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddVoteController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.VoteModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 import javax.swing.SpringLayout;
@@ -42,8 +48,8 @@ public class VoteData extends JPanel{
 	private JTextField finalEstimateText = new JTextField();
 	private JButton	finalSubmitButton = new JButton("Submit");
 	private JTextField reqNameText = new JTextField();
-	private JTextField meanTextField = new JTextField();
-	private JTextField medianTextField = new JTextField();
+	private JLabel meanTextField;
+	private JLabel medianTextField;
 	private JTextArea descriptionTextArea = new JTextArea();
 	private JScrollPane estimatesPane;
 	private JTable estimatesTable;
@@ -53,6 +59,7 @@ public class VoteData extends JPanel{
 	private List<Requirement> gameReqs;
 	private Requirement currentReq;
 	private int	reqIndex;
+	private Vote finalVote;
 	
 	/**
 	 * The constructor for the VoteData class
@@ -63,6 +70,11 @@ public class VoteData extends JPanel{
 		completeView = cv;
 		completedGame = gs;
 		gameReqs = cv.getGameRequirements();
+		ArrayList<Integer> estimates = new ArrayList<Integer>();
+		for (int i = 0; i < gameReqs.size(); i++){
+			estimates.add(-1);
+		}
+		finalVote = new Vote(estimates, completedGame.getGameID());
 		currentReq = gameReqs.get(0);
 		reqIndex = 0;
 		
@@ -85,11 +97,32 @@ public class VoteData extends JPanel{
 		gs.calculateStats();
 		
 		//Sets the statistic text fields to the stats of the first requirement in the game, and disables user edits
-		meanTextField.setText(Float.toString(completedGame.getMean().get(reqIndex)));
-		meanTextField.setEnabled(false);
-		medianTextField.setText(Float.toString(completedGame.getMedian().get(reqIndex)));
-		medianTextField.setEnabled(false);
+		float mean = completedGame.getMean().get(reqIndex);
+		meanTextField = new JLabel(String.format("%.2f", mean));
+		float median = completedGame.getMedian().get(reqIndex);
+		medianTextField = new JLabel(String.format("%.2f", median));
 		init();
+		
+		//Action listener for the submit button that will save the final estimate for the requirement
+		finalSubmitButton.addActionListener(new ActionListener(){
+			
+			@Override
+			public void actionPerformed(ActionEvent e){
+				boolean allVotes = true;
+				int finalEstimate = Integer.parseInt(finalEstimateText.getText());
+				finalVote.getVote().set(reqIndex, finalEstimate);
+				for (int i: finalVote.getVote()){
+					if (i == -1){
+						allVotes = false;
+					}
+				}
+				if (allVotes){
+					AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
+					msgr.sendVote(finalVote);
+				}
+				completeView.nextRequirement();
+			}
+		});
 	}
 	
 	/**
@@ -221,6 +254,12 @@ public class VoteData extends JPanel{
 			}
 			estimatesModel.setValueAt(v.getVote().get(reqIndex), i, 1);
 			i++;
+		}
+		if (finalVote.getVote().get(reqIndex) != -1){
+			finalEstimateText.setText(Integer.toString(finalVote.getVote().get(reqIndex)));
+		}
+		else {
+			finalEstimateText.setText("");
 		}
 		reqNameText.setText(req.getName());
 		descriptionTextArea.setText(req.getDescription());
