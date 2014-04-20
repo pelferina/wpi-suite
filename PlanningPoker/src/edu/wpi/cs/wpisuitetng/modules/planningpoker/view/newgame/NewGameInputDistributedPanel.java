@@ -403,10 +403,12 @@ public class NewGameInputDistributedPanel extends JPanel {
 				//Display Update button if game has been changed in edit mode
 				if(editMode && anythingChanged())
 				{
+					isNew = false;
 					saveGameButton.setEnabled(true);
 				}
 				else if(editMode && !anythingChanged())
 				{
+					isNew = true;
 					saveGameButton.setEnabled(false);
 				}
 			}
