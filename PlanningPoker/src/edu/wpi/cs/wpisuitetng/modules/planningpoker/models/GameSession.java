@@ -74,7 +74,6 @@ public class GameSession extends AbstractModel {
 		this.ownerID = ownerID;
 		this.gameID = gameID;
 		endDate = deadline;
-		//this.endDate.setMonth(endDate.getMonth());
 		this.gameReqs = gameReqs;
 		gameStatus = GameStatus.DRAFT;
 		creationdate = new Date();
