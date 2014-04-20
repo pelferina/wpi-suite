@@ -57,7 +57,7 @@ public class RefreshManager {
 
 				catch(RuntimeException exception){
 					System.err.println(exception.getMessage());
-					exception.printStackTrace();
+					//exception.printStackTrace();
 				}
 			}
 		};
