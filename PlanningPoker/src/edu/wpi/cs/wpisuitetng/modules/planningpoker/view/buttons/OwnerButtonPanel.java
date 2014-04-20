@@ -11,14 +11,17 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
 
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Calendar;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
@@ -34,6 +37,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	private final JButton ownerButton = new JButton();
 	private ActionListener listener = null;
 	private ImageIcon endImg, activateImg, archiveImg;
+	private Timer expireTimer = null;
 	
 	public OwnerButtonPanel(){
 		super("");
@@ -83,6 +87,9 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		}
 		listener = new EndGameActionListener(game);
 		ownerButton.addActionListener(listener);
+		if (game.getEndDate()!=null)
+			expireThisButtonIn((int)(game.getEndDate().getTime()-Calendar.getInstance().getTime().getTime()));
+
 	}
 	/**
 	 * Enables the end game button, and add a action listener
@@ -101,7 +108,11 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		}
 		listener = new ActivateGameActionListener(game);
 		ownerButton.addActionListener(listener);
+		
+		if (game.getEndDate()!=null)
+			expireThisButtonIn((int)(game.getEndDate().getTime()-Calendar.getInstance().getTime().getTime()));
 	}
+
 	/**
 	 * Enables the end game button, and add a action listener
 	 * to this game
@@ -119,5 +130,26 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		}
 		listener = new ArchiveGameActionListener(game);
 		ownerButton.addActionListener(listener);
+	}
+	
+	private void expireThisButtonIn(int expireTime) {
+		if (expireTimer!=null)
+			expireTimer.stop();
+		
+		ActionListener al = new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ownerButton.removeActionListener(listener);
+				makeOwnerButtonInvisible();
+				System.out.println("Expired");
+			}
+			
+		}; // make it expire 		
+		
+		expireTimer = new Timer(expireTime, al);
+		expireTimer.setRepeats(false);
+		expireTimer.start();
+		System.out.println("Expiring in "+expireTime);
 	}
 }

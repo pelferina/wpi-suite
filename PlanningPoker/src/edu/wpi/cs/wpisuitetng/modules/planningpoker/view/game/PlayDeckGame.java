@@ -254,6 +254,7 @@ public class PlayDeckGame extends JPanel{
 		add(deckArea);
 		add(votesSoFarNameLabel);
 		add(votesSoFarLabel);
+
 	}
 	
 	/**
@@ -293,6 +294,16 @@ public class PlayDeckGame extends JPanel{
 		   add(c);
 		}
 	}
+	/**
+	 * This function cycles through available cards and unselect all of them
+	 */
+	private void uncheckButtons(){
+		for(int i=0; i < cardButtons.size(); i++)
+		{
+		   GameCard c = cardButtons.get(i);
+		   c.setSelected(false);
+		}
+	}
 	
 	//This function is used when a requirement is double clicked in one of the two requirement tables, and it sets the name and description fields to the 
 	//selected requirement
@@ -315,7 +326,8 @@ public class PlayDeckGame extends JPanel{
 		if (estimate > -1) {
 			votesSoFarLabel.setText(Integer.toString(estimate));
 		} else {
-			votesSoFarLabel.setText("");
+			votesSoFarLabel.setText("0");
+			uncheckButtons();
 		}
 	}
 	
@@ -350,6 +362,8 @@ public class PlayDeckGame extends JPanel{
 	public void clear() {
 		reqNameTextField.setText("");
 		reqDescTextArea.setText("");
+		votesSoFarLabel.setText("0");
+		uncheckButtons();
 	}
 	
 	/**

@@ -76,12 +76,12 @@ public class PlayGame extends JPanel{
 		for (int i = 0; i < gameReqs.size(); i++){
 			estimates.add(-1);
 		}
-		userEstimates = new Vote(estimates, currentGame.getGameID());
 		for (Vote v: gameToPlay.getVotes()){
 			if (v.getUID() == GetCurrentUser.getInstance().getCurrentUser().getIdNum()){
 				userEstimates = v;
 			}
 		}
+		userEstimates = new Vote(estimates, currentGame.getGameID());
 		reqDescTextArea.setWrapStyleWord(true);
 		voteButton.setEnabled(false);
 		submit.setEnabled(false);
