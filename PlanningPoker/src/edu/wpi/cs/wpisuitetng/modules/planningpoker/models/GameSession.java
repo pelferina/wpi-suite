@@ -247,13 +247,14 @@ public class GameSession extends AbstractModel {
 		if (!(other instanceof GameSession)){
 			return false;
 		}
+		
 		final GameSession o = (GameSession) other;
 
 		if (gameName.equals(o.getGameName())){
 			if (gameDescription.equals(o.getGameDescription())){
 				if (ownerID == o.getOwnerID()){
 					if (gameID == o.getGameID()){
-						if (endDate.equals(o.getEndDate())){
+						if ((endDate == null && o.getEndDate()==null) || endDate.equals(o.getEndDate())){ // if both are null or they are equal
 							if (gameReqs.equals(o.getGameReqs())){
 								if (gameStatus == o.getGameStatus()){
 										return true;
