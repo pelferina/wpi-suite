@@ -227,6 +227,7 @@ public class MainView extends JTabbedPane {
 	    //1 - Edit Game
 	    //2 - Game View
 	    //3 - Complete Game
+	    //4 - Preferences Panel
 	    //5 - New Requirement
 	    private final int type;
 	    private final MainView mv;

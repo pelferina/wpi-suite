@@ -27,10 +27,13 @@ import javax.swing.JTextField;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddVoteController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.VoteModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
@@ -59,7 +62,7 @@ public class VoteData extends JPanel{
 	private List<Requirement> gameReqs;
 	private Requirement currentReq;
 	private int	reqIndex;
-	private Vote finalVote;
+	private List<Integer> finalVote = new ArrayList<Integer>();
 	
 	/**
 	 * The constructor for the VoteData class
@@ -73,8 +76,8 @@ public class VoteData extends JPanel{
 		ArrayList<Integer> estimates = new ArrayList<Integer>();
 		for (int i = 0; i < gameReqs.size(); i++){
 			estimates.add(-1);
+			finalVote.add(-1);
 		}
-		finalVote = new Vote(estimates, completedGame.getGameID());
 		currentReq = gameReqs.get(0);
 		reqIndex = 0;
 		
@@ -86,6 +89,11 @@ public class VoteData extends JPanel{
 		else {
 			finalEstimateText.setEnabled(false);
 			finalSubmitButton.setEnabled(false);
+		}
+		
+		if (completedGame.getGameStatus() == GameStatus.ARCHIVED){
+			finalVote = completedGame.getFinalVotes();
+			finalEstimateText.setText(Integer.toString(finalVote.get(0)));
 		}
 		
 		//Sets the name and description text fields to the first requirements
@@ -110,15 +118,16 @@ public class VoteData extends JPanel{
 			public void actionPerformed(ActionEvent e){
 				boolean allVotes = true;
 				int finalEstimate = Integer.parseInt(finalEstimateText.getText());
-				finalVote.getVote().set(reqIndex, finalEstimate);
-				for (int i: finalVote.getVote()){
+				finalVote.set(reqIndex, finalEstimate);
+				for (int i: finalVote){
 					if (i == -1){
 						allVotes = false;
 					}
 				}
 				if (allVotes){
-					AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
-					msgr.sendVote(finalVote);
+					completedGame.setFinalVotes(finalVote);
+					final UpdateGameController msgr = new UpdateGameController();
+					msgr.sendGame(completedGame);
 				}
 				completeView.nextRequirement();
 			}
@@ -255,8 +264,8 @@ public class VoteData extends JPanel{
 			estimatesModel.setValueAt(v.getVote().get(reqIndex), i, 1);
 			i++;
 		}
-		if (finalVote.getVote().get(reqIndex) != -1){
-			finalEstimateText.setText(Integer.toString(finalVote.getVote().get(reqIndex)));
+		if (finalVote.get(reqIndex) != -1){
+			finalEstimateText.setText(Integer.toString(finalVote.get(reqIndex)));
 		}
 		else {
 			finalEstimateText.setText("");
