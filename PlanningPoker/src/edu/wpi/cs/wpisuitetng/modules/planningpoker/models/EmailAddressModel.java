@@ -28,6 +28,7 @@ public class EmailAddressModel extends AbstractModel {
 	/** The list of messages on the board */
 	private String address;
 	private int userID;
+	private boolean enable;
 	
 	/**
 	 * Constructs a new email model with a provided address
@@ -35,9 +36,10 @@ public class EmailAddressModel extends AbstractModel {
 	 * 
 	 *  @param address This is the address to send the email to
 	 */
-	public EmailAddressModel(String address) {
+	public EmailAddressModel(String address, int userID, boolean enable) {
 		this.address = address;
-		userID = -1;
+		this.userID = userID;
+		this.enable = enable;
 	}
 
 	/**
@@ -45,6 +47,19 @@ public class EmailAddressModel extends AbstractModel {
 	 */
 	public String getAddress() {
 		return address;
+	}
+	/**
+	 * Retrieves the userID
+	 */
+	public int getUserID() {
+		return userID;
+	}
+	/**
+	 * REtrieves the enable
+	 * @return
+	 */
+	public boolean getEnable(){
+		return this.enable;
 	}
 
 	/**
@@ -57,12 +72,7 @@ public class EmailAddressModel extends AbstractModel {
 		return this;
 	}
 
-	/**
-	 * Retrieves the userID
-	 */
-	public int getUserID() {
-		return userID;
-	}
+
 
 	/**
 	 * sets the userID
@@ -71,6 +81,15 @@ public class EmailAddressModel extends AbstractModel {
 	 */
 	public EmailAddressModel setUserID(int userID) {
 		this.userID = userID;
+		return this;
+	}
+	/**
+	 * set the sending email enable or disable
+	 * @param value
+	 * @return EmailAddressModel, the EmailAddressModel that the user is being set for
+	 */
+	public EmailAddressModel setEnable(boolean value){
+		this.enable = value;
 		return this;
 	}
 
@@ -93,6 +112,18 @@ public class EmailAddressModel extends AbstractModel {
 		final Gson parser = new Gson();
 		return parser.fromJson(json, EmailAddressModel.class);
 	}
+	/**
+	 * Returns an array of EmailAddressModel parsed from the given JSON-encoded
+	 * string.
+	 * 
+	 * @param json a string containing a JSON-encoded array of GameSession
+	 * @return an array of GameSession deserialzied from the given json string
+	 */
+	public static EmailAddressModel[] fromJsonArray(String json) {
+		final Gson parser = new Gson();
+		return parser.fromJson(json, EmailAddressModel[].class);
+	}
+
 	
 
 	/*

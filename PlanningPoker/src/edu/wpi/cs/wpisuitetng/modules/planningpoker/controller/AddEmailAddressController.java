@@ -13,8 +13,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JTextField;
-
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddressModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.PreferencesPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -28,54 +28,41 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * @version $Requirement: 1.0 $
  */
 public class AddEmailAddressController implements ActionListener {
-	private final JTextField view;
+	private final PreferencesPanel panel;
 	
 	/**
 	 * Construct an AddEmailAddressController for the given model, view pair
 	 * 
 	 * @param view the view where the user enters new messages
 	 */
-	public AddEmailAddressController(JTextField view) {
-		this.view = view;
+	public AddEmailAddressController(PreferencesPanel panel) {
+		this.panel = panel;
 	}
 	
 	/**
-	 * Construct an AddEmailAddressController for the given model, view pair
-	 * @param model the model containing the messages
-	 * @param view the view where the user enters new messages
-	 */
-	public AddEmailAddressController() {
-		view = null;
-	}
-
-	/* *
-	 * TODO implement once ui has been finalized
+	 * implement once ui has been finalized
 	 * This method is called when the user clicks the Submit button
 	 * 
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		System.out.println("Submit been pressed");
-		if (view == null)
-		{
-			return;
-		}
-		
-		saveEmail(view.getText());
+		EmailAddressModel eModel = panel.getEmailModel();
+		eModel.setAddress(panel.getEmailAddress());
+		saveEmail(eModel);
 	}
 
 	/**
 	 * This method creates a request to send and email, and adds an observer
 	 * @param address The address to send to
 	 */
-	public void saveEmail(String address)
+	public void saveEmail(EmailAddressModel eModel)
 	{
 		// Send a request to the core to save this message
 		final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.PUT); // PUT == create
 		//request.setBody(new EmailAddressModel(address).toJSON()); // put the new message in the body of the request
-		request.setBody(address);
-		request.addObserver(new AddEmailAddressObserver(this)); // add an observer to process the response
+		request.setBody(eModel.toJSON());
+		request.addObserver(new AddEmailAddressObserver()); // add an observer to process the response
 		request.send(); // send the request
 	}
 }

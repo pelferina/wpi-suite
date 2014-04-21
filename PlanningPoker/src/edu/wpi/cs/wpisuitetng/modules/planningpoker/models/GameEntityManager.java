@@ -310,7 +310,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 			message.setFrom(new InternetAddress("fff8e7.email@gmail.com"));
 
 			final List<Model> model_emails = db.retrieveAll(
-					new EmailAddressModel(""), project);
+					new EmailAddressModel("", 0, false), project);
 			if(model_emails.size() == 0){
 				System.out.println("No email address has been set");
 				return;
@@ -323,7 +323,8 @@ public class GameEntityManager implements EntityManager<GameSession> {
 			/** TODO find a more elegent solution can't send only bcc's */
 
 			for (EmailAddressModel email : emails) {
-				message.addRecipients(Message.RecipientType.BCC,
+				if(email.getEnable() && email.getAddress()!=null)
+					message.addRecipients(Message.RecipientType.BCC,
 						InternetAddress.parse(email.getAddress()));
 			}
 

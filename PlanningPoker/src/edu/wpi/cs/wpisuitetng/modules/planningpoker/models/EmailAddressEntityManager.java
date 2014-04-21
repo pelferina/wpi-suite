@@ -13,7 +13,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
-import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -26,9 +26,6 @@ import javax.mail.internet.MimeMessage;
 
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
-import edu.wpi.cs.wpisuitetng.exceptions.BadRequestException;
-import edu.wpi.cs.wpisuitetng.exceptions.ConflictException;
-import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
@@ -70,39 +67,28 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 			throws WPISuiteException {
 		
 		// Parse the message from JSON
-		final EmailAddressModel newEmailAddress = new EmailAddressModel(content);
+		final EmailAddressModel newEmailAddress = EmailAddressModel.fromJson(content);
 		
-		if(content.contains("endGame")){
-			System.err.println("Game Ended");
-			final List<Model> emails = db.retrieveAll(newEmailAddress, s.getProject());
-			for(Model e: emails){
-				sendEmail(((EmailAddressModel)e).getAddress(), "A game ended", content.substring(7) + " just ended");
-			}
-			return newEmailAddress;
-		}
-		
-		else if(content.contains("newGame")){
-			System.err.println("Game Ended");
-			final List<Model> emails = db.retrieveAll(newEmailAddress, s.getProject());
-			for(Model e: emails){
-				sendEmail(((EmailAddressModel)e).getAddress(), "A game started", content.substring(7) + " just started");
-			}
-			return newEmailAddress;
-		} 
-
-		
-		newEmailAddress.setUserID(s.getUser().getIdNum());
 		final List<Model> emails = db.retrieveAll(newEmailAddress, s.getProject());
 
-		for(Model e: emails){			
-			if(((EmailAddressModel)e).getUserID() == s.getUser().getIdNum()){
-				if(!((EmailAddressModel)e).getAddress().equals(content)){
-					db.update(EmailAddressModel.class, "UserID", s.getUser().getIdNum(), "Address", newEmailAddress.getAddress());
-					sendEmail(content, "Update Email", ("Hi " + s.getUser().getUsername() + ", You just updated your notification email address!"));
-					System.out.println("update your email");
+		for(Model e: emails){	
+			EmailAddressModel eModel = (EmailAddressModel)e;
+			if(eModel.getUserID() == s.getUser().getIdNum()){
+				if(newEmailAddress.getEnable() == false){
+					System.out.println("Disable");
+					db.update(EmailAddressModel.class, "UserID", s.getUser().getIdNum(), "Enable", false);
 					return newEmailAddress;
+				}else{
+					System.out.println("Enable");
+					db.update(EmailAddressModel.class, "UserID", s.getUser().getIdNum(), "Enable", true);
 				}
-				System.out.println("not update your email because the email address is not changed");
+				System.out.println(eModel.getAddress() +"|||" +newEmailAddress.getAddress());
+				if((eModel.getAddress()==null && newEmailAddress.getAddress()!=null)|| (eModel.getAddress()!=null && !eModel.getAddress().equals(newEmailAddress.getAddress()))){
+					System.out.println("Update");
+					db.update(EmailAddressModel.class, "UserID", s.getUser().getIdNum(), "Address", newEmailAddress.getAddress());
+					sendEmail(newEmailAddress.getAddress(), "Update Email", ("Hi " + s.getUser().getUsername() + ",\r\n\tYou just updated your notification email address!\r\nsent by fff8e7"));
+					System.out.println("update email");
+				}
 				return newEmailAddress;
 			}
 		}
@@ -111,7 +97,8 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 		if (!db.save(newEmailAddress, s.getProject())) {
 			throw new WPISuiteException();
 		}
-		sendEmail(content, "Set Email", ("Hi " + s.getUser().getUsername() + ", You just set your notification email address!"));
+		if(!(newEmailAddress.getAddress()==null || newEmailAddress.getAddress().length() == 0))
+			sendEmail(newEmailAddress.getAddress(), "Set Email", ("Hi " + s.getUser().getUsername() + ",\r\n\tYou just set your notification email address!\r\nsent by fff8e7"));
 
 
 		// Return the newly created email (this gets passed back to the client)
@@ -136,7 +123,22 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 	 */
 	@Override
 	public EmailAddressModel[] getAll(Session s) throws WPISuiteException {
-		throw new WPISuiteException();
+			// Ask the database to retrieve all objects of the type
+			// PostBoardMessage.
+			// Passing a dummy PostBoardMessage lets the db know what type of object
+			// to retrieve
+			// Passing the project makes it only get messages from that project
+
+			final EmailAddressModel[] emails = db.retrieveAll(new EmailAddressModel(null, 0, false)).toArray(new EmailAddressModel[0]);
+			final EmailAddressModel[] returnEmail = new EmailAddressModel[1];
+			for(EmailAddressModel e: emails){
+				if(e.getUserID() == s.getUser().getIdNum()){
+					returnEmail[0] = e;
+					return returnEmail;
+				}
+			}
+			returnEmail[0] = new EmailAddressModel(null, s.getUser().getIdNum(), false);
+			return returnEmail;
 	}
 
 	/*
