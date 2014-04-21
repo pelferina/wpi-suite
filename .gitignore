@@ -50,13 +50,3 @@ RequirementManager/bin
 /Core/WPISuite/WebContent/WEB-INF/lib/PlanningPoker.jar
 
 WPISuite_TNG_local
-PlanningPoker/build/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/cancel.png
-PlanningPoker/build/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/edit.png
-PlanningPoker/build/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/endGame.png
-PlanningPoker/build/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/newgameimage.png
-PlanningPoker/build/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/optionsimage.png
-PlanningPoker/build/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/buttons/save.png
-PlanningPoker/build/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/game/planningpokercard.png
-PlanningPoker/build/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/newgame/activate.png
-PlanningPoker/build/edu/wpi/cs/wpisuitetng/modules/planningpoker/view/newgame/create.png
-PlanningPoker/build/net/sourceforge/jdatepicker/impl/calendar_icon.png
