@@ -21,6 +21,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -61,8 +63,20 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	//Constructor for new game tab
 	public NewGameReqPanel(NewGameDistributedPanel ngdp) {
 		newGamePanel = ngdp;
-		unselectedTable = new JTable();
-		selectedTable = new JTable();
+		unselectedTable = new JTable() {
+			@Override
+		    public boolean isCellEditable(int row, int column) { // makes the cells uneditable
+		       //all -cells false
+		       return false;
+		    }
+		};
+		selectedTable = new JTable() {
+			@Override
+		    public boolean isCellEditable(int row, int column) { // same as above
+		       //all -cells false
+		       return false;
+		    }
+		};
 		init();
 	}
 
