@@ -128,21 +128,27 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		btnAddOne.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
-				if (unselectedTable.getSelectedRow() != -1){
-					final int index = unselectedTable.getSelectedRow();
-					final Requirement selectedReq = reqs.get(index);
+//				if (unselectedTable.getSelectedRow() != -1){
+				int[] index = unselectedTable.getSelectedRows();
+				int offset = 0;
+				while(index.length > 0){
+					final Requirement selectedReq = reqs.get(index[0]-offset);
 					selected.add(selectedReq);
-					reqs.remove(index);
+					reqs.remove(index[0]-offset);
 					final String[] data = {selectedReq.getName(), selectedReq.getDescription()};
 					final DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
 					final DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
 					dtm.setRowCount(reqs.size());
-					for (int i = 0; i < reqs.size(); i++){
-						dtm.setValueAt(reqs.get(i).getName(), i, 0);
-						dtm.setValueAt(reqs.get(i).getDescription(), i, 1);
+					for (int j = 0; j < reqs.size(); j++){
+						dtm.setValueAt(reqs.get(j).getName(), j, 0);
+						dtm.setValueAt(reqs.get(j).getDescription(), j, 1);
 					}
 					dtm_1.addRow(data);
+					index = removeFirst(index);
+					offset++;
 				}
+				selectedTable.clearSelection();
+				unselectedTable.clearSelection();
 			}
 		});
 
@@ -162,6 +168,8 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 					reqs = new ArrayList<Requirement>();
 					dtm.setRowCount(0);
 				}
+				selectedTable.clearSelection();
+				unselectedTable.clearSelection();
 			}
 		});
 
@@ -169,21 +177,35 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		btnRemoveOne.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
-				if (selectedTable.getSelectedRow() != -1){
-					final int index = selectedTable.getSelectedRow();
-					final Requirement selectedReq = selected.get(index);
-					selected.remove(index);
-					reqs.add(selectedReq);
-					final String[] data = {selectedReq.getName(), selectedReq.getDescription()};
-					final DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
-					final DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
-					dtm_1.setRowCount(selected.size());
-					for (int i = 0; i < selected.size(); i++){
-						dtm_1.setValueAt(selected.get(i).getName(), i, 0);
-						dtm_1.setValueAt(selected.get(i).getDescription(), i, 1);
+//				if (selectedTable.getSelectedRow() != -1){
+//				if (selectedTable.getSelectedRows().length > 0){
+				int[] index = selectedTable.getSelectedRows();
+				int offset = 0;
+					while(index.length >0){
+						final Requirement selectedReq = selected.get(index[0]-offset);
+						selected.remove(index[0]-offset);
+						reqs.add(selectedReq);
+						final String[] data = {selectedReq.getName(), selectedReq.getDescription()};
+						final DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
+						final DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
+						dtm_1.setRowCount(selected.size());
+						for (int i = 0; i < selected.size(); i++){
+							dtm_1.setValueAt(selected.get(i).getName(), i, 0);
+							dtm_1.setValueAt(selected.get(i).getDescription(), i, 1);
+						}
+						dtm.addRow(data);
+//						index = selectedTable.getSelectedRows();
+						index = removeFirst(index);
+						offset++;
 					}
-					dtm.addRow(data);
-				}
+				
+//					for(int j = 0; j < index.length; ){
+//	//					final int index = selectedTable.getSelectedRow();
+//						
+//					}
+				
+				selectedTable.clearSelection();
+				unselectedTable.clearSelection();
 			}
 		});
 
@@ -203,6 +225,8 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 					selected = new ArrayList<Requirement>();
 					dtm_1.setRowCount(0);
 				}
+				selectedTable.clearSelection();
+				unselectedTable.clearSelection();
 			}
 		});
 
@@ -395,6 +419,13 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		final DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
 		final String[] data = {r.getName(), r.getDescription()};
 		dtm_1.addRow(data);
+	}
+	public int[] removeFirst(int[] Array){
+		int[] newArray = new int[Array.length-1];
+		for (int i =0; i<Array.length-1; i++){
+			newArray[i]=Array[i+1];
+		}
+		return newArray;
 	}
 }
 
