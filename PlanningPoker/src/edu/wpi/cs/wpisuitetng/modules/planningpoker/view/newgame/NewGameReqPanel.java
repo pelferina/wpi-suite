@@ -128,7 +128,6 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		btnAddOne.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
-//				if (unselectedTable.getSelectedRow() != -1){
 				int[] index = unselectedTable.getSelectedRows();
 				int offset = 0;
 				while(index.length > 0){
@@ -177,8 +176,6 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		btnRemoveOne.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
-//				if (selectedTable.getSelectedRow() != -1){
-//				if (selectedTable.getSelectedRows().length > 0){
 				int[] index = selectedTable.getSelectedRows();
 				int offset = 0;
 					while(index.length >0){
@@ -194,16 +191,9 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 							dtm_1.setValueAt(selected.get(i).getDescription(), i, 1);
 						}
 						dtm.addRow(data);
-//						index = selectedTable.getSelectedRows();
 						index = removeFirst(index);
 						offset++;
 					}
-				
-//					for(int j = 0; j < index.length; ){
-//	//					final int index = selectedTable.getSelectedRow();
-//						
-//					}
-				
 				selectedTable.clearSelection();
 				unselectedTable.clearSelection();
 			}
@@ -420,6 +410,11 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		final String[] data = {r.getName(), r.getDescription()};
 		dtm_1.addRow(data);
 	}
+	/**
+	 * Function to remove the first element in the array
+	 * @param Array, the array that element is removed from 
+	 * @return int[], newly shortened array
+	 */
 	public int[] removeFirst(int[] Array){
 		int[] newArray = new int[Array.length-1];
 		for (int i =0; i<Array.length-1; i++){
