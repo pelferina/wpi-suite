@@ -40,8 +40,6 @@ public class ToolbarView  extends DefaultToolbarView {
 		this.addGroup(userButton);
 		this.addGroup(ownerButton);
 		this.addGroup(editButton);
-		
-
 	}
 	
 	/**

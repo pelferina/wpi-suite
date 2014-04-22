@@ -55,7 +55,6 @@ public class GetCurrentUser {
 				}	
 			}
 			catch(RuntimeException exception){
-				System.err.println(exception.getMessage());
 			}
 		}
 		else{

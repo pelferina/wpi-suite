@@ -56,7 +56,6 @@ public class GetAllUsers {
 				}	
 			}
 			catch(RuntimeException exception){
-				System.err.println(exception.getMessage());
 			}
 		}
 		else{
