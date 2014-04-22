@@ -181,7 +181,7 @@ public class PlayDeckGame extends JPanel{
 		
 		//Spring layout placement for gameName label
 		springLayout.putConstraint(SpringLayout.NORTH, gameName, 15, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, voteButton, 30, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.WEST, voteButton, 280, SpringLayout.WEST, this);
 		
 		//Spring layout placement for gameDesc label
 		springLayout.putConstraint(SpringLayout.NORTH, gameDesc, 15, SpringLayout.SOUTH, gameName);

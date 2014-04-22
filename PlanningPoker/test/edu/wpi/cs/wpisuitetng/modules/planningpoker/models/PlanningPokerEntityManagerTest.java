@@ -66,6 +66,7 @@ public class PlanningPokerEntityManagerTest {
 		e_manager = new EmailAddressEntityManager(db);
 		//eController = new AddEmailAddressController();
 
+
 	}	
 	//@Test
 	public void testDeadlineCheck(){
