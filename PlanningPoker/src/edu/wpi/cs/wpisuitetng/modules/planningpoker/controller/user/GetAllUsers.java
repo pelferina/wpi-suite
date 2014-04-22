@@ -45,13 +45,6 @@ public class GetAllUsers {
 			try{
 				if(Network.getInstance().getDefaultNetworkConfiguration() != null){
 					sendRequest();
-					while(users == null){
-						try {
-							Thread.sleep(10);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
 					return users;
 				}	
 			}

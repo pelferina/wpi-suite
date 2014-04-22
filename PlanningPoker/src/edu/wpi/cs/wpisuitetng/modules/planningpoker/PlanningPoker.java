@@ -66,16 +66,14 @@ public class PlanningPoker implements IJanewayModule{
 		tabs.add(tab);
 		
 		
-		getUserTimer = new Timer(3000, new ActionListener(){
+		getUserTimer = new Timer(1000, new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(GetCurrentUser.getInstance().getCurrentUser() !=null &&
 						GetAllUsers.getInstance().getAllUsers() != null){
 					getUserTimer.stop();
-					System.out.println(GetAllUsers.getInstance().getAllUsers().length);
 				}
-				System.out.println("refresh");
 			}
 		});
 		getUserTimer.start();

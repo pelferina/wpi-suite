@@ -44,13 +44,6 @@ public class GetCurrentUser {
 			try{
 				if(Network.getInstance().getDefaultNetworkConfiguration() != null){
 					sendRequest();
-					while(user == null){
-						try {
-							Thread.sleep(10);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
 					return user;
 				}	
 			}

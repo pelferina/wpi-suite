@@ -56,6 +56,7 @@ public class GetCurrentUserRequestObserver implements RequestObserver {
 	public void fail(IRequest iReq, Exception exception) {
 		if(exception == null) System.err.println("FAILURE in GetCurrentUserRequestObserver! Maybe there's something wrong in server");
 		exception.printStackTrace();
+		getUser.setUser(null);
 	}
 
 }

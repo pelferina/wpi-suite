@@ -28,6 +28,7 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddVoteController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateGameController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetAllUsers;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
@@ -194,7 +195,7 @@ public class VoteData extends JPanel{
 		
 		int i = 0;
 		for (Vote v: completedGame.getVotes()){
-			for (User u: GetUsersController.getInstance().getUsers()){
+			for (User u: GetAllUsers.getInstance().getAllUsers()){
 				if (u.getIdNum() == v.getUID()){
 					estimatesModel.setValueAt(u.getName(), i, 0);
 				}
@@ -308,7 +309,7 @@ public class VoteData extends JPanel{
 		int i = 0;
 		DefaultTableModel estimatesModel = (DefaultTableModel) estimatesTable.getModel();
 		for (Vote v: completedGame.getVotes()){
-			for (User u: GetUsersController.getInstance().getUsers()){
+			for (User u: GetAllUsers.getInstance().getAllUsers()){
 				if (u.getIdNum() == v.getUID()){
 					estimatesModel.setValueAt(u.getName(), i, 0);
 				}

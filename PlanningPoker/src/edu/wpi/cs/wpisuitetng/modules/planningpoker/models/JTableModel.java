@@ -17,7 +17,7 @@ import javax.swing.table.AbstractTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersController;
-
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetAllUsers;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 
 /**
@@ -33,7 +33,7 @@ public class JTableModel extends AbstractTableModel {
 								// and the "Y" as each Table spot
 	protected Integer[] gameIDs;
 	protected GameSession[] games;
-	protected GetUsersController guc;
+	protected GetAllUsers getUsers;
 	protected User[] users;
 	protected int size = 0;
     protected static final String[] COLUMN_NAMES = new String[] {"Name", "Deadline", "Owner", "Progress", "Status"};
@@ -53,7 +53,7 @@ public class JTableModel extends AbstractTableModel {
      */
 	public JTableModel(GameSession[] sessions){
 		users = null;
-		guc = GetUsersController.getInstance();
+		getUsers = GetAllUsers.getInstance();
     	setUpTable(sessions);
     }
 	
@@ -70,7 +70,7 @@ public class JTableModel extends AbstractTableModel {
     		Object[] curRow = {sessions[i].getGameName(),
 								sessions[i].getEndDate()!=null ? sessions[i].getDeadlineString() : "No Deadline", 
     							getUserFromID(sessions[i].getOwnerID()), 
-    							sessions[i].getVotes().size()+ " out of "+ guc.getUsers().length, // Progress
+    							sessions[i].getVotes().size()+ " out of "+ getUsers.getAllUsers().length, // Progress
     							sessions[i].getGameStatus().name()
     							};
     		Data[i] = curRow;
@@ -114,17 +114,7 @@ public class JTableModel extends AbstractTableModel {
 	 * @return the String of the user's name
 	 */
 	private String getUserFromID(int userID){
-		guc.actionPerformed();
-		while (guc.getUsers() == null){
-			try{
-				Thread.sleep(10);
-				System.out.println("Waiting for users");
-			}
-			catch(Exception e){
-				System.out.println("Exception thrown in JTableModel");
-			}
-		}
-		users = guc.getUsers();
+		users = getUsers.getAllUsers();
 		for (User u : users){
 			if (u.getIdNum() == userID){
 				return u.getName();

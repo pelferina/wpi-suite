@@ -68,6 +68,7 @@ public class GetAllUsersRequestObserver implements RequestObserver {
 	public void fail(IRequest iReq, Exception exception) {
 		if(exception == null) System.err.println("FAILURE in GetAllUserRequestObserver! Maybe there's something wrong in server");
 		exception.printStackTrace();
+		getUsers.setUsers(null);
 	}
 
 }

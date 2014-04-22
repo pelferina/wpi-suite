@@ -241,29 +241,4 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		ViewEventController.getInstance();
 	}
 	
-	
-	/**
-	 * TODO should this be in another class?
-	 */
-	private int getUserID(String userName){
-		final GetUsersController guc = GetUsersController.getInstance();
-		final User users[];
-		guc.actionPerformed();
-		while (guc.getUsers() == null){
-			try{
-				Thread.sleep(100);
-				System.out.println("Waiting for users");
-			}
-			catch(Exception e){
-				System.err.println(e.getMessage());
-			}
-		}
-		users = guc.getUsers();
-		for (User u : users){
-			if (u.getUsername().equals(userName)){
-				return u.getIdNum();
-			}
-		}
-		return -1;
-	}
 }
