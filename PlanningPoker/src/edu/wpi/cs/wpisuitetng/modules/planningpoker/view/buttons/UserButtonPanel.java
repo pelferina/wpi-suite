@@ -25,6 +25,7 @@ import javax.swing.Timer;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
@@ -111,14 +112,21 @@ public class UserButtonPanel extends ToolbarGroupView{
 		if(listener != null){
 			userButton.removeActionListener(listener);
 		}
-		listener = new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		if(game.getGameStatus().equals(GameStatus.ARCHIVED) || game.getGameStatus().equals(GameStatus.COMPLETED)){
+			listener = new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent e) {
 				ViewEventController.getInstance().viewGameTab(game);
-			}
-			
-		};
+				}
+			};
+		}else if(game.getGameStatus().equals(GameStatus.DRAFT)){
+			listener = new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent e) {
+				ViewEventController.getInstance().editGameTab(game);
+				}
+			};
+		}
 		userButton.addActionListener(listener);
 	}
 	

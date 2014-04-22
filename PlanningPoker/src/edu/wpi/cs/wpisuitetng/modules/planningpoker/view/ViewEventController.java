@@ -154,6 +154,14 @@ public class ViewEventController {
 	}
 	
 	/**
+	 * Set the activate game button in tool bar visible but disable
+	 * @param game
+	 */
+	public void makeActivateGameButtonDisable(GameSession game){
+		toolbar.makeActivateGameButtonDisable(game);
+	}
+	
+	/**
 	 * Set the archive game button in tool bar visible 
 	 * @param game
 	 */

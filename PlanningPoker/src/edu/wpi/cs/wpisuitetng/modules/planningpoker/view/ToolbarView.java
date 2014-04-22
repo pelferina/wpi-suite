@@ -8,6 +8,8 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 
+import java.awt.Dimension;
+
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.DefaultToolbarView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.EditButtonsPanel;
@@ -36,8 +38,9 @@ public class ToolbarView  extends DefaultToolbarView {
 	public ToolbarView(boolean visible) {
 		this.addGroup(gameButton);
 		this.addGroup(userButton);
-		this.addGroup(editButton);
 		this.addGroup(ownerButton);
+		this.addGroup(editButton);
+		
 
 	}
 	
@@ -70,6 +73,14 @@ public class ToolbarView  extends DefaultToolbarView {
 	 */
 	public void makeActivateGameButtonVisible(GameSession game){
 		ownerButton.makeActivateGameButtonVisible(game);
+	}
+	
+	/**
+	 * Disable the activate game button
+	 * @param game the game associated with this button
+	 */
+	public void makeActivateGameButtonDisable(GameSession game){
+		ownerButton.makeActivateGameButtonDisable(game);
 	}
 	/**
 	 * Enables the archive game button

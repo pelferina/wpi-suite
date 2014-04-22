@@ -112,6 +112,39 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		if (game.getEndDate()!=null)
 			expireThisButtonIn((int)(game.getEndDate().getTime()-Calendar.getInstance().getTime().getTime()));
 	}
+	
+	/**
+	 * Disable the activate game button, and add a action listener
+	 * to this game
+	 * @param gameID 
+	 */
+	public void makeActivateGameButtonDisable(GameSession game){
+		ownerButton.setVisible(true);
+		ownerButton.setEnabled(false);
+		ownerButton.setIcon(activateImg);
+		ownerButton.setText("<html>Activate<br />Game</html>");
+		
+		
+		if(listener != null){
+			ownerButton.removeActionListener(listener);
+		}
+		listener = new ActivateGameActionListener(game);
+		ownerButton.addActionListener(listener);
+		
+		if (game.getEndDate()!=null)
+			expireThisButtonIn((int)(game.getEndDate().getTime()-Calendar.getInstance().getTime().getTime()));
+	}
+	/**
+	 * Disable the activate game button, and add a action listener
+	 * to this game
+	 * @param gameID 
+	 */
+	public void makeActivateGameButtonDisable(){
+		ownerButton.setVisible(true);
+		ownerButton.setEnabled(false);
+		ownerButton.setIcon(activateImg);
+		ownerButton.setText("<html>Activate<br />Game</html>");
+	}
 
 	/**
 	 * Enables the archive game button, and add a action listener
@@ -141,7 +174,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ownerButton.removeActionListener(listener);
-				makeOwnerButtonInvisible();
+				makeActivateGameButtonDisable();
 				System.out.println("Expired");
 			}
 			
