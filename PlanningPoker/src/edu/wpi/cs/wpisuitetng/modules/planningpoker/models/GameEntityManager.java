@@ -178,34 +178,14 @@ public class GameEntityManager implements EntityManager<GameSession> {
 		final GameSession importedGame = GameSession.fromJson(content);
 		
 		GameSession oldGame = null;
+		GameSession[] games = null;
 		try {
-			final GameSession[] games = getAll(s);
-			for (GameSession g : games) {
-				if (g.getGameID() == importedGame.getGameID()) {
-					oldGame = g;
-					break;
-				}
-			}
-			if (oldGame == null) {
-				System.err.println("Should not update a new created game which has not been saved before");
-				return importedGame;
-			} else {
-
-				if (oldGame.getGameStatus().equals(GameStatus.DRAFT)
-						&& importedGame.getGameStatus().equals(
-								GameStatus.ACTIVE)) {
-					sendActiveNotification(importedGame, s.getProject());
-				}
-				if ((oldGame.getGameStatus().equals(GameStatus.ACTIVE) || oldGame.getGameStatus().equals(GameStatus.INPROGRESS))
-						&& importedGame.getGameStatus().equals(GameStatus.COMPLETED)) {
-					sendEndNotification(importedGame, s.getProject());
-				}
-
-			}
-		} catch (WPISuiteException e1) {
-			e1.printStackTrace();
+			games = getAll(s);
+		} catch (WPISuiteException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
 		}
-		
+
 		System.out.println(importedGame);
 		try {
 			db.update(GameSession.class, "GameID", importedGame.getGameID(),
@@ -226,6 +206,32 @@ public class GameEntityManager implements EntityManager<GameSession> {
 			System.out.println("Update Game Exception");
 			e.printStackTrace();
 		}
+		
+		for (GameSession g : games) {
+			if (g.getGameID() == importedGame.getGameID()) {
+				oldGame = g;
+				break;
+			}
+		}
+		if (oldGame == null) {
+			System.err
+					.println("Should not update a new created game which has not been saved before");
+			return importedGame;
+		} else {
+
+			if (oldGame.getGameStatus().equals(GameStatus.DRAFT)
+					&& importedGame.getGameStatus().equals(GameStatus.ACTIVE)) {
+				sendActiveNotification(importedGame, s.getProject());
+			}
+			if ((oldGame.getGameStatus().equals(GameStatus.ACTIVE) || oldGame
+					.getGameStatus().equals(GameStatus.INPROGRESS))
+					&& importedGame.getGameStatus()
+							.equals(GameStatus.COMPLETED)) {
+				sendEndNotification(importedGame, s.getProject());
+			}
+
+		}
+		
 		return importedGame;
 	}
 
