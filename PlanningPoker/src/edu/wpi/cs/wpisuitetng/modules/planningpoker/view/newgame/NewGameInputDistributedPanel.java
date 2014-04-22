@@ -137,7 +137,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		if (gameSession.getGameStatus().equals(GameStatus.ACTIVE)){
 			activateGameButton.setVisible(false);
 		}
-		System.out.println("Editing Game: "+ gameSession.getGameName());
+//		System.out.println("Editing Game: "+ gameSession.getGameName());
 	}
 
 	/**
@@ -394,9 +394,12 @@ public class NewGameInputDistributedPanel extends JPanel {
 	 */
 	void startCanActivateCheckerTimer()
 	{
-		System.out.println("activating timer!");
+		//System.out.println("activating timer!");
 		canActivateChecker = new Timer(100, new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				if (!editMode){
+					newGameP.isNew = areFieldsEmpty();
+				}
 				//Display Activate button if game can be activated
 				if (canActivate()){
 					initializeErrorMessages();
@@ -419,7 +422,6 @@ public class NewGameInputDistributedPanel extends JPanel {
 				}
 				else if(editMode && !anythingChanged())
 				{
-					System.out.println("nothing changed!");
 					newGameP.isNew = true;
 					saveGameButton.setEnabled(false);
 				}
@@ -569,7 +571,6 @@ public class NewGameInputDistributedPanel extends JPanel {
 				PMButton.setSelected(false);
 				AMButton.setSelected(true);
 				isAM = true;
-				System.out.println("isAM set to true!");
 			}
 		});
 
@@ -579,7 +580,6 @@ public class NewGameInputDistributedPanel extends JPanel {
 				AMButton.setSelected(false);
 				PMButton.setSelected(true);
 				isAM = false;
-				System.out.println("isAM is set to false!");
 			}
 		});		
 
@@ -663,7 +663,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 			setDeadlineDate();
 			setupDeadlineActionListeners();
 			setupDeadlineTime();
-			System.out.println("T:" + currentGameSession.getEndDate().getHours());			
+			//System.out.println("T:" + currentGameSession.getEndDate().getHours());			
 			//	Sets the hour and minute combo boxes to the hour and minute in the game's deadline
 			if (currentGameSession.getEndDate().getHours() >= 11){
 				deadlineHourComboBox.setSelectedIndex(currentGameSession.getEndDate().getHours() - 13);
@@ -706,6 +706,32 @@ public class NewGameInputDistributedPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * 
+	 * Checks if the new game panel is empty and no requirements/deadline is selected
+	 *
+	 * @return boolean, true is empty, false otherwise
+	 */
+	private boolean areFieldsEmpty(){
+		saveSelectedReqs();
+		if (!nameTextField.getText().equals("")){
+			return false;
+		}
+		if (!descriptionTextField.getText().equals("")){
+			return false;
+		}
+		if (deadlineCheckBox.isSelected()){
+			return false;
+		}
+		if (deckCheckBox.isSelected()){
+			return false;
+		}
+		if (!selectionsMade.isEmpty()){
+			return false;
+		}
+		return true;
+	}
+	
 	private boolean anythingChanged() {
 		saveSelectedReqs();
 
@@ -713,11 +739,9 @@ public class NewGameInputDistributedPanel extends JPanel {
 	//	{	
 			// Check if the user has changed the name
 			if (!(nameTextField.getText().equals(currentGameSession.getGameName()))){
-				System.out.println("name changed!");
 				return true;}
 			// Check if the user has changed the description
 			if (!(descriptionTextField.getText().equals(currentGameSession.getGameDescription()))){
-				System.out.println("desc changed!");
 				return true;}
 		//}
 		// Check if the user has changed the deadline
@@ -725,21 +749,16 @@ public class NewGameInputDistributedPanel extends JPanel {
 
 		final Date deadlineDate = new Date(deadlineYear - 1900, deadlineMonth, deadlineDay, getHour(deadlineHourComboBox.getSelectedIndex() + 1), minuteTime);
 		if(deadlineCheckBox.isSelected() && !deadlineDate.equals(currentGameSession.getEndDate())){
-			System.out.println("saved deadline is " + currentGameSession.getEndDate().toString());
-			System.out.println("selected deadline is " + deadlineDate.toString());
-			System.out.println("deadline changed!");
 			return true;
 		}
 		// Check if the user has changed the requirements
-		if (!selectionsMade.containsAll(currentGameSession.getGameReqs())){
-			System.out.println("game req changed!");
+		if (!selectionsMade.containsAll(currentGameSession.getGameReqs())
+				|| (selectionsMade.size() != currentGameSession.getGameReqs().size())){
 			return true;
 		}
 		// Check if the user has changed the deck
-		System.out.println("Current DeckID for game " + currentGameSession.getGameID() + " is " + currentGameSession.getDeckId());
 		if ((currentGameSession.getDeckId() != -1 && !deckCheckBox.isSelected())
 				|| (currentGameSession.getDeckId() == -1 && deckCheckBox.isSelected())){
-			System.out.println("deck changed!");
 			return true;
 		}
 		return false;
