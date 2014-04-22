@@ -176,6 +176,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 
 		// Parse the message from JSON
 		final GameSession importedGame = GameSession.fromJson(content);
+		
 		GameSession oldGame = null;
 		try {
 			final GameSession[] games = getAll(s);
@@ -193,17 +194,18 @@ public class GameEntityManager implements EntityManager<GameSession> {
 				if (oldGame.getGameStatus().equals(GameStatus.DRAFT)
 						&& importedGame.getGameStatus().equals(
 								GameStatus.ACTIVE)) {
-					//sendActiveNotification(importedGame, s.getProject());
+					sendActiveNotification(importedGame, s.getProject());
 				}
 				if ((oldGame.getGameStatus().equals(GameStatus.ACTIVE) || oldGame.getGameStatus().equals(GameStatus.INPROGRESS))
 						&& importedGame.getGameStatus().equals(GameStatus.COMPLETED)) {
-					//sendEndNotification(importedGame, s.getProject());
+					sendEndNotification(importedGame, s.getProject());
 				}
 
 			}
 		} catch (WPISuiteException e1) {
 			e1.printStackTrace();
 		}
+		
 		System.out.println(importedGame);
 		try {
 			db.update(GameSession.class, "GameID", importedGame.getGameID(),
@@ -218,6 +220,8 @@ public class GameEntityManager implements EntityManager<GameSession> {
 					"GameDescription", importedGame.getGameDescription());
 			db.update(GameSession.class, "GameID", importedGame.getGameID(),
 					"DeckId", importedGame.getDeckId());
+			db.update(GameSession.class, "GameID", importedGame.getGameID(),
+					"FinalVotes", importedGame.getFinalVotes());
 		} catch (WPISuiteException e) {
 			System.out.println("Update Game Exception");
 			e.printStackTrace();
@@ -262,7 +266,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 				+ game.getGameName()
 				+ " just started. Please go to PlanningPoker to vote.\r\nSent by fff8e7";
 		try {
-			sendUserEmails("New game", textToSend, project);
+			sendUserEmails("New game notification", textToSend, project);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -273,7 +277,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 				+ game.getGameName()
 				+ " just ended.\r\nSent by fff8e7";
 		try {
-			sendUserEmails("Game Ended", textToSend, project);
+			sendUserEmails("End game notification", textToSend, project);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}

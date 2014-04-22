@@ -64,6 +64,8 @@
 		<delete dir="build-test"/>
 		<delete file="${core-jar-dest}"/>
 		<delete file="${janeway-jar-dest}"/>
+		<mkdir dir="build/net/sourceforge/jdatepicker/impl"/>
+		<copy file="calendar_icon.png" todir="build/net/sourceforge/jdatepicker/impl/"/>
 	</target>
 
 	<!-- compile dependency is necessary since Core needs jars to run tests... hacky -->

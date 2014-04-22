@@ -54,6 +54,17 @@ public class VotingCompleteListener implements ActionListener {
 //			System.out.println("GameID being processed" + gameArray[i].getGameID());
 //			System.out.println("GameVoteList being is of size" + 
 //					VoteModel.getInstance().getVotes(gameArray[i].getGameID()).size());
+			if(VoteModel.getInstance().getVotes(gameArray[i].getGameID()) != null
+					&& VoteModel.getInstance().getVotes(gameArray[i].getGameID()).size() > 0
+					&& gameArray[i].getGameStatus().equals(GameStatus.ACTIVE) ){
+				try {
+					db.update(GameSession.class, "GameID", gameArray[i].getGameID(), "GameStatus", GameStatus.INPROGRESS);
+				} catch (WPISuiteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
 			if (VoteModel.getInstance().getVotes(gameArray[i].getGameID()) != null 
 					&& VoteModel.getInstance().getVotes(gameArray[i].getGameID()).size() == numOfUser
 					&& (gameArray[i].getGameStatus().equals(GameStatus.ACTIVE) || 
