@@ -83,7 +83,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 	 *  Initializing Optional Deck Selection 
 	 */
 	private final JCheckBox deckCheckBox = new JCheckBox("Use Deck");
-	private final JComboBox<String> deckBox = new JComboBox<String>(); 
+	private JComboBox<String> deckBox = new JComboBox<String>(); 
 
 	/*
 	 * Initializing name and description labels and text fields
@@ -640,7 +640,8 @@ public class NewGameInputDistributedPanel extends JPanel {
 		}
 	}
 	private void initializeDeckComboBox()
-	{
+	{	
+		deckBox.removeAllItems();
 		//Initializes the deck combo box
 		deckBox.addItem("Default Deck");
 	}
@@ -849,7 +850,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, deckLabel, 20, SpringLayout.EAST, deckCheckBox);		
 
 		//Spring layout for the deckBox
-		springLayout.putConstraint(SpringLayout.WEST, deckBox, -5, SpringLayout.EAST, deckLabel);
+		springLayout.putConstraint(SpringLayout.WEST, deckBox, 5, SpringLayout.EAST, deckLabel);
 		springLayout.putConstraint(SpringLayout.SOUTH, deckBox, 0, SpringLayout.SOUTH, deckLabel);
 
 		//Spring layout for the deadlineLabel
