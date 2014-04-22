@@ -827,7 +827,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, deckLabel, 20, SpringLayout.EAST, deckCheckBox);		
 
 		//Spring layout for the deckBox
-		springLayout.putConstraint(SpringLayout.WEST, deckBox, 100, SpringLayout.WEST, deckLabel);
+		springLayout.putConstraint(SpringLayout.WEST, deckBox, -5, SpringLayout.EAST, deckLabel);
 		springLayout.putConstraint(SpringLayout.SOUTH, deckBox, 0, SpringLayout.SOUTH, deckLabel);
 
 		//Spring layout for the deadlineLabel
@@ -873,7 +873,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 
 		//Spring layout for deadlineHourComboBox
 		springLayout.putConstraint(SpringLayout.NORTH, deadlineHourComboBox, 0, SpringLayout.NORTH, deadlineTime);
-		springLayout.putConstraint(SpringLayout.WEST, deadlineHourComboBox, 100, SpringLayout.WEST, deadlineTime);
+		springLayout.putConstraint(SpringLayout.WEST, deadlineHourComboBox, 5, SpringLayout.EAST, deadlineTime);
 
 		//Spring layout for minuteComboBox
 		springLayout.putConstraint(SpringLayout.NORTH, deadlineMinuteComboBox, 0, SpringLayout.NORTH, deadlineHourComboBox);
