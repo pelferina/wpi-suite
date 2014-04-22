@@ -160,6 +160,7 @@ public class PlayDeckGame extends JPanel{
 					System.out.println(userEstimates.getVote());
 					sendEstimatetoGameView(currentReq, votesSoFarInt);
 				}
+				gv.isNew = false;
 			}
 			
 		});
@@ -168,12 +169,10 @@ public class PlayDeckGame extends JPanel{
 		submit.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
-				int option = JOptionPane.showOptionDialog(gv, "Do you wish to submit your current votes?", "Save Votes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-				if (option == 0){
-					AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
-					msgr.sendVote(userEstimates);
-					ViewEventController.getInstance().getMain().remove(gv);
-				}
+				gv.isNew = true;
+				AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
+				msgr.sendVote(userEstimates);
+				ViewEventController.getInstance().getMain().remove(gv);
 			}
 		});
 		//set layout
