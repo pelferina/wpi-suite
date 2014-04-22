@@ -101,10 +101,9 @@ public class RefreshManager {
 	private void updateRequirements()
 	{
 		//Make a request to the database
-		reqController.actionPerformed(null);	
-
 		
 		if (differentList(reqCache, RequirementModel.getInstance().getRequirements())){
+			reqController.actionPerformed(null);
 			reqController.refresh();
 			reqCache = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
 		}	

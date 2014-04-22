@@ -54,6 +54,7 @@ public class VoteData extends JPanel{
 	private final JLabel medianLabel = new JLabel("Median:");
 	private final JLabel estimatesLabel = new JLabel("Estimates");
 	private final JLabel finalEstimateLabel = new JLabel ("Final Estimate:");
+	private final JLabel notAnIntegerError = new JLabel("Estimate must be a positive integer");
 	private JTextField finalEstimateText = new JTextField();
 	private JButton	finalSubmitButton = new JButton("Submit");
 	private JButton sendEstimatesButton = new JButton("Send Final Estimates");
@@ -81,6 +82,7 @@ public class VoteData extends JPanel{
 		completedGame = gs;
 		gameReqs = cv.getGameRequirements();
 		finalVote = new ArrayList<Integer>();
+		notAnIntegerError.setVisible(false);
 		sendEstimatesButton.setEnabled(false);
 		finalSubmitButton.setEnabled(false);
 		if(completedGame.getFinalVotes() != null){
@@ -280,7 +282,12 @@ public class VoteData extends JPanel{
 		springLayout.putConstraint(SpringLayout.NORTH, estimatesPane, 192, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, estimatesPane, -10, SpringLayout.SOUTH, this);
 		
+		//Spring layout constraints for notAnIntegerError
+		springLayout.putConstraint(SpringLayout.WEST, notAnIntegerError, 0, SpringLayout.WEST, finalEstimateLabel);
+		springLayout.putConstraint(SpringLayout.SOUTH, notAnIntegerError, 20, SpringLayout.SOUTH, finalEstimateLabel);
+		
 		setLayout(springLayout);
+		add(notAnIntegerError);
 		add(estimatesPane);
 		add(descriptionTextArea);
 		add(medianTextField);
@@ -338,10 +345,18 @@ public class VoteData extends JPanel{
 	
 	private void isValidEstimate(){
 		if (finalEstimateText.getText().length() > 0 && isInteger(finalEstimateText.getText())){
-			finalSubmitButton.setEnabled(true);
+			if (Integer.parseInt(finalEstimateText.getText()) >= 0){
+				finalSubmitButton.setEnabled(true);
+				notAnIntegerError.setVisible(false);
+			}
+			else {
+				finalSubmitButton.setEnabled(false);
+				notAnIntegerError.setVisible(true);
+			}
 		}
 		else{
 			finalSubmitButton.setEnabled(false);
+			notAnIntegerError.setVisible(true);
 		}
 	}
 	
