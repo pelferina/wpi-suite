@@ -56,6 +56,7 @@ public class NewRequirementPanel extends JPanel {
 	private JComboBox<RequirementType> typeComboBox = new JComboBox<RequirementType>();
 	private NewGameDistributedPanel newGamePanel;
 	private boolean isCreatable;
+	private final JLabel reqError = new JLabel("Can not have a game with no requirements and name");
 	
 	/**
 	 * Creates the tab for the new requirement to be specified and created
@@ -63,6 +64,7 @@ public class NewRequirementPanel extends JPanel {
 	 */
 	public NewRequirementPanel(NewGameDistributedPanel ngdp){
 		CreateRequirementButton.setEnabled(false);
+		reqError.setVisible(true);
 		newGamePanel = ngdp;
 		priorityComboBox = new JComboBox<RequirementPriority>(RequirementPriority.values());
 		typeComboBox = new JComboBox<RequirementType>(RequirementType.values());
@@ -132,6 +134,10 @@ public class NewRequirementPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.NORTH, nameLabel, 29, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, nameLabel, 53, SpringLayout.WEST, this);
 		
+		springLayout.putConstraint(SpringLayout.EAST, reqError, -10, SpringLayout.WEST, CreateRequirementButton);
+		springLayout.putConstraint(SpringLayout.NORTH, reqError, 0, SpringLayout.NORTH, CreateRequirementButton);
+		
+		
 		setLayout(springLayout);
 		add(cancelButton);
 		add(lblPriority);
@@ -143,7 +149,7 @@ public class NewRequirementPanel extends JPanel {
 		add(CreateRequirementButton);
 		add(priorityComboBox);
 		add(typeComboBox);
-		
+		add(reqError);
 		/**
 		 * Action listener for the createRequirementButton
 		 */
@@ -182,6 +188,7 @@ public class NewRequirementPanel extends JPanel {
 			public void checkInput(DocumentEvent e){
 				isCreatable = (!nameField.getText().isEmpty() && !descriptionField.getText().isEmpty());
 				CreateRequirementButton.setEnabled(isCreatable);
+				reqError.setVisible(!isCreatable);
 			}
 		});
 		/**
@@ -204,6 +211,7 @@ public class NewRequirementPanel extends JPanel {
 			public void checkInput(DocumentEvent e){
 				isCreatable = (!nameField.getText().isEmpty() && !descriptionField.getText().isEmpty());
 				CreateRequirementButton.setEnabled(isCreatable);
+				reqError.setVisible(!isCreatable);
 			}
 		});
 		
