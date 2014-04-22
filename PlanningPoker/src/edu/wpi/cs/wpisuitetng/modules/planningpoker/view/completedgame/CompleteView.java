@@ -24,7 +24,7 @@ public class CompleteView extends JSplitPane {
 	private GameData gameData;
 	private VoteData voteData;
 
-	public boolean isNew = false;
+	public boolean isNew = true;
 
 	/**
 	 * The constructor for CompleteView

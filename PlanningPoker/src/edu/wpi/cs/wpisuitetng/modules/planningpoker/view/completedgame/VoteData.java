@@ -149,6 +149,7 @@ public class VoteData extends JPanel{
 				}
 				sendEstimatesButton.setEnabled(allVotes);
 				completeView.nextRequirement();
+				completeView.isNew = false;
 			}
 		});
 		
@@ -165,7 +166,9 @@ public class VoteData extends JPanel{
 					r.setEstimate(finalVote.get(completeView.getIndex(r.getId())));
 					reqmsgr.updateRequirement(r);
 				}
-			}
+				completeView.isNew = true;
+				ViewEventController.getInstance().getMain().remove(completeView);
+				}
 		});
 		
 		finalEstimateText.getDocument().addDocumentListener(new DocumentListener(){
