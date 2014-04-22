@@ -106,4 +106,8 @@ public class NewGameDistributedPanel extends JSplitPane {
 		newRequirement.setVisible(false);
 		newGameReqPanel.setVisible(true);
 	}
+	
+	public void stopTimer(){
+		newGameInputPanel.stopTimer();
+	}
 }
