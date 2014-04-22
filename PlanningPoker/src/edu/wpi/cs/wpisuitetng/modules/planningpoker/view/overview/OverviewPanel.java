@@ -218,11 +218,6 @@ public class OverviewPanel extends JPanel implements Refreshable {
 
 	@Override
 	public void refreshGames() {
-		gameTreeModel.update();
-        final DefaultTreeModel model = (DefaultTreeModel) gameTree.getModel();
-        model.setRoot(gameTreeModel.getTop());
-        model.reload();
-        
         //update the table for my selection.
 		final DefaultMutableTreeNode node = (DefaultMutableTreeNode)gameTree.getLastSelectedPathComponent();
         if (node != null)
@@ -230,10 +225,6 @@ public class OverviewPanel extends JPanel implements Refreshable {
             final Object nodeInfo = node.getUserObject();
             updateTable((String)nodeInfo);        	
         }
-        
-        System.out.println("Updating: Games are now " + table.getModel().getRowCount());
-        
-        gameTree.repaint();
         table.repaint();
         
 		//Expand all folders
