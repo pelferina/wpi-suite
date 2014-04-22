@@ -38,7 +38,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.PlayDeckGameTest;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.reqpanel.NewRequirementPanel;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -60,7 +59,7 @@ public class MainView extends JTabbedPane {
 	private final List<Integer> openTabs = new ArrayList<Integer>();
 	private final List<NewGameDistributedPanel> newGames = new ArrayList<NewGameDistributedPanel>();
 	final int PERMANANT_TABS = 1;
-	private boolean hasPreferencePane;
+	private boolean hasPreferencePane = false;
 
 	public MainView() {
 		overviewPanel = new OverviewPanel();
@@ -141,12 +140,10 @@ public class MainView extends JTabbedPane {
 				add(newCompleteView, open);
 			}
 			else if (tabType.equals("User Preferences")){
-				if(hasPreferencePane == true){
-					final PreferencesPanel userPreferences = new PreferencesPanel(btnClose);
-					myCloseActionHandler = new MyCloseActionHandler("User Preferences", j, this, userPreferences, 4);
-					add(userPreferences, open);
-					hasPreferencePane = true;
-				}
+				final PreferencesPanel userPreferences = new PreferencesPanel(btnClose);
+				myCloseActionHandler = new MyCloseActionHandler("User Preferences", j, this, userPreferences, 4);
+				add(userPreferences, open);
+				hasPreferencePane = true;
 			}
 /*			else if (tabType.equals("Req Tab")){
 				final NewRequirementPanel newReq = new NewRequirementPanel(btnClose);
@@ -386,7 +383,9 @@ public class MainView extends JTabbedPane {
 	 * This method adds the "User Preferences" tab
 	 */
 	public void addPreferencesPanel() {
-		this.addTab("User Preferences", new GameSession(null, null, 0, 0, null, null));
+		if (!hasPreferencePane){
+			addTab("User Preferences", new GameSession(null, null, 0, 0, null, null));
+		}
 	}
 
 }
