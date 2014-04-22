@@ -62,8 +62,7 @@ public class EmailAddressTest {
 		db.save(admin);
 		p_manager = new GameEntityManager(db);
 		e_manager = new EmailAddressEntityManager(db);
-		//eController = new AddEmailAddressController();
-
+		eController = new AddEmailAddressController(null);
 	}	
 	
 	@Test

@@ -99,7 +99,7 @@ public class MainView extends JTabbedPane {
 		 * @param gametoPlay the game session to play
 		 */
 		public void addPlayGameTab(GameSession gametoPlay){
-			if(gametoPlay.getGameStatus() == GameStatus.COMPLETED)
+			if(gametoPlay.getGameStatus() == GameStatus.COMPLETED || gametoPlay.getGameStatus() == GameStatus.ARCHIVED)
 			{
 				addTab("View Estimates", gametoPlay);
 			}
@@ -227,6 +227,7 @@ public class MainView extends JTabbedPane {
 	    //1 - Edit Game
 	    //2 - Game View
 	    //3 - Complete Game
+	    //4 - Preferences Panel
 	    //5 - New Requirement
 	    private final int type;
 	    private final MainView mv;
