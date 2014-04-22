@@ -594,6 +594,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		if (!datePicker.getModel().isSelected()){
 			datePicker.getModel().setDate(currentDate.get(Calendar.YEAR), 
 					currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DAY_OF_MONTH));
+			datePicker.getModel().setSelected(true);
 		}
 		setDeadlineDate();
 
@@ -658,14 +659,16 @@ public class NewGameInputDistributedPanel extends JPanel {
 			final int month_index = currentGameSession.getEndDate().getMonth();
 
 			final int day_index = currentGameSession.getEndDate().getDate();
+
 			datePicker.getModel().setDate(year_index, month_index, day_index);
+			datePicker.getModel().setSelected(true);
 
 			setDeadlineDate();
 			setupDeadlineActionListeners();
 			setupDeadlineTime();
 			//System.out.println("T:" + currentGameSession.getEndDate().getHours());			
 			//	Sets the hour and minute combo boxes to the hour and minute in the game's deadline
-			if (currentGameSession.getEndDate().getHours() >= 11){
+			if (currentGameSession.getEndDate().getHours() > 11){
 				deadlineHourComboBox.setSelectedIndex(currentGameSession.getEndDate().getHours() - 13);
 				isAM = false;
 				PMButton.setSelected(true);
