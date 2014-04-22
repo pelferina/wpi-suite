@@ -96,11 +96,11 @@ public class VoteData extends JPanel{
 		reqIndex = 0;
 		
 		//Enables the submit button and text box for final estimate if the user is the owner of the game
-		if (completedGame.getOwnerID() == GetCurrentUser.getInstance().getCurrentUser().getIdNum()){
+		if (completedGame.getOwnerID() == GetCurrentUser.getInstance().getCurrentUser().getIdNum() && completedGame.getGameStatus() != GameStatus.ARCHIVED){
 			finalEstimateText.setEnabled(true);
 		}
 		else {
-			finalEstimateText.setEnabled(false);
+			finalEstimateText.setEditable(false);
 			finalSubmitButton.setVisible(false);
 		}
 		reqNameText.setFont(new Font("Tahoma", Font.PLAIN, 15));
