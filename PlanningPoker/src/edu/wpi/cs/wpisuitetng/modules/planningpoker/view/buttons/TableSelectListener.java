@@ -56,7 +56,6 @@ public class TableSelectListener implements ListSelectionListener{
     	boolean hasCategory = false;
     	if(currentUser.getIdNum() == ownerID){
     		if(status.equals(GameStatus.ACTIVE) || status.equals(GameStatus.INPROGRESS)){
-    			System.out.println("could end");
     			ViewEventController.getInstance().makeEndGameButtonVisible(gameSelected);
     			hasCategory = true;
     		}else if(status.equals(GameStatus.DRAFT) && isValid(gameSelected)){
@@ -71,6 +70,16 @@ public class TableSelectListener implements ListSelectionListener{
     			hasCategory = true;
     		}
     	}
+    	
+    	if(status.equals(GameStatus.ACTIVE) || status.equals(GameStatus.INPROGRESS)){
+			ViewEventController.getInstance().makeVoteGameButtonVisible(gameSelected);
+		}else if(status.equals(GameStatus.ARCHIVED) || status.equals(GameStatus.COMPLETED)){
+			ViewEventController.getInstance().makeViewGameButtonVisible(gameSelected);
+		}else {
+			ViewEventController.getInstance().makeUserButtonInvisible();
+			hasCategory = true;
+		}
+    	
     	if (!hasCategory){
     		ViewEventController.getInstance().makeOwnerButtonInvisible();
     		ViewEventController.getInstance().setEditGameButtonInVisible();
