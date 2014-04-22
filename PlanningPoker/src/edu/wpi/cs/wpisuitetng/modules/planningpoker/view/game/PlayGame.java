@@ -158,7 +158,7 @@ public class PlayGame extends JPanel{
 					}
 					checkCanSubmit();
 					System.out.println(userEstimates.getVote());
-					sendEstimatetoGameView(currentReq);
+					sendEstimatetoGameView(currentReq, estimate);
 				}
 			}
 			
@@ -294,8 +294,8 @@ public class PlayGame extends JPanel{
 	 * to estimate table to the completed estimates table
 	 * @param r the requirement to send
 	 */
-	public void sendEstimatetoGameView(Requirement r){
-		gv.updateReqTables(r);
+	public void sendEstimatetoGameView(Requirement r, int estimate){
+		gv.updateReqTables(r, estimate);
 	}
 	
 	/**
