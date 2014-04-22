@@ -249,7 +249,7 @@ public class PlayGame extends JPanel{
 	 * @param reqToEstimate the requirement that is being estimated
 	 */
 	private void isValidEstimate(){
-		if (estimateTextField.getText().length() > 0 && isInteger(estimateTextField.getText())){
+		if (estimateTextField.getText().length() > 0 && isInteger(estimateTextField.getText()) && !reqNameTextField.getText().isEmpty()){
 			voteButton.setEnabled(true);
 		}
 		else{

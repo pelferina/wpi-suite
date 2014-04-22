@@ -153,6 +153,7 @@ public class VoteData extends JPanel{
 			@Override 
 			public void actionPerformed(ActionEvent e){
 				completedGame.setFinalVotes(finalVote);
+				completedGame.setGameStatus(GameStatus.ARCHIVED);
 				final UpdateGameController msgr = new UpdateGameController();
 				msgr.sendGame(completedGame);
 			}
