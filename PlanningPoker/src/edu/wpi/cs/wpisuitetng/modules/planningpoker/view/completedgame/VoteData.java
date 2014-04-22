@@ -24,6 +24,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddVoteController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersController;
@@ -97,11 +98,11 @@ public class VoteData extends JPanel{
 		reqIndex = 0;
 		
 		//Enables the submit button and text box for final estimate if the user is the owner of the game
-		if (completedGame.getOwnerID() == GetCurrentUser.getInstance().getCurrentUser().getIdNum()){
+		if (completedGame.getOwnerID() == GetCurrentUser.getInstance().getCurrentUser().getIdNum() && completedGame.getGameStatus() != GameStatus.ARCHIVED){
 			finalEstimateText.setEnabled(true);
 		}
 		else {
-			finalEstimateText.setEnabled(false);
+			finalEstimateText.setEditable(false);
 			finalSubmitButton.setVisible(false);
 		}
 		reqNameText.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -154,8 +155,14 @@ public class VoteData extends JPanel{
 			@Override 
 			public void actionPerformed(ActionEvent e){
 				completedGame.setFinalVotes(finalVote);
+				completedGame.setGameStatus(GameStatus.ARCHIVED);
 				final UpdateGameController msgr = new UpdateGameController();
 				msgr.sendGame(completedGame);
+				final UpdateRequirementController reqmsgr = UpdateRequirementController.getInstance();
+				for (Requirement r: gameReqs){
+					r.setEstimate(finalVote.get(completeView.getIndex(r.getId())));
+					reqmsgr.updateRequirement(r);
+				}
 			}
 		});
 		

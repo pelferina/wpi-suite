@@ -104,8 +104,8 @@ public class GameView extends JSplitPane{
 	 * This method updates the requirement tables with a requirement
 	 * @param r the requirement
 	 */
-	public void updateReqTables(Requirement r) {
-		gameReqs.updateTables(r);
+	public void updateReqTables(Requirement r, int estimate) {
+		gameReqs.updateTables(r, estimate);
 	}
 	/**
 	 * clears the game view's boxes

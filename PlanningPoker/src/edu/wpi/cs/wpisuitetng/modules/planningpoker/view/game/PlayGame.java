@@ -62,6 +62,7 @@ public class PlayGame extends JPanel{
 	private Requirement currentReq;
 	private GameView gv;
 	private GameSession currentGame;
+	private boolean hasVoted = false;
 	
 	/**
 	 * Constructor for a PlayGame panel
@@ -79,9 +80,15 @@ public class PlayGame extends JPanel{
 		for (Vote v: gameToPlay.getVotes()){
 			if (v.getUID() == GetCurrentUser.getInstance().getCurrentUser().getIdNum()){
 				userEstimates = v;
+				hasVoted = true;
 			}
 		}
-		userEstimates = new Vote(estimates, currentGame.getGameID());
+		if (hasVoted){
+			estimateTextField.setText(Integer.toString(userEstimates.getVote().get(0)));
+		}
+		else {
+			userEstimates = new Vote(estimates, currentGame.getGameID());
+		}
 		reqDescTextArea.setWrapStyleWord(true);
 		voteButton.setEnabled(false);
 		submit.setEnabled(false);
@@ -99,12 +106,11 @@ public class PlayGame extends JPanel{
 		
 		//Sets the description and name text fields to the first requirement in the to estimate table
 		gameNameTextField.setText(currentGame.getGameName());
-		reqNameTextField.setText(currentReq.getName());
-		gameDescTextArea.setText(currentGame.getGameDescription());
-		reqDescTextArea.setText(currentReq.getDescription());
-		if (gameToPlay.getVotes().size() > 0){
-			estimateTextField.setText(Integer.toString(gameToPlay.getVotes().get(0).getVote().get(currentReq.getId())));
+		if (currentReq != null){
+			reqNameTextField.setText(currentReq.getName());
+			reqDescTextArea.setText(currentReq.getDescription());
 		}
+		gameDescTextArea.setText(currentGame.getGameDescription());
 		gameNameTextField.setEditable(false);
 		reqNameTextField.setEditable(false);
 		gameDescTextArea.setEditable(false);
@@ -152,7 +158,7 @@ public class PlayGame extends JPanel{
 					}
 					checkCanSubmit();
 					System.out.println(userEstimates.getVote());
-					sendEstimatetoGameView(currentReq);
+					sendEstimatetoGameView(currentReq, estimate);
 				}
 			}
 			
@@ -249,7 +255,7 @@ public class PlayGame extends JPanel{
 	 * @param reqToEstimate the requirement that is being estimated
 	 */
 	private void isValidEstimate(){
-		if (estimateTextField.getText().length() > 0 && isInteger(estimateTextField.getText())){
+		if (estimateTextField.getText().length() > 0 && isInteger(estimateTextField.getText()) && !reqNameTextField.getText().isEmpty()){
 			voteButton.setEnabled(true);
 		}
 		else{
@@ -288,8 +294,8 @@ public class PlayGame extends JPanel{
 	 * to estimate table to the completed estimates table
 	 * @param r the requirement to send
 	 */
-	public void sendEstimatetoGameView(Requirement r){
-		gv.updateReqTables(r);
+	public void sendEstimatetoGameView(Requirement r, int estimate){
+		gv.updateReqTables(r, estimate);
 	}
 	
 	/**

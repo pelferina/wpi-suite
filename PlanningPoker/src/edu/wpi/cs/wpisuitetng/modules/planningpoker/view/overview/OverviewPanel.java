@@ -76,18 +76,18 @@ public class OverviewPanel extends JPanel implements Refreshable {
 
 		
 		//sort the table
-		//sorter = new TableRowSorter<JTableModel>((JTableModel)table.getModel());
-		//table.setRowSorter(sorter);
+		table.setRowSorter(new TableRowSorter(table.getModel()));
 		
 		//This is used to refresh the overview table
 		
 		table.addMouseListener(new MouseAdapter() {
 			  public void mouseClicked(MouseEvent e) {
 				  final JTable target = (JTable)e.getSource();
-			      final int row = target.getSelectedRow();
-			      final int column = target.getSelectedColumn();
+			      int selectedGame = target.getSelectedRow();
+			      selectedGame = target.convertRowIndexToModel(selectedGame);
+			      
 				    if (e.getClickCount() == 2) {
-				      final int gameID = (Integer)((JTableModel)target.getModel()).getIDFromRow(row);
+				      final int gameID = (Integer)((JTableModel)target.getModel()).getIDFromRow(selectedGame);
 				      final List<GameSession> games = gameModel.getGames();
 				      GameSession clickedGame = null;
 				      for (GameSession gm: games){
@@ -115,7 +115,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 				      }
 				    }
 				    if(e.getClickCount() == 1){
-				    	System.out.println("In mouse listener " + row);
+				    	//System.out.println("In mouse listener " + row);
 				    }
 				  }
 				});
@@ -241,4 +241,5 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		ViewEventController.getInstance();
 	}
 	
+
 }

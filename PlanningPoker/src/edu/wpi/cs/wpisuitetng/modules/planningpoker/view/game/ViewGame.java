@@ -133,7 +133,7 @@ public class ViewGame extends JPanel{
 					}
 					checkCanSubmit();
 					System.out.println(userEstimates.getVote());
-					sendEstimatetoGameView(currentReq);
+					sendEstimatetoGameView(currentReq, estimate);
 				}
 			}
 			
@@ -244,8 +244,8 @@ public class ViewGame extends JPanel{
 	 * to estimate table to the completed estimates table
 	 * @param r the Requirement to send to game view
 	 */
-	public void sendEstimatetoGameView(Requirement r){
-		gv.updateReqTables(r);
+	public void sendEstimatetoGameView(Requirement r, int estimate){
+		gv.updateReqTables(r, estimate);
 	}
 	/**
 	 * Helper function for checking if the estimate text box contains an integer
