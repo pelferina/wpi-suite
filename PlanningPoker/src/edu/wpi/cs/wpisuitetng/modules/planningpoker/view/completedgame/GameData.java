@@ -41,6 +41,7 @@ public class GameData extends JPanel{
 	private final JLabel gameReqsLabel = new JLabel("Game Requirements:");
 	private JTextField gameNameTextBox = new JTextField();
 	private JTextArea descriptionTextArea = new JTextArea();
+	private JScrollPane descriptionScrollPane = new JScrollPane(descriptionTextArea);
 	private JTable gameReqsTable;
 	private JScrollPane reqPane;
 	private List<Integer> gameReqIDs;
@@ -64,6 +65,8 @@ public class GameData extends JPanel{
 		gameNameTextBox.setEditable(false);
 		descriptionTextArea.setEditable(false);
 		gameReqIDs = gs.getGameReqs();
+		descriptionTextArea.setLineWrap(true);
+		descriptionTextArea.setWrapStyleWord(true);
 		
 		for (Requirement r: allReqs){
 			if (gameReqIDs.contains(r.getId())){
@@ -108,12 +111,12 @@ public class GameData extends JPanel{
 		SpringLayout springLayout = new SpringLayout();
 		
 		//Spring layout constraints for gameNameTextBox
-		springLayout.putConstraint(SpringLayout.EAST, gameNameTextBox, 0, SpringLayout.EAST, descriptionTextArea);
+		springLayout.putConstraint(SpringLayout.EAST, gameNameTextBox, 0, SpringLayout.EAST, descriptionScrollPane);
 		springLayout.putConstraint(SpringLayout.NORTH, gameNameTextBox, -3, SpringLayout.NORTH, gameNameLabel);
 		springLayout.putConstraint(SpringLayout.WEST, gameNameTextBox, 6, SpringLayout.EAST, gameNameLabel);
 		
 		//Spring layout constraints for descriptionLabel
-		springLayout.putConstraint(SpringLayout.SOUTH, descriptionLabel, -6, SpringLayout.NORTH, descriptionTextArea);
+		springLayout.putConstraint(SpringLayout.SOUTH, descriptionLabel, -6, SpringLayout.NORTH, descriptionScrollPane);
 		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 10, SpringLayout.WEST, this);
 		
 		//Spring layout constraints for reqPane
@@ -127,11 +130,11 @@ public class GameData extends JPanel{
 		springLayout.putConstraint(SpringLayout.WEST, gameNameLabel, 0, SpringLayout.WEST, descriptionLabel);
 		springLayout.putConstraint(SpringLayout.SOUTH, gameNameLabel, -23, SpringLayout.NORTH, descriptionLabel);
 		
-		//Spring layout constraints for descriptionTextArea
-		springLayout.putConstraint(SpringLayout.NORTH, descriptionTextArea, 94, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, descriptionTextArea, -24, SpringLayout.NORTH, gameReqsLabel);
-		springLayout.putConstraint(SpringLayout.WEST, descriptionTextArea, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.EAST, descriptionTextArea, 371, SpringLayout.WEST, this);
+		//Spring layout constraints for descriptionScrollPane
+		springLayout.putConstraint(SpringLayout.NORTH, descriptionScrollPane, 94, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, descriptionScrollPane, -24, SpringLayout.NORTH, gameReqsLabel);
+		springLayout.putConstraint(SpringLayout.WEST, descriptionScrollPane, 10, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.EAST, descriptionScrollPane, 371, SpringLayout.WEST, this);
 		
 		//Spring layout constraints for reqPane
 		springLayout.putConstraint(SpringLayout.SOUTH, gameReqsLabel, -11, SpringLayout.NORTH, reqPane);
@@ -142,7 +145,7 @@ public class GameData extends JPanel{
 		add(descriptionLabel);
 		add(gameReqsLabel);
 		add(gameNameTextBox);
-		add(descriptionTextArea);
+		add(descriptionScrollPane);
 		add(reqPane);
 		
 	}
