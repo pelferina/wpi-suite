@@ -60,7 +60,8 @@ public class MainView extends JTabbedPane {
 	private final List<Integer> openTabs = new ArrayList<Integer>();
 	private final List<NewGameDistributedPanel> newGames = new ArrayList<NewGameDistributedPanel>();
 	final int PERMANANT_TABS = 1;
-	
+	private boolean hasPreferencePane;
+
 	public MainView() {
 		overviewPanel = new OverviewPanel();
 		
@@ -140,9 +141,12 @@ public class MainView extends JTabbedPane {
 				add(newCompleteView, open);
 			}
 			else if (tabType.equals("User Preferences")){
-				final PreferencesPanel userPreferences = new PreferencesPanel(btnClose);
-				myCloseActionHandler = new MyCloseActionHandler("User Preferences", j, this, userPreferences, 4);
-				add(userPreferences, open);
+				if(hasPreferencePane == true){
+					final PreferencesPanel userPreferences = new PreferencesPanel(btnClose);
+					myCloseActionHandler = new MyCloseActionHandler("User Preferences", j, this, userPreferences, 4);
+					add(userPreferences, open);
+					hasPreferencePane = true;
+				}
 			}
 /*			else if (tabType.equals("Req Tab")){
 				final NewRequirementPanel newReq = new NewRequirementPanel(btnClose);
@@ -364,6 +368,7 @@ public class MainView extends JTabbedPane {
 					if (option == 0) {
 						ViewEventController.getInstance().getMain()
 								.remove(userPreferences);
+						hasPreferencePane = false;
 					}
 				} else {
 					ViewEventController.getInstance().getMain().remove(userPreferences);
