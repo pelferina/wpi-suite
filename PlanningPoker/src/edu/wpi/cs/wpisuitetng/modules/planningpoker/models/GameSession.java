@@ -276,7 +276,7 @@ public class GameSession extends AbstractModel {
 	 * @return the votes
 	 */
 	public List<Vote> getVotes() {
-		return VoteModel.getInstance().getVotes(gameID);
+		return VoteModel.getInstance().getVotes(gameID, this.getProject());
 	}
 
 	/**
@@ -330,8 +330,9 @@ public class GameSession extends AbstractModel {
 		return deckId;
 	}
 
-	public void setFinalVotes(List<Integer> finalVote) {
+	public GameSession setFinalVotes(List<Integer> finalVote) {
 		this.finalVotes = finalVote;
+		return this;
 	}
 
 	public List<Integer> getFinalVotes() {

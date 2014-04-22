@@ -115,5 +115,24 @@ public class VoteModel implements Model {
 		
 		return ret;
 	}
-
+	public List<Vote> getVotes(Project P){
+		ArrayList<Vote> ret = new ArrayList<Vote>();
+		for(Vote v : votes){ 
+			if(v.getProject().equals(P)) {
+				ret.add(v);
+				}
+			}
+		return ret;
+	}
+	public List<Vote> getVotes(int gameID, Project P) {
+		List<Vote> VotesByProject = this.getVotes(P);
+		ArrayList<Vote> ret = new ArrayList<Vote>();
+		for(Vote v : VotesByProject){ 
+			if(v.getGameID() == gameID) {
+				ret.add(v);
+				}
+			}
+		
+		return ret;
+	}
 }

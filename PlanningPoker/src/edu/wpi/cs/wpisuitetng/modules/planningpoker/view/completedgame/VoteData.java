@@ -62,7 +62,7 @@ public class VoteData extends JPanel{
 	private List<Requirement> gameReqs;
 	private Requirement currentReq;
 	private int	reqIndex;
-	private List<Integer> finalVote = new ArrayList<Integer>();
+	private List<Integer> finalVote;
 	
 	/**
 	 * The constructor for the VoteData class
@@ -73,10 +73,15 @@ public class VoteData extends JPanel{
 		completeView = cv;
 		completedGame = gs;
 		gameReqs = cv.getGameRequirements();
-		ArrayList<Integer> estimates = new ArrayList<Integer>();
-		for (int i = 0; i < gameReqs.size(); i++){
-			estimates.add(-1);
-			finalVote.add(-1);
+		finalVote = new ArrayList<Integer>();
+		if (completedGame.getGameStatus() == GameStatus.ARCHIVED || completedGame.getFinalVotes().size() > 0){
+			finalVote = completedGame.getFinalVotes();
+			finalEstimateText.setText(Integer.toString(finalVote.get(0)));
+		}
+		else {
+			for (int i = 0; i < gameReqs.size(); i++){
+				finalVote.add(-1);
+			}
 		}
 		currentReq = gameReqs.get(0);
 		reqIndex = 0;
@@ -91,10 +96,6 @@ public class VoteData extends JPanel{
 			finalSubmitButton.setEnabled(false);
 		}
 		
-		if (completedGame.getGameStatus() == GameStatus.ARCHIVED){
-			finalVote = completedGame.getFinalVotes();
-			finalEstimateText.setText(Integer.toString(finalVote.get(0)));
-		}
 		
 		//Sets the name and description text fields to the first requirements
 		reqNameText.setText(currentReq.getName());
