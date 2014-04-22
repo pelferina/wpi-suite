@@ -74,13 +74,15 @@ public class VoteData extends JPanel{
 		completedGame = gs;
 		gameReqs = cv.getGameRequirements();
 		finalVote = new ArrayList<Integer>();
-		if (completedGame.getGameStatus() == GameStatus.ARCHIVED || completedGame.getFinalVotes().size() > 0){
-			finalVote = completedGame.getFinalVotes();
-			finalEstimateText.setText(Integer.toString(finalVote.get(0)));
-		}
-		else {
-			for (int i = 0; i < gameReqs.size(); i++){
-				finalVote.add(-1);
+		if(completedGame.getFinalVotes() != null){
+			if (completedGame.getGameStatus() == GameStatus.ARCHIVED || completedGame.getFinalVotes().size() > 0){
+				finalVote = completedGame.getFinalVotes();
+				finalEstimateText.setText(Integer.toString(finalVote.get(0)));
+			}
+			else {
+				for (int i = 0; i < gameReqs.size(); i++){
+					finalVote.add(-1);
+				}
 			}
 		}
 		currentReq = gameReqs.get(0);
@@ -106,10 +108,15 @@ public class VoteData extends JPanel{
 		gs.calculateStats();
 		
 		//Sets the statistic text fields to the stats of the first requirement in the game, and disables user edits
-		float mean = completedGame.getMean().get(reqIndex);
-		meanTextField = new JLabel(String.format("%.2f", mean));
-		float median = completedGame.getMedian().get(reqIndex);
-		medianTextField = new JLabel(String.format("%.2f", median));
+		if(completedGame.getMean().size() != 0){
+			float mean = completedGame.getMean().get(reqIndex);
+			meanTextField = new JLabel(String.format("%.2f", mean));
+			float median = completedGame.getMedian().get(reqIndex);
+			medianTextField = new JLabel(String.format("%.2f", median));
+		} else {
+			meanTextField = new JLabel("");
+			medianTextField = new JLabel("");
+		}
 		init();
 		
 		//Action listener for the submit button that will save the final estimate for the requirement
@@ -189,7 +196,7 @@ public class VoteData extends JPanel{
 		springLayout.putConstraint(SpringLayout.EAST, estimatesPane, 0, SpringLayout.EAST, descriptionTextArea);
 		
 		//Spring layout constraints for estimatesLabel
-		springLayout.putConstraint(SpringLayout.NORTH, estimatesLabel, 6, SpringLayout.SOUTH, medianTextField);
+		springLayout.putConstraint(SpringLayout.NORTH, estimatesLabel, 6, SpringLayout.SOUTH, medianLabel);
 		springLayout.putConstraint(SpringLayout.WEST, estimatesLabel, 0, SpringLayout.WEST, medianLabel);
 		
 		//Spring layout constraints for medianTextField
