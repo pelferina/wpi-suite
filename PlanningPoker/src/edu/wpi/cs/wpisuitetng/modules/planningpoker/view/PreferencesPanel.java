@@ -20,10 +20,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailAddressController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetVoteController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddressModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -42,8 +44,9 @@ public class PreferencesPanel extends JPanel {
 	
 	private final JTextField emailField = new JTextField();
 	private final JLabel emailLabel = new JLabel("Email: ");
+	private JLabel userName;
 	private final JButton submitButton = new JButton ("Save");
-	private final JCheckBox enableCheckBox = new JCheckBox("Enable email notification");
+	private final JCheckBox enableCheckBox = new JCheckBox("Enable E-mail Notification");
 	private final JButton close;
 	private EmailAddressModel eModel;
 	public boolean isNew = false;
@@ -61,15 +64,31 @@ public class PreferencesPanel extends JPanel {
 	 * This method sets up the panel layout and design
 	 */
 	private void setupPanel(){
+		
 		final SpringLayout springLayout = new SpringLayout();
-		springLayout.putConstraint(SpringLayout.NORTH, submitButton, 21, SpringLayout.SOUTH, emailField);
-		springLayout.putConstraint(SpringLayout.WEST, submitButton, 189, SpringLayout.WEST, this);
+		
+		final User currentUser = GetCurrentUser.getInstance().getCurrentUser();
+		userName = new JLabel ("Hi, " + currentUser.getName() + "!");
+		userName.setFont (userName.getFont ().deriveFont (35.0f));
+
+		springLayout.putConstraint(SpringLayout.WEST, userName, 500, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, userName, 100, SpringLayout.NORTH, this);
+		
+		springLayout.putConstraint(SpringLayout.WEST, enableCheckBox, 500, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, enableCheckBox, 200, SpringLayout.NORTH, this);
+
+
+		springLayout.putConstraint(SpringLayout.NORTH, emailLabel, 25, SpringLayout.SOUTH, enableCheckBox);
+		springLayout.putConstraint(SpringLayout.WEST, emailLabel, 500, SpringLayout.WEST, this);
+		
 		springLayout.putConstraint(SpringLayout.NORTH, emailField, -3, SpringLayout.NORTH, emailLabel);
 		springLayout.putConstraint(SpringLayout.WEST, emailField, 6, SpringLayout.EAST, emailLabel);
-		springLayout.putConstraint(SpringLayout.EAST, emailField, 285, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, emailLabel, 126, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, emailLabel, 136, SpringLayout.WEST, this);
+		
+		springLayout.putConstraint(SpringLayout.NORTH, submitButton, 21, SpringLayout.SOUTH, emailField);
+		springLayout.putConstraint(SpringLayout.WEST, submitButton, 550, SpringLayout.WEST, this);
+		
 		setLayout(springLayout);
+		add(userName);
 		add(emailLabel);
 		add(emailField);
 		add(submitButton);
