@@ -32,14 +32,15 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
 
 public class GameData extends JPanel{
 
 	private final JLabel gameNameLabel = new JLabel("Game Name:");
 	private final JLabel descriptionLabel = new JLabel("Game Description:");
 	private final JLabel gameReqsLabel = new JLabel("Game Requirements:");
-	private JTextField gameNameTextBox = new JTextField();
-	private JTextArea descriptionTextArea = new JTextArea();
+	private JLabel gameNameTextBox = new JLabel();
+	private JLabel descriptionTextArea = new JLabel();
 	private JTable gameReqsTable;
 	private JScrollPane reqPane;
 	private List<Integer> gameReqIDs;
@@ -58,6 +59,7 @@ public class GameData extends JPanel{
 		completeView = cv;
 		completedGame = gs;
 		gameNameTextBox.setText(gs.getGameName());
+		descriptionTextArea.setVerticalAlignment(SwingConstants.TOP);
 		descriptionTextArea.setText(gs.getGameDescription());
 		gameNameTextBox.setEnabled(false);
 		descriptionTextArea.setEnabled(false);
@@ -104,9 +106,7 @@ public class GameData extends JPanel{
 		gameReqsTable.setRowSelectionInterval(0, 0);
 		
 		SpringLayout springLayout = new SpringLayout();
-		
-		//Spring layout constraints for gameNameTextBox
-		springLayout.putConstraint(SpringLayout.NORTH, gameNameTextBox, -3, SpringLayout.NORTH, gameNameLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, gameNameTextBox, 0, SpringLayout.NORTH, gameNameLabel);
 		springLayout.putConstraint(SpringLayout.WEST, gameNameTextBox, 6, SpringLayout.EAST, gameNameLabel);
 		springLayout.putConstraint(SpringLayout.EAST, gameNameTextBox, 153, SpringLayout.EAST, gameNameLabel);
 		
@@ -162,19 +162,19 @@ public class GameData extends JPanel{
 		return requirementIndexHash.get(id);
 	}
 
-	public JTextField getGameNameTextBox() {
+	public JLabel getGameNameTextBox() {
 		return gameNameTextBox;
 	}
 
-	public void setGameNameTextBox(JTextField gameNameTextBox) {
+	public void setGameNameTextBox(JLabel gameNameTextBox) {
 		this.gameNameTextBox = gameNameTextBox;
 	}
 
-	public JTextArea getDescriptionTextArea() {
+	public JLabel getDescriptionTextArea() {
 		return descriptionTextArea;
 	}
 
-	public void setDescriptionTextArea(JTextArea descriptionTextArea) {
+	public void setDescriptionTextArea(JLabel descriptionTextArea) {
 		this.descriptionTextArea = descriptionTextArea;
 	}
 
