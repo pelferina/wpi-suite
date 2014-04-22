@@ -220,6 +220,8 @@ public class GameEntityManager implements EntityManager<GameSession> {
 					"GameDescription", importedGame.getGameDescription());
 			db.update(GameSession.class, "GameID", importedGame.getGameID(),
 					"DeckId", importedGame.getDeckId());
+			db.update(GameSession.class, "GameID", importedGame.getGameID(),
+					"FinalVotes", importedGame.getFinalVotes());
 		} catch (WPISuiteException e) {
 			System.out.println("Update Game Exception");
 			e.printStackTrace();

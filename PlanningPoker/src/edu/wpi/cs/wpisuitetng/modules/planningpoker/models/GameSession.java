@@ -58,6 +58,7 @@ public class GameSession extends AbstractModel {
 	private List<Float> mean;
 	private int deckId;
 	private List<Vote> votes;
+	private List<Integer> finalVotes;
 	
 	/**
 	 * This constructor generates a game session
@@ -81,6 +82,7 @@ public class GameSession extends AbstractModel {
 		deckId = -1;
 		this.median = null;
 		this.mean = null;
+		finalVotes = new ArrayList<Integer>();
 	}
 
 	/**
@@ -274,7 +276,7 @@ public class GameSession extends AbstractModel {
 	 * @return the votes
 	 */
 	public List<Vote> getVotes() {
-		return VoteModel.getInstance().getVotes(gameID);
+		return VoteModel.getInstance().getVotes(gameID, this.getProject());
 	}
 
 	/**
@@ -326,6 +328,15 @@ public class GameSession extends AbstractModel {
 	
 	public int getDeckId(){
 		return deckId;
+	}
+
+	public GameSession setFinalVotes(List<Integer> finalVote) {
+		this.finalVotes = finalVote;
+		return this;
+	}
+
+	public List<Integer> getFinalVotes() {
+		return finalVotes;
 	}
 	
 }
