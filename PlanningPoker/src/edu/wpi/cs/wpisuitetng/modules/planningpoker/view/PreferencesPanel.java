@@ -48,7 +48,6 @@ public class PreferencesPanel extends JPanel {
 	private final JCheckBox enableCheckBox = new JCheckBox("Enable email notification");
 	private final JButton close;
 	private EmailAddressModel eModel;
-	public boolean isNew = false;
 	
 	/**
 	 * Constructor to create panel with close button
