@@ -39,6 +39,7 @@ public class CompleteView extends JSplitPane {
 		leftComponent.setMinimumSize(minimumSize);
 		addImpl(voteData, JSplitPane.RIGHT, 2);
 		setDividerLocation(400);
+		setEnabled(false);
 	}
 
 	/**
