@@ -11,6 +11,8 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
@@ -23,7 +25,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
-
+import javax.swing.Timer;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.table.TableRowSorter;
@@ -65,13 +67,13 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	int currentUser;
 	
 	public OverviewPanel(){
-		
 		gameModel = GameModel.getInstance();
 		ggc = GetGamesController.getInstance();
 		ggc.addRefreshable(this);
 		final GameSession[] sessions = {};
 		
 		table = new JTable(new JTableModel(sessions));
+
 		
 		//sort the table
 		//sorter = new TableRowSorter<JTableModel>((JTableModel)table.getModel());

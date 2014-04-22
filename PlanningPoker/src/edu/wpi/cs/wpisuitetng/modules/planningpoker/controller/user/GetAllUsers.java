@@ -11,6 +11,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersRequestObserver;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -21,17 +22,17 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * @author CosmicLatte
  * @version $Revision: 1.0 $
  */
-public class GetCurrentUser {
-	private static GetCurrentUser instance = null;
-	private static User user = null;
+public class GetAllUsers {
+	private static GetAllUsers instance = null;
+	private static User[] users = null;
 	
 	/**
 	 * This constructor creates an instance if one does not already exist
 	 * @return the instance of GetCurrentUser
 	 */
-	public static GetCurrentUser getInstance(){
+	public static GetAllUsers getInstance(){
 		if (instance == null){
-			instance = new GetCurrentUser();
+			instance = new GetAllUsers();
 		}
 		return instance;
 	}
@@ -39,19 +40,19 @@ public class GetCurrentUser {
 	 * This method returns the current user
 	 * @return the current user as User
 	 */
-	public User getCurrentUser(){
-		if(user == null){
+	public User[] getAllUsers(){
+		if(users == null){
 			try{
 				if(Network.getInstance().getDefaultNetworkConfiguration() != null){
 					sendRequest();
-					while(user == null){
+					while(users == null){
 						try {
 							Thread.sleep(10);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
 					}
-					return user;
+					return users;
 				}	
 			}
 			catch(RuntimeException exception){
@@ -59,18 +60,18 @@ public class GetCurrentUser {
 			}
 		}
 		else{
-			return user;
+			return users;
 		}
 		return null;
 	}
 	private void sendRequest(){
-		final Request request = Network.getInstance().makeRequest("core/user", HttpMethod.PUT); 
-		request.setBody("who am I?");
-		request.addObserver(new GetCurrentUserRequestObserver()); 
+		final Request request = Network.getInstance().makeRequest("core/user", HttpMethod.GET); // GET == read
+		request.addObserver(new GetAllUsersRequestObserver()); 
 		// add an observer to process the response
-		request.send(); // send the request	
+		request.send(); // send the request// add an observer to process the response
 	}
-	public void setUser(User user){
-		this.user = user;
+	public void setUsers(User[] users){
+		this.users = users;
 	}
+
 }

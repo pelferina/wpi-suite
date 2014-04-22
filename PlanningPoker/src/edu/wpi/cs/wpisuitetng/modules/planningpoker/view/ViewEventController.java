@@ -7,6 +7,9 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 
 
@@ -59,6 +62,17 @@ public class ViewEventController {
 	 */
 	public void setMainView(MainView mainview) {
 		main = mainview;
+		//hide all button
+		main.addChangeListener(new ChangeListener(){
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				ViewEventController.getInstance().setEditGameButtonInVisible();
+				ViewEventController.getInstance().makeOwnerButtonInvisible();
+				ViewEventController.getInstance().makeUserButtonInvisible();
+				
+			}
+			
+		});
 	}
 
 	/**

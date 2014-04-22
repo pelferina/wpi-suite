@@ -43,6 +43,7 @@ public class TableSelectListener implements ListSelectionListener{
 	    final int row =  table.getSelectedRow();
 	    if(row < 0){ // The table is not selected
 	    	ViewEventController.getInstance().makeOwnerButtonInvisible();
+	    	ViewEventController.getInstance().makeUserButtonInvisible();
 	    	ViewEventController.getInstance().setEditGameButtonInVisible();
 	    	return;
 	    }
@@ -57,18 +58,24 @@ public class TableSelectListener implements ListSelectionListener{
     	if(currentUser.getIdNum() == ownerID){
     		if(status.equals(GameStatus.ACTIVE) || status.equals(GameStatus.INPROGRESS)){
     			ViewEventController.getInstance().makeEndGameButtonVisible(gameSelected);
-    			hasCategory = true;
+    			//hasCategory = true;
     		}else if(status.equals(GameStatus.DRAFT) && isValid(gameSelected)){
     			ViewEventController.getInstance().makeActivateGameButtonVisible(gameSelected);
-    			hasCategory = true;
+    			//hasCategory = true;
     		}else if(status.equals(GameStatus.COMPLETED)){
     			ViewEventController.getInstance().makeArchiveGameButtonVisible(gameSelected);
-    			hasCategory = true;
+    			//hasCategory = true;
     		}
+    		
     		if(status.equals(GameStatus.ACTIVE)||status.equals(GameStatus.DRAFT)){
     			ViewEventController.getInstance().setEditGameButtonVisible(gameID);
-    			hasCategory = true;
+    			//hasCategory = true;
+    		}else{
+    			ViewEventController.getInstance().setEditGameButtonInVisible();
     		}
+    	}else{
+    		ViewEventController.getInstance().makeOwnerButtonInvisible();
+    		ViewEventController.getInstance().setEditGameButtonInVisible();
     	}
     	
     	if(status.equals(GameStatus.ACTIVE) || status.equals(GameStatus.INPROGRESS)){
@@ -77,13 +84,14 @@ public class TableSelectListener implements ListSelectionListener{
 			ViewEventController.getInstance().makeViewGameButtonVisible(gameSelected);
 		}else {
 			ViewEventController.getInstance().makeUserButtonInvisible();
-			hasCategory = true;
+			//hasCategory = true;
 		}
     	
+    	/*
     	if (!hasCategory){
     		ViewEventController.getInstance().makeOwnerButtonInvisible();
     		ViewEventController.getInstance().setEditGameButtonInVisible();
-    	}
+    	}*/
 
 	}
 	

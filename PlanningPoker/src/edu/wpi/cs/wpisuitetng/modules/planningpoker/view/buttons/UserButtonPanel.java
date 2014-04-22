@@ -25,6 +25,7 @@ import javax.swing.Timer;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
  * Button for ending a game
@@ -74,7 +75,7 @@ public class UserButtonPanel extends ToolbarGroupView{
 	 * to this game
 	 * @param gameID 
 	 */
-	public void makeVoteGameButtonVisible(GameSession game){
+	public void makeVoteGameButtonVisible(final GameSession game){
 		userButton.setVisible(true);
 		userButton.setEnabled(true);
 		userButton.setIcon(voteImg);
@@ -84,7 +85,14 @@ public class UserButtonPanel extends ToolbarGroupView{
 		if(listener != null){
 			userButton.removeActionListener(listener);
 		}
-		listener = new ActivateGameActionListener(game);
+		listener = new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ViewEventController.getInstance().playGameTab(game);
+			}
+			
+		};
 		userButton.addActionListener(listener);
 	}
 
@@ -93,7 +101,7 @@ public class UserButtonPanel extends ToolbarGroupView{
 	 * to this game
 	 * @param gameID 
 	 */
-	public void makeViewGameButtonVisible(GameSession game){
+	public void makeViewGameButtonVisible(final GameSession game){
 		userButton.setVisible(true);
 		userButton.setEnabled(true);
 		userButton.setIcon(viewImg);
@@ -103,7 +111,14 @@ public class UserButtonPanel extends ToolbarGroupView{
 		if(listener != null){
 			userButton.removeActionListener(listener);
 		}
-		listener = new ArchiveGameActionListener(game);
+		listener = new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ViewEventController.getInstance().viewGameTab(game);
+			}
+			
+		};
 		userButton.addActionListener(listener);
 	}
 	
