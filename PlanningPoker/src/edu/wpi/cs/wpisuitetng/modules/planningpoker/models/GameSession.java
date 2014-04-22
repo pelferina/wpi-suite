@@ -294,24 +294,26 @@ public class GameSession extends AbstractModel {
 				voteResult[j][i] = votes.get(i).getVote().get(j);
 			}
 		}
-		for(int i=0; i < requirementNum; i++){
-			Arrays.sort(voteResult[i]);
-			// calculate median
-			if(userNum%2 == 0){
-				median.add(((float)voteResult[i][(userNum-1)/2] + voteResult[i][(userNum-1)/2+1])/2);
+		if(votes.size() != 0){
+			for(int i=0; i < requirementNum; i++){
+				Arrays.sort(voteResult[i]);
+				// calculate median
+				if(userNum%2 == 0){
+					median.add(((float)voteResult[i][(userNum-1)/2] + voteResult[i][(userNum-1)/2+1])/2);
+				}
+				else if (userNum > 1){
+					median.add((float)voteResult[i][(userNum-1)/2]);
+				}
+				else {
+					median.add((float)voteResult[i][userNum-1]);
+				}
+				// calculate mean
+				int sum = 0;
+				for(int j=0; j < userNum; j++){
+					sum += voteResult[i][j];
+				}
+				mean.add(((float)sum) / userNum);
 			}
-			else if (userNum > 1){
-				median.add((float)voteResult[i][(userNum-1)/2]);
-			}
-			else {
-				median.add((float)voteResult[i][userNum-1]);
-			}
-			// calculate mean
-			int sum = 0;
-			for(int j=0; j < userNum; j++){
-				sum += voteResult[i][j];
-			}
-			mean.add(((float)sum) / userNum);
 		}
 	}
 	public List<Float> getMean(){
