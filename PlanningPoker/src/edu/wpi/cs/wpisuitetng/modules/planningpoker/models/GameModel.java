@@ -252,6 +252,35 @@ public class GameModel extends AbstractListModel {
 		return usersGames;
 	}
 	
+	public List<GameSession> getGamesNeedingVote(int userID)
+	{
+		final List<GameSession> votedGames = new ArrayList<GameSession>();
+		final List<GameSession> unVotedGames = new ArrayList<GameSession>(this.getActiveGameSessions());
+		
+		for (GameSession game : games)
+			if (game.getGameStatus() == GameStatus.ACTIVE || game.getGameStatus() == GameStatus.INPROGRESS )
+				for (Vote aVote : game.getVotes())
+					if (aVote.getUID() == userID)
+						votedGames.add(game);
+		
+		unVotedGames.removeAll(votedGames);
+		
+		return unVotedGames;
+	}
+	
+	public List<GameSession> getGamesVoted(int userID)
+	{
+		final List<GameSession> votedGames = new ArrayList<GameSession>();
+		
+		for (GameSession game : games)
+			if (game.getGameStatus() == GameStatus.INPROGRESS )
+				for (Vote aVote : game.getVotes())
+					if (aVote.getUID() == userID)
+						votedGames.add(game);
+		
+		return votedGames;
+	}
+	
 	/* 
 	 * Returns the Game at the given index. This method is called
 	 * internally by the JList in BoardPanel. Note this method returns
