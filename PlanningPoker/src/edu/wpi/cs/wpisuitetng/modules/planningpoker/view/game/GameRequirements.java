@@ -87,7 +87,7 @@ public class GameRequirements extends JSplitPane{
 		    }
 		};
 		estimatesPending.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Name", "Description"}));
-		estimatesComplete.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Name", "Description"}));
+		estimatesComplete.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Name", "Description", "Estimate"}));
 		init(gameToPlay);
 	}
 
@@ -116,6 +116,7 @@ public class GameRequirements extends JSplitPane{
 				completedModel.setValueAt(gameReqs.get(i).getId(), i, 0);
 				completedModel.setValueAt(gameReqs.get(i).getName(), i, 1);
 				completedModel.setValueAt(gameReqs.get(i).getDescription(), i, 2);
+				completedModel.setValueAt(userVote.getVote().get(i), i, 3);
 			}
 		}
 		
@@ -128,7 +129,7 @@ public class GameRequirements extends JSplitPane{
 			completedModel.setNumRows(0);
 		}
 		
-		completedModel.setColumnCount(COLUMN_NUM);
+		completedModel.setColumnCount(COLUMN_NUM + 1);
 		setColumnWidth(estimatesComplete);
 		pendingPane = new JScrollPane(estimatesPending);
 		completePane = new JScrollPane(estimatesComplete);
@@ -161,19 +162,29 @@ public class GameRequirements extends JSplitPane{
 	/**
 	 * This function updates the tables when an estimate is completed and it moves the requirement from the pending table to the completed table
 	 * @param r the requirement
+	 * @param estimate 
 	 */
-	public void updateTables(Requirement r) {
+	public void updateTables(Requirement r, int estimate) {
 		final DefaultTableModel reqNames = (DefaultTableModel) estimatesPending.getModel();
 		final DefaultTableModel complete = (DefaultTableModel) estimatesComplete.getModel();
 		final int numberofReqs = estimatesPending.getRowCount();
+		boolean isRevote = true;
 		for (int i=0; i < numberofReqs; i++){
 			if (r.getId() == (int)reqNames.getValueAt(i, 0)){
 				int reqId = (int) reqNames.getValueAt(i, 0);
 				String name = (String) reqNames.getValueAt(i, 1);
 				String description = (String) reqNames.getValueAt(i, 2);
 				reqNames.removeRow(i);
-				complete.addRow(new Object[]{reqId, name, description});
+				complete.addRow(new Object[]{reqId, name, description, estimate});
+				isRevote = false;
 				break;
+			}
+		}
+		if (isRevote){
+			for (int i=0; i < complete.getRowCount(); i++){
+				if (r.getId() == (int) complete.getValueAt(i, 0)){
+					complete.setValueAt(estimate, i, 3);
+				}
 			}
 		}
 		if (estimatesPending.getRowCount() > 0){
