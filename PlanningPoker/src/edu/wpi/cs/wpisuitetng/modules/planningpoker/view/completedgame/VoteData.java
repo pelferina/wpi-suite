@@ -24,6 +24,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddVoteController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersController;
@@ -156,6 +157,11 @@ public class VoteData extends JPanel{
 				completedGame.setGameStatus(GameStatus.ARCHIVED);
 				final UpdateGameController msgr = new UpdateGameController();
 				msgr.sendGame(completedGame);
+				final UpdateRequirementController reqmsgr = UpdateRequirementController.getInstance();
+				for (Requirement r: gameReqs){
+					r.setEstimate(finalVote.get(completeView.getIndex(r.getId())));
+					reqmsgr.updateRequirement(r);
+				}
 			}
 		});
 		
