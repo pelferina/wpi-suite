@@ -327,10 +327,12 @@ public class MainView extends JTabbedPane {
 		        	if (!ngdp.isNew){
 						final int option = JOptionPane.showOptionDialog(ngdp, "Discard unsaved changes and close tab?", "Discard changes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 						if (option == 0){
+							ngdp.stopTimer();
 							ViewEventController.getInstance().getMain().remove(ngdp);
 						}
 		        	}
 		        	else{
+		        		ngdp.stopTimer();
 		        		ViewEventController.getInstance().getMain().remove(ngdp);
 		        	}
 		        }

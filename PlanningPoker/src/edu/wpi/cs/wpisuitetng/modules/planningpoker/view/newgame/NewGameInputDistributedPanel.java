@@ -73,7 +73,6 @@ public class NewGameInputDistributedPanel extends JPanel {
 	private final JRadioButton AMButton = new JRadioButton("AM");
 	private final JRadioButton PMButton = new JRadioButton("PM");
 	private boolean isAM = true;
-	public boolean isNew = true;
 
 	/*
 	 *  Initializing Requirement Selection	
@@ -119,7 +118,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 	/*
 	 * Initializing Time Checker
 	 */
-	Timer canActivateChecker;
+	private Timer canActivateChecker;
 
 	private boolean activate;
 
@@ -317,9 +316,18 @@ public class NewGameInputDistributedPanel extends JPanel {
 			public void actionPerformed(ActionEvent e){
 				activate = true;
 				saveOrActivateGame();
+				canActivateChecker.stop();
 				newGameP.close.doClick();
 			}
 		});
+	}
+	
+	private void saveSelectedReqs(){
+		selectionsMade.clear();
+		final List<Requirement> reqsSelected = newGameP.getSelected();
+		for (int i=0; i<reqsSelected.size(); i++){
+			selectionsMade.add(reqsSelected.get(i).getId());
+		}
 	}
 
 	private void saveOrActivateGame()
@@ -339,10 +347,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		{
 			deadlineDate = null;
 		}
-		final List<Requirement> reqsSelected = newGameP.getSelected();
-		for (int i=0; i<reqsSelected.size(); i++){
-			selectionsMade.add(reqsSelected.get(i).getId());
-		}
+		saveSelectedReqs();
 		final GameModel model = GameModel.getInstance();
 		//If activating: Set game status to active and Send an activation email 
 		if(!editMode)
@@ -389,6 +394,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 	 */
 	void startCanActivateCheckerTimer()
 	{
+		System.out.println("activating timer!");
 		canActivateChecker = new Timer(100, new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				//Display Activate button if game can be activated
@@ -407,17 +413,28 @@ public class NewGameInputDistributedPanel extends JPanel {
 				//Display Update button if game has been changed in edit mode
 				if(editMode && anythingChanged())
 				{
-					isNew = false;
+					
+					newGameP.isNew = false;
 					saveGameButton.setEnabled(true);
 				}
 				else if(editMode && !anythingChanged())
 				{
-					isNew = true;
+					System.out.println("nothing changed!");
+					newGameP.isNew = true;
 					saveGameButton.setEnabled(false);
 				}
 			}
 		});
 		canActivateChecker.start();
+	}
+	
+	/**
+	 * 
+	 * stops the canActivateChecker
+	 *
+	 */
+	public void stopTimer(){
+		canActivateChecker.stop();
 	}
 
 	/**
@@ -552,6 +569,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 				PMButton.setSelected(false);
 				AMButton.setSelected(true);
 				isAM = true;
+				System.out.println("isAM set to true!");
 			}
 		});
 
@@ -561,6 +579,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 				AMButton.setSelected(false);
 				PMButton.setSelected(true);
 				isAM = false;
+				System.out.println("isAM is set to false!");
 			}
 		});		
 
@@ -627,6 +646,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 
 	private void initializeEditMode()
 	{
+		
 		//Gets the deadline from the game
 		if (currentGameSession.getEndDate() != null){
 
@@ -641,7 +661,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 			datePicker.getModel().setDate(year_index, month_index, day_index);
 
 			setDeadlineDate();
-
+			setupDeadlineActionListeners();
 			setupDeadlineTime();
 			System.out.println("T:" + currentGameSession.getEndDate().getHours());			
 			//	Sets the hour and minute combo boxes to the hour and minute in the game's deadline
@@ -687,31 +707,39 @@ public class NewGameInputDistributedPanel extends JPanel {
 	}
 
 	private boolean anythingChanged() {
+		saveSelectedReqs();
 
-		if(currentGameSession.getGameStatus() == GameStatus.DRAFT)
-		{	
+//		if(currentGameSession.getGameStatus() == GameStatus.DRAFT)
+	//	{	
 			// Check if the user has changed the name
 			if (!(nameTextField.getText().equals(currentGameSession.getGameName()))){
+				System.out.println("name changed!");
 				return true;}
 			// Check if the user has changed the description
 			if (!(descriptionTextField.getText().equals(currentGameSession.getGameDescription()))){
+				System.out.println("desc changed!");
 				return true;}
-		}
+		//}
 		// Check if the user has changed the deadline
 		@SuppressWarnings("deprecation")
 
-		final Date deadlineDate = new Date(deadlineYear, deadlineMonth, deadlineDay, getHour(hourTime), minuteTime);
+		final Date deadlineDate = new Date(deadlineYear - 1900, deadlineMonth, deadlineDay, getHour(deadlineHourComboBox.getSelectedIndex() + 1), minuteTime);
 		if(deadlineCheckBox.isSelected() && !deadlineDate.equals(currentGameSession.getEndDate())){
+			System.out.println("saved deadline is " + currentGameSession.getEndDate().toString());
+			System.out.println("selected deadline is " + deadlineDate.toString());
+			System.out.println("deadline changed!");
 			return true;
 		}
 		// Check if the user has changed the requirements
 		if (!selectionsMade.containsAll(currentGameSession.getGameReqs())){
+			System.out.println("game req changed!");
 			return true;
 		}
 		// Check if the user has changed the deck
 		System.out.println("Current DeckID for game " + currentGameSession.getGameID() + " is " + currentGameSession.getDeckId());
 		if ((currentGameSession.getDeckId() != -1 && !deckCheckBox.isSelected())
 				|| (currentGameSession.getDeckId() == -1 && deckCheckBox.isSelected())){
+			System.out.println("deck changed!");
 			return true;
 		}
 		return false;
@@ -758,6 +786,9 @@ public class NewGameInputDistributedPanel extends JPanel {
 	 */
 
 	private void setPanel(){
+		ButtonGroup AMPMgroup = new ButtonGroup();
+		AMPMgroup.add(AMButton);
+		AMPMgroup.add(PMButton);
 		//		userList.setListData(listValue);
 		final SpringLayout springLayout = new SpringLayout();
 
