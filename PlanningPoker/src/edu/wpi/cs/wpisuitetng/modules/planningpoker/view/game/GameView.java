@@ -31,7 +31,7 @@ public class GameView extends JSplitPane{
 	PlayDeckGame playDeckGame;
 	ViewGame viewGame;
 	boolean isDeckGame = false;
-	public boolean isNew = false;
+	public boolean isNew = true;
 	
 	/**
 	 * Constructor to make a gameview with a given session

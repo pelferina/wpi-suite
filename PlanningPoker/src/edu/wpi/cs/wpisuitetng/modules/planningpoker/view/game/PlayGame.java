@@ -160,6 +160,7 @@ public class PlayGame extends JPanel{
 					System.out.println(userEstimates.getVote());
 					sendEstimatetoGameView(currentReq, estimate);
 				}
+				gv.isNew = false;
 			}
 			
 		});
@@ -170,6 +171,7 @@ public class PlayGame extends JPanel{
 			public void actionPerformed(ActionEvent e){
 				AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
 				msgr.sendVote(userEstimates);
+				gv.isNew = true;
 				ViewEventController.getInstance().getMain().remove(gv);
 			}
 		});
