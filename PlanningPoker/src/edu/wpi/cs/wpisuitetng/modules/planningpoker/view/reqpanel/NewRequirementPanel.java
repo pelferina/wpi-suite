@@ -98,7 +98,7 @@ public class NewRequirementPanel extends JPanel {
 		//Spring layout constraints for priorityComboBox
 		springLayout.putConstraint(SpringLayout.NORTH, priorityComboBox, 43, SpringLayout.SOUTH, descriptionField);
 		springLayout.putConstraint(SpringLayout.WEST, priorityComboBox, 5, SpringLayout.EAST, lblPriority);
-		springLayout.putConstraint(SpringLayout.EAST, priorityComboBox, -350, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.EAST, priorityComboBox, -10, SpringLayout.WEST, lblType);
 		
 		//Spring layout constraints for lblType
 		springLayout.putConstraint(SpringLayout.WEST, lblType, 273, SpringLayout.EAST, lblPriority);

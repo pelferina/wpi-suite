@@ -71,7 +71,7 @@ public class DeadLineListener implements ActionListener{
 					// send notification email.
 					try {
 						String textToSend;
-						textToSend = "The game '"+ gameArray[i].getGameName() + "' has reached its deadline at" + gameArray[i].getEndDate() +"\r\n" + "Sent by fff8e7";
+						textToSend = "Hi user\r\n\tThe game '"+ gameArray[i].getGameName() + "' has reached its deadline at " + gameArray[i].getEndDate() +"\r\nSent by fff8e7";
 						entityManager.sendUserEmails("End game notification",  textToSend, gameArray[i].getProject());
 					} catch (Exception e1) {
 						System.out.println("fail to send end notification email");

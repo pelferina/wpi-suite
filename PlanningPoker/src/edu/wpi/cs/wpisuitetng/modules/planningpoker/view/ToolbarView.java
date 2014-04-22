@@ -13,6 +13,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.EditButtonsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.OwnerButtonPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerButtonsPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.UserButtonPanel;
 
 /**
  * Sets up upper toolbar of RequirementManager tab
@@ -26,16 +27,17 @@ public class ToolbarView  extends DefaultToolbarView {
 //	TODO: Cancel Game
 	public EditButtonsPanel editButton = new EditButtonsPanel();
 	public PlanningPokerButtonsPanel gameButton = new PlanningPokerButtonsPanel();
-	public OwnerButtonPanel ownerGameButton = new OwnerButtonPanel();
-	
+	public OwnerButtonPanel ownerButton = new OwnerButtonPanel();
+	public UserButtonPanel userButton = new UserButtonPanel();
 	/**
 	 * Creates and positions option buttons in upper toolbar
 	 * @param visible boolean
 	 */
 	public ToolbarView(boolean visible) {
 		this.addGroup(gameButton);
+		this.addGroup(userButton);
 		this.addGroup(editButton);
-		this.addGroup(ownerGameButton);
+		this.addGroup(ownerButton);
 
 	}
 	
@@ -52,31 +54,57 @@ public class ToolbarView  extends DefaultToolbarView {
 	public PlanningPokerButtonsPanel getReqButton() {
 		return gameButton;
 	}
+	
+	
+	//---------------Owner button ----------------------
 	/**
 	 * Enables the end game button
 	 * @param game the game associated with this button
 	 */
 	public void makeEndGameButtonVisible(GameSession game){
-		ownerGameButton.makeEndGameButtonVisible(game);
+		ownerButton.makeEndGameButtonVisible(game);
 	}
 	/**
 	 * Enables the activate game button
 	 * @param game the game associated with this button
 	 */
 	public void makeActivateGameButtonVisible(GameSession game){
-		ownerGameButton.makeActivateGameButtonVisible(game);
+		ownerButton.makeActivateGameButtonVisible(game);
 	}
 	/**
 	 * Enables the archive game button
 	 * @param game the game associated with this button
 	 */
 	public void makeArchiveGameButtonVisible(GameSession game){
-		ownerGameButton.makeArchiveGameButtonVisible(game);
+		ownerButton.makeArchiveGameButtonVisible(game);
 	}
 	/**
 	 * make the owner game button to be invisible
 	 */
 	public void makeOwnerButtonInvisible(){
-		ownerGameButton.makeOwnerButtonInvisible();
+		ownerButton.makeOwnerButtonInvisible();
+	}
+	
+	
+	//---------------User button ----------------------
+	/**
+	 * Enables the vote game button
+	 * @param game the game associated with this button
+	 */
+	public void makeVoteGameButtonVisible(GameSession game){
+		userButton.makeVoteGameButtonVisible(game);
+	}
+	/**
+	 * Enables the view game button
+	 * @param game the game associated with this button
+	 */
+	public void makeViewGameButtonVisible(GameSession game){
+		userButton.makeViewGameButtonVisible(game);
+	}
+	/**
+	 * make the owner game button to be invisible
+	 */
+	public void makeUserButtonInvisible(){
+		userButton.makeUserButtonInvisible();
 	}
 }

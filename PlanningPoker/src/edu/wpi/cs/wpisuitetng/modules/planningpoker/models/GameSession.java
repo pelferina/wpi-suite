@@ -58,6 +58,7 @@ public class GameSession extends AbstractModel {
 	private List<Float> mean;
 	private int deckId;
 	private List<Vote> votes;
+	private List<Integer> finalVotes;
 	
 	/**
 	 * This constructor generates a game session
@@ -81,6 +82,7 @@ public class GameSession extends AbstractModel {
 		deckId = -1;
 		this.median = null;
 		this.mean = null;
+		finalVotes = new ArrayList<Integer>();
 	}
 
 	/**
@@ -274,7 +276,7 @@ public class GameSession extends AbstractModel {
 	 * @return the votes
 	 */
 	public List<Vote> getVotes() {
-		return VoteModel.getInstance().getVotes(gameID);
+		return VoteModel.getInstance().getVotes(gameID, this.getProject());
 	}
 
 	/**
@@ -292,24 +294,26 @@ public class GameSession extends AbstractModel {
 				voteResult[j][i] = votes.get(i).getVote().get(j);
 			}
 		}
-		for(int i=0; i < requirementNum; i++){
-			Arrays.sort(voteResult[i]);
-			// calculate median
-			if(userNum%2 == 0){
-				median.add(((float)voteResult[i][(userNum-1)/2] + voteResult[i][(userNum-1)/2+1])/2);
+		if(votes.size() != 0){
+			for(int i=0; i < requirementNum; i++){
+				Arrays.sort(voteResult[i]);
+				// calculate median
+				if(userNum%2 == 0){
+					median.add(((float)voteResult[i][(userNum-1)/2] + voteResult[i][(userNum-1)/2+1])/2);
+				}
+				else if (userNum > 1){
+					median.add((float)voteResult[i][(userNum-1)/2]);
+				}
+				else {
+					median.add((float)voteResult[i][userNum-1]);
+				}
+				// calculate mean
+				int sum = 0;
+				for(int j=0; j < userNum; j++){
+					sum += voteResult[i][j];
+				}
+				mean.add(((float)sum) / userNum);
 			}
-			else if (userNum > 1){
-				median.add((float)voteResult[i][(userNum-1)/2]);
-			}
-			else {
-				median.add((float)voteResult[i][userNum-1]);
-			}
-			// calculate mean
-			int sum = 0;
-			for(int j=0; j < userNum; j++){
-				sum += voteResult[i][j];
-			}
-			mean.add(((float)sum) / userNum);
 		}
 	}
 	public List<Float> getMean(){
@@ -326,6 +330,15 @@ public class GameSession extends AbstractModel {
 	
 	public int getDeckId(){
 		return deckId;
+	}
+
+	public GameSession setFinalVotes(List<Integer> finalVote) {
+		this.finalVotes = finalVote;
+		return this;
+	}
+
+	public List<Integer> getFinalVotes() {
+		return finalVotes;
 	}
 	
 }

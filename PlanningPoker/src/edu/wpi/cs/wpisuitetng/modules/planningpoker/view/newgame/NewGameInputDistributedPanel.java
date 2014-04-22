@@ -73,7 +73,6 @@ public class NewGameInputDistributedPanel extends JPanel {
 	private final JRadioButton AMButton = new JRadioButton("AM");
 	private final JRadioButton PMButton = new JRadioButton("PM");
 	private boolean isAM = true;
-	public boolean isNew = true;
 
 	/*
 	 *  Initializing Requirement Selection	
@@ -119,7 +118,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 	/*
 	 * Initializing Time Checker
 	 */
-	Timer canActivateChecker;
+	private Timer canActivateChecker;
 
 	private boolean activate;
 
@@ -138,7 +137,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		if (gameSession.getGameStatus().equals(GameStatus.ACTIVE)){
 			activateGameButton.setVisible(false);
 		}
-		System.out.println("Editing Game: "+ gameSession.getGameName());
+//		System.out.println("Editing Game: "+ gameSession.getGameName());
 	}
 
 	/**
@@ -317,9 +316,18 @@ public class NewGameInputDistributedPanel extends JPanel {
 			public void actionPerformed(ActionEvent e){
 				activate = true;
 				saveOrActivateGame();
+				canActivateChecker.stop();
 				newGameP.close.doClick();
 			}
 		});
+	}
+	
+	private void saveSelectedReqs(){
+		selectionsMade.clear();
+		final List<Requirement> reqsSelected = newGameP.getSelected();
+		for (int i=0; i<reqsSelected.size(); i++){
+			selectionsMade.add(reqsSelected.get(i).getId());
+		}
 	}
 
 	private void saveOrActivateGame()
@@ -339,10 +347,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		{
 			deadlineDate = null;
 		}
-		final List<Requirement> reqsSelected = newGameP.getSelected();
-		for (int i=0; i<reqsSelected.size(); i++){
-			selectionsMade.add(reqsSelected.get(i).getId());
-		}
+		saveSelectedReqs();
 		final GameModel model = GameModel.getInstance();
 		//If activating: Set game status to active and Send an activation email 
 		if(!editMode)
@@ -389,8 +394,12 @@ public class NewGameInputDistributedPanel extends JPanel {
 	 */
 	void startCanActivateCheckerTimer()
 	{
+		//System.out.println("activating timer!");
 		canActivateChecker = new Timer(100, new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				if (!editMode){
+					newGameP.isNew = areFieldsEmpty();
+				}
 				//Display Activate button if game can be activated
 				if (canActivate()){
 					initializeErrorMessages();
@@ -407,17 +416,27 @@ public class NewGameInputDistributedPanel extends JPanel {
 				//Display Update button if game has been changed in edit mode
 				if(editMode && anythingChanged())
 				{
-					isNew = false;
+					
+					newGameP.isNew = false;
 					saveGameButton.setEnabled(true);
 				}
 				else if(editMode && !anythingChanged())
 				{
-					isNew = true;
+					newGameP.isNew = true;
 					saveGameButton.setEnabled(false);
 				}
 			}
 		});
 		canActivateChecker.start();
+	}
+	
+	/**
+	 * 
+	 * stops the canActivateChecker
+	 *
+	 */
+	public void stopTimer(){
+		canActivateChecker.stop();
 	}
 
 	/**
@@ -627,6 +646,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 
 	private void initializeEditMode()
 	{
+		
 		//Gets the deadline from the game
 		if (currentGameSession.getEndDate() != null){
 
@@ -641,9 +661,9 @@ public class NewGameInputDistributedPanel extends JPanel {
 			datePicker.getModel().setDate(year_index, month_index, day_index);
 
 			setDeadlineDate();
-
+			setupDeadlineActionListeners();
 			setupDeadlineTime();
-			System.out.println("T:" + currentGameSession.getEndDate().getHours());			
+			//System.out.println("T:" + currentGameSession.getEndDate().getHours());			
 			//	Sets the hour and minute combo boxes to the hour and minute in the game's deadline
 			if (currentGameSession.getEndDate().getHours() >= 11){
 				deadlineHourComboBox.setSelectedIndex(currentGameSession.getEndDate().getHours() - 13);
@@ -686,30 +706,57 @@ public class NewGameInputDistributedPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * 
+	 * Checks if the new game panel is empty and no requirements/deadline is selected
+	 *
+	 * @return boolean, true is empty, false otherwise
+	 */
+	private boolean areFieldsEmpty(){
+		saveSelectedReqs();
+		if (!nameTextField.getText().equals("")){
+			return false;
+		}
+		if (!descriptionTextField.getText().equals("")){
+			return false;
+		}
+		if (deadlineCheckBox.isSelected()){
+			return false;
+		}
+		if (deckCheckBox.isSelected()){
+			return false;
+		}
+		if (!selectionsMade.isEmpty()){
+			return false;
+		}
+		return true;
+	}
+	
 	private boolean anythingChanged() {
+		saveSelectedReqs();
 
-		if(currentGameSession.getGameStatus() == GameStatus.DRAFT)
-		{	
+//		if(currentGameSession.getGameStatus() == GameStatus.DRAFT)
+	//	{	
 			// Check if the user has changed the name
 			if (!(nameTextField.getText().equals(currentGameSession.getGameName()))){
 				return true;}
 			// Check if the user has changed the description
 			if (!(descriptionTextField.getText().equals(currentGameSession.getGameDescription()))){
 				return true;}
-		}
+		//}
 		// Check if the user has changed the deadline
 		@SuppressWarnings("deprecation")
 
-		final Date deadlineDate = new Date(deadlineYear, deadlineMonth, deadlineDay, getHour(hourTime), minuteTime);
+		final Date deadlineDate = new Date(deadlineYear - 1900, deadlineMonth, deadlineDay, getHour(deadlineHourComboBox.getSelectedIndex() + 1), minuteTime);
 		if(deadlineCheckBox.isSelected() && !deadlineDate.equals(currentGameSession.getEndDate())){
 			return true;
 		}
 		// Check if the user has changed the requirements
-		if (!selectionsMade.containsAll(currentGameSession.getGameReqs())){
+		if (!selectionsMade.containsAll(currentGameSession.getGameReqs())
+				|| (selectionsMade.size() != currentGameSession.getGameReqs().size())){
 			return true;
 		}
 		// Check if the user has changed the deck
-		System.out.println("Current DeckID for game " + currentGameSession.getGameID() + " is " + currentGameSession.getDeckId());
 		if ((currentGameSession.getDeckId() != -1 && !deckCheckBox.isSelected())
 				|| (currentGameSession.getDeckId() == -1 && deckCheckBox.isSelected())){
 			return true;
@@ -758,6 +805,9 @@ public class NewGameInputDistributedPanel extends JPanel {
 	 */
 
 	private void setPanel(){
+		ButtonGroup AMPMgroup = new ButtonGroup();
+		AMPMgroup.add(AMButton);
+		AMPMgroup.add(PMButton);
 		//		userList.setListData(listValue);
 		final SpringLayout springLayout = new SpringLayout();
 
@@ -796,7 +846,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, deckLabel, 20, SpringLayout.EAST, deckCheckBox);		
 
 		//Spring layout for the deckBox
-		springLayout.putConstraint(SpringLayout.WEST, deckBox, 100, SpringLayout.WEST, deckLabel);
+		springLayout.putConstraint(SpringLayout.WEST, deckBox, -5, SpringLayout.EAST, deckLabel);
 		springLayout.putConstraint(SpringLayout.SOUTH, deckBox, 0, SpringLayout.SOUTH, deckLabel);
 
 		//Spring layout for the deadlineLabel
@@ -842,7 +892,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 
 		//Spring layout for deadlineHourComboBox
 		springLayout.putConstraint(SpringLayout.NORTH, deadlineHourComboBox, 0, SpringLayout.NORTH, deadlineTime);
-		springLayout.putConstraint(SpringLayout.WEST, deadlineHourComboBox, 100, SpringLayout.WEST, deadlineTime);
+		springLayout.putConstraint(SpringLayout.WEST, deadlineHourComboBox, 5, SpringLayout.EAST, deadlineTime);
 
 		//Spring layout for minuteComboBox
 		springLayout.putConstraint(SpringLayout.NORTH, deadlineMinuteComboBox, 0, SpringLayout.NORTH, deadlineHourComboBox);

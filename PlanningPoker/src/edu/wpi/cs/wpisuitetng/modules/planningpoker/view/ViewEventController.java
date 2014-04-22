@@ -122,7 +122,7 @@ public class ViewEventController {
 	public void newGameTab() {
 		main.addNewGameTab();
 	}
-	
+	//---------------Owner button ----------------------
 	/**
 	 * Set the end game button in tool bar visible 
 	 * @param game
@@ -146,16 +146,34 @@ public class ViewEventController {
 	public void makeArchiveGameButtonVisible(GameSession game){
 		toolbar.makeArchiveGameButtonVisible(game);
 	}
-	
-	
-	
 	/**
 	 * Set the end game button in tool bar invisible 
 	 */
 	public void makeOwnerButtonInvisible(){
 		toolbar.makeOwnerButtonInvisible();
 	}
-
+	//---------------User button ----------------------
+	/**
+	 * Set the activate game button in tool bar visible 
+	 * @param game
+	 */
+	public void makeViewGameButtonVisible(GameSession game){
+		toolbar.makeViewGameButtonVisible(game);
+	}
+	
+	/**
+	 * Set the archive game button in tool bar visible 
+	 * @param game
+	 */
+	public void makeVoteGameButtonVisible(GameSession game){
+		toolbar.makeVoteGameButtonVisible(game);
+	}
+	/**
+	 * Set the end game button in tool bar invisible 
+	 */
+	public void makeUserButtonInvisible(){
+		toolbar.makeUserButtonInvisible();
+	}
 	
 	
 	

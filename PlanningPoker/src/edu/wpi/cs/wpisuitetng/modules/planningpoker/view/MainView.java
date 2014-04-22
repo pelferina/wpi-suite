@@ -38,7 +38,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.PlayDeckGameTest;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.reqpanel.NewRequirementPanel;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -60,7 +59,8 @@ public class MainView extends JTabbedPane {
 	private final List<Integer> openTabs = new ArrayList<Integer>();
 	private final List<NewGameDistributedPanel> newGames = new ArrayList<NewGameDistributedPanel>();
 	final int PERMANANT_TABS = 1;
-	
+	private boolean hasPreferencePane = false;
+
 	public MainView() {
 		overviewPanel = new OverviewPanel();
 		
@@ -99,7 +99,7 @@ public class MainView extends JTabbedPane {
 		 * @param gametoPlay the game session to play
 		 */
 		public void addPlayGameTab(GameSession gametoPlay){
-			if(gametoPlay.getGameStatus() == GameStatus.COMPLETED)
+			if(gametoPlay.getGameStatus() == GameStatus.COMPLETED || gametoPlay.getGameStatus() == GameStatus.ARCHIVED)
 			{
 				addTab("View Estimates", gametoPlay);
 			}
@@ -143,6 +143,7 @@ public class MainView extends JTabbedPane {
 				final PreferencesPanel userPreferences = new PreferencesPanel(btnClose);
 				myCloseActionHandler = new MyCloseActionHandler("User Preferences", j, this, userPreferences, 4);
 				add(userPreferences, open);
+				hasPreferencePane = true;
 			}
 /*			else if (tabType.equals("Req Tab")){
 				final NewRequirementPanel newReq = new NewRequirementPanel(btnClose);
@@ -227,6 +228,7 @@ public class MainView extends JTabbedPane {
 	    //1 - Edit Game
 	    //2 - Game View
 	    //3 - Complete Game
+	    //4 - Preferences Panel
 	    //5 - New Requirement
 	    private final int type;
 	    private final MainView mv;
@@ -327,10 +329,12 @@ public class MainView extends JTabbedPane {
 		        	if (!ngdp.isNew){
 						final int option = JOptionPane.showOptionDialog(ngdp, "Discard unsaved changes and close tab?", "Discard changes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 						if (option == 0){
+							ngdp.stopTimer();
 							ViewEventController.getInstance().getMain().remove(ngdp);
 						}
 		        	}
 		        	else{
+		        		ngdp.stopTimer();
 		        		ViewEventController.getInstance().getMain().remove(ngdp);
 		        	}
 		        }
@@ -361,6 +365,7 @@ public class MainView extends JTabbedPane {
 					if (option == 0) {
 						ViewEventController.getInstance().getMain()
 								.remove(userPreferences);
+						hasPreferencePane = false;
 					}
 				} else {
 					ViewEventController.getInstance().getMain().remove(userPreferences);
@@ -378,7 +383,9 @@ public class MainView extends JTabbedPane {
 	 * This method adds the "User Preferences" tab
 	 */
 	public void addPreferencesPanel() {
-		this.addTab("User Preferences", new GameSession(null, null, 0, 0, null, null));
+		if (!hasPreferencePane){
+			addTab("User Preferences", new GameSession(null, null, 0, 0, null, null));
+		}
 	}
 
 }

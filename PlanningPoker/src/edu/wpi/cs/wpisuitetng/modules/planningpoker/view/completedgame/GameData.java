@@ -32,6 +32,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 import javax.swing.SpringLayout;
+import java.awt.Font;
 
 public class GameData extends JPanel{
 
@@ -58,9 +59,10 @@ public class GameData extends JPanel{
 		completeView = cv;
 		completedGame = gs;
 		gameNameTextBox.setText(gs.getGameName());
+		descriptionTextArea.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		descriptionTextArea.setText(gs.getGameDescription());
-		gameNameTextBox.setEnabled(false);
-		descriptionTextArea.setEnabled(false);
+		gameNameTextBox.setEditable(false);
+		descriptionTextArea.setEditable(false);
 		gameReqIDs = gs.getGameReqs();
 		
 		for (Requirement r: allReqs){
@@ -106,32 +108,33 @@ public class GameData extends JPanel{
 		SpringLayout springLayout = new SpringLayout();
 		
 		//Spring layout constraints for gameNameTextBox
+		springLayout.putConstraint(SpringLayout.EAST, gameNameTextBox, 0, SpringLayout.EAST, descriptionTextArea);
 		springLayout.putConstraint(SpringLayout.NORTH, gameNameTextBox, -3, SpringLayout.NORTH, gameNameLabel);
 		springLayout.putConstraint(SpringLayout.WEST, gameNameTextBox, 6, SpringLayout.EAST, gameNameLabel);
-		springLayout.putConstraint(SpringLayout.EAST, gameNameTextBox, 153, SpringLayout.EAST, gameNameLabel);
-		
-		//Spring layout constraints for descriptionTextArea
-		springLayout.putConstraint(SpringLayout.SOUTH, descriptionTextArea, 60, SpringLayout.SOUTH, descriptionLabel);
-		springLayout.putConstraint(SpringLayout.EAST, descriptionTextArea, 361, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, descriptionTextArea, 6, SpringLayout.SOUTH, descriptionLabel);
-		springLayout.putConstraint(SpringLayout.WEST, descriptionTextArea, 10, SpringLayout.WEST, this);
 		
 		//Spring layout constraints for descriptionLabel
-		springLayout.putConstraint(SpringLayout.NORTH, descriptionLabel, 6, SpringLayout.SOUTH, gameNameLabel);
-		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 0, SpringLayout.WEST, gameNameLabel);
+		springLayout.putConstraint(SpringLayout.SOUTH, descriptionLabel, -6, SpringLayout.NORTH, descriptionTextArea);
+		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 10, SpringLayout.WEST, this);
 		
 		//Spring layout constraints for reqPane
-		springLayout.putConstraint(SpringLayout.NORTH, reqPane, 124, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, reqPane, -29, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, reqPane, -1, SpringLayout.WEST, this);
-		
-		//Spring layout constraints for gameNameLabel
-		springLayout.putConstraint(SpringLayout.NORTH, gameNameLabel, 10, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, gameNameLabel, 0, SpringLayout.WEST, gameReqsLabel);
+		springLayout.putConstraint(SpringLayout.WEST, reqPane, 10, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.EAST, reqPane, -20, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, reqPane, 233, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, reqPane, -59, SpringLayout.SOUTH, this);
 		
 		//Spring layout constraints for gameReqsLabel
 		springLayout.putConstraint(SpringLayout.WEST, gameReqsLabel, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, gameReqsLabel, -6, SpringLayout.NORTH, reqPane);
+		springLayout.putConstraint(SpringLayout.WEST, gameNameLabel, 0, SpringLayout.WEST, descriptionLabel);
+		springLayout.putConstraint(SpringLayout.SOUTH, gameNameLabel, -23, SpringLayout.NORTH, descriptionLabel);
+		
+		//Spring layout constraints for descriptionTextArea
+		springLayout.putConstraint(SpringLayout.NORTH, descriptionTextArea, 94, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, descriptionTextArea, -24, SpringLayout.NORTH, gameReqsLabel);
+		springLayout.putConstraint(SpringLayout.WEST, descriptionTextArea, 10, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.EAST, descriptionTextArea, 371, SpringLayout.WEST, this);
+		
+		//Spring layout constraints for reqPane
+		springLayout.putConstraint(SpringLayout.SOUTH, gameReqsLabel, -11, SpringLayout.NORTH, reqPane);
 		
 		setLayout(springLayout);
 		

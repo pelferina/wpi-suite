@@ -50,8 +50,8 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		
 		try {
 		    endImg= new ImageIcon(ImageIO.read(getClass().getResource("cancel.png")));
-		    activateImg = new ImageIcon(ImageIO.read(getClass().getResource("cancel.png")));
-		    archiveImg =new ImageIcon( ImageIO.read(getClass().getResource("cancel.png")));
+		    activateImg = new ImageIcon(ImageIO.read(getClass().getResource("activate.png")));
+		    archiveImg =new ImageIcon( ImageIO.read(getClass().getResource("archive.png")));
 		    
 		} catch (IOException ex) {
 			System.out.println("IOException thrown in EndGameButtonPanel");
@@ -92,14 +92,14 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 
 	}
 	/**
-	 * Enables the end game button, and add a action listener
+	 * Enables the activate game button, and add a action listener
 	 * to this game
 	 * @param gameID 
 	 */
 	public void makeActivateGameButtonVisible(GameSession game){
 		ownerButton.setVisible(true);
 		ownerButton.setEnabled(true);
-		ownerButton.setIcon(endImg);
+		ownerButton.setIcon(activateImg);
 		ownerButton.setText("<html>Activate<br />Game</html>");
 		
 		
@@ -114,14 +114,14 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	}
 
 	/**
-	 * Enables the end game button, and add a action listener
+	 * Enables the archive game button, and add a action listener
 	 * to this game
 	 * @param gameID 
 	 */
 	public void makeArchiveGameButtonVisible(GameSession game){
 		ownerButton.setVisible(true);
 		ownerButton.setEnabled(true);
-		ownerButton.setIcon(endImg);
+		ownerButton.setIcon(archiveImg);
 		ownerButton.setText("<html>Archive<br />Game</html>");
 		
 		

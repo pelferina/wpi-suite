@@ -43,8 +43,12 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 public class PreferencesPanel extends JPanel {
 	
 	private final JTextField emailField = new JTextField();
-	private final JLabel emailLabel = new JLabel("Email: ");
+
 	private JLabel userName;
+
+	private final JLabel emailLabel = new JLabel("New Email: ");
+	private final JLabel currentEmailLabel = new JLabel("");
+	private final JLabel currentEmailNameLabel = new JLabel("Current Email:");
 	private final JButton submitButton = new JButton ("Save");
 	private final JCheckBox enableCheckBox = new JCheckBox("Enable E-mail Notification");
 	private final JButton close;
@@ -53,10 +57,12 @@ public class PreferencesPanel extends JPanel {
 	
 	/**
 	 * Constructor to create panel with close button
-	 * @param btnClose button to close the panel
+	 * @\param btnClose button to close the panel
 	 */
 	public PreferencesPanel(JButton btnClose){
 		setupPanel();
+		currentEmailLabel.setText(emailField.getText());
+		emailField.setText("");
 		close = btnClose;
 	}
 	
@@ -71,23 +77,34 @@ public class PreferencesPanel extends JPanel {
 		userName = new JLabel ("Hi, " + currentUser.getName() + "!");
 		userName.setFont (userName.getFont ().deriveFont (35.0f));
 
-		springLayout.putConstraint(SpringLayout.WEST, userName, 500, SpringLayout.WEST, this);
+		// Swing layout for user greetings
 		springLayout.putConstraint(SpringLayout.NORTH, userName, 100, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, userName, 500, SpringLayout.WEST, this);
 		
-		springLayout.putConstraint(SpringLayout.WEST, enableCheckBox, 500, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, enableCheckBox, 200, SpringLayout.NORTH, this);
-
-
-		springLayout.putConstraint(SpringLayout.NORTH, emailLabel, 25, SpringLayout.SOUTH, enableCheckBox);
-		springLayout.putConstraint(SpringLayout.WEST, emailLabel, 500, SpringLayout.WEST, this);
-		
-		springLayout.putConstraint(SpringLayout.NORTH, emailField, -3, SpringLayout.NORTH, emailLabel);
-		springLayout.putConstraint(SpringLayout.WEST, emailField, 6, SpringLayout.EAST, emailLabel);
-		
-		springLayout.putConstraint(SpringLayout.NORTH, submitButton, 21, SpringLayout.SOUTH, emailField);
-		springLayout.putConstraint(SpringLayout.WEST, submitButton, 550, SpringLayout.WEST, this);
+		// Swing layout for currentEmailNameLabel
+		springLayout.putConstraint(SpringLayout.NORTH, currentEmailNameLabel, 30, SpringLayout.SOUTH, userName);
+		springLayout.putConstraint(SpringLayout.WEST, currentEmailNameLabel, 480, SpringLayout.WEST, this);
+		// Swing layout for currentEmailLabel
+		springLayout.putConstraint(SpringLayout.NORTH, currentEmailLabel, 0, SpringLayout.NORTH, currentEmailNameLabel);
+		springLayout.putConstraint(SpringLayout.WEST, currentEmailLabel, 10, SpringLayout.EAST, currentEmailNameLabel);
+		// Swing layout for email label
+		springLayout.putConstraint(SpringLayout.NORTH, emailLabel, 30, SpringLayout.SOUTH, currentEmailNameLabel);
+		springLayout.putConstraint(SpringLayout.WEST, emailLabel, 0, SpringLayout.WEST, currentEmailNameLabel);			
+		// Swing layout for email Field
+		springLayout.putConstraint(SpringLayout.NORTH, emailField, 0, SpringLayout.NORTH, emailLabel);
+		springLayout.putConstraint(SpringLayout.WEST, emailField, 10, SpringLayout.EAST, emailLabel);
+		springLayout.putConstraint(SpringLayout.EAST, emailField, 125, SpringLayout.WEST, emailField);
+		// Swing layout for submit Button
+		springLayout.putConstraint(SpringLayout.NORTH, submitButton, 30, SpringLayout.SOUTH, emailLabel);
+		springLayout.putConstraint(SpringLayout.WEST, submitButton, -10, SpringLayout.WEST, emailLabel);
+		// Swing layout for enableCheckBox
+		springLayout.putConstraint(SpringLayout.NORTH, enableCheckBox, 0, SpringLayout.NORTH, submitButton);
+		springLayout.putConstraint(springLayout.WEST, enableCheckBox, 10, SpringLayout.EAST, submitButton);
 		
 		setLayout(springLayout);
+		
+		add(currentEmailLabel);
+		add(currentEmailNameLabel);
 		add(userName);
 		add(emailLabel);
 		add(emailField);

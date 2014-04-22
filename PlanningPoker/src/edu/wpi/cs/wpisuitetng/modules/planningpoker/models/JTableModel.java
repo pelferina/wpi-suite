@@ -70,7 +70,7 @@ public class JTableModel extends AbstractTableModel {
     		Object[] curRow = {sessions[i].getGameName(),
 								sessions[i].getEndDate()!=null ? sessions[i].getDeadlineString() : "No Deadline", 
     							getUserFromID(sessions[i].getOwnerID()), 
-    							"To Be Implemented", // Progress
+    							sessions[i].getVotes().size()+ " out of "+ guc.getUsers().length, // Progress
     							sessions[i].getGameStatus().name()
     							};
     		Data[i] = curRow;
