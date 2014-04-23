@@ -49,6 +49,7 @@ public class PlayGame extends JPanel{
 	private final JLabel reqName = new JLabel("Requirement Name:");
 	private final JLabel reqDesc = new JLabel("Requirement Description:");
 	private final JLabel estimateLabel = new JLabel("Input Estimate:");
+	private final JLabel notAnIntegerError = new JLabel("Estimate must be a positive integer");
 	private final JTextField estimateTextField = new JTextField();
 	private final JTextField gameNameTextField = new JTextField();
 	private final JTextField reqNameTextField = new JTextField();
@@ -72,6 +73,7 @@ public class PlayGame extends JPanel{
 	public PlayGame(GameSession gameToPlay, GameView agv){
 		currentGame = gameToPlay;
 		gameReqs = currentGame.getGameReqs();
+		notAnIntegerError.setVisible(false);
 		final ArrayList<Integer> estimates = new ArrayList<Integer>();
 
 		for (int i = 0; i < gameReqs.size(); i++){
@@ -160,6 +162,7 @@ public class PlayGame extends JPanel{
 					System.out.println(userEstimates.getVote());
 					sendEstimatetoGameView(currentReq, estimate);
 				}
+				gv.isNew = false;
 			}
 			
 		});
@@ -170,6 +173,7 @@ public class PlayGame extends JPanel{
 			public void actionPerformed(ActionEvent e){
 				AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
 				msgr.sendVote(userEstimates);
+				gv.isNew = true;
 				ViewEventController.getInstance().getMain().remove(gv);
 			}
 		});
@@ -232,6 +236,10 @@ public class PlayGame extends JPanel{
 		springLayout.putConstraint(SpringLayout.NORTH, reqName, 140, SpringLayout.SOUTH, gameDesc);
 		springLayout.putConstraint(SpringLayout.WEST, reqName, 0, SpringLayout.WEST, gameDesc);
 		
+		//Spring layout for notAnIntegerError label
+		springLayout.putConstraint(SpringLayout.NORTH, notAnIntegerError, 0, SpringLayout.SOUTH, voteButton);
+		springLayout.putConstraint(SpringLayout.WEST, notAnIntegerError, -20, SpringLayout.EAST, voteButton);
+		
 		setLayout(springLayout);
 	
 		add(voteButton);
@@ -244,6 +252,7 @@ public class PlayGame extends JPanel{
 		add(estimateTextField);
 		add(gameNameTextField);
 		add(reqNameTextField);
+		add(notAnIntegerError);
 		add(nd);
 		add(rd);
 	}
@@ -256,10 +265,18 @@ public class PlayGame extends JPanel{
 	 */
 	private void isValidEstimate(){
 		if (estimateTextField.getText().length() > 0 && isInteger(estimateTextField.getText()) && !reqNameTextField.getText().isEmpty()){
-			voteButton.setEnabled(true);
+			if (Integer.parseInt(estimateTextField.getText()) >= 0){
+				voteButton.setEnabled(true);
+				notAnIntegerError.setVisible(false);
+			}
+			else{
+				voteButton.setEnabled(false);
+				notAnIntegerError.setVisible(true);
+			}
 		}
 		else{
 			voteButton.setEnabled(false);
+			notAnIntegerError.setVisible(true);
 		}
 	}
 	

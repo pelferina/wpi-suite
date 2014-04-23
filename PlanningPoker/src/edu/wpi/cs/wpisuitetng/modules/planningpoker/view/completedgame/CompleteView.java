@@ -24,7 +24,7 @@ public class CompleteView extends JSplitPane {
 	private GameData gameData;
 	private VoteData voteData;
 
-	public boolean isNew = false;
+	public boolean isNew = true;
 
 	/**
 	 * The constructor for CompleteView
@@ -39,6 +39,7 @@ public class CompleteView extends JSplitPane {
 		leftComponent.setMinimumSize(minimumSize);
 		addImpl(voteData, JSplitPane.RIGHT, 2);
 		setDividerLocation(400);
+		setEnabled(false);
 	}
 
 	/**

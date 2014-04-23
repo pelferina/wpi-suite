@@ -40,13 +40,14 @@ public class TableSelectListener implements ListSelectionListener{
 	
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-	    final int row =  table.getSelectedRow();
+	    int row =  table.getSelectedRow();
 	    if(row < 0){ // The table is not selected
 	    	ViewEventController.getInstance().makeOwnerButtonInvisible();
 	    	ViewEventController.getInstance().makeUserButtonInvisible();
 	    	ViewEventController.getInstance().makeEditGameButtonInVisible();
 	    	return;
 	    }
+	    row = table.convertRowIndexToModel(row);
 	    final JTableModel model = (JTableModel)table.getModel();
 		final int ownerID = model.getOwnerID(row);
     	final int gameID = model.getGameID(row);

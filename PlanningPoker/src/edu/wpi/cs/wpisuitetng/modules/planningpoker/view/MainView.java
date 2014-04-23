@@ -34,7 +34,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.completedgame.CompleteView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.PlayDeckGame;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.PlayDeckGameTest;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.reqpanel.NewRequirementPanel;
@@ -353,25 +352,18 @@ public class MainView extends JTabbedPane {
 				}
 			} else if (type == 3){
 				if (!completeView.isNew) {
+					final int option = JOptionPane.showOptionDialog(gameView, "Discard unsaved changes and close tab?", "Discard changes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+					if (option == 0){
 						ViewEventController.getInstance().getMain().remove(completeView);
+					}
+						
 				} else {
 					ViewEventController.getInstance().getMain().remove(completeView);
 				}
 			}
 			else if (type == 4){
-				if (!userPreferences.isNew) {
-					final int option = JOptionPane.showOptionDialog(userPreferences,
-							"Discard unsaved changes and close tab?",
-							"Discard changes?", JOptionPane.YES_NO_OPTION,
-							JOptionPane.QUESTION_MESSAGE, null, null, null);
-					if (option == 0) {
-						ViewEventController.getInstance().getMain()
-								.remove(userPreferences);
-						hasPreferencePane = false;
-					}
-				} else {
-					ViewEventController.getInstance().getMain().remove(userPreferences);
-				}
+				ViewEventController.getInstance().getMain().remove(userPreferences);
+				hasPreferencePane = false;
 			}
 			else if (type == 5){
 				ViewEventController.getInstance().getMain().remove(newReq);

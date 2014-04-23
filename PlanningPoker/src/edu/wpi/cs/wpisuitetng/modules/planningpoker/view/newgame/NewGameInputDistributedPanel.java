@@ -83,7 +83,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 	 *  Initializing Optional Deck Selection 
 	 */
 	private final JCheckBox deckCheckBox = new JCheckBox("Use Deck");
-	private final JComboBox<String> deckBox = new JComboBox<String>(); 
+	private JComboBox<String> deckBox = new JComboBox<String>(); 
 
 	/*
 	 * Initializing name and description labels and text fields
@@ -93,6 +93,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 	private final JLabel deckLabel = new JLabel("Choose a deck:");
 	private final JTextField nameTextField = new JTextField();
 	private final JTextArea descriptionTextField = new JTextArea();
+	private final JScrollPane descriptionScrollPane = new JScrollPane(descriptionTextField);
 
 	/*
 	 *  Initializing editMode variables	
@@ -640,7 +641,8 @@ public class NewGameInputDistributedPanel extends JPanel {
 		}
 	}
 	private void initializeDeckComboBox()
-	{
+	{	
+		deckBox.removeAllItems();
 		//Initializes the deck combo box
 		deckBox.addItem("Default Deck");
 	}
@@ -830,10 +832,10 @@ public class NewGameInputDistributedPanel extends JPanel {
 		//Spring layout for the descTextArea
 		descriptionTextField.setRows(3);
 		descriptionTextField.setLineWrap(true);
-		springLayout.putConstraint(SpringLayout.NORTH, descriptionTextField, 10, SpringLayout.SOUTH, descriptionLabel);
-		springLayout.putConstraint(SpringLayout.WEST, descriptionTextField, 0, SpringLayout.WEST, descriptionLabel);
-		springLayout.putConstraint(SpringLayout.EAST, descriptionTextField, -10, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, descriptionTextField, -15, SpringLayout.NORTH, deadlineCheckBox);
+		springLayout.putConstraint(SpringLayout.NORTH, descriptionScrollPane, 10, SpringLayout.SOUTH, descriptionLabel);
+		springLayout.putConstraint(SpringLayout.WEST, descriptionScrollPane, 0, SpringLayout.WEST, descriptionLabel);
+		springLayout.putConstraint(SpringLayout.EAST, descriptionScrollPane, -10, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, descriptionScrollPane, -15, SpringLayout.NORTH, deadlineCheckBox);
 
 		//Spring layout for the deadlineCheckBox
 		springLayout.putConstraint(SpringLayout.SOUTH, deadlineCheckBox, -230, SpringLayout.SOUTH, this);
@@ -849,7 +851,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, deckLabel, 20, SpringLayout.EAST, deckCheckBox);		
 
 		//Spring layout for the deckBox
-		springLayout.putConstraint(SpringLayout.WEST, deckBox, -5, SpringLayout.EAST, deckLabel);
+		springLayout.putConstraint(SpringLayout.WEST, deckBox, 5, SpringLayout.EAST, deckLabel);
 		springLayout.putConstraint(SpringLayout.SOUTH, deckBox, 0, SpringLayout.SOUTH, deckLabel);
 
 		//Spring layout for the deadlineLabel
@@ -921,7 +923,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		add(nameLabel);
 		add(nameTextField);
 		add(descriptionLabel);
-		add(descriptionTextField);
+		add(descriptionScrollPane);
 
 		//Adds time related components
 		add(deadlineTime);

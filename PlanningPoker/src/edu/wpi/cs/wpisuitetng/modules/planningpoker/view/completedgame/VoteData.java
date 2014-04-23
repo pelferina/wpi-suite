@@ -54,6 +54,7 @@ public class VoteData extends JPanel{
 	private final JLabel medianLabel = new JLabel("Median:");
 	private final JLabel estimatesLabel = new JLabel("Estimates");
 	private final JLabel finalEstimateLabel = new JLabel ("Final Estimate:");
+	private final JLabel notAnIntegerError = new JLabel("Estimate must be a positive integer");
 	private JTextField finalEstimateText = new JTextField();
 	private JButton	finalSubmitButton = new JButton("Submit");
 	private JButton sendEstimatesButton = new JButton("Send Final Estimates");
@@ -61,6 +62,7 @@ public class VoteData extends JPanel{
 	private JLabel meanTextField;
 	private JLabel medianTextField;
 	private JTextArea descriptionTextArea = new JTextArea();
+	private JScrollPane descriptionScrollPane = new JScrollPane(descriptionTextArea);
 	private JScrollPane estimatesPane;
 	private JTable estimatesTable;
 	private GameSession completedGame;
@@ -81,8 +83,11 @@ public class VoteData extends JPanel{
 		completedGame = gs;
 		gameReqs = cv.getGameRequirements();
 		finalVote = new ArrayList<Integer>();
+		notAnIntegerError.setVisible(false);
 		sendEstimatesButton.setEnabled(false);
 		finalSubmitButton.setEnabled(false);
+		descriptionTextArea.setLineWrap(true);
+		descriptionTextArea.setWrapStyleWord(true);
 		if(completedGame.getFinalVotes() != null){
 			if (completedGame.getGameStatus() == GameStatus.ARCHIVED || completedGame.getFinalVotes().size() > 0){
 				finalVote = completedGame.getFinalVotes();
@@ -147,6 +152,7 @@ public class VoteData extends JPanel{
 				}
 				sendEstimatesButton.setEnabled(allVotes);
 				completeView.nextRequirement();
+				completeView.isNew = false;
 			}
 		});
 		
@@ -163,7 +169,9 @@ public class VoteData extends JPanel{
 					r.setEstimate(finalVote.get(completeView.getIndex(r.getId())));
 					reqmsgr.updateRequirement(r);
 				}
-			}
+				completeView.isNew = true;
+				ViewEventController.getInstance().getMain().remove(completeView);
+				}
 		});
 		
 		finalEstimateText.getDocument().addDocumentListener(new DocumentListener(){
@@ -218,7 +226,7 @@ public class VoteData extends JPanel{
 		
 		// Spring layout constraints for sendEstimatesButton
 		springLayout.putConstraint(SpringLayout.NORTH, sendEstimatesButton, 24, SpringLayout.SOUTH, finalSubmitButton);
-		springLayout.putConstraint(SpringLayout.WEST, sendEstimatesButton, 0, SpringLayout.WEST, descriptionTextArea);
+		springLayout.putConstraint(SpringLayout.WEST, sendEstimatesButton, 0, SpringLayout.WEST, descriptionScrollPane);
 		
 		//Spring layout constraints for finalEstimatetext
 		springLayout.putConstraint(SpringLayout.WEST, finalEstimateText, 6, SpringLayout.EAST, finalEstimateLabel);
@@ -240,16 +248,16 @@ public class VoteData extends JPanel{
 		
 		//Spring layout constraints for reqNameLabel
 		springLayout.putConstraint(SpringLayout.NORTH, reqNameLabel, 9, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, reqNameLabel, 0, SpringLayout.WEST, reqDescriptionLabel);
+		springLayout.putConstraint(SpringLayout.WEST, reqNameLabel, 10, SpringLayout.WEST, this);
 		
 		//Spring layout constraints for reqNameText
-		springLayout.putConstraint(SpringLayout.EAST, reqNameText, 0, SpringLayout.EAST, descriptionTextArea);
-		springLayout.putConstraint(SpringLayout.NORTH, reqNameText, -3, SpringLayout.NORTH, reqNameLabel);
-		springLayout.putConstraint(SpringLayout.WEST, reqNameText, 6, SpringLayout.EAST, reqNameLabel);
+		springLayout.putConstraint(SpringLayout.EAST, reqNameText, -15, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, reqNameText, 0, SpringLayout.NORTH, reqNameLabel);
+		springLayout.putConstraint(SpringLayout.WEST, reqNameText, 5, SpringLayout.EAST, reqNameLabel);
 		
 		//Spring layout constraints for reqDescriptionLabel
 		springLayout.putConstraint(SpringLayout.NORTH, reqDescriptionLabel, 19, SpringLayout.SOUTH, reqNameLabel);
-		springLayout.putConstraint(SpringLayout.WEST, reqDescriptionLabel, 10, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.WEST, reqDescriptionLabel, 0, SpringLayout.WEST, reqNameLabel);
 		
 		//Spring layout constraints for finalEstimatesLabel
 		springLayout.putConstraint(SpringLayout.SOUTH, finalEstimateLabel, -141, SpringLayout.SOUTH, this);
@@ -260,11 +268,11 @@ public class VoteData extends JPanel{
 		springLayout.putConstraint(SpringLayout.EAST, meanTextField, -50, SpringLayout.WEST, estimatesPane);
 		springLayout.putConstraint(SpringLayout.NORTH, meanTextField, -8, SpringLayout.NORTH, estimatesPane);
 		
-		//Spring layout constraints for descriptionTextArea
-		springLayout.putConstraint(SpringLayout.WEST, descriptionTextArea, 57, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.EAST, descriptionTextArea, -84, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, descriptionTextArea, -314, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.NORTH, descriptionTextArea, 6, SpringLayout.SOUTH, reqDescriptionLabel);
+		//Spring layout constraints for descriptionScrollPane
+		springLayout.putConstraint(SpringLayout.WEST, descriptionScrollPane, 0, SpringLayout.WEST, reqDescriptionLabel);
+		springLayout.putConstraint(SpringLayout.EAST, descriptionScrollPane, -5, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, descriptionScrollPane, -20, SpringLayout.NORTH, estimatesLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, descriptionScrollPane, 5, SpringLayout.SOUTH, reqDescriptionLabel);
 		
 		//Spring layout constraints for estimatesLabel
 		springLayout.putConstraint(SpringLayout.NORTH, estimatesLabel, 168, SpringLayout.NORTH, this);
@@ -280,9 +288,14 @@ public class VoteData extends JPanel{
 		springLayout.putConstraint(SpringLayout.NORTH, estimatesPane, 192, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, estimatesPane, -10, SpringLayout.SOUTH, this);
 		
+		//Spring layout constraints for notAnIntegerError
+		springLayout.putConstraint(SpringLayout.WEST, notAnIntegerError, 0, SpringLayout.WEST, finalEstimateLabel);
+		springLayout.putConstraint(SpringLayout.SOUTH, notAnIntegerError, 20, SpringLayout.SOUTH, finalEstimateLabel);
+		
 		setLayout(springLayout);
+		add(notAnIntegerError);
 		add(estimatesPane);
-		add(descriptionTextArea);
+		add(descriptionScrollPane);
 		add(medianTextField);
 		add(meanTextField);
 		add(reqNameText);
@@ -338,10 +351,18 @@ public class VoteData extends JPanel{
 	
 	private void isValidEstimate(){
 		if (finalEstimateText.getText().length() > 0 && isInteger(finalEstimateText.getText())){
-			finalSubmitButton.setEnabled(true);
+			if (Integer.parseInt(finalEstimateText.getText()) >= 0){
+				finalSubmitButton.setEnabled(true);
+				notAnIntegerError.setVisible(false);
+			}
+			else {
+				finalSubmitButton.setEnabled(false);
+				notAnIntegerError.setVisible(true);
+			}
 		}
 		else{
 			finalSubmitButton.setEnabled(false);
+			notAnIntegerError.setVisible(true);
 		}
 	}
 	
