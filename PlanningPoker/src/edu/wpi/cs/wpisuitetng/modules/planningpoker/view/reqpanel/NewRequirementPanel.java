@@ -47,7 +47,8 @@ import javax.swing.JComboBox;
 public class NewRequirementPanel extends JPanel {
 	private Requirement currentRequirement;
 	private JTextField nameField;
-	private JTextArea descriptionField;
+	private JTextArea descriptionField = new JTextArea();
+	private JScrollPane descriptionScrollPane = new JScrollPane(descriptionField);
 	private final JLabel nameLabel = new JLabel("Requirement Name: ");
 	private final JLabel descriptionLabel = new JLabel("Requirement Description: ");
 	private final JButton CreateRequirementButton = new JButton("Create Requirement");
@@ -56,7 +57,7 @@ public class NewRequirementPanel extends JPanel {
 	private JComboBox<RequirementType> typeComboBox = new JComboBox<RequirementType>();
 	private NewGameDistributedPanel newGamePanel;
 	private boolean isCreatable;
-	private final JLabel reqError = new JLabel("Can not have a game with no requirements and name");
+	private final JLabel reqError = new JLabel("Can not have a requirement with no name or description");
 	
 	/**
 	 * Creates the tab for the new requirement to be specified and created
@@ -83,7 +84,6 @@ public class NewRequirementPanel extends JPanel {
 		nameField = new JTextField();
 		JLabel lblPriority = new JLabel("Priority:");
 		JLabel lblType = new JLabel("Type:");
-		descriptionField = new JTextArea();
 		descriptionField.setLineWrap(true);
 		SpringLayout springLayout = new SpringLayout();
 		
@@ -98,32 +98,32 @@ public class NewRequirementPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.SOUTH, CreateRequirementButton, -39, SpringLayout.SOUTH, this);
 		
 		//Spring layout constraints for priorityComboBox
-		springLayout.putConstraint(SpringLayout.NORTH, priorityComboBox, 43, SpringLayout.SOUTH, descriptionField);
+		springLayout.putConstraint(SpringLayout.NORTH, priorityComboBox, 43, SpringLayout.SOUTH, descriptionScrollPane);
 		springLayout.putConstraint(SpringLayout.WEST, priorityComboBox, 5, SpringLayout.EAST, lblPriority);
 		springLayout.putConstraint(SpringLayout.EAST, priorityComboBox, -10, SpringLayout.WEST, lblType);
 		
 		//Spring layout constraints for lblType
-		springLayout.putConstraint(SpringLayout.WEST, lblType, 273, SpringLayout.EAST, lblPriority);
-		springLayout.putConstraint(SpringLayout.NORTH, lblType, 46, SpringLayout.SOUTH, descriptionField);
+		springLayout.putConstraint(SpringLayout.WEST, lblType, 200, SpringLayout.EAST, lblPriority);
+		springLayout.putConstraint(SpringLayout.NORTH, lblType, 46, SpringLayout.SOUTH, descriptionScrollPane);
 		
 		//Spring layout constraints for typeComboBox
 		springLayout.putConstraint(SpringLayout.NORTH, typeComboBox, 284, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, typeComboBox, 6, SpringLayout.EAST, lblType);
 		springLayout.putConstraint(SpringLayout.EAST, typeComboBox, -49, SpringLayout.EAST, this);
 		
-		//Spring layout constraints for descriptionField
-		springLayout.putConstraint(SpringLayout.NORTH, descriptionField, 116, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, descriptionField, -44, SpringLayout.NORTH, typeComboBox);
-		springLayout.putConstraint(SpringLayout.WEST, descriptionField, 0, SpringLayout.WEST, nameLabel);
-		springLayout.putConstraint(SpringLayout.EAST, descriptionField, -45, SpringLayout.EAST, this);
+		//Spring layout constraints for descriptionScrollPane
+		springLayout.putConstraint(SpringLayout.NORTH, descriptionScrollPane, 116, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, descriptionScrollPane, -44, SpringLayout.NORTH, typeComboBox);
+		springLayout.putConstraint(SpringLayout.WEST, descriptionScrollPane, 0, SpringLayout.WEST, nameLabel);
+		springLayout.putConstraint(SpringLayout.EAST, descriptionScrollPane, -45, SpringLayout.EAST, this);
 		
 		//Spring layout constraints for lblPriority
-		springLayout.putConstraint(SpringLayout.NORTH, lblPriority, 45, SpringLayout.SOUTH, descriptionField);
+		springLayout.putConstraint(SpringLayout.NORTH, lblPriority, 45, SpringLayout.SOUTH, descriptionScrollPane);
 		springLayout.putConstraint(SpringLayout.WEST, lblPriority, 53, SpringLayout.WEST, this);
 		
 		//Spring layout constraints for descriptionLabel
 		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 53, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, descriptionLabel, -16, SpringLayout.NORTH, descriptionField);
+		springLayout.putConstraint(SpringLayout.SOUTH, descriptionLabel, -16, SpringLayout.NORTH, descriptionScrollPane);
 		
 		//Spring layout constraints for nameField
 		springLayout.putConstraint(SpringLayout.WEST, nameField, 6, SpringLayout.EAST, nameLabel);
@@ -134,8 +134,8 @@ public class NewRequirementPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.NORTH, nameLabel, 29, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, nameLabel, 53, SpringLayout.WEST, this);
 		
-		springLayout.putConstraint(SpringLayout.EAST, reqError, -10, SpringLayout.WEST, CreateRequirementButton);
-		springLayout.putConstraint(SpringLayout.NORTH, reqError, 0, SpringLayout.NORTH, CreateRequirementButton);
+		springLayout.putConstraint(SpringLayout.WEST, reqError, 5, SpringLayout.WEST, CreateRequirementButton);
+		springLayout.putConstraint(SpringLayout.NORTH, reqError, 5, SpringLayout.SOUTH, CreateRequirementButton);
 		
 		
 		setLayout(springLayout);
@@ -145,7 +145,7 @@ public class NewRequirementPanel extends JPanel {
 		add(nameField);
 		add(nameLabel);
 		add(descriptionLabel);
-		add(descriptionField);
+		add(descriptionScrollPane);
 		add(CreateRequirementButton);
 		add(priorityComboBox);
 		add(typeComboBox);

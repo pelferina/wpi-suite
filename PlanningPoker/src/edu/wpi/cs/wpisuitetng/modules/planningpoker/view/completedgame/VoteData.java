@@ -261,7 +261,7 @@ public class VoteData extends JPanel{
 		
 		//Spring layout constraints for finalEstimatesLabel
 		springLayout.putConstraint(SpringLayout.SOUTH, finalEstimateLabel, -141, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, finalEstimateLabel, -554, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.WEST, finalEstimateLabel, 5, SpringLayout.WEST, this);
 		
 		//Spring layout constraints for meanTextField
 		springLayout.putConstraint(SpringLayout.WEST, meanTextField, 30, SpringLayout.EAST, meanLabel);
@@ -275,8 +275,8 @@ public class VoteData extends JPanel{
 		springLayout.putConstraint(SpringLayout.NORTH, descriptionScrollPane, 5, SpringLayout.SOUTH, reqDescriptionLabel);
 		
 		//Spring layout constraints for estimatesLabel
-		springLayout.putConstraint(SpringLayout.NORTH, estimatesLabel, 168, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, estimatesLabel, -193, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, estimatesLabel, -5, SpringLayout.NORTH, estimatesPane);
+		springLayout.putConstraint(SpringLayout.WEST, estimatesLabel, 0, SpringLayout.WEST, estimatesPane);
 		
 		//Spring layout constraints for meanLabel
 		springLayout.putConstraint(SpringLayout.NORTH, meanLabel, -8, SpringLayout.NORTH, estimatesPane);

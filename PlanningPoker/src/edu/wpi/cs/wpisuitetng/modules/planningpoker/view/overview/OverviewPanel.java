@@ -119,7 +119,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 				    }
 				  }
 				});
-		table.setToolTipText("Double Click to Edit");
+		//table.setToolTipText("Double Click to Edit");
 		table.getSelectionModel().addListSelectionListener(new TableSelectListener(table));
 		
 		
