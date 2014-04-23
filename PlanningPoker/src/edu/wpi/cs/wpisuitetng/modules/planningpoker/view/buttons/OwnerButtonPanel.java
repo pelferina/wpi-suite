@@ -9,8 +9,6 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
 
-import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -20,11 +18,18 @@ import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+import java.awt.Component;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 /**
  * Button for ending a game
@@ -35,31 +40,48 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	
 	private final JPanel contentPanel = new JPanel();
 	private final JButton ownerButton = new JButton();
+	private final JLabel ownerLabel = new JLabel("Owner Options");
+	JButton editButton = new JButton("<html>Edit<br />Game</html>");
 	private ActionListener listener = null;
-	private ImageIcon endImg, activateImg, archiveImg;
+	private ImageIcon endImg, activateImg, archiveImg, editImg;
 	private Timer expireTimer = null;
 	
 	public OwnerButtonPanel(){
 		super("");
+		getContent().setBounds(1, 0, 10, 10);
+		contentPanel.setBounds(2, 0, 0, 0);
 		
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
-		this.setPreferredWidth(150);
-		
-		ownerButton.setPreferredSize(new Dimension(150,50));	
-		ownerButton.setVisible(false);
+		this.setPreferredWidth(300);
 		
 		try {
 		    endImg= new ImageIcon(ImageIO.read(getClass().getResource("cancel.png")));
 		    activateImg = new ImageIcon(ImageIO.read(getClass().getResource("activate.png")));
 		    archiveImg =new ImageIcon( ImageIO.read(getClass().getResource("archive.png")));
-		    
+		    editImg = new ImageIcon(ImageIO.read(getClass().getResource("edit.png")));		    
 		} catch (IOException ex) {
 			System.out.println("IOException thrown in EndGameButtonPanel");
 		}
 		
-		contentPanel.add(ownerButton);
+		//setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		contentPanel.setOpaque(false);
-		this.add(contentPanel);
+		editButton.setBounds(11, 19, 140, 57);
+		editButton.setVisible(false);
+		editButton.setIcon(editImg);
+		ownerButton.setBounds(149, 19, 140, 57);
+//		ownerButton.setPreferredSize(new Dimension(150,50));	
+		ownerButton.setVisible(false);
+		ownerButton.setHorizontalAlignment(SwingConstants.CENTER);
+		ownerLabel.setBounds(123, 0, 93, 14);
+		ownerLabel.setAlignmentY(Component.TOP_ALIGNMENT);
+		ownerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		add(getContent());
+		setLayout(null);
+		add(contentPanel);
+		add(ownerLabel);
+		add(editButton);
+		add(ownerButton);
+		
 	}
 	
 	/**
@@ -184,5 +206,30 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		expireTimer.setRepeats(false);
 		expireTimer.start();
 		System.out.println("Expiring in "+expireTime);
+	}
+	
+	/**
+	 * This method sets the button to read "activate"
+	 *
+	 * Enables the end game button, and add a action listener
+	 * to this game
+	 * @param gameID 
+	 */
+	public void makeEditGameButtonVisible(int gameID){
+		editButton.setVisible(true);
+		editButton.setEnabled(true);
+		if(listener != null){
+			editButton.removeActionListener(listener);
+		}
+		listener = new EditGameActionListener(gameID);
+		editButton.addActionListener(listener);
+	}
+	
+	/**
+	 *  disables the end game button 
+	 */
+	public void makeEditGameButtonInvisible() {
+		editButton.setEnabled(false);
+		editButton.setVisible(false);
 	}
 }

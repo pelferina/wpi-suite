@@ -27,7 +27,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.UserButtonPanel
 public class ToolbarView  extends DefaultToolbarView {
 
 //	TODO: Cancel Game
-	public EditButtonsPanel editButton = new EditButtonsPanel();
+//	public EditButtonsPanel editButton = new EditButtonsPanel();
 	public PlanningPokerButtonsPanel gameButton = new PlanningPokerButtonsPanel();
 	public OwnerButtonPanel ownerButton = new OwnerButtonPanel();
 	public UserButtonPanel userButton = new UserButtonPanel();
@@ -39,15 +39,9 @@ public class ToolbarView  extends DefaultToolbarView {
 		this.addGroup(gameButton);
 		this.addGroup(userButton);
 		this.addGroup(ownerButton);
-		this.addGroup(editButton);
+//		this.addGroup(editButton);
 	}
 	
-	/**
-	 * Method getEditButton.
-	 * @return EditButtonsPanel */
-	public EditButtonsPanel getEditButton(){
-		return editButton;
-	}
 	/**
 	 * Method getReqButton.
 	
@@ -94,6 +88,27 @@ public class ToolbarView  extends DefaultToolbarView {
 		ownerButton.makeOwnerButtonInvisible();
 	}
 	
+	/**
+	 * This method sets the button to read "activate"
+	 *
+	 * Enables the end game button, and add a action listener
+	 * to this game
+	 * @param gameID 
+	 */
+	public void makeEditGameButtonVisible(int gameID){
+		ownerButton.makeEditGameButtonVisible(gameID);
+	}
+	
+	/**
+	 * This method sets the button to read "activate"
+	 *
+	 * Enables the end game button, and add a action listener
+	 * to this game
+	 * @param gameID 
+	 */
+	public void makeEditGameButtonInvisible(){
+		ownerButton.makeEditGameButtonInvisible();
+	}
 	
 	//---------------User button ----------------------
 	/**

@@ -20,6 +20,7 @@ import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -45,7 +46,7 @@ public class UserButtonPanel extends ToolbarGroupView{
 		super("");
 		
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
-		this.setPreferredWidth(150);
+		this.setPreferredWidth(300);
 		
 		userButton.setPreferredSize(new Dimension(150,50));	
 		userButton.setVisible(false);
