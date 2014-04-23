@@ -44,7 +44,7 @@ public class TableSelectListener implements ListSelectionListener{
 	    if(row < 0){ // The table is not selected
 	    	ViewEventController.getInstance().makeOwnerButtonInvisible();
 	    	ViewEventController.getInstance().makeUserButtonInvisible();
-	    	ViewEventController.getInstance().setEditGameButtonInVisible();
+	    	ViewEventController.getInstance().makeEditGameButtonInVisible();
 	    	return;
 	    }
 	    row = table.convertRowIndexToModel(row);
@@ -74,13 +74,13 @@ public class TableSelectListener implements ListSelectionListener{
     		}
     		
     		if(status.equals(GameStatus.ACTIVE)||status.equals(GameStatus.DRAFT)){
-    			ViewEventController.getInstance().setEditGameButtonVisible(gameID);
+    			ViewEventController.getInstance().makeEditGameButtonVisible(gameID);
     		}else{
-    			ViewEventController.getInstance().setEditGameButtonInVisible();
+    			ViewEventController.getInstance().makeEditGameButtonInVisible();
     		}
     	}else{
     		ViewEventController.getInstance().makeOwnerButtonInvisible();
-    		ViewEventController.getInstance().setEditGameButtonInVisible();
+    		ViewEventController.getInstance().makeEditGameButtonInVisible();
     	}
     	
     	if(status.equals(GameStatus.ACTIVE) || status.equals(GameStatus.INPROGRESS)){

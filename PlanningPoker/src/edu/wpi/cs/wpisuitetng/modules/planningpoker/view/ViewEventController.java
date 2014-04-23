@@ -66,7 +66,7 @@ public class ViewEventController {
 		main.addChangeListener(new ChangeListener(){
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				ViewEventController.getInstance().setEditGameButtonInVisible();
+				ViewEventController.getInstance().makeEditGameButtonInVisible();
 				ViewEventController.getInstance().makeOwnerButtonInvisible();
 				ViewEventController.getInstance().makeUserButtonInvisible();
 				
@@ -205,16 +205,16 @@ public class ViewEventController {
 	 * sets the edit game button to be visible
 	 * @param gameID the id of the game to change the button for
 	 */
-	public void setEditGameButtonVisible(int gameID)
+	public void makeEditGameButtonVisible(int gameID)
 	{
-		toolbar.getEditButton().setEditGameButtonVisible(gameID);
+		toolbar.makeEditGameButtonVisible(gameID);
 		
 	}
 
 	/**
 	 * sets the edit game button to be invisible
 	 */
-	public void setEditGameButtonInVisible() {
-		toolbar.getEditButton().setEditGameButtonInvisible();		
+	public void makeEditGameButtonInVisible() {
+		toolbar.makeEditGameButtonInvisible();		
 	}
 }
