@@ -32,6 +32,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 import javax.swing.SpringLayout;
+
 import java.awt.Font;
 
 public class GameData extends JPanel{
@@ -204,6 +205,12 @@ public class GameData extends JPanel{
 		}
 	}
 
+	public void receiveFinalVotes(List<Integer> finalVote) {
+		for (int i = 0; i < gameReqsTable.getRowCount(); i++){
+			gameReqsTable.setValueAt(finalVote.get(i), i, 2);
+		}
+	}
+	
 public class tableListener extends MouseAdapter{
 		
 		JTable tableClicked;

@@ -81,4 +81,9 @@ public class CompleteView extends JSplitPane {
 		gameData.nextRequirement(estimate);
 		
 	}
+
+	public void sendEstimatesToTable(List<Integer> finalVote) {
+		gameData.receiveFinalVotes(finalVote);
+		
+	}
 }
