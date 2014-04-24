@@ -30,7 +30,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckBuildingPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.completedgame.CompleteView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.PlayDeckGame;
@@ -64,10 +64,12 @@ public class MainView extends JTabbedPane {
 
 	public MainView() {
 		overviewPanel = new OverviewPanel();
+		DeckBuildingPanel decktestpanel = new DeckBuildingPanel();
 		
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
 		addTab("Overview", overviewPanel);
+		addTab("DeckStuff", decktestpanel);
 		
 		ViewEventController.getInstance().setMainView(this);
 	}
