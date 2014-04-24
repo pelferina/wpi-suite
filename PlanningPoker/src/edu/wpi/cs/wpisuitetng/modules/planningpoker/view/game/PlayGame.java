@@ -365,6 +365,13 @@ public class PlayGame extends JPanel implements Refreshable{
 				break;
 			}
 		}
+		
+		if (currentGame.getGameStatus() == GameStatus.COMPLETED || currentGame.getGameStatus() == GameStatus.ARCHIVED)
+		{
+			clear();
+			submit.setText("Game Ended");
+			canSubmit = false;
+		}
 		submit.setEnabled(canSubmit);
 	}
 
@@ -376,10 +383,5 @@ public class PlayGame extends JPanel implements Refreshable{
 	@Override
 	public void refreshGames() {
 		currentGame = GameModel.getInstance().getGame(currentGame.getGameID());
-		if (currentGame.getGameStatus() == GameStatus.COMPLETED || currentGame.getGameStatus() == GameStatus.ARCHIVED)
-		{
-			submit.setText("Game Ended");
-			submit.setEnabled(false);
-		}
 	}
 }
