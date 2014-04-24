@@ -151,7 +151,7 @@ public class VoteData extends JPanel{
 					}
 				}
 				sendEstimatesButton.setEnabled(allVotes);
-				completeView.nextRequirement();
+				completeView.nextRequirement(finalEstimate);
 				completeView.isNew = false;
 			}
 		});

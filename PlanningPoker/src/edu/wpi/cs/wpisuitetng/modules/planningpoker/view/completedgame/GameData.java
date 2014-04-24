@@ -82,7 +82,7 @@ public class GameData extends JPanel{
 		    }
 		};
 		
-		gameReqsTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Description"}));
+		gameReqsTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Description", "Estimate"}));
 		init();	
 	}
 	
@@ -98,6 +98,7 @@ public class GameData extends JPanel{
 			requirementIndexHash.put(gameReqs.get(i).getId(), i);
 			reqTableModel.setValueAt(gameReqs.get(i).getName(), i, 0);
 			reqTableModel.setValueAt(gameReqs.get(i).getDescription(), i, 1);
+			reqTableModel.setValueAt("", i, 2);
 		}
 		reqPane = new JScrollPane(gameReqsTable);
 		reqPane.setViewportView(gameReqsTable);
@@ -184,9 +185,10 @@ public class GameData extends JPanel{
 		this.descriptionTextArea = descriptionTextArea;
 	}
 
-	public void nextRequirement() {
+	public void nextRequirement(int estimate) {
 		int selected = gameReqsTable.getSelectedRow();
-		gameReqsTable.removeRowSelectionInterval(selected, selected);
+		gameReqsTable.setValueAt(estimate, selected, 2);
+		gameReqsTable.clearSelection();
 		if (selected + 1 < gameReqs.size()){
 			gameReqsTable.addRowSelectionInterval(selected + 1, selected + 1);
 			Requirement req = null;
