@@ -109,9 +109,13 @@ public class PlayDeckGame extends JPanel{
 		
 		//Sets the description and name text fields to the first requirement in the to estimate table
 		gameNameTextField.setText(currentGame.getGameName());
-		reqNameTextField.setText(currentReq.getName());
+		if (currentReq != null){
+			reqNameTextField.setText(currentReq.getName());
+		}
 		gameDescTextArea.setText(currentGame.getGameDescription());
-		reqDescTextArea.setText(currentReq.getDescription());
+		if (currentReq != null){
+			reqDescTextArea.setText(currentReq.getDescription());
+		}
 		gameNameTextField.setEditable(false);
 		reqNameTextField.setEditable(false);
 		gameDescTextArea.setEditable(false);

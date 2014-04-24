@@ -14,6 +14,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +39,7 @@ public class testPlayDeckGame {
 	}	
 	@Test
 	public void testDeadlineCheck() throws Exception{
-		GameSession gs = new GameSession("G","D", 0, 0, Calendar.getInstance().getTime(), new ArrayList<Integer>());
+		GameSession gs = new GameSession("G","D", 0, 0, Calendar.getInstance().getTime(), new ArrayList());
 		GameView gv = new GameView(gs);
 		PlayDeckGame pdg = new PlayDeckGame(gs, gv);
 		pdg.clear();
