@@ -19,7 +19,6 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -109,9 +108,13 @@ public class PlayDeckGame extends JPanel{
 		
 		//Sets the description and name text fields to the first requirement in the to estimate table
 		gameNameTextField.setText(currentGame.getGameName());
-		reqNameTextField.setText(currentReq.getName());
+		if (currentReq != null){
+			reqNameTextField.setText(currentReq.getName());
+		}
 		gameDescTextArea.setText(currentGame.getGameDescription());
-		reqDescTextArea.setText(currentReq.getDescription());
+		if (currentReq != null){
+			reqDescTextArea.setText(currentReq.getDescription());
+		}
 		gameNameTextField.setEditable(false);
 		reqNameTextField.setEditable(false);
 		gameDescTextArea.setEditable(false);
@@ -120,8 +123,8 @@ public class PlayDeckGame extends JPanel{
 		gameDescTextArea.setWrapStyleWord(true);
 		reqDescTextArea.setLineWrap(true);
 		reqDescTextArea.setWrapStyleWord(true);
+		deckArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 		
-		//TODO add item listener to game cards;
 		for (final GameCard card: cardButtons){
 			card.addItemListener (new ItemListener() {
 				public void itemStateChanged ( ItemEvent ie ) {
@@ -228,7 +231,7 @@ public class PlayDeckGame extends JPanel{
 		springLayout.putConstraint(SpringLayout.NORTH, deckArea, 15, SpringLayout.SOUTH, rd);
 		springLayout.putConstraint(SpringLayout.WEST, deckArea, 15, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.EAST, deckArea, -15, SpringLayout.EAST, this);
-		//springLayout.putConstraint(SpringLayout.SOUTH, deckArea, -15, SpringLayout.NORTH, submit);
+		springLayout.putConstraint(SpringLayout.SOUTH, deckArea, 135, SpringLayout.NORTH, deckArea);
 		
 		//Spring layout for votesSoFarNameLabel
 		springLayout.putConstraint(SpringLayout.NORTH, votesSoFarNameLabel, 15, SpringLayout.SOUTH, deckArea);
@@ -262,7 +265,6 @@ public class PlayDeckGame extends JPanel{
 	private void generateButtons(){
 
 		final Iterator<Integer> cardIterator = gameCardList.iterator();
-		final Iterator<GameCard> btnIterator = cardButtons.iterator(); 
 
 		System.out.println(gameCardList);
 		
@@ -283,16 +285,7 @@ public class PlayDeckGame extends JPanel{
 		//This loop will cycle through all of the buttons that have been created and display them
 		
 	}
-	/**
-	 * This function cycles through available cards and add the appropriate buttons
-	 */
-	private void addButtons(){
-		for(int i=0; i < cardButtons.size(); i++)
-		{
-		   GameCard c = cardButtons.get(i);
-		   add(c);
-		}
-	}
+	
 	/**
 	 * This function cycles through available cards and unselect all of them
 	 */

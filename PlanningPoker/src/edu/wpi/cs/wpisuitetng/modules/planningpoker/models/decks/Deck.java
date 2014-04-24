@@ -25,6 +25,7 @@ public class Deck extends AbstractModel {
 
 	/** the ID of the deck */
 	private final int id;
+	private final String name;
 	private final List<Integer> cards;
 	
 	/**
@@ -33,6 +34,7 @@ public class Deck extends AbstractModel {
 	public Deck()
 	{
 		id = 0;
+		name = "Default Deck";
 		cards = Arrays.asList(0,1,1,2,3,5,8,13); 
 	}
 	
@@ -41,9 +43,10 @@ public class Deck extends AbstractModel {
 	 * @param id the deck id number
 	 * @param cards the cards that should be in the deck
 	 */
-	public Deck(int id, List<Integer> cards)
+	public Deck(int id, String name, List<Integer> cards)
 	{
 		this.id = id;
+		this.name = name;
 		this.cards = cards;
 	}
 	/**
@@ -69,6 +72,10 @@ public class Deck extends AbstractModel {
 	 */
 	public int getId() {
 		return id;
+	}
+	
+	public String getName(){
+		return name;
 	}
 
 	/**
