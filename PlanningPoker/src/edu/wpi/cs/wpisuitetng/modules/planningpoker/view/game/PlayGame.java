@@ -24,10 +24,14 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddVoteController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.VoteModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
@@ -41,7 +45,7 @@ import javax.swing.event.DocumentListener;
  * @author Cosmic Latte
  * @version $Revision: 1.0 $
  */
-public class PlayGame extends JPanel{
+public class PlayGame extends JPanel implements Refreshable{
 
 	private final List<Integer> gameReqs;
 	private final JLabel gameName = new JLabel("Game Name:");
@@ -71,6 +75,8 @@ public class PlayGame extends JPanel{
 	 * @param agv the active game view
 	 */
 	public PlayGame(GameSession gameToPlay, GameView agv){
+		GetGamesController.getInstance().addRefreshable(this);
+	
 		currentGame = gameToPlay;
 		gameReqs = currentGame.getGameReqs();
 		notAnIntegerError.setVisible(false);
@@ -171,10 +177,19 @@ public class PlayGame extends JPanel{
 		submit.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
-				AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
-				msgr.sendVote(userEstimates);
-				gv.isNew = true;
-				ViewEventController.getInstance().getMain().remove(gv);
+				currentGame = GameModel.getInstance().getGame(currentGame.getGameID());
+				if (currentGame.getGameStatus() == GameStatus.COMPLETED || currentGame.getGameStatus() == GameStatus.ARCHIVED)
+				{
+					submit.setText("Game Ended");
+					submit.setEnabled(false);
+				}
+				else
+				{
+					AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
+					msgr.sendVote(userEstimates);
+					gv.isNew = true;
+					ViewEventController.getInstance().getMain().remove(gv);					
+				}
 			}
 		});
 		
@@ -351,5 +366,20 @@ public class PlayGame extends JPanel{
 			}
 		}
 		submit.setEnabled(canSubmit);
+	}
+
+	@Override
+	public void refreshRequirements() {
+		return;
+	}
+
+	@Override
+	public void refreshGames() {
+		currentGame = GameModel.getInstance().getGame(currentGame.getGameID());
+		if (currentGame.getGameStatus() == GameStatus.COMPLETED || currentGame.getGameStatus() == GameStatus.ARCHIVED)
+		{
+			submit.setText("Game Ended");
+			submit.setEnabled(false);
+		}
 	}
 }
