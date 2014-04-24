@@ -272,6 +272,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 				}
 				else
 				{
+					removeErrorLabels();
 					nameError.setVisible(true);		
 					setSaveGameButtonVisibility(false);
 				}
@@ -464,6 +465,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 	{
 		//Displays the cannot have a game without requirements error if no requirements were chosen
 		if (newGameP.getSelected().isEmpty()){
+			removeErrorLabels();
 			reqError.setVisible(true);
 			return false;
 		}
@@ -485,13 +487,14 @@ public class NewGameInputDistributedPanel extends JPanel {
 		setDeadlineDate();
 		hourTime = getHour(deadlineHourComboBox.getSelectedIndex() + 1);
 		minuteTime = deadlineMinuteComboBox.getSelectedIndex();
-		final Calendar deadline = Calendar.getInstance();
+		Calendar deadline = (Calendar) currentDate.clone();
 		deadline.set(deadlineYear, deadlineMonth, deadlineDay, hourTime, minuteTime);		 
 		if (deadline.after(currentDate)){
 			deadlineError.setVisible(false);
 			return true;
 		}
 		else {
+			removeErrorLabels();
 			deadlineError.setVisible(true);
 			return false;
 		}
@@ -808,7 +811,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 
 	//This function checks to see if everything necessary for activating a game has been entered by the user.
 	private boolean canActivate(){
-		if (nameInputted() && descInputted() && hasReqs()){
+		if (nameInputted() /*&& descInputted()*/ && hasReqs()){
 			//Activate if deadline checkbox is not selected
 			if(!deadlineCheckBox.isSelected()){
 				return true;
@@ -829,6 +832,17 @@ public class NewGameInputDistributedPanel extends JPanel {
 	//Returns true if the description text field has text
 	private boolean descInputted(){
 		return  (descriptionTextField.getText().length() > 0);
+	}
+	
+	/**
+	 * removes all error labels
+	 */
+	private void removeErrorLabels(){
+		hourError.setVisible(false);
+		minuteError.setVisible(false);
+		deadlineError.setVisible(false);
+		nameError.setVisible(false);
+		reqError.setVisible(false);
 	}
 
 	/**
