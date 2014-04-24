@@ -79,7 +79,7 @@ public class NewGameDistributedPanel extends JSplitPane {
 		addImpl(newGameReqPanel, JSplitPane.RIGHT, 2);
 		newGameReqPanel.setVisible(true);
 		newRequirement.setVisible(false);
-		setDividerLocation(500);
+		setDividerLocation(600);
 	}
 	
 	public List<Requirement> getSelected(){
