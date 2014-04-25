@@ -11,15 +11,11 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.Timer;
 import javax.swing.table.AbstractTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetAllUsers;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 
