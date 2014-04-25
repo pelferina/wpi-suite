@@ -17,6 +17,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsCo
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -46,8 +47,8 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	JButton btnRemoveOne = new JButton("\u2191");
 	JLabel lblRequirementsSelected = new JLabel("Requirements Selected");
 	JButton btnAddOne = new JButton("\u2193");
-	JButton btnRemoveAll = new JButton("\u21c8");
-	JButton btnAddAll = new JButton("\u21ca");
+	JButton btnRemoveAll = new JButton("\u2191"+"\uFEFF"+"\u2191");
+	JButton btnAddAll = new JButton("\u2193"+"\uFEFF"+"\u2193");
 	JScrollPane unselected_table = new JScrollPane();
 	JScrollPane selected_table = new JScrollPane();
 
@@ -296,6 +297,8 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		unselectedTable.getColumnModel().getColumn(0).setMinWidth(100);
 		unselectedTable.getColumnModel().getColumn(0).setMaxWidth(200);
 		unselectedTable.getColumnModel().getColumn(0).setPreferredWidth(150);
+		
+		unselectedTable.setFillsViewportHeight(true);
 
 		//Puts the requirements from the requirement manager into the unselected requirements table
 		
@@ -328,6 +331,8 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		selectedTable.getColumnModel().getColumn(0).setMinWidth(100);
 		selectedTable.getColumnModel().getColumn(0).setMaxWidth(200);
 		selectedTable.getColumnModel().getColumn(0).setPreferredWidth(150);
+		
+		selectedTable.setFillsViewportHeight(true);
 
 		//Puts the selected requirements into the selected requirements table. This is only applicable when an edit game tab is opened
 		
