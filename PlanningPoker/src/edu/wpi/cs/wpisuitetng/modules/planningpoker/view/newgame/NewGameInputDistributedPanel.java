@@ -219,7 +219,9 @@ public class NewGameInputDistributedPanel extends JPanel {
 					setDeadlineVisibility(true);
 					datePicker.revalidate();
 					datePicker.repaint();
-					if(!editMode)
+					//Initialize the deadline to current time if the game is not in editmode or 
+					//if the current game was saved with a deadline
+					if(!editMode || currentGameSession.getEndDate()!=null)
 					{
 						initializeDeadline();
 					}
@@ -772,11 +774,14 @@ public class NewGameInputDistributedPanel extends JPanel {
 
 		// Check if the user has changed the deadline
 		@SuppressWarnings("deprecation")
-
+		//returns true if deadline checkbox was recently selected and the deadline was changed
 		final Date deadlineDate = new Date(deadlineYear - 1900, deadlineMonth, deadlineDay, getHour(deadlineHourComboBox.getSelectedIndex() + 1), minuteTime);
 		if(deadlineCheckBox.isSelected() && !deadlineDate.equals(currentGameSession.getEndDate())){
 			return true;
 		}
+		//returns true if the user recently unselected the deadline and the saved deadline was not null
+		if (!deadlineCheckBox.isSelected() && currentGameSession.getEndDate() != null)
+			return true;
 		// Check if the user has changed the requirements
 		if (!selectionsMade.containsAll(currentGameSession.getGameReqs())
 				|| (selectionsMade.size() != currentGameSession.getGameReqs().size())){
