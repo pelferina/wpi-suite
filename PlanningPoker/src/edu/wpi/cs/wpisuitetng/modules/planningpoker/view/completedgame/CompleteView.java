@@ -18,7 +18,11 @@ import javax.swing.JSplitPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-
+/**
+ * The CompleteView class
+ * @author FFF8E7
+ * @version 6
+ */
 public class CompleteView extends JSplitPane {
 
 	private GameData gameData;
@@ -28,7 +32,7 @@ public class CompleteView extends JSplitPane {
 
 	/**
 	 * The constructor for CompleteView
-	 * @param completedGame, the completed game to be viewed
+	 * @param completedGame The completed game to be viewed
 	 */
 	public CompleteView(GameSession completedGame){
 		gameData = new GameData(completedGame, this);
@@ -54,7 +58,7 @@ public class CompleteView extends JSplitPane {
 
 	/**
 	 * Sends the given requirement to the VoteData class
-	 * @param req, the requirement to be viewed
+	 * @param req The requirement to be viewed
 	 */
 	public void sendReqToView(Requirement req) {
 		voteData.receiveNewReq(req);
@@ -62,23 +66,39 @@ public class CompleteView extends JSplitPane {
 	
 	/**
 	 * Returns the index of the given requirement id
-	 * @param id, the id of the requirement
-	 * @return
+	 * @param id The id of the requirement
+	 * @return the index of a requirement with given ID, as integer
 	 */
 	public int getIndex(int id){
 		return gameData.getReqIndex(id);
 	}
-	
+	/**
+	 * Getter for gameData
+	 * @return gameData
+	 */
 	public GameData getGameData(){
 		return gameData;
 	}
-	
+	/**
+	 * Getter for voteDate
+	 * @return voteData
+	 */
 	public VoteData getVoteData(){
 		return voteData;
 	}
-
-	public void nextRequirement() {
-		gameData.nextRequirement();
+	/**
+	 * Grabs the nextRequirment
+	 * @param estimate The estimate to be passed around
+	 */
+	public void nextRequirement(int estimate) {
+		gameData.nextRequirement(estimate);
 		
+	}
+	/**
+	 * Sends the final estimates to the gameData table
+	 * @param finalVote The List<Integer> of final votes
+	 */
+	public void sendEstimatesToTable(List<Integer> finalVote) {
+		gameData.receiveFinalVotes(finalVote);
 	}
 }

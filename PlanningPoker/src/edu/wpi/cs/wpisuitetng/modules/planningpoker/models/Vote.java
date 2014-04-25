@@ -11,8 +11,8 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
 /**
  * This is the vote class, that stores information on the game it corresponds with, and which user cast the vote
- * @author Team FFF8E7
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 public class Vote extends AbstractModel implements Comparable<Vote>{
 
@@ -173,9 +173,13 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 		return v.gameID* 100000 + v.UID;
 	}
 
+	/**
+	 * Parses a vote array from a string
+	 * @param json the String to be parsed
+	 * @return the Vote[] from the parsed string
+	 */
 	public static Vote[] fromJsonArray(String json) {
 		final Gson parser = new Gson();
 		return parser.fromJson(json, Vote[].class);
 	}
-	
 }

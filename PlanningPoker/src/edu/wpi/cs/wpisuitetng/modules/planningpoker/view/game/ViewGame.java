@@ -243,6 +243,7 @@ public class ViewGame extends JPanel{
 	 * This function will be used when the user submits an estimate for a requirement, and it will notify GameRequirements to move the requirement from
 	 * to estimate table to the completed estimates table
 	 * @param r the Requirement to send to game view
+	 * @param estimate the estimate to be updated
 	 */
 	public void sendEstimatetoGameView(Requirement r, int estimate){
 		gv.updateReqTables(r, estimate);

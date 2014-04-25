@@ -107,7 +107,10 @@ public class ViewEventController {
 	public void viewGameTab(GameSession gameSession){
 		main.addPlayGameTab(gameSession);
 	}
-	
+	/**
+	 * Adds a new ReqTab with given GameSession
+	 * @param gameSession The GameSession it's a part of
+	 */
 	public void newReqTab(GameSession gameSession){
 		main.addReqTab(gameSession);
 	}

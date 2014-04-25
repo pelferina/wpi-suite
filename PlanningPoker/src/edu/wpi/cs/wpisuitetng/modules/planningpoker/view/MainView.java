@@ -30,7 +30,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckBuildingPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.completedgame.CompleteView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.PlayDeckGame;
@@ -38,7 +38,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistribu
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.reqpanel.NewRequirementPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetAllUsers;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -46,8 +45,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 
 /**
  * Main view of the PlanningPoker module
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  *
  */
 @SuppressWarnings("serial")
@@ -64,10 +63,12 @@ public class MainView extends JTabbedPane {
 
 	public MainView() {
 		overviewPanel = new OverviewPanel();
+		DeckBuildingPanel decktestpanel = new DeckBuildingPanel();
 		
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
 		addTab("Overview", overviewPanel);
+		addTab("DeckStuff", decktestpanel);
 		
 		ViewEventController.getInstance().setMainView(this);
 	}
@@ -90,7 +91,10 @@ public class MainView extends JTabbedPane {
 		{
 			addTab("Edit Game", gameSession);
 		}
-		
+		/**
+		 * function to add a ReqTab
+		 * @param gs The GameSession to add the tab to
+		 */
 		public void addReqTab(GameSession gs){
 			addTab("Req Tab", gs);
 		}
@@ -111,6 +115,7 @@ public class MainView extends JTabbedPane {
 		}
 
 		private void addTab(String tabType, GameSession game){
+			boolean exists = false;
 			final int open = this.getTabCount();
 			MyCloseActionHandler myCloseActionHandler = null;
 			overviewPanel.refreshGames();
@@ -120,25 +125,70 @@ public class MainView extends JTabbedPane {
 			final List<Requirement> reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
 			if (tabType.equals("New Game")){
 				final NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose);
+				newGame.setName(Integer.toString(game.getGameID()));
 				myCloseActionHandler = new MyCloseActionHandler(tabType, j, this, newGame, 0);
 				newGames.add(newGame);
 				add(newGame, open);
 			}
 			else if (tabType.equals("Edit Game")){
-				final NewGameDistributedPanel newEdit = new NewGameDistributedPanel(game, btnClose);
-				myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newEdit, 1);
-				newGames.add(newEdit);
-				add(newEdit, open);
+				for(int i = 1; i < getTabCount(); i++)
+				{
+					if(getComponentAt(i).getName() != null)
+					{
+						if(getComponentAt(i).getName().equals(Integer.toString(game.getGameID())))
+						{
+							setSelectedIndex(i);
+							exists = true;
+						}
+					}
+				}
+				if(exists == false)
+				{
+					final NewGameDistributedPanel newEdit = new NewGameDistributedPanel(game, btnClose);
+					newEdit.setName(Integer.toString(game.getGameID()));
+					myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newEdit, 1);
+					newGames.add(newEdit);
+					add(newEdit, open);
+				}
 			}
 			else if (tabType.equals("Play Game")){
-				final GameView newGameView = new GameView(game);
-				myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newGameView, 2);
-				add(newGameView, open);
+				for(int i = 1; i < getTabCount(); i++)
+				{
+					if(getComponentAt(i).getName() != null)
+					{
+						if(getComponentAt(i).getName().equals(Integer.toString(game.getGameID())))
+						{
+							setSelectedIndex(i);
+							exists = true;
+						}
+					}
+				}
+				if(exists == false)
+				{
+					final GameView newGameView = new GameView(game);
+					newGameView.setName(Integer.toString(game.getGameID()));
+					myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newGameView, 2);
+					add(newGameView, open);
+				}
 			}
 			else if (tabType.equals("View Estimates")){
-				final CompleteView newCompleteView = new CompleteView(game);
-				myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newCompleteView, 3);
-				add(newCompleteView, open);
+				for(int i = 1; i < getTabCount(); i++)
+				{
+					if(getComponentAt(i).getName() != null){
+						if(getComponentAt(i).getName().equals(Integer.toString(game.getGameID())))
+						{
+							setSelectedIndex(i);
+							exists = true;
+						}
+					}
+				}
+				if(exists == false)
+				{
+					final CompleteView newCompleteView = new CompleteView(game);
+					newCompleteView.setName(Integer.toString(game.getGameID()));
+					myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newCompleteView, 3);
+					add(newCompleteView, open);
+				}
 			}
 			else if (tabType.equals("User Preferences")){
 				final PreferencesPanel userPreferences = new PreferencesPanel(btnClose);
@@ -146,11 +196,6 @@ public class MainView extends JTabbedPane {
 				add(userPreferences, open);
 				hasPreferencePane = true;
 			}
-/*			else if (tabType.equals("Req Tab")){
-				final NewRequirementPanel newReq = new NewRequirementPanel(btnClose);
-				myCloseActionHandler = new MyCloseActionHandler("New Requirement", j, this, newReq, 5);
-				add(newReq, open);
-			}*/
 			final JPanel pnlTab = new JPanel(new GridBagLayout());
 			pnlTab.setOpaque(false);
 			final JLabel lblTitle = new JLabel(tabLabler(tabType, game));
@@ -254,7 +299,14 @@ public class MainView extends JTabbedPane {
 	        this.type = type;
 	        this.mv = mv;
 	    }
-	    
+	    /**
+	     * Constructor for the closeActionHandler
+	     * @param tabName name of the tab being closed
+	     * @param index index of that tab on the tab list
+	     * @param mv the MainView
+	     * @param gv the GameView
+	     * @param type integer for type
+	     */
 	    public MyCloseActionHandler(String tabName, int index, MainView mv, NewRequirementPanel rp, int type) {
 	        this.tabName = tabName;
 	        this.index = index;
@@ -278,7 +330,14 @@ public class MainView extends JTabbedPane {
 	    	this.type = type;
 	    	this.mv = mv;
 	    }
-	    
+	    /**
+	     * constructor for CloseActionHandler 
+	     * @param tabName name of the tab being closed
+	     * @param index index of that tab on the tab list
+	     * @param mv the MainView
+	     * @param userPreferences the UserPreferencesPanel
+	     * @param type integer for type
+	     */
 	    public MyCloseActionHandler(String tabName, int index, MainView mv, CompleteView cv, int type) {
 	        this.tabName = tabName;
 	        this.index = index;

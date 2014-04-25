@@ -58,10 +58,18 @@ public class GameCard extends JToggleButton{
 		this.setSelectedIcon(cardSelectedIcon);
 	}
 	
+	/**
+	 * Getter for value
+	 * @return value
+	 */
 	public int getValue(){
 		return value;
 	}
 	
+	/**
+	 * Getter for the card image
+	 * @return The appropriate image
+	 */
 	public BufferedImage getImg()
 	{
 		if(this.isSelected()) return cardSelectedImg;

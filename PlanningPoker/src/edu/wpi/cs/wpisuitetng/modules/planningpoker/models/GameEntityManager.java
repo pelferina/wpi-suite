@@ -177,16 +177,20 @@ public class GameEntityManager implements EntityManager<GameSession> {
 		// Parse the message from JSON
 		final GameSession importedGame = GameSession.fromJson(content);
 		
-		GameSession oldGame = null;
-		GameSession[] games = null;
+		GameStatus oldGameStatus = null;
+		GameSession[] games;
 		try {
 			games = getAll(s);
+			for (GameSession g : games) {
+				if (g.getGameID() == importedGame.getGameID()) {
+					oldGameStatus = g.getGameStatus();
+					break;
+				}
+			}
 		} catch (WPISuiteException e2) {
-			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
 
-		System.out.println(importedGame);
 		try {
 			db.update(GameSession.class, "GameID", importedGame.getGameID(),
 					"GameReqs", importedGame.getGameReqs());
@@ -207,24 +211,17 @@ public class GameEntityManager implements EntityManager<GameSession> {
 			e.printStackTrace();
 		}
 		
-		for (GameSession g : games) {
-			if (g.getGameID() == importedGame.getGameID()) {
-				oldGame = g;
-				break;
-			}
-		}
-		if (oldGame == null) {
-			System.err
-					.println("Should not update a new created game which has not been saved before");
+		
+		
+		if (oldGameStatus == null) {
+			System.err.println("Should not update a new created game which has not been saved before");
 			return importedGame;
 		} else {
-
-			if (oldGame.getGameStatus().equals(GameStatus.DRAFT)
+			if (oldGameStatus.equals(GameStatus.DRAFT)
 					&& importedGame.getGameStatus().equals(GameStatus.ACTIVE)) {
 				sendActiveNotification(importedGame, s.getProject());
 			}
-			if ((oldGame.getGameStatus().equals(GameStatus.ACTIVE) || oldGame
-					.getGameStatus().equals(GameStatus.INPROGRESS))
+			if ((oldGameStatus.equals(GameStatus.ACTIVE) || oldGameStatus.equals(GameStatus.INPROGRESS))
 					&& importedGame.getGameStatus()
 							.equals(GameStatus.COMPLETED)) {
 				sendEndNotification(importedGame, s.getProject());
@@ -268,25 +265,13 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	}
 
 	private void sendActiveNotification(GameSession game, Project project) {
-		final String textToSend = "Hello user\r\n\t"
-				+ game.getGameName()
-				+ " just started. Please go to PlanningPoker to vote.\r\nSent by fff8e7";
-		try {
-			sendUserEmails("New game notification", textToSend, project);
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+		final String textToSend = game.getGameName() + " just started. Please go to PlanningPoker to vote.";
+		EmailAddressEntityManager.sendToALL("New game notification", textToSend, project);
 	}
 
 	private void sendEndNotification(GameSession game, Project project) {
-		final String textToSend = "Hello user\r\n\t"
-				+ game.getGameName()
-				+ " just ended.\r\nSent by fff8e7";
-		try {
-			sendUserEmails("End game notification", textToSend, project);
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+		final String textToSend = "The owner of " + game.getGameName() + " has ended the game";
+		EmailAddressEntityManager.sendToALL("End game notification", textToSend, project);
 	}
 
 	/**
@@ -320,7 +305,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 			message.setFrom(new InternetAddress("fff8e7.email@gmail.com"));
 
 			final List<Model> model_emails = db.retrieveAll(
-					new EmailAddressModel("", 0, false), project);
+					new EmailAddressModel("", "", false), project);
 			if(model_emails.size() == 0){
 				System.out.println("No email address has been set");
 				return;
@@ -350,6 +335,8 @@ public class GameEntityManager implements EntityManager<GameSession> {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	
 
 	/*
 	 * Messages cannot be deleted

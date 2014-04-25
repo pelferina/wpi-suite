@@ -46,6 +46,7 @@ public class GameTree extends DefaultMutableTreeNode {
 		final DefaultMutableTreeNode archivedGames = new DefaultMutableTreeNode("Archived");
 		
 		top.add(myGames);
+		myDrafts.add(myActive);
 			myGames.add(myDrafts);
 			myGames.add(myActive);
 			myGames.add(myComplete);
@@ -67,5 +68,13 @@ public class GameTree extends DefaultMutableTreeNode {
 	public void update(){
 		top.removeAllChildren();
 		createNodes(top);
+	}
+	
+	/**
+	 * Making Codepro work, never used
+	 */
+	@Override
+	public GameTree clone(){
+		return this;
 	}
 }

@@ -31,8 +31,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
  * Button for ending a game
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 public class UserButtonPanel extends ToolbarGroupView{
 	
@@ -46,13 +46,13 @@ public class UserButtonPanel extends ToolbarGroupView{
 		super("");
 		
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
-		this.setPreferredWidth(300);
+		this.setPreferredWidth(330);
 		
 		userButton.setPreferredSize(new Dimension(150,50));	
 		userButton.setVisible(false);
 		
 		try {
-			viewImg= new ImageIcon(ImageIO.read(getClass().getResource("view.png")));
+			viewImg= new ImageIcon(ImageIO.read(getClass().getResource("searchimage.png")));
 		    voteImg = new ImageIcon(ImageIO.read(getClass().getResource("vote.png")));
 		    
 		} catch (IOException ex){
@@ -75,13 +75,13 @@ public class UserButtonPanel extends ToolbarGroupView{
 	/**
 	 * Enables the vote game button, and add a action listener
 	 * to this game
-	 * @param gameID 
+	 * @param game The GameSession to add a listener to
 	 */
 	public void makeVoteGameButtonVisible(final GameSession game){
 		userButton.setVisible(true);
 		userButton.setEnabled(true);
 		userButton.setIcon(voteImg);
-		userButton.setText("<html>Vote<br />Game</html>");
+		userButton.setText("<html>Play<br />Game</html>");
 		
 		
 		if(listener != null){
@@ -101,7 +101,7 @@ public class UserButtonPanel extends ToolbarGroupView{
 	/**
 	 * Enables the view game button, and add a action listener
 	 * to this game
-	 * @param gameID 
+	 * @param game the GameSession to add a listener to
 	 */
 	public void makeViewGameButtonVisible(final GameSession game){
 		userButton.setVisible(true);

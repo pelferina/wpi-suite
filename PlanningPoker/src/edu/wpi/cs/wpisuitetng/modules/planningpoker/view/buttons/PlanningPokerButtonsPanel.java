@@ -9,6 +9,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
 
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,7 +20,6 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
@@ -33,19 +33,21 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 public class PlanningPokerButtonsPanel extends ToolbarGroupView{
 	
 	// initialize the main view toolbar buttons
-		private final JButton createButton = new JButton("<html>Create<br />Game</html>");
-		private final JButton optionsButton = new JButton("<html>User<br />Preferences</html>");
+	private final JButton createButton = new JButton("<html>Create<br />Game</html>");
+	private final JButton optionsButton = new JButton("<html>User<br />Settings</html>");
 
-		private final JPanel contentPanel = new JPanel();
+	private final JPanel contentPanel = new JPanel();
 	
 	public PlanningPokerButtonsPanel(){
 		super("");
 		
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
-		this.setPreferredWidth(500);
+		this.setPreferredWidth(330);
 		
-	
-		createButton.setHorizontalAlignment(SwingConstants.CENTER);
+		createButton.setPreferredSize(new Dimension(150,50));	
+		optionsButton.setPreferredSize(new Dimension(150,50));	
+
+//		createButton.setHorizontalAlignment(SwingConstants.CENTER);
 		try {
 		    Image img = ImageIO.read(getClass().getResource("newgameimage.png"));
 		    createButton.setIcon(new ImageIcon(img));

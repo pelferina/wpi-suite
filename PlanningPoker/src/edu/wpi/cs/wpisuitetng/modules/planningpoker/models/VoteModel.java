@@ -20,8 +20,8 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
 /**
  * This is the model for votes
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 public class VoteModel implements Model {
 	private static VoteModel instance = null;
@@ -90,10 +90,17 @@ public class VoteModel implements Model {
 
 	}
 
+	/**
+	 * Empties the votes ArrayList
+	 */
 	public void emptyModel() {
 		votes = new ArrayList<Vote>();
 	}
 
+	/**
+	 * Adds an array of votes to the votes ArrayList
+	 * @param votes the array of votes to be added, as Vote[]
+	 */
 	public void addVotes(Vote[] votes) {
 		this.emptyModel();
 		for(Vote v : votes){
@@ -105,8 +112,13 @@ public class VoteModel implements Model {
 		return votes;
 	}
 
+	/**
+	 * This gets all the votes of a gameSession by using a gameID
+	 * @param gameID the game's ID as an integer
+	 * @return the ArrayList<Vote> of the gameSession
+	 */
 	public List<Vote> getVotes(int gameID) {
-		ArrayList<Vote> ret = new ArrayList<Vote>();
+		List<Vote> ret = new ArrayList<Vote>();
 		for(Vote v : votes){ 
 			if(v.getGameID() == gameID) {
 				ret.add(v);
@@ -115,18 +127,29 @@ public class VoteModel implements Model {
 		
 		return ret;
 	}
+	/**
+	 * This gets the list of votes of a Project
+	 * @param P the Project to check
+	 * @return the List<Vote> of the Project's votes
+	 */
 	public List<Vote> getVotes(Project P){
-		ArrayList<Vote> ret = new ArrayList<Vote>();
+		List<Vote> ret = new ArrayList<Vote>();
 		for(Vote v : votes){ 
 			if(v.getProject().equals(P)) {
 				ret.add(v);
-				}
 			}
+		}
 		return ret;
 	}
+	/**
+	 * This gets the votes of a gameSession using a gameID and Project
+	 * @param gameID the game's ID as an integer
+	 * @param P the Project to check
+	 * @return the List<Vote> of votes from the game session
+	 */
 	public List<Vote> getVotes(int gameID, Project P) {
 		List<Vote> VotesByProject = this.getVotes(P);
-		ArrayList<Vote> ret = new ArrayList<Vote>();
+		List<Vote> ret = new ArrayList<Vote>();
 		for(Vote v : VotesByProject){ 
 			if(v.getGameID() == gameID) {
 				ret.add(v);

@@ -22,15 +22,15 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
  * This listener watches for the end of a game
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 
 public class ArchiveGameActionListener implements ActionListener{
 	GameSession game;
 	/**
 	 * Constructor to populate gameID
-	 * @param gameID
+	 * @param game The GameSession to listen to
 	 */
 	public ArchiveGameActionListener(GameSession game){
 		this.game = game;

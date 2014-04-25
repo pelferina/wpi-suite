@@ -28,8 +28,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
 
 /**
  * Model to contain a single game for the Planning Poker module
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 public class GameSession extends AbstractModel {
 
@@ -80,8 +80,8 @@ public class GameSession extends AbstractModel {
 		creationdate = new Date();
 		votes = (new ArrayList<Vote>());
 		deckId = -1;
-		this.median = null;
-		this.mean = null;
+		median = null;
+		mean = null;
 		finalVotes = new ArrayList<Integer>();
 	}
 
@@ -125,7 +125,7 @@ public class GameSession extends AbstractModel {
 		// Format the date-time stamp
 		final DateFormat dateFormat1 = new SimpleDateFormat("MM/dd/yy hh:mm a");
 		String returnStr = new String();
-		returnStr = gameName + "	";
+		returnStr = gameName + "	" + gameStatus + " ";
 		if(creationdate != null){
 			returnStr = returnStr + "     " + "	Start: " + dateFormat1.format(creationdate);
 		}
@@ -286,8 +286,8 @@ public class GameSession extends AbstractModel {
 		List<Vote> votes = this.getVotes();
 		int requirementNum = gameReqs.size();
 		int userNum = votes.size();
-		this.mean = new ArrayList<Float>();
-		this.median = new ArrayList<Float>();
+		mean = new ArrayList<Float>();
+		median = new ArrayList<Float>();
 		int[][] voteResult = new int[requirementNum][userNum];
 		for(int i=0; i < userNum; i++){
 			for(int j=0;j < requirementNum; j++){
@@ -323,6 +323,11 @@ public class GameSession extends AbstractModel {
 		return median;
 	}
 	
+	/**
+	 * Setter for deckID
+	 * @param deckId the ID of the deck, as integer
+	 * @return the GameSession the deck is from
+	 */
 	public GameSession setDeckId(int deckId){
 		this.deckId = deckId;
 		return this;
@@ -332,8 +337,13 @@ public class GameSession extends AbstractModel {
 		return deckId;
 	}
 
+	/**
+	 * Setter for finalVotes
+	 * @param finalVote the List<Integer> of all of the votes
+	 * @return the GameSession the votes are from
+	 */
 	public GameSession setFinalVotes(List<Integer> finalVote) {
-		this.finalVotes = finalVote;
+		finalVotes = finalVote;
 		return this;
 	}
 

@@ -54,7 +54,7 @@ public class TableSelectListener implements ListSelectionListener{
     	final GameSession gameSelected = model.getGame(row);
     	final GameStatus status = gameSelected.getGameStatus();
     	final User currentUser = GetCurrentUser.getInstance().getCurrentUser();
-
+    	
     	boolean hasCategory = false;
     	if(currentUser.getIdNum() == ownerID){
     		if(status.equals(GameStatus.ACTIVE) || status.equals(GameStatus.INPROGRESS)){
@@ -98,7 +98,11 @@ public class TableSelectListener implements ListSelectionListener{
     	}
 */
 	}
-	
+	/**
+	 * Checks if the GameSession is valid
+	 * @param gs the GameSession to check
+	 * @return true if valid, false otherwise
+	 */
 	public boolean isValid(GameSession gs) { // if all neccessary fields are filled out, returns true
 		if (gs.getGameName().length()>0 && gs.getGameDescription().length()>0 && gs.getGameReqs().size()>0){
 			if (gs.getEndDate()==null || gs.getEndDate().getTime()>System.currentTimeMillis()){

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -20,68 +21,55 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SpringLayout;
-import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
-import java.awt.Component;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
 /**
  * Button for ending a game
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
+@SuppressWarnings("serial")
 public class OwnerButtonPanel extends ToolbarGroupView{
 	
 	private final JPanel contentPanel = new JPanel();
 	private final JButton ownerButton = new JButton();
-	private final JLabel ownerLabel = new JLabel("Owner Options");
-	JButton editButton = new JButton("<html>Edit<br />Game</html>");
+	private final JButton editButton = new JButton("<html>Edit<br />Game</html>");
 	private ActionListener listener = null;
 	private ImageIcon endImg, activateImg, archiveImg, editImg;
 	private Timer expireTimer = null;
 	
 	public OwnerButtonPanel(){
 		super("");
-		getContent().setBounds(1, 0, 10, 10);
-		contentPanel.setBounds(2, 0, 0, 0);
 		
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
-		this.setPreferredWidth(300);
+		this.setPreferredWidth(330);
+		
+		ownerButton.setPreferredSize(new Dimension(150,50));	
+		editButton.setPreferredSize(new Dimension(150,50));
 		
 		try {
 		    endImg= new ImageIcon(ImageIO.read(getClass().getResource("cancel.png")));
-		    activateImg = new ImageIcon(ImageIO.read(getClass().getResource("activate.png")));
+		    activateImg = new ImageIcon(ImageIO.read(getClass().getResource("activategame.png")));
 		    archiveImg =new ImageIcon( ImageIO.read(getClass().getResource("archive.png")));
 		    editImg = new ImageIcon(ImageIO.read(getClass().getResource("edit.png")));		    
 		} catch (IOException ex) {
 			System.out.println("IOException thrown in EndGameButtonPanel");
 		}
-		
-		//setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		contentPanel.setOpaque(false);
-		editButton.setBounds(11, 19, 140, 57);
-		editButton.setVisible(false);
+
 		editButton.setIcon(editImg);
-		ownerButton.setBounds(149, 19, 140, 57);
-//		ownerButton.setPreferredSize(new Dimension(150,50));	
+		editButton.setVisible(false);
 		ownerButton.setVisible(false);
-		ownerButton.setHorizontalAlignment(SwingConstants.CENTER);
-		ownerLabel.setBounds(123, 0, 93, 14);
-		ownerLabel.setAlignmentY(Component.TOP_ALIGNMENT);
-		ownerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		add(getContent());
-		setLayout(null);
-		add(contentPanel);
-		add(ownerLabel);
-		add(editButton);
-		add(ownerButton);
+
+		contentPanel.add(editButton);
+		contentPanel.add(ownerButton);
+
+		contentPanel.setOpaque(false);
 		
+
+		this.add(contentPanel);
 	}
 	
 	/**
@@ -95,7 +83,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	/**
 	 * Enables the end game button, and add a action listener
 	 * to this game
-	 * @param gameID 
+	 * @param game The GameSession to add a listener to
 	 */
 	public void makeEndGameButtonVisible(GameSession game){
 		ownerButton.setVisible(true);
@@ -116,7 +104,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	/**
 	 * Enables the activate game button, and add a action listener
 	 * to this game
-	 * @param gameID 
+	 * @param game the GameSession to add a listener to 
 	 */
 	public void makeActivateGameButtonVisible(GameSession game){
 		ownerButton.setVisible(true);
@@ -138,7 +126,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	/**
 	 * Disable the activate game button, and add a action listener
 	 * to this game
-	 * @param gameID 
+	 * @param game The game to add a listener to
 	 */
 	public void makeActivateGameButtonDisable(GameSession game){
 		ownerButton.setVisible(true);
@@ -159,7 +147,6 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	/**
 	 * Disable the activate game button, and add a action listener
 	 * to this game
-	 * @param gameID 
 	 */
 	public void makeActivateGameButtonDisable(){
 		ownerButton.setVisible(true);
@@ -171,7 +158,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	/**
 	 * Enables the archive game button, and add a action listener
 	 * to this game
-	 * @param gameID 
+	 * @param game The GameSession to add a listener to
 	 */
 	public void makeArchiveGameButtonVisible(GameSession game){
 		ownerButton.setVisible(true);

@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetAllUsers;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 
@@ -71,7 +70,7 @@ public class JTableModel extends AbstractTableModel {
 								sessions[i].getEndDate()!=null ? sessions[i].getDeadlineString() : "No Deadline", 
     							getUserFromID(sessions[i].getOwnerID()), 
     							sessions[i].getVotes().size()+ " out of "+ getUsers.getAllUsers().length, // Progress
-    							sessions[i].getGameStatus().name()
+    							gameStatus(sessions[i])
     							};
     		Data[i] = curRow;
     		gameIDs[i] = sessions[i].getGameID();

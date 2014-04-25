@@ -24,16 +24,24 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.TableSelectListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 import javax.swing.SpringLayout;
-import java.awt.Font;
 
+import java.awt.Font;
+/**
+ * The GameData class
+ * @author FFF8E7
+ * @version 6
+ */
 public class GameData extends JPanel{
 
 	private final JLabel gameNameLabel = new JLabel("Game Name:");
@@ -53,8 +61,8 @@ public class GameData extends JPanel{
 	
 	/**
 	 * Constructor for the GameData class
-	 * @param gs, the completed game session that is going to be viewed
-	 * @param cv, the CompleteView that called the constructor for GameData
+	 * @param gs The completed game session that is going to be viewed
+	 * @param cv The CompleteView that called the constructor for GameData
 	 */
 	public GameData(GameSession gs, CompleteView cv){
 		completeView = cv;
@@ -82,7 +90,7 @@ public class GameData extends JPanel{
 		    }
 		};
 		
-		gameReqsTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Description"}));
+		gameReqsTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Description", "Estimate"}));
 		init();	
 	}
 	
@@ -98,6 +106,7 @@ public class GameData extends JPanel{
 			requirementIndexHash.put(gameReqs.get(i).getId(), i);
 			reqTableModel.setValueAt(gameReqs.get(i).getName(), i, 0);
 			reqTableModel.setValueAt(gameReqs.get(i).getDescription(), i, 1);
+			reqTableModel.setValueAt("", i, 2);
 		}
 		reqPane = new JScrollPane(gameReqsTable);
 		reqPane.setViewportView(gameReqsTable);
@@ -105,8 +114,8 @@ public class GameData extends JPanel{
 		gameReqsTable.getColumnModel().getColumn(0).setMaxWidth(200);
 		gameReqsTable.getColumnModel().getColumn(0).setPreferredWidth(150);
 		
-		gameReqsTable.addMouseListener(new tableListener(gameReqsTable));
 		gameReqsTable.setRowSelectionInterval(0, 0);
+		gameReqsTable.getSelectionModel().addListSelectionListener(new tableListener(gameReqsTable));
 		
 		SpringLayout springLayout = new SpringLayout();
 		
@@ -161,8 +170,8 @@ public class GameData extends JPanel{
 	
 	/**
 	 * Returns the index of the given requirement id
-	 * @param id, the requirement id
-	 * @return
+	 * @param id The requirement id
+	 * @return The requirement index as integer
 	 */
 	public int getReqIndex(int id){
 		return requirementIndexHash.get(id);
@@ -184,9 +193,14 @@ public class GameData extends JPanel{
 		this.descriptionTextArea = descriptionTextArea;
 	}
 
-	public void nextRequirement() {
+	/**
+	 * Selects the next requirement to be voted on
+	 * @param estimate The estimate getting passed along
+	 */
+	public void nextRequirement(int estimate) {
 		int selected = gameReqsTable.getSelectedRow();
-		gameReqsTable.removeRowSelectionInterval(selected, selected);
+		gameReqsTable.setValueAt(estimate, selected, 2);
+		gameReqsTable.clearSelection();
 		if (selected + 1 < gameReqs.size()){
 			gameReqsTable.addRowSelectionInterval(selected + 1, selected + 1);
 			Requirement req = null;
@@ -202,27 +216,33 @@ public class GameData extends JPanel{
 		}
 	}
 
-public class tableListener extends MouseAdapter{
+	public void receiveFinalVotes(List<Integer> finalVote) {
+		for (int i = 0; i < gameReqsTable.getRowCount(); i++){
+			gameReqsTable.setValueAt(finalVote.get(i), i, 2);
+		}
+	}
+	
+public class tableListener implements ListSelectionListener{
 		
-		JTable tableClicked;
+		JTable table;
 		
 		/**
 		 * constructor for the table listener
 		 * @param table the table to listen to
 		 */
 		public tableListener(JTable table){
-			tableClicked = table;
+			this.table = table;
 		}
 		
-		public void mouseClicked(MouseEvent e) {
-			if (e.getClickCount() == 1){
-				final JTable target = (JTable)e.getSource();
-			    final int row = target.getSelectedRow();
-			    final int column = target.getSelectedColumn();
+
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			if (table.getSelectedRow() != -1){
+			    final int row = table.getSelectedRow();
 				final List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
 				Requirement req = null;
 				for (Requirement r: allReqs){
-					if (r.getName().equals(tableClicked.getValueAt(row, 0))){
+					if (r.getName().equals(table.getValueAt(row, 0))){
 						req = r;
 					}
 				}

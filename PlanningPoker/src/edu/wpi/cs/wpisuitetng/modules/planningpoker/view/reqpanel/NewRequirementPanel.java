@@ -1,22 +1,21 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: Team Cosmic Latte
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.reqpanel;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.SpringLayout;
-
-import java.awt.Label;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
@@ -27,9 +26,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementType;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
 
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -42,7 +38,7 @@ import javax.swing.JComboBox;
  * This controls adding a new requirement from the new game tab.
  * 
  * @author FFF8E7
- *@version $Revision: 1.0 $
+ * @version 6
  */
 public class NewRequirementPanel extends JPanel {
 	private Requirement currentRequirement;
@@ -60,8 +56,8 @@ public class NewRequirementPanel extends JPanel {
 	private final JLabel reqError = new JLabel("Can not have a requirement with no name or description");
 	
 	/**
-	 * Creates the tab for the new requirement to be specified and created
-	 * @param btnClose
+	 * Constructor for NewRequirementPanel
+	 * @param ngdp The NewGameDistributedPanel to add this to
 	 */
 	public NewRequirementPanel(NewGameDistributedPanel ngdp){
 		CreateRequirementButton.setEnabled(false);
@@ -226,7 +222,7 @@ public class NewRequirementPanel extends JPanel {
 		// Extract the name, release number, and description from the GUI fields
 		String stringName = nameField.getText();
 
-		String stringDescription = this.descriptionField.getText();
+		String stringDescription = descriptionField.getText();
 
 		String stringIteration = "Backlog";
 		
@@ -260,6 +256,18 @@ public class NewRequirementPanel extends JPanel {
 		priorityComboBox.setSelectedIndex(0);
 		typeComboBox.setSelectedIndex(0);
 	}
-
+	
+	public String getName(){
+		return nameField.getText();
+	}
+	public String getDescription(){
+		return descriptionField.getText();
+	}
+	public JButton getCreateRequirementButton(){
+		return CreateRequirementButton;
+	}
+	public JLabel getReqError(){
+		return reqError;
+	}
 }
 	

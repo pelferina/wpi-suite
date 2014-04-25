@@ -45,7 +45,11 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.Font;
-
+/**
+ * VoteData class
+ * @author FFF8E7
+ * @version 6
+ */
 public class VoteData extends JPanel{
 
 	private final JLabel reqNameLabel = new JLabel("Requirement Name:");
@@ -75,8 +79,8 @@ public class VoteData extends JPanel{
 	
 	/**
 	 * The constructor for the VoteData class
-	 * @param gs, the completed game session to be viewed
-	 * @param cv, the CompleteView that called the constructor for VoteData
+	 * @param gs The completed game session to be viewed
+	 * @param cv The CompleteView that called the constructor for VoteData
 	 */
 	public VoteData(GameSession gs, CompleteView cv){
 		completeView = cv;
@@ -92,6 +96,7 @@ public class VoteData extends JPanel{
 			if (completedGame.getGameStatus() == GameStatus.ARCHIVED || completedGame.getFinalVotes().size() > 0){
 				finalVote = completedGame.getFinalVotes();
 				finalEstimateText.setText(Integer.toString(finalVote.get(0)));
+				completeView.sendEstimatesToTable(finalVote);
 			}
 			else {
 				for (int i = 0; i < gameReqs.size(); i++){
@@ -151,7 +156,7 @@ public class VoteData extends JPanel{
 					}
 				}
 				sendEstimatesButton.setEnabled(allVotes);
-				completeView.nextRequirement();
+				completeView.nextRequirement(finalEstimate);
 				completeView.isNew = false;
 			}
 		});
@@ -321,7 +326,7 @@ public class VoteData extends JPanel{
 	/**
 	 * Receives a new requirement to view, and displays the name, description, mean and median in the appropriate text fields, as well 
 	 * as filling the table with the user IDs and votes.
-	 * @param req, the requirement to view (sent from GameData class)
+	 * @param req The requirement to view (sent from GameData class)
 	 */
 	public void receiveNewReq(Requirement req) {
 		currentReq = req;
@@ -345,8 +350,10 @@ public class VoteData extends JPanel{
 		}
 		reqNameText.setText(req.getName());
 		descriptionTextArea.setText(req.getDescription());
-		meanTextField.setText(Float.toString(completedGame.getMean().get(reqIndex)));
-		medianTextField.setText(Float.toString(completedGame.getMedian().get(reqIndex)));	
+		if (completedGame.getVotes().size() > 0){
+			meanTextField.setText(Float.toString(completedGame.getMean().get(reqIndex)));
+			medianTextField.setText(Float.toString(completedGame.getMedian().get(reqIndex)));	
+		}
 	}
 	
 	private void isValidEstimate(){
@@ -365,7 +372,11 @@ public class VoteData extends JPanel{
 			notAnIntegerError.setVisible(true);
 		}
 	}
-	
+	/**
+	 * Finds out if the parsed string is an int
+	 * @param s The string to be parsed
+	 * @return True if integer, false otherwise
+	 */
 	public static boolean isInteger(String s) {
 	    try { 
 	        Integer.parseInt(s); 
