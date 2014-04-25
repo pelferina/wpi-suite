@@ -120,4 +120,10 @@ public class GameView extends JSplitPane{
 		}	
 	}
 	
+	public void setFocusOnEstimate(){
+		if (!isDeckGame){
+			playGame.setFocusOnEstimate();
+		}
+	}
+	
 }
