@@ -38,7 +38,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistribu
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.reqpanel.NewRequirementPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetAllUsers;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -46,8 +45,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 
 /**
  * Main view of the PlanningPoker module
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  *
  */
 @SuppressWarnings("serial")
@@ -92,7 +91,10 @@ public class MainView extends JTabbedPane {
 		{
 			addTab("Edit Game", gameSession);
 		}
-		
+		/**
+		 * function to add a ReqTab
+		 * @param gs The GameSession to add the tab to
+		 */
 		public void addReqTab(GameSession gs){
 			addTab("Req Tab", gs);
 		}
@@ -256,7 +258,14 @@ public class MainView extends JTabbedPane {
 	        this.type = type;
 	        this.mv = mv;
 	    }
-	    
+	    /**
+	     * Constructor for the closeActionHandler
+	     * @param tabName name of the tab being closed
+	     * @param index index of that tab on the tab list
+	     * @param mv the MainView
+	     * @param gv the GameView
+	     * @param type integer for type
+	     */
 	    public MyCloseActionHandler(String tabName, int index, MainView mv, NewRequirementPanel rp, int type) {
 	        this.tabName = tabName;
 	        this.index = index;
@@ -280,7 +289,14 @@ public class MainView extends JTabbedPane {
 	    	this.type = type;
 	    	this.mv = mv;
 	    }
-	    
+	    /**
+	     * constructor for CloseActionHandler 
+	     * @param tabName name of the tab being closed
+	     * @param index index of that tab on the tab list
+	     * @param mv the MainView
+	     * @param userPreferences the UserPreferencesPanel
+	     * @param type integer for type
+	     */
 	    public MyCloseActionHandler(String tabName, int index, MainView mv, CompleteView cv, int type) {
 	        this.tabName = tabName;
 	        this.index = index;

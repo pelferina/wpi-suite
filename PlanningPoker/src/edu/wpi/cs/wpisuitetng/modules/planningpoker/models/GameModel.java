@@ -23,8 +23,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
  * to be displayed on the board. It extends AbstractListModel so that
  * it can provide the model data to the JList component in the BoardPanel.
  *
- * @author Cosmic Latte
- * @version $Revsion: 1.0 $
+ * @author FFF8E7
+ * @version 6
  * 
  */
 @SuppressWarnings({"serial"})
@@ -252,6 +252,11 @@ public class GameModel extends AbstractListModel {
 		return usersGames;
 	}
 	
+	/**
+	 * This returns the game sessions needing a vote from the user
+	 * @param userID the user's ID number, as integer
+	 * @return a List<GameSessions> needing votes
+	 */
 	public List<GameSession> getGamesNeedingVote(int userID)
 	{
 		final List<GameSession> votedGames = new ArrayList<GameSession>();
@@ -268,6 +273,11 @@ public class GameModel extends AbstractListModel {
 		return unVotedGames;
 	}
 	
+	/**
+	 * This function determines which games the user has voted on
+	 * @param userID the user's ID, as integer
+	 * @return a List<GameSession> of games the user has voted on
+	 */
 	public List<GameSession> getGamesVoted(int userID)
 	{
 		final List<GameSession> votedGames = new ArrayList<GameSession>();

@@ -68,4 +68,12 @@ public class GameTree extends DefaultMutableTreeNode {
 		top.removeAllChildren();
 		createNodes(top);
 	}
+	
+	/**
+	 * Making Codepro work, never used
+	 */
+	@Override
+	public GameTree clone(){
+		return this;
+	}
 }

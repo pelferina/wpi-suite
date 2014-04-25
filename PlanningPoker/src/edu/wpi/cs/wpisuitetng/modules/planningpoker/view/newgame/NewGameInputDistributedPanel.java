@@ -644,7 +644,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 	private void setupDeadlineTime() {
 		//Initialize Deadline Hour and Minute
 		for (int j=0; j<12; j++){
-			deadlineHourComboBox.addItem(j + 1 + "");
+			deadlineHourComboBox.addItem((j + 1) + "");
 		}
 
 		for (int i=0; i<60; i++){

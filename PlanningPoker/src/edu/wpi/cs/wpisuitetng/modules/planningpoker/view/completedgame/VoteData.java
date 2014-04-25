@@ -45,7 +45,11 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.Font;
-
+/**
+ * VoteData class
+ * @author FFF8E7
+ * @version 6
+ */
 public class VoteData extends JPanel{
 
 	private final JLabel reqNameLabel = new JLabel("Requirement Name:");
@@ -75,8 +79,8 @@ public class VoteData extends JPanel{
 	
 	/**
 	 * The constructor for the VoteData class
-	 * @param gs, the completed game session to be viewed
-	 * @param cv, the CompleteView that called the constructor for VoteData
+	 * @param gs The completed game session to be viewed
+	 * @param cv The CompleteView that called the constructor for VoteData
 	 */
 	public VoteData(GameSession gs, CompleteView cv){
 		completeView = cv;
@@ -321,7 +325,7 @@ public class VoteData extends JPanel{
 	/**
 	 * Receives a new requirement to view, and displays the name, description, mean and median in the appropriate text fields, as well 
 	 * as filling the table with the user IDs and votes.
-	 * @param req, the requirement to view (sent from GameData class)
+	 * @param req The requirement to view (sent from GameData class)
 	 */
 	public void receiveNewReq(Requirement req) {
 		currentReq = req;
@@ -365,7 +369,11 @@ public class VoteData extends JPanel{
 			notAnIntegerError.setVisible(true);
 		}
 	}
-	
+	/**
+	 * Finds out if the parsed string is an int
+	 * @param s The string to be parsed
+	 * @return True if integer, false otherwise
+	 */
 	public static boolean isInteger(String s) {
 	    try { 
 	        Integer.parseInt(s); 

@@ -37,8 +37,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 
 /**
  * A panel for playing a game session
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 @SuppressWarnings("serial")
 public class PlayDeckGame extends JPanel{
@@ -130,10 +130,10 @@ public class PlayDeckGame extends JPanel{
 				public void itemStateChanged ( ItemEvent ie ) {
 					if (card.isSelected()) {
 						votesSoFarInt += card.getValue();
-						votesSoFarLabel.setText (new Integer(votesSoFarInt).toString()) ;
+						votesSoFarLabel.setText (Integer.toString(votesSoFarInt)) ;
 					} else {
 						votesSoFarInt -= card.getValue();
-						votesSoFarLabel.setText (new Integer(votesSoFarInt).toString()) ;
+						votesSoFarLabel.setText (Integer.toString(votesSoFarInt)) ;
 					}
 				}
 			});
@@ -328,6 +328,7 @@ public class PlayDeckGame extends JPanel{
 	 * This function will be used when the user submits an estimate for a requirement and it will notify GameRequirements to move the requirement from 
 	 * to estimate table to the completed estimates table
 	 * @param r the requirement to send
+	 * @param estimate The estimate to be updated
 	 */
 	public void sendEstimatetoGameView(Requirement r, int estimate){
 		gv.updateReqTables(r, estimate);

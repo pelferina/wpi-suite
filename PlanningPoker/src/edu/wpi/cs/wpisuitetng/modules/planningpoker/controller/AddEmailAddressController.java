@@ -24,8 +24,8 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * adding the contents of the message text field to the model as a new
  * message.
  * 
- * @author Cosmic Latte
- * @version $Requirement: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 public class AddEmailAddressController implements ActionListener {
 	private final PreferencesPanel panel;
@@ -33,7 +33,7 @@ public class AddEmailAddressController implements ActionListener {
 	/**
 	 * Construct an AddEmailAddressController for the given model, view pair
 	 * 
-	 * @param view the view where the user enters new messages
+	 * @param panel the panel where the user enters new messages
 	 */
 	public AddEmailAddressController(PreferencesPanel panel) {
 		this.panel = panel;
@@ -54,7 +54,7 @@ public class AddEmailAddressController implements ActionListener {
 
 	/**
 	 * This method creates a request to send and email, and adds an observer
-	 * @param address The address to send to
+	 * @param eModel The address to send to, as an EmailAddressModel
 	 */
 	public void saveEmail(EmailAddressModel eModel)
 	{
