@@ -457,7 +457,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 	 * Handles the error messages for requirements 
 	 * @return true if requirements have been selected
 	 */
-	private boolean hasReqs()
+	public boolean hasReqs()
 	{
 		//Displays the cannot have a game without requirements error if no requirements were chosen
 		if (newGameP.getSelected().isEmpty()){
@@ -476,7 +476,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 	 *  Handles the error messages for deadline time
 	 * @return true if invalid deadline is selected
 	 */
-	private boolean hasDeadline()
+	public boolean hasDeadline()
 	{	
 		//Get deadline date
 		currentDate = Calendar.getInstance();
