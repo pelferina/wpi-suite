@@ -130,7 +130,6 @@ public class GameRequirements extends JSplitPane{
 			}
 			completedModel.setNumRows(0);
 		}
-		
 		completedModel.setColumnCount(COLUMN_NUM + 1);
 		setColumnWidth(estimatesComplete);
 		pendingPane = new JScrollPane(estimatesPending);
@@ -190,16 +189,10 @@ public class GameRequirements extends JSplitPane{
 				}
 			}
 		}
-		while (i > 0) {
-			if (estimatesPending.getRowCount() > i) {
-				estimatesPending.setRowSelectionInterval(i, i);
-				break;
-			}
-			i--;
-		}
 		if (i == 0){
 			gv.clearBoxes();
 		}
+		estimatesPending.setRowSelectionInterval(0, 0);
 	}
 	
 	
@@ -218,6 +211,8 @@ public class GameRequirements extends JSplitPane{
 		 */
 		public tableListener(JTable table){
 			this.table = table;
+			if(table.equals(estimatesPending))
+				this.table.setRowSelectionInterval(0, 0);
 		}
 
 		@Override
