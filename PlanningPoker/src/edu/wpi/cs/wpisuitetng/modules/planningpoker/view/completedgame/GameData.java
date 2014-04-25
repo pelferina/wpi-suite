@@ -34,6 +34,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 import javax.swing.SpringLayout;
 
 import java.awt.Font;
+import java.awt.Insets;
 /**
  * The GameData class
  * @author FFF8E7
@@ -43,7 +44,7 @@ public class GameData extends JPanel{
 
 	private final JLabel gameNameLabel = new JLabel("Game Name:");
 	private final JLabel descriptionLabel = new JLabel("Game Description:");
-	private final JLabel gameReqsLabel = new JLabel("Game Requirements:");
+	private final JLabel gameReqsLabel = new JLabel("Game Requirements");
 	private JTextField gameNameTextBox = new JTextField();
 	private JTextArea descriptionTextArea = new JTextArea();
 	private JScrollPane descriptionScrollPane = new JScrollPane(descriptionTextArea);
@@ -65,13 +66,14 @@ public class GameData extends JPanel{
 		completeView = cv;
 		completedGame = gs;
 		gameNameTextBox.setText(gs.getGameName());
-		descriptionTextArea.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		descriptionTextArea.setText(gs.getGameDescription());
 		gameNameTextBox.setEditable(false);
+		gameNameTextBox.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		descriptionTextArea.setEditable(false);
 		gameReqIDs = gs.getGameReqs();
 		descriptionTextArea.setLineWrap(true);
 		descriptionTextArea.setWrapStyleWord(true);
+		descriptionTextArea.setMargin(new Insets(2,2,2,2));
 		
 		for (Requirement r: allReqs){
 			if (gameReqIDs.contains(r.getId())){
@@ -87,7 +89,7 @@ public class GameData extends JPanel{
 		    }
 		};
 		
-		gameReqsTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Description", "Estimate"}));
+		gameReqsTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Description", "Mean Estimate", "Median Estimate"}));
 		init();	
 	}
 	
@@ -104,6 +106,7 @@ public class GameData extends JPanel{
 			reqTableModel.setValueAt(gameReqs.get(i).getName(), i, 0);
 			reqTableModel.setValueAt(gameReqs.get(i).getDescription(), i, 1);
 			reqTableModel.setValueAt("", i, 2);
+			reqTableModel.setValueAt("", i, 3);
 		}
 		reqPane = new JScrollPane(gameReqsTable);
 		reqPane.setViewportView(gameReqsTable);
@@ -116,34 +119,34 @@ public class GameData extends JPanel{
 		
 		SpringLayout springLayout = new SpringLayout();
 		
+		//Sprint layout constraints for gameNameLabel
+		springLayout.putConstraint(SpringLayout.NORTH, gameNameLabel, 10, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, gameNameLabel, 10, SpringLayout.WEST, this);
+		
 		//Spring layout constraints for gameNameTextBox
-		springLayout.putConstraint(SpringLayout.EAST, gameNameTextBox, 0, SpringLayout.EAST, descriptionScrollPane);
-		springLayout.putConstraint(SpringLayout.NORTH, gameNameTextBox, -3, SpringLayout.NORTH, gameNameLabel);
-		springLayout.putConstraint(SpringLayout.WEST, gameNameTextBox, 6, SpringLayout.EAST, gameNameLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, gameNameTextBox, 0, SpringLayout.NORTH, gameNameLabel);
+		springLayout.putConstraint(SpringLayout.WEST, gameNameTextBox, 5, SpringLayout.EAST, gameNameLabel);
+		springLayout.putConstraint(SpringLayout.EAST, gameNameTextBox, -10, SpringLayout.EAST, this);
 		
 		//Spring layout constraints for descriptionLabel
-		springLayout.putConstraint(SpringLayout.SOUTH, descriptionLabel, -6, SpringLayout.NORTH, descriptionScrollPane);
-		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 10, SpringLayout.WEST, this);
-		
-		//Spring layout constraints for reqPane
-		springLayout.putConstraint(SpringLayout.WEST, reqPane, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.EAST, reqPane, -20, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, reqPane, 233, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, reqPane, -59, SpringLayout.SOUTH, this);
-		
-		//Spring layout constraints for gameReqsLabel
-		springLayout.putConstraint(SpringLayout.WEST, gameReqsLabel, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.WEST, gameNameLabel, 0, SpringLayout.WEST, descriptionLabel);
-		springLayout.putConstraint(SpringLayout.SOUTH, gameNameLabel, -23, SpringLayout.NORTH, descriptionLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, descriptionLabel, 20, SpringLayout.SOUTH, gameNameLabel);
+		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 0, SpringLayout.WEST, gameNameLabel);
 		
 		//Spring layout constraints for descriptionScrollPane
-		springLayout.putConstraint(SpringLayout.NORTH, descriptionScrollPane, 94, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, descriptionScrollPane, -24, SpringLayout.NORTH, gameReqsLabel);
-		springLayout.putConstraint(SpringLayout.WEST, descriptionScrollPane, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.EAST, descriptionScrollPane, 371, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, descriptionScrollPane, 5, SpringLayout.SOUTH, descriptionLabel);
+		springLayout.putConstraint(SpringLayout.WEST, descriptionScrollPane, 0, SpringLayout.WEST, descriptionLabel);
+		springLayout.putConstraint(SpringLayout.EAST, descriptionScrollPane, -10, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, descriptionScrollPane, -20, SpringLayout.NORTH, gameReqsLabel);
+		
+		//Spring layout constraints for gameReqsLabel
+		springLayout.putConstraint(SpringLayout.WEST, gameReqsLabel, 0, SpringLayout.WEST, reqPane);
+		springLayout.putConstraint(SpringLayout.SOUTH, gameReqsLabel, -5, SpringLayout.NORTH, reqPane);
 		
 		//Spring layout constraints for reqPane
-		springLayout.putConstraint(SpringLayout.SOUTH, gameReqsLabel, -11, SpringLayout.NORTH, reqPane);
+		springLayout.putConstraint(SpringLayout.WEST, reqPane, 0, SpringLayout.WEST, descriptionScrollPane);
+		springLayout.putConstraint(SpringLayout.EAST, reqPane, 0, SpringLayout.EAST, descriptionScrollPane);
+		springLayout.putConstraint(SpringLayout.NORTH, reqPane, 192, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, reqPane, -10, SpringLayout.SOUTH, this);
 		
 		setLayout(springLayout);
 		
