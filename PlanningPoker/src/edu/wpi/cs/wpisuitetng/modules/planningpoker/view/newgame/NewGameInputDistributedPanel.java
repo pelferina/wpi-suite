@@ -21,23 +21,34 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateGameController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-
-
+import javax.imageio.ImageIO;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
+import javax.swing.Timer;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateGameController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.Deck;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * This is the window for the user to create a planning poker session
@@ -290,9 +301,14 @@ public class NewGameInputDistributedPanel extends JPanel {
 		deckBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (deckBox.getSelectedIndex() == 0){
+				if (editMode){
+					if (deckBox.getSelectedIndex() != currentGameSession.getDeckId()){
+						newGameP.isNew = false;
+					}
 				}
-				newGameP.isNew = false;
+				else{
+					newGameP.isNew = false;
+				}
 			}
 		});
 
@@ -360,7 +376,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 			}
 			if (deckCheckBox.isSelected()){
 				//TODO set correct deck
-				newGame.setDeckId(0);
+				newGame.setDeckId(deckBox.getSelectedIndex());
 			}
 
 			final AddGameController msgr = new AddGameController(model);
@@ -379,7 +395,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 			}
 			if (deckCheckBox.isSelected()){
 				//TODO set correct deck
-				currentGameSession.setDeckId(0);
+				currentGameSession.setDeckId(deckBox.getSelectedIndex());
 			} else {
 				currentGameSession.setDeckId(-1);
 			}
@@ -644,7 +660,18 @@ public class NewGameInputDistributedPanel extends JPanel {
 	{	
 		deckBox.removeAllItems();
 		//Initializes the deck combo box
-		deckBox.addItem("Default Deck");
+		addDecksToDeckComboBox();
+	}
+	/**
+	 * Add all available deck selections to the combo box
+	 *
+	 */
+	private void addDecksToDeckComboBox()
+	{
+		final List<Deck> allDecks = DeckModel.getInstance().getDecks();
+		for (Deck d: allDecks){
+			deckBox.addItem(d.getName());
+		}
 	}
 
 	private void initializeEditMode()

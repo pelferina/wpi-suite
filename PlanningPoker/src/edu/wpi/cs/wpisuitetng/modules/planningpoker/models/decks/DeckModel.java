@@ -76,7 +76,7 @@ public class DeckModel extends AbstractListModel {
 			System.out.println("Exception thrown in DeckModel");
 		}
 		//TODO:Change to Deck View
-		ViewEventController.getInstance().refreshTree();
+		//ViewEventController.getInstance().refreshTree();
 	}
 
 	/**
@@ -129,8 +129,8 @@ public class DeckModel extends AbstractListModel {
 			iterator.remove();
 		}
 		this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
-		ViewEventController.getInstance().refreshTable();
-		ViewEventController.getInstance().refreshTree();
+		//ViewEventController.getInstance().refreshTable();
+		//ViewEventController.getInstance().refreshTree();
 	}
 
 	/**
@@ -147,7 +147,7 @@ public class DeckModel extends AbstractListModel {
 		}
 		
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
-		ViewEventController.getInstance().refreshTree();
+		//ViewEventController.getInstance().refreshTree();
 	}
 
 	/**
