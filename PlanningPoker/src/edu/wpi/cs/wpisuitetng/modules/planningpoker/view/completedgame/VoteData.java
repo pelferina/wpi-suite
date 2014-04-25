@@ -92,6 +92,7 @@ public class VoteData extends JPanel{
 			if (completedGame.getGameStatus() == GameStatus.ARCHIVED || completedGame.getFinalVotes().size() > 0){
 				finalVote = completedGame.getFinalVotes();
 				finalEstimateText.setText(Integer.toString(finalVote.get(0)));
+				completeView.sendEstimatesToTable(finalVote);
 			}
 			else {
 				for (int i = 0; i < gameReqs.size(); i++){
@@ -151,7 +152,7 @@ public class VoteData extends JPanel{
 					}
 				}
 				sendEstimatesButton.setEnabled(allVotes);
-				completeView.nextRequirement();
+				completeView.nextRequirement(finalEstimate);
 				completeView.isNew = false;
 			}
 		});

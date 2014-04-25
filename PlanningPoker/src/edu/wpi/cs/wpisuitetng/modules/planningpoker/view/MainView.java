@@ -113,6 +113,7 @@ public class MainView extends JTabbedPane {
 		}
 
 		private void addTab(String tabType, GameSession game){
+			boolean exists = false;
 			final int open = this.getTabCount();
 			MyCloseActionHandler myCloseActionHandler = null;
 			overviewPanel.refreshGames();
@@ -120,27 +121,84 @@ public class MainView extends JTabbedPane {
 			openTabs.add(newGameTabs, j);
 			final JButton btnClose = new JButton("x");
 			final List<Requirement> reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
+			System.out.println("Game ID is " + Integer.toString(game.getGameID()));
 			if (tabType.equals("New Game")){
-				final NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose);
-				myCloseActionHandler = new MyCloseActionHandler(tabType, j, this, newGame, 0);
-				newGames.add(newGame);
-				add(newGame, open);
+				for(int i = 1; i < getTabCount(); i++)
+				{
+					System.out.println("Component at " + i + "'s name is " + getComponentAt(i).getName());
+					if(getComponentAt(i).getName().equals(Integer.toString(game.getGameID())))
+					{
+						setSelectedIndex(i);
+						exists = true;
+						System.out.println("Exists was set to true");
+					}
+				}
+				if(exists == false)
+				{
+					final NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose);
+					newGame.setName(Integer.toString(game.getGameID()));
+					myCloseActionHandler = new MyCloseActionHandler(tabType, j, this, newGame, 0);
+					newGames.add(newGame);
+					add(newGame, open);
+				}
 			}
 			else if (tabType.equals("Edit Game")){
-				final NewGameDistributedPanel newEdit = new NewGameDistributedPanel(game, btnClose);
-				myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newEdit, 1);
-				newGames.add(newEdit);
-				add(newEdit, open);
+				for(int i = 1; i < getTabCount(); i++)
+				{
+					System.out.println("Component at " + i + "'s name is " + getComponentAt(i).getName());
+					if(getComponentAt(i).getName().equals(Integer.toString(game.getGameID())))
+					{
+						setSelectedIndex(i);
+						exists = true;
+						System.out.println("Exists was set to true");
+					}
+				}
+				if(exists == false)
+				{
+					final NewGameDistributedPanel newEdit = new NewGameDistributedPanel(game, btnClose);
+					newEdit.setName(Integer.toString(game.getGameID()));
+					myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newEdit, 1);
+					newGames.add(newEdit);
+					add(newEdit, open);
+				}
 			}
 			else if (tabType.equals("Play Game")){
-				final GameView newGameView = new GameView(game);
-				myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newGameView, 2);
-				add(newGameView, open);
+				for(int i = 1; i < getTabCount(); i++)
+				{
+					System.out.println("Component at " + i + "'s name is " + getComponentAt(i).getName());
+					if(getComponentAt(i).getName().equals(Integer.toString(game.getGameID())))
+					{
+						setSelectedIndex(i);
+						exists = true;
+						System.out.println("Exists was set to true");
+					}
+				}
+				if(exists == false)
+				{
+					final GameView newGameView = new GameView(game);
+					newGameView.setName(Integer.toString(game.getGameID()));
+					myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newGameView, 2);
+					add(newGameView, open);
+				}
 			}
 			else if (tabType.equals("View Estimates")){
-				final CompleteView newCompleteView = new CompleteView(game);
-				myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newCompleteView, 3);
-				add(newCompleteView, open);
+				for(int i = 1; i < getTabCount(); i++)
+				{
+					System.out.println("Component at " + i + "'s name is " + getComponentAt(i).getName());
+					if(getComponentAt(i).getName().equals(Integer.toString(game.getGameID())))
+					{
+						setSelectedIndex(i);
+						exists = true;
+						System.out.println("Exists was set to true");
+					}
+				}
+				if(exists == false)
+				{
+					final CompleteView newCompleteView = new CompleteView(game);
+					newCompleteView.setName(Integer.toString(game.getGameID()));
+					myCloseActionHandler = new MyCloseActionHandler(game.getGameName(), j, this, newCompleteView, 3);
+					add(newCompleteView, open);
+				}
 			}
 			else if (tabType.equals("User Preferences")){
 				final PreferencesPanel userPreferences = new PreferencesPanel(btnClose);
@@ -148,11 +206,6 @@ public class MainView extends JTabbedPane {
 				add(userPreferences, open);
 				hasPreferencePane = true;
 			}
-/*			else if (tabType.equals("Req Tab")){
-				final NewRequirementPanel newReq = new NewRequirementPanel(btnClose);
-				myCloseActionHandler = new MyCloseActionHandler("New Requirement", j, this, newReq, 5);
-				add(newReq, open);
-			}*/
 			final JPanel pnlTab = new JPanel(new GridBagLayout());
 			pnlTab.setOpaque(false);
 			final JLabel lblTitle = new JLabel(tabLabler(tabType, game));
