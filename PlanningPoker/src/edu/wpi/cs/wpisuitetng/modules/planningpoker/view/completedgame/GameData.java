@@ -113,9 +113,10 @@ public class GameData extends JPanel{
 		gameReqsTable.getColumnModel().getColumn(0).setMinWidth(100);
 		gameReqsTable.getColumnModel().getColumn(0).setMaxWidth(200);
 		gameReqsTable.getColumnModel().getColumn(0).setPreferredWidth(150);
-		
-		gameReqsTable.setRowSelectionInterval(0, 0);
-		gameReqsTable.getSelectionModel().addListSelectionListener(new tableListener(gameReqsTable));
+		if (gameReqsTable.getRowCount() > 0){
+			gameReqsTable.setRowSelectionInterval(0, 0);
+			gameReqsTable.getSelectionModel().addListSelectionListener(new tableListener(gameReqsTable));
+		}
 		
 		SpringLayout springLayout = new SpringLayout();
 		

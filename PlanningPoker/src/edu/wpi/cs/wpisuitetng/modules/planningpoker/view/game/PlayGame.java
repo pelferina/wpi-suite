@@ -75,8 +75,20 @@ public class PlayGame extends JPanel implements Refreshable{
 	 * @param agv the active game view
 	 */
 	public PlayGame(GameSession gameToPlay, GameView agv){
-		GetGamesController.getInstance().addRefreshable(this);
-	
+	GetGamesController.getInstance().addRefreshable(this);
+
+		setFocus = new TimerTask(){
+
+			@Override
+			public void run() {
+				estimateTextField.requestFocusInWindow();
+				getRootPane().setDefaultButton(voteButton);
+			}
+			
+		};
+		setFocusTimer = new Timer();
+		setFocusTimer.schedule(setFocus, 100);
+		
 		currentGame = gameToPlay;
 		gameReqs = currentGame.getGameReqs();
 		notAnIntegerError.setVisible(false);
@@ -117,6 +129,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		if (currentReq != null){
 			reqNameTextField.setText(currentReq.getName());
 			reqDescTextArea.setText(currentReq.getDescription());
+			estimateTextField.requestFocusInWindow();
 		}
 		gameDescTextArea.setText(currentGame.getGameDescription());
 		gameNameTextField.setEditable(false);
@@ -168,6 +181,7 @@ public class PlayGame extends JPanel implements Refreshable{
 					System.out.println(userEstimates.getVote());
 					sendEstimatetoGameView(currentReq, estimate);
 				}
+				estimateTextField.requestFocusInWindow();
 				gv.isNew = false;
 			}
 			
@@ -384,5 +398,9 @@ public class PlayGame extends JPanel implements Refreshable{
 	@Override
 	public void refreshGames() {
 		currentGame = GameModel.getInstance().getGame(currentGame.getGameID());
+	}
+
+	public void setFocusOnEstimate(){
+		estimateTextField.requestFocusInWindow();
 	}
 }
