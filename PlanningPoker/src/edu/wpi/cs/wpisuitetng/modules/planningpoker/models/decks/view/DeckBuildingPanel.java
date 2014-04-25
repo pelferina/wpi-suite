@@ -45,7 +45,8 @@ public class DeckBuildingPanel extends JPanel {
 	private JLabel lblDecks = new JLabel("Decks:");
 	private JPanel cardPanel = new JPanel();
 	private JScrollPane cardArea = new JScrollPane(cardPanel);
-	private JTextField textField = new JTextField();
+	private JTextField nameField = new JTextField();
+	private JTextField numberField = new JTextField();
 	private SpringLayout springLayout = new SpringLayout();
 	
 	/** Constructor for a DeckPanel panel
@@ -118,9 +119,9 @@ public class DeckBuildingPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, lblDeckName, 20, SpringLayout.WEST, this);
 	
 		//Spring layout for textField
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, textField, 0, SpringLayout.VERTICAL_CENTER, lblDeckName);
-		springLayout.putConstraint(SpringLayout.WEST, textField, 10, SpringLayout.EAST, lblDeckName);
-		springLayout.putConstraint(SpringLayout.EAST, textField, 100, SpringLayout.WEST, textField);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameField, 0, SpringLayout.VERTICAL_CENTER, lblDeckName);
+		springLayout.putConstraint(SpringLayout.WEST, nameField, 10, SpringLayout.EAST, lblDeckName);
+		springLayout.putConstraint(SpringLayout.EAST, nameField, 100, SpringLayout.WEST, nameField);
 		
 		//Spring layout for btnSave
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnSave, 0, SpringLayout.VERTICAL_CENTER, lblDeckName);
@@ -131,7 +132,7 @@ public class DeckBuildingPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, btnDelete, 10, SpringLayout.EAST, btnSave);
 	
 		//Spring layout for cardArea
-		springLayout.putConstraint(SpringLayout.NORTH, cardArea, 10, SpringLayout.SOUTH, textField);
+		springLayout.putConstraint(SpringLayout.NORTH, cardArea, 10, SpringLayout.SOUTH, nameField);
 		springLayout.putConstraint(SpringLayout.SOUTH, cardArea, 130, SpringLayout.NORTH, cardArea);
 		springLayout.putConstraint(SpringLayout.WEST, cardArea, 20, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.EAST, cardArea, -20, SpringLayout.EAST, this);
@@ -144,6 +145,10 @@ public class DeckBuildingPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.NORTH, btnAddCard, 0, SpringLayout.NORTH, btnRmvSelected);
 		springLayout.putConstraint(SpringLayout.EAST, btnAddCard, -10, SpringLayout.WEST, btnRmvSelected);
 		
+		//Spring layout for numberField
+		springLayout.putConstraint(SpringLayout.NORTH, numberField, 0, SpringLayout.NORTH, btnAddCard);
+		springLayout.putConstraint(SpringLayout.EAST, numberField, -10, SpringLayout.WEST, btnAddCard);
+		springLayout.putConstraint(SpringLayout.WEST, numberField, -100, SpringLayout.EAST, numberField);
 		//Spring layout for btnRmvAll
 		springLayout.putConstraint(SpringLayout.NORTH, btnRmvAll, 0, SpringLayout.NORTH, btnRmvSelected);
 		springLayout.putConstraint(SpringLayout.WEST, btnRmvAll, 10, SpringLayout.EAST, btnRmvSelected);
@@ -151,12 +156,13 @@ public class DeckBuildingPanel extends JPanel {
 		setLayout(springLayout);
 		
 		add(lblDeckName);
-		add(textField);
+		add(nameField);
 		add(btnSave);
 		add(cardArea);
 		add(btnAddCard);
 		add(btnRmvAll);
 		add(btnRmvSelected);
+		add(numberField);
 	}
 	
 	private void setUpDeckList(){
