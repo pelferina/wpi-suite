@@ -7,12 +7,8 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
-
-import java.awt.Dimension;
-
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.DefaultToolbarView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.EditButtonsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.OwnerButtonPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerButtonsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.UserButtonPanel;
@@ -24,10 +20,10 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.UserButtonPanel
  * @version $Revision: 1.0 $
  * @author justinhess
  */
+@SuppressWarnings("serial")
 public class ToolbarView  extends DefaultToolbarView {
 
 //	TODO: Cancel Game
-//	public EditButtonsPanel editButton = new EditButtonsPanel();
 	public PlanningPokerButtonsPanel gameButton = new PlanningPokerButtonsPanel();
 	public OwnerButtonPanel ownerButton = new OwnerButtonPanel();
 	public UserButtonPanel userButton = new UserButtonPanel();
@@ -39,7 +35,6 @@ public class ToolbarView  extends DefaultToolbarView {
 		this.addGroup(gameButton);
 		this.addGroup(userButton);
 		this.addGroup(ownerButton);
-//		this.addGroup(editButton);
 	}
 	
 	/**

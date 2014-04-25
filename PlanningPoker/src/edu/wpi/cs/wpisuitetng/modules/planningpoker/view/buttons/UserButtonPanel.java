@@ -46,13 +46,13 @@ public class UserButtonPanel extends ToolbarGroupView{
 		super("");
 		
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
-		this.setPreferredWidth(300);
+		this.setPreferredWidth(330);
 		
 		userButton.setPreferredSize(new Dimension(150,50));	
 		userButton.setVisible(false);
 		
 		try {
-			viewImg= new ImageIcon(ImageIO.read(getClass().getResource("view.png")));
+			viewImg= new ImageIcon(ImageIO.read(getClass().getResource("searchimage.png")));
 		    voteImg = new ImageIcon(ImageIO.read(getClass().getResource("vote.png")));
 		    
 		} catch (IOException ex){
@@ -81,7 +81,7 @@ public class UserButtonPanel extends ToolbarGroupView{
 		userButton.setVisible(true);
 		userButton.setEnabled(true);
 		userButton.setIcon(voteImg);
-		userButton.setText("<html>Vote<br />Game</html>");
+		userButton.setText("<html>Play<br />Game</html>");
 		
 		
 		if(listener != null){
