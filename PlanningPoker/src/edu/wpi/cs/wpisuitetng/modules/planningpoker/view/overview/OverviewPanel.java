@@ -75,7 +75,6 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		
 		table = new JTable(new JTableModel(sessions));
 
-		
 		//sort the table
 		table.setRowSorter(new TableRowSorter(table.getModel()));
 		
@@ -243,4 +242,5 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	}
 	
 
+	
 }

@@ -78,7 +78,7 @@ public class RefreshManager {
 		};
 		
 		// Timer will update RefreshManager every 2 seconds
-		final Timer g = new Timer(1000, gameCheck);
+		final Timer g = new Timer(100, gameCheck);
 		final Timer r = new Timer(1000, reqCheck);
 		g.start();
 		r.start();

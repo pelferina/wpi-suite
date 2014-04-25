@@ -261,6 +261,7 @@ public class GameModel extends AbstractListModel {
 	{
 		final List<GameSession> votedGames = new ArrayList<GameSession>();
 		final List<GameSession> unVotedGames = new ArrayList<GameSession>(this.getActiveGameSessions());
+		unVotedGames.addAll(this.getInProgressGameSessions());
 		
 		for (GameSession game : games)
 			if (game.getGameStatus() == GameStatus.ACTIVE || game.getGameStatus() == GameStatus.INPROGRESS )

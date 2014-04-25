@@ -54,7 +54,7 @@ public class TableSelectListener implements ListSelectionListener{
     	final GameSession gameSelected = model.getGame(row);
     	final GameStatus status = gameSelected.getGameStatus();
     	final User currentUser = GetCurrentUser.getInstance().getCurrentUser();
-
+    	
     	boolean hasCategory = false;
     	if(currentUser.getIdNum() == ownerID){
     		if(status.equals(GameStatus.ACTIVE) || status.equals(GameStatus.INPROGRESS)){
