@@ -13,7 +13,6 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -29,6 +28,7 @@ import edu.wpi.cs.wpisuitetng.database.Data;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
+import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 
 /**
  * This is the entity manager for the EmailAddressModel in the
@@ -40,7 +40,9 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
 public class EmailAddressEntityManager implements EntityManager<EmailAddressModel> {
 
 	/** The database */
-	Data db;
+	static Data db;
+	static String gmailUsername = "fff8e7.email@gmail.com";
+	static String gmailPassword = "fff8e7team5";
 
 	/**
 	 * Constructs the entity manager. This constructor is called by
@@ -73,19 +75,19 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 
 		for(Model e: emails){	
 			EmailAddressModel eModel = (EmailAddressModel)e;
-			if(eModel.getUserID() == s.getUser().getIdNum()){
+			if(eModel.getUsername().equals(s.getUser().getUsername())){
 				if(newEmailAddress.getEnable() == false){
 					System.out.println("Disable");
-					db.update(EmailAddressModel.class, "UserID", s.getUser().getIdNum(), "Enable", false);
+					db.update(EmailAddressModel.class, "Username", s.getUser().getUsername(), "Enable", false);
 					return newEmailAddress;
 				}else{
 					System.out.println("Enable");
-					db.update(EmailAddressModel.class, "UserID", s.getUser().getIdNum(), "Enable", true);
+					db.update(EmailAddressModel.class, "Username", s.getUser().getUsername(), "Enable", true);
 				}
 				System.out.println(eModel.getAddress() +"|||" +newEmailAddress.getAddress());
 				if((eModel.getAddress()==null && newEmailAddress.getAddress()!=null)|| (eModel.getAddress()!=null && !eModel.getAddress().equals(newEmailAddress.getAddress()))){
 					System.out.println("Update");
-					db.update(EmailAddressModel.class, "UserID", s.getUser().getIdNum(), "Address", newEmailAddress.getAddress());
+					db.update(EmailAddressModel.class, "Username", s.getUser().getUsername(), "Address", newEmailAddress.getAddress());
 					sendEmail(newEmailAddress.getAddress(), "Update Email", ("Hi " + s.getUser().getUsername() + ",\r\n\tYou just updated your notification email address!\r\nsent by fff8e7"));
 					System.out.println("update email");
 				}
@@ -129,18 +131,18 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 			// to retrieve
 			// Passing the project makes it only get messages from that project
 
-			final EmailAddressModel[] emails = db.retrieveAll(new EmailAddressModel(null, 0, false)).toArray(new EmailAddressModel[0]);
+			final EmailAddressModel[] emails = db.retrieveAll(new EmailAddressModel(null, null, false)).toArray(new EmailAddressModel[0]);
 			final EmailAddressModel[] returnEmail = new EmailAddressModel[1];
 			for(EmailAddressModel e: emails){
-				if(e.getUserID() == s.getUser().getIdNum()){
+				if(e.getUsername().equals(s.getUser().getUsername())){
 					returnEmail[0] = e;
 					return returnEmail;
 				}
 			}
-			returnEmail[0] = new EmailAddressModel(null, s.getUser().getIdNum(), false);
+			returnEmail[0] = new EmailAddressModel(null, s.getUser().getUsername(), false);
 			return returnEmail;
 	}
-
+	
 	/*
 	 * Emails cannot be updated. This method always throws an exception.
 	 * 
@@ -215,14 +217,11 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 
 	/**
 	 * This method sends an email.
-	 * @param sent_to The person to send the email to
+	 * @param send_to The person to send the email to
 	 * @param send_subject The subject line of the email
 	 * @param send_text The text body of the email.
 	 */
-	public void sendEmail(String sent_to, String send_subject, String send_text) {
-		 
-		final String username = "fff8e7.email@gmail.com";
-		final String password = "fff8e7team5";
+	public static void sendEmail(String send_to, String send_subject, String send_text) {
  
 		final Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
@@ -233,25 +232,33 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 		final javax.mail.Session session = javax.mail.Session.getInstance(props,
 		  new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
+				return new PasswordAuthentication(gmailUsername, gmailPassword);
 			}
 		  });
  
 		try {
- 
 			final Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("fff8e7.email@gmail.com"));
+			message.setFrom(new InternetAddress(gmailUsername));
 			message.setRecipients(Message.RecipientType.TO,
-				InternetAddress.parse(sent_to));
+				InternetAddress.parse(send_to));
 			message.setSubject(send_subject);
 			message.setText(send_text);
  
 			Transport.send(message);
  
-			System.out.println("Done");
+			System.out.println("Email sent to " + send_to);
  
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
+		}
+	}
+	
+	public static void sendToALL(String send_subject, String send_text, Project project) {
+		final EmailAddressModel[] emails = db.retrieveAll(new EmailAddressModel(null, null, false), project).toArray(new EmailAddressModel[0]);
+		for(EmailAddressModel e: emails){
+			if(e.getEnable()){
+				sendEmail(e.getAddress(), send_subject, "Hi "+ e.getUsername() +",\r\n\t" + send_text + "\r\nsent by fff8e7");
+			}
 		}
 	}
 

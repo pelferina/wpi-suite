@@ -27,7 +27,7 @@ public class EmailAddressModel extends AbstractModel {
 	
 	/** The list of messages on the board */
 	private String address;
-	private int userID;
+	private String username;
 	private boolean enable;
 	
 	/**
@@ -38,9 +38,9 @@ public class EmailAddressModel extends AbstractModel {
 	 *  @param userID the user's id, as integer
 	 *  @param enable true if the model is enabled, false otherwise
 	 */
-	public EmailAddressModel(String address, int userID, boolean enable) {
+	public EmailAddressModel(String address, String username, boolean enable) {
 		this.address = address;
-		this.userID = userID;
+		this.username = username;
 		this.enable = enable;
 	}
 
@@ -51,10 +51,10 @@ public class EmailAddressModel extends AbstractModel {
 		return address;
 	}
 	/**
-	 * Retrieves the userID
+	 * Retrieves the username
 	 */
-	public int getUserID() {
-		return userID;
+	public String getUsername() {
+		return username;
 	}
 	/**
 	 * REtrieves the enable
@@ -77,12 +77,12 @@ public class EmailAddressModel extends AbstractModel {
 
 
 	/**
-	 * sets the userID
-	 * @param userID the user ID to be set, integer
+	 * sets the username
+	 * @param username the user name to be set, String
 	 * @return EmailAddressModel, the EmailAddressModel that the user is being set for
 	 */
-	public EmailAddressModel setUserID(int userID) {
-		this.userID = userID;
+	public EmailAddressModel setUsername(String username) {
+		this.username = username;
 		return this;
 	}
 	/**

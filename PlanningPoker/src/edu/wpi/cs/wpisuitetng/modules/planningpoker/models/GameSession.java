@@ -125,7 +125,7 @@ public class GameSession extends AbstractModel {
 		// Format the date-time stamp
 		final DateFormat dateFormat1 = new SimpleDateFormat("MM/dd/yy hh:mm a");
 		String returnStr = new String();
-		returnStr = gameName + "	";
+		returnStr = gameName + "	" + gameStatus + " ";
 		if(creationdate != null){
 			returnStr = returnStr + "     " + "	Start: " + dateFormat1.format(creationdate);
 		}
