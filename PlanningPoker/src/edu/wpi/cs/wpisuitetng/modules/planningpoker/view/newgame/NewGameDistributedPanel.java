@@ -120,4 +120,7 @@ public class NewGameDistributedPanel extends JSplitPane {
 	public void stopTimer(){
 		newGameInputPanel.stopTimer();
 	}
+	public void refreshRequirements() {
+		newGameReqPanel.refreshRequirements();
+	}
 }
