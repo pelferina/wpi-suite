@@ -121,36 +121,23 @@ public class MainView extends JTabbedPane {
 			openTabs.add(newGameTabs, j);
 			final JButton btnClose = new JButton("x");
 			final List<Requirement> reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
-			System.out.println("Game ID is " + Integer.toString(game.getGameID()));
 			if (tabType.equals("New Game")){
-				for(int i = 1; i < getTabCount(); i++)
-				{
-					System.out.println("Component at " + i + "'s name is " + getComponentAt(i).getName());
-					if(getComponentAt(i).getName().equals(Integer.toString(game.getGameID())))
-					{
-						setSelectedIndex(i);
-						exists = true;
-						System.out.println("Exists was set to true");
-					}
-				}
-				if(exists == false)
-				{
-					final NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose);
-					newGame.setName(Integer.toString(game.getGameID()));
-					myCloseActionHandler = new MyCloseActionHandler(tabType, j, this, newGame, 0);
-					newGames.add(newGame);
-					add(newGame, open);
-				}
+				final NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose);
+				newGame.setName(Integer.toString(game.getGameID()));
+				myCloseActionHandler = new MyCloseActionHandler(tabType, j, this, newGame, 0);
+				newGames.add(newGame);
+				add(newGame, open);
 			}
 			else if (tabType.equals("Edit Game")){
 				for(int i = 1; i < getTabCount(); i++)
 				{
-					System.out.println("Component at " + i + "'s name is " + getComponentAt(i).getName());
-					if(getComponentAt(i).getName().equals(Integer.toString(game.getGameID())))
+					if(getComponentAt(i).getName() != null)
 					{
-						setSelectedIndex(i);
-						exists = true;
-						System.out.println("Exists was set to true");
+						if(getComponentAt(i).getName().equals(Integer.toString(game.getGameID())))
+						{
+							setSelectedIndex(i);
+							exists = true;
+						}
 					}
 				}
 				if(exists == false)
@@ -165,12 +152,13 @@ public class MainView extends JTabbedPane {
 			else if (tabType.equals("Play Game")){
 				for(int i = 1; i < getTabCount(); i++)
 				{
-					System.out.println("Component at " + i + "'s name is " + getComponentAt(i).getName());
-					if(getComponentAt(i).getName().equals(Integer.toString(game.getGameID())))
+					if(getComponentAt(i).getName() != null)
 					{
-						setSelectedIndex(i);
-						exists = true;
-						System.out.println("Exists was set to true");
+						if(getComponentAt(i).getName().equals(Integer.toString(game.getGameID())))
+						{
+							setSelectedIndex(i);
+							exists = true;
+						}
 					}
 				}
 				if(exists == false)
@@ -184,12 +172,12 @@ public class MainView extends JTabbedPane {
 			else if (tabType.equals("View Estimates")){
 				for(int i = 1; i < getTabCount(); i++)
 				{
-					System.out.println("Component at " + i + "'s name is " + getComponentAt(i).getName());
-					if(getComponentAt(i).getName().equals(Integer.toString(game.getGameID())))
-					{
-						setSelectedIndex(i);
-						exists = true;
-						System.out.println("Exists was set to true");
+					if(getComponentAt(i).getName() != null){
+						if(getComponentAt(i).getName().equals(Integer.toString(game.getGameID())))
+						{
+							setSelectedIndex(i);
+							exists = true;
+						}
 					}
 				}
 				if(exists == false)
