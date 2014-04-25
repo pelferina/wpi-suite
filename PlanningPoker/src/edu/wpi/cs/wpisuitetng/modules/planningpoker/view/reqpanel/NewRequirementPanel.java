@@ -260,6 +260,18 @@ public class NewRequirementPanel extends JPanel {
 		priorityComboBox.setSelectedIndex(0);
 		typeComboBox.setSelectedIndex(0);
 	}
-
+	
+	public String getName(){
+		return nameField.getText();
+	}
+	public String getDescription(){
+		return descriptionField.getText();
+	}
+	public JButton getCreateRequirementButton(){
+		return CreateRequirementButton;
+	}
+	public JLabel getReqError(){
+		return reqError;
+	}
 }
 	
