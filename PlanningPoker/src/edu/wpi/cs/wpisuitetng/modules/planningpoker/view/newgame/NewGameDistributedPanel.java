@@ -36,7 +36,8 @@ public class NewGameDistributedPanel extends JSplitPane {
 	public NewGameReqPanel newGameReqPanel;
 	public NewRequirementPanel newRequirement;
 	public JButton close;
-	private GameSession editMode;
+	
+	final private int DIVIDER_LOCATION = 600;
 	
 	/**
 	 * Constructor for NewGameDistributedPanel
@@ -74,12 +75,12 @@ public class NewGameDistributedPanel extends JSplitPane {
 	private void setPanel(){
 		newRequirement = new NewRequirementPanel(this);
 		addImpl(newGameInputPanel, JSplitPane.LEFT, 1);
-		final Dimension minimumSize = new Dimension(600, 200);
+		final Dimension minimumSize = new Dimension(DIVIDER_LOCATION, 200);
 		leftComponent.setMinimumSize(minimumSize);
 		addImpl(newGameReqPanel, JSplitPane.RIGHT, 2);
 		newGameReqPanel.setVisible(true);
 		newRequirement.setVisible(false);
-		setDividerLocation(500);
+		setDividerLocation(DIVIDER_LOCATION);
 	}
 	
 	public List<Requirement> getSelected(){
@@ -91,7 +92,7 @@ public class NewGameDistributedPanel extends JSplitPane {
 	public void newReq() {
 		addImpl(newGameInputPanel, JSplitPane.LEFT, 1);
 		addImpl(newRequirement, JSplitPane.RIGHT, 3);
-		setDividerLocation(500);
+		setDividerLocation(DIVIDER_LOCATION);
 		newRequirement.setVisible(true);
 		newGameReqPanel.setVisible(false);
 	}
@@ -108,7 +109,7 @@ public class NewGameDistributedPanel extends JSplitPane {
 	public void closeReq(){
 		addImpl(newGameInputPanel, JSplitPane.LEFT, 1);
 		addImpl(newGameReqPanel, JSplitPane.RIGHT, 2);
-		setDividerLocation(500);
+		setDividerLocation(DIVIDER_LOCATION);
 		newRequirement.clearFields();
 		newRequirement.setVisible(false);
 		newGameReqPanel.setVisible(true);

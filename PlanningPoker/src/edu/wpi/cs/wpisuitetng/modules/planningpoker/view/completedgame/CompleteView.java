@@ -86,11 +86,22 @@ public class CompleteView extends JSplitPane {
 	public VoteData getVoteData(){
 		return voteData;
 	}
+<<<<<<< HEAD
 	/**
 	 * Gets the next Requirement
 	 */
 	public void nextRequirement() {
 		gameData.nextRequirement();
+=======
+
+	public void nextRequirement(int estimate) {
+		gameData.nextRequirement(estimate);
+		
+	}
+
+	public void sendEstimatesToTable(List<Integer> finalVote) {
+		gameData.receiveFinalVotes(finalVote);
+>>>>>>> 907a5c96f4a12822dd6672ea753efbfb790098e5
 		
 	}
 }

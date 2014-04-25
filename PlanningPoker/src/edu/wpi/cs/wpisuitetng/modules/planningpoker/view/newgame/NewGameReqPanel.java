@@ -13,18 +13,13 @@ import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.reqpanel.NewRequirementPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
 
@@ -42,7 +37,6 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	private List<Requirement> selected = new ArrayList<Requirement>();
 	private final JTable unselectedTable;
 	private final JTable selectedTable;
-	private Timer refresh;
 	private List<Requirement> reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
 	private NewGameDistributedPanel newGamePanel;
 	// Declarations and initializations of GUI components
@@ -94,8 +88,9 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		final List<Requirement> reqsToRemove = new ArrayList<Requirement>();
 		final List<Integer> selectedIDs = gameSession.getGameReqs();
 		
-		//Removes the selected reqs from the list of all the requirements. This is done to display only the requirements
-		//that are not in the game in the top table.
+		/* Removes the selected reqs from the list of all the requirements. This is done to display only the requirements
+		 * that are not in the game in the top table.
+		 */
 		
 		for (int i = 0; i < reqList.size(); i++){
 			Requirement req = reqList.get(i);
@@ -125,18 +120,17 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 
 		// Observers
 
-		//TODO This button will allow the user to create a new requirement upon clicking on it
 		btnAddReq.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
 				newGamePanel.newReq();
-				//ViewEventController.getInstance().newReqTab(new GameSession(new String(), new String(), 0, 0, new Date(), new ArrayList<Integer>()));
 			}
 
 		});
 
-		//Adds the selected requirement in the unselected table and puts it into the selected table, as well as the list of 
-		//selected requirements.
+		/*Adds the selected requirement in the unselected table and puts it into the selected table, as well as the list of
+		 * selected requirements.
+		 */
 		btnAddOne.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
@@ -260,16 +254,15 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		springLayout.putConstraint(SpringLayout.NORTH, unselected_table, 10, SpringLayout.SOUTH, lblRequirementsAvailable);
 
 		// Spring Layout of Buttons
-		//springLayout.putConstraint(SpringLayout.NORTH, btnAddReq, 10, SpringLayout.SOUTH, unselected_table);
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnAddReq, 0, SpringLayout.VERTICAL_CENTER, this);
 		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, btnAddReq, 0, SpringLayout.HORIZONTAL_CENTER, this);
-		springLayout.putConstraint(SpringLayout.NORTH, btnRemoveOne, 0, SpringLayout.NORTH, btnAddReq); // Move one up
+		springLayout.putConstraint(SpringLayout.NORTH, btnRemoveOne, 0, SpringLayout.NORTH, btnAddReq);
 		springLayout.putConstraint(SpringLayout.WEST, btnRemoveOne, 15, SpringLayout.EAST, btnAddReq); 
-		springLayout.putConstraint(SpringLayout.NORTH, btnRemoveAll, 0, SpringLayout.NORTH, btnRemoveOne); // Move all up
+		springLayout.putConstraint(SpringLayout.NORTH, btnRemoveAll, 0, SpringLayout.NORTH, btnRemoveOne);
 		springLayout.putConstraint(SpringLayout.WEST, btnRemoveAll, 0, SpringLayout.EAST, btnRemoveOne);
-		springLayout.putConstraint(SpringLayout.NORTH, btnAddAll, 0, SpringLayout.NORTH, btnAddReq); // Move all down
+		springLayout.putConstraint(SpringLayout.NORTH, btnAddAll, 0, SpringLayout.NORTH, btnAddReq);
 		springLayout.putConstraint(SpringLayout.EAST, btnAddAll, -15, SpringLayout.WEST, btnAddReq);
-		springLayout.putConstraint(SpringLayout.NORTH, btnAddOne, 0, SpringLayout.NORTH, btnAddReq); // Move one down
+		springLayout.putConstraint(SpringLayout.NORTH, btnAddOne, 0, SpringLayout.NORTH, btnAddReq);
 		springLayout.putConstraint(SpringLayout.EAST, btnAddOne, 0, SpringLayout.WEST, btnAddAll);
 
 		// Spring Layout of lblRequirementsSelected

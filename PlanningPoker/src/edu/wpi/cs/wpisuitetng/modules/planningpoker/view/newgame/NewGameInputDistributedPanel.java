@@ -58,7 +58,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 @SuppressWarnings("serial")
 public class NewGameInputDistributedPanel extends JPanel {
 
-	// TODO get rid of this, switch to GregorianCalendar data type
 	private Calendar currentDate; 
 
 	private NewGameDistributedPanel newGameP;
@@ -149,7 +148,6 @@ public class NewGameInputDistributedPanel extends JPanel {
 		if (gameSession.getGameStatus().equals(GameStatus.ACTIVE)){
 			activateGameButton.setVisible(false);
 		}
-//		System.out.println("Editing Game: "+ gameSession.getGameName());
 	}
 
 	/**
@@ -223,11 +221,11 @@ public class NewGameInputDistributedPanel extends JPanel {
 					datePicker.repaint();
 					if(!editMode)
 					{
-						// Initialize the deadline
 						initializeDeadline();
 					}
 					setupDeadlineActionListeners();
 				} else {
+					deadlineError.setVisible(false);
 					setDeadlineVisibility(false);
 				}
 			}
@@ -240,7 +238,6 @@ public class NewGameInputDistributedPanel extends JPanel {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
-					// Initialize the deck
 					initializeDeckComboBox();
 					setDeckVisibility(true);		        
 				} else {
@@ -272,6 +269,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 				}
 				else
 				{
+					removeErrorLabels();
 					nameError.setVisible(true);		
 					setSaveGameButtonVisibility(false);
 				}
@@ -295,7 +293,6 @@ public class NewGameInputDistributedPanel extends JPanel {
 			}
 		});
 
-		//TODO: isNew? for deckbox
 		//Adds an action listener to the deck box so that if the deck combo box to set isNew to false
 		//if it is changed.		
 		deckBox.addActionListener(new ActionListener() {
@@ -338,7 +335,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 			}
 		});
 	}
-	
+
 	private void saveSelectedReqs(){
 		selectionsMade.clear();
 		final List<Requirement> reqsSelected = newGameP.getSelected();
@@ -400,8 +397,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 				currentGameSession.setDeckId(-1);
 			}
 			final UpdateGameController msgr = new UpdateGameController();
-			//			System.out.println("Attempting to send game to database"); // TODO: also remove this
-			msgr.sendGame(currentGameSession); //TODO: This is sending an error
+			msgr.sendGame(currentGameSession);
 		}		
 	}
 	/**
@@ -411,7 +407,6 @@ public class NewGameInputDistributedPanel extends JPanel {
 	 */
 	void startCanActivateCheckerTimer()
 	{
-		//System.out.println("activating timer!");
 		canActivateChecker = new Timer(100, new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				if (!editMode){
@@ -433,7 +428,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 				//Display Update button if game has been changed in edit mode
 				if(editMode && anythingChanged())
 				{
-					
+
 					newGameP.isNew = false;
 					saveGameButton.setEnabled(true);
 				}
@@ -446,7 +441,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		});
 		canActivateChecker.start();
 	}
-	
+
 	/**
 	 * 
 	 * stops the canActivateChecker
@@ -464,6 +459,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 	{
 		//Displays the cannot have a game without requirements error if no requirements were chosen
 		if (newGameP.getSelected().isEmpty()){
+			removeErrorLabels();
 			reqError.setVisible(true);
 			return false;
 		}
@@ -485,13 +481,14 @@ public class NewGameInputDistributedPanel extends JPanel {
 		setDeadlineDate();
 		hourTime = getHour(deadlineHourComboBox.getSelectedIndex() + 1);
 		minuteTime = deadlineMinuteComboBox.getSelectedIndex();
-		final Calendar deadline = Calendar.getInstance();
+		Calendar deadline = (Calendar) currentDate.clone();
 		deadline.set(deadlineYear, deadlineMonth, deadlineDay, hourTime, minuteTime);		 
 		if (deadline.after(currentDate)){
 			deadlineError.setVisible(false);
 			return true;
 		}
 		else {
+			removeErrorLabels();
 			deadlineError.setVisible(true);
 			return false;
 		}
@@ -676,13 +673,13 @@ public class NewGameInputDistributedPanel extends JPanel {
 
 	private void initializeEditMode()
 	{
-		
+
 		//Gets the deadline from the game
 		if (currentGameSession.getEndDate() != null){
 
 			deadlineCheckBox.setSelected(true);
 			setDeadlineVisibility(true);
-
+			
 			final int year_index = currentGameSession.getEndDate().getYear() + 1900;
 
 			final int month_index = currentGameSession.getEndDate().getMonth();
@@ -694,8 +691,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 
 			setDeadlineDate();
 			setupDeadlineActionListeners();
-			setupDeadlineTime();
-			//System.out.println("T:" + currentGameSession.getEndDate().getHours());			
+			setupDeadlineTime();			
 			//	Sets the hour and minute combo boxes to the hour and minute in the game's deadline
 			if (currentGameSession.getEndDate().getHours() > 11){
 				deadlineHourComboBox.setSelectedIndex(currentGameSession.getEndDate().getHours() - 13);
@@ -763,19 +759,17 @@ public class NewGameInputDistributedPanel extends JPanel {
 		}
 		return true;
 	}
-	
+
 	private boolean anythingChanged() {
 		saveSelectedReqs();
 
-//		if(currentGameSession.getGameStatus() == GameStatus.DRAFT)
-	//	{	
-			// Check if the user has changed the name
-			if (!(nameTextField.getText().equals(currentGameSession.getGameName()))){
-				return true;}
-			// Check if the user has changed the description
-			if (!(descriptionTextField.getText().equals(currentGameSession.getGameDescription()))){
-				return true;}
-		//}
+		// Check if the user has changed the name
+		if (!(nameTextField.getText().equals(currentGameSession.getGameName()))){
+			return true;}
+		// Check if the user has changed the description
+		if (!(descriptionTextField.getText().equals(currentGameSession.getGameDescription()))){
+			return true;}
+
 		// Check if the user has changed the deadline
 		@SuppressWarnings("deprecation")
 
@@ -795,20 +789,26 @@ public class NewGameInputDistributedPanel extends JPanel {
 		}
 		return false;
 	}
-	//TODO: Account for midnight	
+	//TODO: Test midnight deadline -- this should be working, but we haven't been able to go past midnight or noon	
 	//Sets the hour based on the AM or PM combo box selection
 	private int getHour(int hour){
 		if (isAM){
+			if (hour == 12){
+				return hour-12;
+			}
 			return hour;
 		}
 		else {
+			if (hour == 12){
+				return hour;
+			}
 			return hour + 12;
 		}
 	}
 
 	//This function checks to see if everything necessary for activating a game has been entered by the user.
 	private boolean canActivate(){
-		if (nameInputted() && descInputted() && hasReqs()){
+		if (nameInputted() && hasReqs()){
 			//Activate if deadline checkbox is not selected
 			if(!deadlineCheckBox.isSelected()){
 				return true;
@@ -832,6 +832,17 @@ public class NewGameInputDistributedPanel extends JPanel {
 	}
 
 	/**
+	 * removes all error labels
+	 */
+	private void removeErrorLabels(){
+		hourError.setVisible(false);
+		minuteError.setVisible(false);
+		deadlineError.setVisible(false);
+		nameError.setVisible(false);
+		reqError.setVisible(false);
+	}
+
+	/**
 	 * a lot of Window Builder generated UI
 	 * for setting the NewGameInputPage
 	 */
@@ -840,7 +851,6 @@ public class NewGameInputDistributedPanel extends JPanel {
 		ButtonGroup AMPMgroup = new ButtonGroup();
 		AMPMgroup.add(AMButton);
 		AMPMgroup.add(PMButton);
-		//		userList.setListData(listValue);
 		final SpringLayout springLayout = new SpringLayout();
 
 		//Spring layout for the nameLabel
