@@ -14,6 +14,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -68,6 +70,8 @@ public class PlayGame extends JPanel implements Refreshable{
 	private GameView gv;
 	private GameSession currentGame;
 	private boolean hasVoted = false;
+	private TimerTask setFocus;
+	private Timer setFocusTimer;
 	
 	/**
 	 * Constructor for a PlayGame panel
