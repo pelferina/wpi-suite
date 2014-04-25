@@ -95,11 +95,7 @@ public class ToolbarView  extends DefaultToolbarView {
 	}
 	
 	/**
-	 * This method sets the button to read "activate"
-	 *
-	 * Enables the end game button, and add a action listener
-	 * to this game
-	 * @param gameID 
+	 * Makes the editGameButton invisible
 	 */
 	public void makeEditGameButtonInvisible(){
 		ownerButton.makeEditGameButtonInvisible();

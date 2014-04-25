@@ -28,8 +28,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 
 /**
  * Button for ending a game
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 @SuppressWarnings("serial")
 public class OwnerButtonPanel extends ToolbarGroupView{
@@ -83,7 +83,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	/**
 	 * Enables the end game button, and add a action listener
 	 * to this game
-	 * @param gameID 
+	 * @param game The GameSession to add a listener to
 	 */
 	public void makeEndGameButtonVisible(GameSession game){
 		ownerButton.setVisible(true);
@@ -104,7 +104,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	/**
 	 * Enables the activate game button, and add a action listener
 	 * to this game
-	 * @param gameID 
+	 * @param game the GameSession to add a listener to 
 	 */
 	public void makeActivateGameButtonVisible(GameSession game){
 		ownerButton.setVisible(true);
@@ -126,7 +126,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	/**
 	 * Disable the activate game button, and add a action listener
 	 * to this game
-	 * @param gameID 
+	 * @param game The game to add a listener to
 	 */
 	public void makeActivateGameButtonDisable(GameSession game){
 		ownerButton.setVisible(true);
@@ -147,7 +147,6 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	/**
 	 * Disable the activate game button, and add a action listener
 	 * to this game
-	 * @param gameID 
 	 */
 	public void makeActivateGameButtonDisable(){
 		ownerButton.setVisible(true);
@@ -159,7 +158,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	/**
 	 * Enables the archive game button, and add a action listener
 	 * to this game
-	 * @param gameID 
+	 * @param game The GameSession to add a listener to
 	 */
 	public void makeArchiveGameButtonVisible(GameSession game){
 		ownerButton.setVisible(true);

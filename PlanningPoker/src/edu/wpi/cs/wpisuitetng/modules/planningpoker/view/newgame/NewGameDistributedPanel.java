@@ -24,8 +24,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 /**
  * The panel for creating a new live Planning Poker game, along with fields
  * that have the parameters for what a new game should have.
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 @SuppressWarnings("serial")
 
@@ -86,7 +86,9 @@ public class NewGameDistributedPanel extends JSplitPane {
 	public List<Requirement> getSelected(){
 		return newGameReqPanel.getSelected();
 	}
-	
+	/**
+	 * SetUp method for making a newReq panel
+	 */
 	public void newReq() {
 		addImpl(newGameInputPanel, JSplitPane.LEFT, 1);
 		addImpl(newRequirement, JSplitPane.RIGHT, 3);
@@ -94,11 +96,16 @@ public class NewGameDistributedPanel extends JSplitPane {
 		newRequirement.setVisible(true);
 		newGameReqPanel.setVisible(false);
 	}
-	
+	/**
+	 * Sends the created Req
+	 * @param r The Requirement to send
+	 */
 	public void sendCreatedReq(Requirement r){
 		newGameReqPanel.receiveCreatedReq(r);
 	}
-	
+	/**
+	 * Closes the create requirement panel
+	 */
 	public void closeReq(){
 		addImpl(newGameInputPanel, JSplitPane.LEFT, 1);
 		addImpl(newGameReqPanel, JSplitPane.RIGHT, 2);
@@ -107,7 +114,9 @@ public class NewGameDistributedPanel extends JSplitPane {
 		newRequirement.setVisible(false);
 		newGameReqPanel.setVisible(true);
 	}
-	
+	/**
+	 * Stops the timer in newGameInputPanel
+	 */
 	public void stopTimer(){
 		newGameInputPanel.stopTimer();
 	}

@@ -31,8 +31,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
  * Button for ending a game
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 public class UserButtonPanel extends ToolbarGroupView{
 	
@@ -75,7 +75,7 @@ public class UserButtonPanel extends ToolbarGroupView{
 	/**
 	 * Enables the vote game button, and add a action listener
 	 * to this game
-	 * @param gameID 
+	 * @param game The GameSession to add a listener to
 	 */
 	public void makeVoteGameButtonVisible(final GameSession game){
 		userButton.setVisible(true);
@@ -101,7 +101,7 @@ public class UserButtonPanel extends ToolbarGroupView{
 	/**
 	 * Enables the view game button, and add a action listener
 	 * to this game
-	 * @param gameID 
+	 * @param game the GameSession to add a listener to
 	 */
 	public void makeViewGameButtonVisible(final GameSession game){
 		userButton.setVisible(true);

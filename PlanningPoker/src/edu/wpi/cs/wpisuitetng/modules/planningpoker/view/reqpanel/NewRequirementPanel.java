@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: Team Cosmic Latte
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.reqpanel;
 
 import javax.swing.JButton;
@@ -29,7 +38,7 @@ import javax.swing.JComboBox;
  * This controls adding a new requirement from the new game tab.
  * 
  * @author FFF8E7
- *@version $Revision: 1.0 $
+ * @version 6
  */
 public class NewRequirementPanel extends JPanel {
 	private Requirement currentRequirement;
@@ -47,8 +56,8 @@ public class NewRequirementPanel extends JPanel {
 	private final JLabel reqError = new JLabel("Can not have a requirement with no name or description");
 	
 	/**
-	 * Creates the tab for the new requirement to be specified and created
-	 * @param btnClose
+	 * Constructor for NewRequirementPanel
+	 * @param ngdp The NewGameDistributedPanel to add this to
 	 */
 	public NewRequirementPanel(NewGameDistributedPanel ngdp){
 		CreateRequirementButton.setEnabled(false);
@@ -213,7 +222,7 @@ public class NewRequirementPanel extends JPanel {
 		// Extract the name, release number, and description from the GUI fields
 		String stringName = nameField.getText();
 
-		String stringDescription = this.descriptionField.getText();
+		String stringDescription = descriptionField.getText();
 
 		String stringIteration = "Backlog";
 		

@@ -34,7 +34,11 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 import javax.swing.SpringLayout;
 
 import java.awt.Font;
-
+/**
+ * The GameData class
+ * @author FFF8E7
+ * @version 6
+ */
 public class GameData extends JPanel{
 
 	private final JLabel gameNameLabel = new JLabel("Game Name:");
@@ -54,8 +58,8 @@ public class GameData extends JPanel{
 	
 	/**
 	 * Constructor for the GameData class
-	 * @param gs, the completed game session that is going to be viewed
-	 * @param cv, the CompleteView that called the constructor for GameData
+	 * @param gs The completed game session that is going to be viewed
+	 * @param cv The CompleteView that called the constructor for GameData
 	 */
 	public GameData(GameSession gs, CompleteView cv){
 		completeView = cv;
@@ -163,8 +167,8 @@ public class GameData extends JPanel{
 	
 	/**
 	 * Returns the index of the given requirement id
-	 * @param id, the requirement id
-	 * @return
+	 * @param id The requirement id
+	 * @return The requirement index as integer
 	 */
 	public int getReqIndex(int id){
 		return requirementIndexHash.get(id);
@@ -186,6 +190,10 @@ public class GameData extends JPanel{
 		this.descriptionTextArea = descriptionTextArea;
 	}
 
+	/**
+	 * Selects the next requirement to be voted on
+	 * @param estimate The estimate getting passed along
+	 */
 	public void nextRequirement(int estimate) {
 		int selected = gameReqsTable.getSelectedRow();
 		gameReqsTable.setValueAt(estimate, selected, 2);

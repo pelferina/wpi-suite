@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: Team Cosmic Latte
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import java.awt.event.ActionEvent;
@@ -18,6 +27,11 @@ public class GetVoteController extends RefreshableController implements ActionLi
 	private static GetVoteController instance = null;
 	private final VoteModel model = VoteModel.getInstance();
 
+	/**
+	 * This returns the instance of the GetVoteController
+	 * 
+	 * @return the GetVoteController instance
+	 */
 	public static GetVoteController getInstance(){
 		if (instance==null)
 			instance = new GetVoteController();
@@ -38,7 +52,7 @@ public class GetVoteController extends RefreshableController implements ActionLi
 	 * Add the given votes to the local model (they were received from the core).
 	 * This method is called by the GetGamesRequestObserver
 	 * 
-	 * @param games an array of games received from the server
+	 * @param votes an array of games received from the server, as Vote
 	 */
 	public void receivedGames(Vote[] votes) {
 		// Empty the local model to eliminate duplications

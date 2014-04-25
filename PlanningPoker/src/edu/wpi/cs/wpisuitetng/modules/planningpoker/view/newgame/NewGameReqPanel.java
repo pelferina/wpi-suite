@@ -27,8 +27,8 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  * This class shows the requirements that are currently in the game
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 @SuppressWarnings("serial")
 public class NewGameReqPanel extends JPanel implements Refreshable {
@@ -51,10 +51,9 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	JScrollPane selected_table = new JScrollPane();
 
 	/**
-	 * 
-	 * @param requirements, the current requirements in the database
+	 * Constructor for NewGameReqPanel
+	 * @param ngdp The NewGamePanel it is a part of
 	 */
-	//Constructor for new game tab
 	public NewGameReqPanel(NewGameDistributedPanel ngdp) {
 		newGamePanel = ngdp;
 		unselectedTable = new JTable() {
@@ -75,11 +74,10 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	}
 
 	/**
-	 * Constructor for the new game requirements panel
-	 *
-	 * @param gameSession the game to be edited
+	 * Constructor for NewGameReqPanel
+	 * @param ngdp The newGameDistributedPanel it is a part of
+	 * @param gameSession The GameSession it relates to
 	 */
-	//Constructor for edit games tab
 	public NewGameReqPanel(NewGameDistributedPanel ngdp, GameSession gameSession) {
 
 		newGamePanel = ngdp;
@@ -410,7 +408,10 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		// TODO Auto-generated method stub
 		
 	}
-	
+	/**
+	 * Receives a newly created Requirement
+	 * @param r The Requirement to be received
+	 */
 	public void receiveCreatedReq(Requirement r){
 		selected.add(r);
 		final DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
@@ -419,8 +420,8 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	}
 	/**
 	 * Function to remove the first element in the array
-	 * @param Array, the array that element is removed from 
-	 * @return int[], newly shortened array
+	 * @param Array The array that element is removed from 
+	 * @return int[] The newly shortened array
 	 */
 	public int[] removeFirst(int[] Array){
 		int[] newArray = new int[Array.length-1];

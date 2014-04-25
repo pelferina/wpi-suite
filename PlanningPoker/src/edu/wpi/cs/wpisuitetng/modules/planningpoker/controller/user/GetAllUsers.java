@@ -19,8 +19,8 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 /**
  * This class deals with instances of the User
  * 
- * @author CosmicLatte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 public class GetAllUsers {
 	private static GetAllUsers instance = null;
@@ -49,6 +49,7 @@ public class GetAllUsers {
 				}	
 			}
 			catch(RuntimeException exception){
+				System.err.println("Exception thrown in GetAllUsers:" + exception);
 			}
 		}
 		else{

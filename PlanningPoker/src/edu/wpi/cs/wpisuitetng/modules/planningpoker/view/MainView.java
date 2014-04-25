@@ -38,7 +38,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistribu
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.reqpanel.NewRequirementPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetAllUsers;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -46,8 +45,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 
 /**
  * Main view of the PlanningPoker module
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  *
  */
 @SuppressWarnings("serial")
@@ -92,7 +91,10 @@ public class MainView extends JTabbedPane {
 		{
 			addTab("Edit Game", gameSession);
 		}
-		
+		/**
+		 * function to add a ReqTab
+		 * @param gs The GameSession to add the tab to
+		 */
 		public void addReqTab(GameSession gs){
 			addTab("Req Tab", gs);
 		}
@@ -121,36 +123,23 @@ public class MainView extends JTabbedPane {
 			openTabs.add(newGameTabs, j);
 			final JButton btnClose = new JButton("x");
 			final List<Requirement> reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
-			System.out.println("Game ID is " + Integer.toString(game.getGameID()));
 			if (tabType.equals("New Game")){
-				for(int i = 1; i < getTabCount(); i++)
-				{
-					System.out.println("Component at " + i + "'s name is " + getComponentAt(i).getName());
-					if(getComponentAt(i).getName().equals(Integer.toString(game.getGameID())))
-					{
-						setSelectedIndex(i);
-						exists = true;
-						System.out.println("Exists was set to true");
-					}
-				}
-				if(exists == false)
-				{
-					final NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose);
-					newGame.setName(Integer.toString(game.getGameID()));
-					myCloseActionHandler = new MyCloseActionHandler(tabType, j, this, newGame, 0);
-					newGames.add(newGame);
-					add(newGame, open);
-				}
+				final NewGameDistributedPanel newGame = new NewGameDistributedPanel(reqs, btnClose);
+				newGame.setName(Integer.toString(game.getGameID()));
+				myCloseActionHandler = new MyCloseActionHandler(tabType, j, this, newGame, 0);
+				newGames.add(newGame);
+				add(newGame, open);
 			}
 			else if (tabType.equals("Edit Game")){
 				for(int i = 1; i < getTabCount(); i++)
 				{
-					System.out.println("Component at " + i + "'s name is " + getComponentAt(i).getName());
-					if(getComponentAt(i).getName().equals(Integer.toString(game.getGameID())))
+					if(getComponentAt(i).getName() != null)
 					{
-						setSelectedIndex(i);
-						exists = true;
-						System.out.println("Exists was set to true");
+						if(getComponentAt(i).getName().equals(Integer.toString(game.getGameID())))
+						{
+							setSelectedIndex(i);
+							exists = true;
+						}
 					}
 				}
 				if(exists == false)
@@ -165,12 +154,13 @@ public class MainView extends JTabbedPane {
 			else if (tabType.equals("Play Game")){
 				for(int i = 1; i < getTabCount(); i++)
 				{
-					System.out.println("Component at " + i + "'s name is " + getComponentAt(i).getName());
-					if(getComponentAt(i).getName().equals(Integer.toString(game.getGameID())))
+					if(getComponentAt(i).getName() != null)
 					{
-						setSelectedIndex(i);
-						exists = true;
-						System.out.println("Exists was set to true");
+						if(getComponentAt(i).getName().equals(Integer.toString(game.getGameID())))
+						{
+							setSelectedIndex(i);
+							exists = true;
+						}
 					}
 				}
 				if(exists == false)
@@ -184,12 +174,12 @@ public class MainView extends JTabbedPane {
 			else if (tabType.equals("View Estimates")){
 				for(int i = 1; i < getTabCount(); i++)
 				{
-					System.out.println("Component at " + i + "'s name is " + getComponentAt(i).getName());
-					if(getComponentAt(i).getName().equals(Integer.toString(game.getGameID())))
-					{
-						setSelectedIndex(i);
-						exists = true;
-						System.out.println("Exists was set to true");
+					if(getComponentAt(i).getName() != null){
+						if(getComponentAt(i).getName().equals(Integer.toString(game.getGameID())))
+						{
+							setSelectedIndex(i);
+							exists = true;
+						}
 					}
 				}
 				if(exists == false)
@@ -309,7 +299,14 @@ public class MainView extends JTabbedPane {
 	        this.type = type;
 	        this.mv = mv;
 	    }
-	    
+	    /**
+	     * Constructor for the closeActionHandler
+	     * @param tabName name of the tab being closed
+	     * @param index index of that tab on the tab list
+	     * @param mv the MainView
+	     * @param gv the GameView
+	     * @param type integer for type
+	     */
 	    public MyCloseActionHandler(String tabName, int index, MainView mv, NewRequirementPanel rp, int type) {
 	        this.tabName = tabName;
 	        this.index = index;
@@ -333,7 +330,14 @@ public class MainView extends JTabbedPane {
 	    	this.type = type;
 	    	this.mv = mv;
 	    }
-	    
+	    /**
+	     * constructor for CloseActionHandler 
+	     * @param tabName name of the tab being closed
+	     * @param index index of that tab on the tab list
+	     * @param mv the MainView
+	     * @param userPreferences the UserPreferencesPanel
+	     * @param type integer for type
+	     */
 	    public MyCloseActionHandler(String tabName, int index, MainView mv, CompleteView cv, int type) {
 	        this.tabName = tabName;
 	        this.index = index;

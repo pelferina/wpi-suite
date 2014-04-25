@@ -36,8 +36,8 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 /**
  * Panel to add an email address
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 @SuppressWarnings("serial")
 public class PreferencesPanel extends JPanel {
@@ -56,7 +56,7 @@ public class PreferencesPanel extends JPanel {
 	
 	/**
 	 * Constructor to create panel with close button
-	 * @\param btnClose button to close the panel
+	 * @param btnClose button to close the panel
 	 */
 	public PreferencesPanel(JButton btnClose){
 		setupPanel();
@@ -135,11 +135,16 @@ public class PreferencesPanel extends JPanel {
 		}
 		
 	}
-	
+	/**
+	 * Enables Email Capabilities
+	 */
 	public void makeEmailEnable(){
 		this.submitButton.setEnabled(true);
 		this.emailField.setEnabled(true);
 	}
+	/**
+	 * Disables Email Capabilities
+	 */
 	public void makeEmailDisable(){
 		this.submitButton.setEnabled(false);
 		this.emailField.setEnabled(false);
@@ -162,6 +167,7 @@ class GetEmailRequestObserver implements RequestObserver {
 	
 	/**
 	 * This constructor populates the controller variable with the instance of GetEmailController
+	 * @param panel The panel to look at
 	 */
 	public GetEmailRequestObserver(PreferencesPanel panel) {
 		this.panel = panel;
@@ -189,7 +195,6 @@ class GetEmailRequestObserver implements RequestObserver {
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
 		if(exception == null) System.err.println("FAILURE in GetEmailRequestObserver");
-		;//exception.printStackTrace();
 	}
 
 }

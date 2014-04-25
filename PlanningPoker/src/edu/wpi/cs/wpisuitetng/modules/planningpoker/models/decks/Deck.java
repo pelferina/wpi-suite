@@ -43,9 +43,9 @@ public class Deck extends AbstractModel {
 	 * @param id the deck id number
 	 * @param cards the cards that should be in the deck
 	 */
-	public Deck(int id, String name, List<Integer> cards)
+	public Deck(String name, List<Integer> cards)
 	{
-		this.id = id;
+		this.id = DeckModel.getInstance().getNextID();
 		this.name = name;
 		this.cards = cards;
 	}
@@ -74,8 +74,19 @@ public class Deck extends AbstractModel {
 		return id;
 	}
 	
+	/**
+	 * @return the name
+	 */
 	public String getName(){
 		return name;
+	}
+	
+	/**
+	 * return the String representation of this deck
+	 */
+	public String toString(){
+		String s = "Deck ID: " + id + "; name: " + name + "; cards:" + cards.toString();
+		return s;
 	}
 
 	/**

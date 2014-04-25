@@ -18,8 +18,8 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 /**
  * This class deals with instances of the User
  * 
- * @author CosmicLatte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 public class GetCurrentUser {
 	private static GetCurrentUser instance = null;
@@ -48,6 +48,7 @@ public class GetCurrentUser {
 				}	
 			}
 			catch(RuntimeException exception){
+				System.err.println("Exception thrown in GetCurrentUser:" +exception);
 			}
 		}
 		else{
