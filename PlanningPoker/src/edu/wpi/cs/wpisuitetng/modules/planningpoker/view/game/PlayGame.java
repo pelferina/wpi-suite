@@ -12,8 +12,13 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -22,6 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddVoteController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
@@ -64,6 +70,8 @@ public class PlayGame extends JPanel{
 	private GameView gv;
 	private GameSession currentGame;
 	private boolean hasVoted = false;
+	private TimerTask setFocus;
+	private Timer setFocusTimer;
 	
 	/**
 	 * Constructor for a PlayGame panel
@@ -71,6 +79,18 @@ public class PlayGame extends JPanel{
 	 * @param agv the active game view
 	 */
 	public PlayGame(GameSession gameToPlay, GameView agv){
+		setFocus = new TimerTask(){
+
+			@Override
+			public void run() {
+				estimateTextField.requestFocusInWindow();
+				getRootPane().setDefaultButton(voteButton);
+			}
+			
+		};
+		setFocusTimer = new Timer();
+		setFocusTimer.schedule(setFocus, 100);
+		
 		currentGame = gameToPlay;
 		gameReqs = currentGame.getGameReqs();
 		notAnIntegerError.setVisible(false);
@@ -111,6 +131,7 @@ public class PlayGame extends JPanel{
 		if (currentReq != null){
 			reqNameTextField.setText(currentReq.getName());
 			reqDescTextArea.setText(currentReq.getDescription());
+			estimateTextField.requestFocusInWindow();
 		}
 		gameDescTextArea.setText(currentGame.getGameDescription());
 		gameNameTextField.setEditable(false);
@@ -162,6 +183,7 @@ public class PlayGame extends JPanel{
 					System.out.println(userEstimates.getVote());
 					sendEstimatetoGameView(currentReq, estimate);
 				}
+				estimateTextField.requestFocusInWindow();
 				gv.isNew = false;
 			}
 			
@@ -303,6 +325,7 @@ public class PlayGame extends JPanel{
 		} else {
 			estimateTextField.setText("");
 		}
+		estimateTextField.requestFocusInWindow();
 	}
 	
 
@@ -352,5 +375,9 @@ public class PlayGame extends JPanel{
 			}
 		}
 		submit.setEnabled(canSubmit);
+	}
+	
+	public void setFocusOnEstimate(){
+		estimateTextField.requestFocusInWindow();
 	}
 }

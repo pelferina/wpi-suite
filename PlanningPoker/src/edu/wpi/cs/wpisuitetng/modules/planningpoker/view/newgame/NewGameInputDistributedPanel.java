@@ -624,7 +624,18 @@ public class NewGameInputDistributedPanel extends JPanel {
 		hourTime = Integer.parseInt(hour);
 		minuteTime = Integer.parseInt(minute) + 1;
 		deadlineHourComboBox.setSelectedIndex(hourTime-1);
-		deadlineMinuteComboBox.setSelectedIndex(minuteTime);
+		if (minuteTime != 60){
+			deadlineMinuteComboBox.setSelectedIndex(minuteTime);
+		}
+		else{
+			deadlineMinuteComboBox.setSelectedIndex(0);
+			if (hourTime != 11){
+				deadlineHourComboBox.setSelectedIndex(hourTime);
+			}
+			else {
+				deadlineHourComboBox.setSelectedIndex(0);
+			}
+		}
 		if (currentDate.get(Calendar.AM_PM) == Calendar.PM) {
 			PMButton.setSelected(true);
 			isAM = false;
