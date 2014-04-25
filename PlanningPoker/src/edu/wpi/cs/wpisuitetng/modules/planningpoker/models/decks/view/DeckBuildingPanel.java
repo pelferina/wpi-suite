@@ -22,6 +22,8 @@ import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.DeckCard;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameCard;
 
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
@@ -53,8 +55,6 @@ public class DeckBuildingPanel extends JPanel {
 	 */
 	public DeckBuildingPanel(){
 		
-		// Sets up Combo Box for decks
-		setUpDeckList();
 		
 		// Sets a consistent font for all buttons
 		Font size = new Font(btnSave.getFont().getName(), btnSave.getFont().getStyle(), 10);
@@ -72,8 +72,7 @@ public class DeckBuildingPanel extends JPanel {
 		
 		// Sets up cardArea
 		cardArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-		
-		
+	
 		// All listeners and their functions
 		btnSave.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -83,7 +82,10 @@ public class DeckBuildingPanel extends JPanel {
 		
 		btnAddCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO: Action corresponding to this
+				GameCard card = new GameCard(Integer.parseInt(numberField.getText()));
+				cardPanel.add(card);
+				cardPanel.revalidate();
+				//TODO: Sort cards by value
 			}
 		});
 		
@@ -133,7 +135,7 @@ public class DeckBuildingPanel extends JPanel {
 	
 		//Spring layout for cardArea
 		springLayout.putConstraint(SpringLayout.NORTH, cardArea, 10, SpringLayout.SOUTH, nameField);
-		springLayout.putConstraint(SpringLayout.SOUTH, cardArea, 130, SpringLayout.NORTH, cardArea);
+		springLayout.putConstraint(SpringLayout.SOUTH, cardArea, 140, SpringLayout.NORTH, cardArea);
 		springLayout.putConstraint(SpringLayout.WEST, cardArea, 20, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.EAST, cardArea, -20, SpringLayout.EAST, this);
 
@@ -164,11 +166,6 @@ public class DeckBuildingPanel extends JPanel {
 		add(btnRmvSelected);
 		add(numberField);
 	}
-	
-	private void setUpDeckList(){
-		//TODO: Populate Combo Box with all existing Deck Names
-	}
-	
 }
 
 
