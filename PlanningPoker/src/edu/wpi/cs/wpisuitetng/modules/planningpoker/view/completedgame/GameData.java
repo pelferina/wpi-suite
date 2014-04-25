@@ -190,14 +190,11 @@ public class GameData extends JPanel{
 		this.descriptionTextArea = descriptionTextArea;
 	}
 
-<<<<<<< HEAD
 	/**
 	 * Selects the next requirement to be voted on
+	 * @param estimate The estimate getting passed along
 	 */
-	public void nextRequirement() {
-=======
 	public void nextRequirement(int estimate) {
->>>>>>> 907a5c96f4a12822dd6672ea753efbfb790098e5
 		int selected = gameReqsTable.getSelectedRow();
 		gameReqsTable.setValueAt(estimate, selected, 2);
 		gameReqsTable.clearSelection();

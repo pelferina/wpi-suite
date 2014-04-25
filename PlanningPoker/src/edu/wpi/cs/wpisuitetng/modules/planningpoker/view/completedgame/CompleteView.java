@@ -86,22 +86,19 @@ public class CompleteView extends JSplitPane {
 	public VoteData getVoteData(){
 		return voteData;
 	}
-<<<<<<< HEAD
 	/**
-	 * Gets the next Requirement
+	 * Grabs the nextRequirment
+	 * @param estimate The estimate to be passed around
 	 */
-	public void nextRequirement() {
-		gameData.nextRequirement();
-=======
-
 	public void nextRequirement(int estimate) {
 		gameData.nextRequirement(estimate);
 		
 	}
-
+	/**
+	 * Sends the final estimates to the gameData table
+	 * @param finalVote The List<Integer> of final votes
+	 */
 	public void sendEstimatesToTable(List<Integer> finalVote) {
 		gameData.receiveFinalVotes(finalVote);
->>>>>>> 907a5c96f4a12822dd6672ea753efbfb790098e5
-		
 	}
 }
