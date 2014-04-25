@@ -350,8 +350,10 @@ public class VoteData extends JPanel{
 		}
 		reqNameText.setText(req.getName());
 		descriptionTextArea.setText(req.getDescription());
-		meanTextField.setText(Float.toString(completedGame.getMean().get(reqIndex)));
-		medianTextField.setText(Float.toString(completedGame.getMedian().get(reqIndex)));	
+		if (completedGame.getVotes().size() > 0){
+			meanTextField.setText(Float.toString(completedGame.getMean().get(reqIndex)));
+			medianTextField.setText(Float.toString(completedGame.getMedian().get(reqIndex)));	
+		}
 	}
 	
 	private void isValidEstimate(){

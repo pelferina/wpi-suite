@@ -171,7 +171,8 @@ public class GameRequirements extends JSplitPane{
 		final DefaultTableModel complete = (DefaultTableModel) estimatesComplete.getModel();
 		final int numberofReqs = estimatesPending.getRowCount();
 		boolean isRevote = true;
-		for (int i=0; i < numberofReqs; i++){
+		int i;
+		for (i = 0; i < numberofReqs; i++){
 			if (r.getId() == (int)reqNames.getValueAt(i, 0)){
 				int reqId = (int) reqNames.getValueAt(i, 0);
 				String name = (String) reqNames.getValueAt(i, 1);
@@ -183,22 +184,20 @@ public class GameRequirements extends JSplitPane{
 			}
 		}
 		if (isRevote){
-			for (int i=0; i < complete.getRowCount(); i++){
-				if (r.getId() == (int) complete.getValueAt(i, 0)){
-					complete.setValueAt(estimate, i, 3);
+			for (int j=0; i < complete.getRowCount(); j++){
+				if (r.getId() == (int) complete.getValueAt(j, 0)){
+					complete.setValueAt(estimate, j, 3);
 				}
 			}
 		}
-		if (estimatesPending.getRowCount() > 0){
-			final int nextID = (int) estimatesPending.getValueAt(0, 0);
-			for (Requirement req: gameReqs){
-				if (req.getId() == nextID){
-					gv.sendReqToPlay(req);
-					break;
-				}
+		while (i > 0) {
+			if (estimatesPending.getRowCount() > i) {
+				estimatesPending.setRowSelectionInterval(i, i);
+				break;
 			}
+			i--;
 		}
-		else {
+		if (i == 0){
 			gv.clearBoxes();
 		}
 	}
