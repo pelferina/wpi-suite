@@ -16,16 +16,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JLabel;
-
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+
+
 
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
 
 
@@ -138,8 +140,8 @@ public class GameRequirements extends JSplitPane{
 		addImpl(completePane, JSplitPane.BOTTOM, 1);
 		pendingPane.setViewportView(estimatesPending);
 		completePane.setViewportView(estimatesComplete);
-		estimatesPending.addMouseListener(new tableListener(estimatesPending));
-		estimatesComplete.addMouseListener(new tableListener(estimatesComplete));
+		estimatesPending.getSelectionModel().addListSelectionListener(new tableListener(estimatesPending));
+		estimatesComplete.getSelectionModel().addListSelectionListener(new tableListener(estimatesComplete));
 		
 		setDividerLocation(250);
 	}
@@ -207,28 +209,32 @@ public class GameRequirements extends JSplitPane{
 	 * @author Cosmic Latte
 	 * @version $Revision: 1.0 $
 	 */
-	public class tableListener extends MouseAdapter{
+	public class tableListener implements ListSelectionListener{
 		
-		JTable tableClicked;
+		JTable table;
 		
 		/**
 		 * constructor for the table listener
 		 * @param table the table to listen to
 		 */
 		public tableListener(JTable table){
-			tableClicked = table;
+			this.table = table;
 		}
-		
 
-		public void mouseClicked(MouseEvent e) {
-			if (e.getClickCount() == 1){
-				final JTable target = (JTable)e.getSource();
-			    final int row = target.getSelectedRow();
-			    final int column = target.getSelectedColumn();
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			if (table.getSelectedRow() != -1){
+			    final int row = table.getSelectedRow();
+			    if (table.equals(estimatesPending)){
+			    	estimatesComplete.clearSelection();
+			    }
+			    else {
+			    	estimatesPending.clearSelection();	
+			    }
 				final List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
 				Requirement req = null;
 				for (Requirement r: allReqs){
-					if (r.getId() == (int)tableClicked.getValueAt(row, 0)){
+					if (r.getId() == (int)table.getValueAt(row, 0)){
 						req = r;
 					}
 				}

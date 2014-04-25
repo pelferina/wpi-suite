@@ -270,7 +270,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	}
 
 	private void sendEndNotification(GameSession game, Project project) {
-		final String textToSend = "The owner of " + game.getGameName() + " has ended the game early.";
+		final String textToSend = "The owner of " + game.getGameName() + " has ended the game";
 		EmailAddressEntityManager.sendToALL("End game notification", textToSend, project);
 	}
 

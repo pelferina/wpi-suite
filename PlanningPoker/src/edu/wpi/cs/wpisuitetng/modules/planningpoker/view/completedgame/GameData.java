@@ -24,10 +24,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.TableSelectListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -111,8 +114,8 @@ public class GameData extends JPanel{
 		gameReqsTable.getColumnModel().getColumn(0).setMaxWidth(200);
 		gameReqsTable.getColumnModel().getColumn(0).setPreferredWidth(150);
 		
-		gameReqsTable.addMouseListener(new tableListener(gameReqsTable));
 		gameReqsTable.setRowSelectionInterval(0, 0);
+		gameReqsTable.getSelectionModel().addListSelectionListener(new tableListener(gameReqsTable));
 		
 		SpringLayout springLayout = new SpringLayout();
 		
@@ -219,27 +222,27 @@ public class GameData extends JPanel{
 		}
 	}
 	
-public class tableListener extends MouseAdapter{
+public class tableListener implements ListSelectionListener{
 		
-		JTable tableClicked;
+		JTable table;
 		
 		/**
 		 * constructor for the table listener
 		 * @param table the table to listen to
 		 */
 		public tableListener(JTable table){
-			tableClicked = table;
+			this.table = table;
 		}
 		
-		public void mouseClicked(MouseEvent e) {
-			if (e.getClickCount() == 1){
-				final JTable target = (JTable)e.getSource();
-			    final int row = target.getSelectedRow();
-			    final int column = target.getSelectedColumn();
+
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			if (table.getSelectedRow() != -1){
+			    final int row = table.getSelectedRow();
 				final List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
 				Requirement req = null;
 				for (Requirement r: allReqs){
-					if (r.getName().equals(tableClicked.getValueAt(row, 0))){
+					if (r.getName().equals(table.getValueAt(row, 0))){
 						req = r;
 					}
 				}
