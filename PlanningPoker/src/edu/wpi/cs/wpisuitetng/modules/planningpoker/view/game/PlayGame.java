@@ -55,6 +55,7 @@ public class PlayGame extends JPanel implements Refreshable{
 	private final JLabel reqName = new JLabel("Requirement Name:");
 	private final JLabel reqDesc = new JLabel("Requirement Description:");
 	private final JLabel estimateLabel = new JLabel("Input Estimate:");
+	private final JLabel gameEnded = new JLabel("The Game Has Ended.");
 	private final JLabel notAnIntegerError = new JLabel("Estimate must be a positive integer");
 	private final JTextField estimateTextField = new JTextField();
 	private final JTextField gameNameTextField = new JTextField();
@@ -80,6 +81,7 @@ public class PlayGame extends JPanel implements Refreshable{
 	 */
 	public PlayGame(GameSession gameToPlay, GameView agv){
 	GetGamesController.getInstance().addRefreshable(this);
+	gameEnded.setVisible(false);
 
 		setFocus = new TimerTask(){
 
@@ -273,6 +275,10 @@ public class PlayGame extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.NORTH, notAnIntegerError, 0, SpringLayout.SOUTH, voteButton);
 		springLayout.putConstraint(SpringLayout.WEST, notAnIntegerError, -20, SpringLayout.EAST, voteButton);
 		
+		//Spring layout for GameEnded label
+		springLayout.putConstraint(SpringLayout.NORTH, gameEnded, 0, SpringLayout.SOUTH, notAnIntegerError);
+		springLayout.putConstraint(SpringLayout.EAST, gameEnded, 0, SpringLayout.EAST, notAnIntegerError);
+		
 		setLayout(springLayout);
 	
 		add(voteButton);
@@ -286,6 +292,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		add(gameNameTextField);
 		add(reqNameTextField);
 		add(notAnIntegerError);
+		add(gameEnded);
 		add(nd);
 		add(rd);
 	}
@@ -390,6 +397,12 @@ public class PlayGame extends JPanel implements Refreshable{
 			clear();
 			submit.setText("Game Ended");
 			canSubmit = false;
+			submit.setVisible(false);
+			voteButton.setVisible(false);
+			estimateTextField.setVisible(false);
+			notAnIntegerError.setVisible(false);
+			gameEnded.setVisible(true);
+
 		}
 		submit.setEnabled(canSubmit);
 	}
@@ -402,6 +415,18 @@ public class PlayGame extends JPanel implements Refreshable{
 	@Override
 	public void refreshGames() {
 		currentGame = GameModel.getInstance().getGame(currentGame.getGameID());
+		if (currentGame.getGameStatus() == GameStatus.COMPLETED || currentGame.getGameStatus() == GameStatus.ARCHIVED)
+		{
+			clear();
+			submit.setText("Game Ended");
+			submit.setVisible(false);
+			voteButton.setVisible(false);
+			estimateTextField.setVisible(false);
+			notAnIntegerError.setVisible(false);
+			gameEnded.setVisible(true);
+
+
+		}
 	}
 
 	public void setFocusOnEstimate(){
