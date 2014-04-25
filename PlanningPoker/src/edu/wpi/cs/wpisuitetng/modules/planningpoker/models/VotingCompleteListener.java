@@ -78,14 +78,9 @@ public class VotingCompleteListener implements ActionListener {
 					System.err.println("fail to set the gameStatus to completed");
 					ex.printStackTrace();
 				}
-				// send out notification email
-				try {
-					String textToSend;
-					textToSend = "Hello user\r\n\tThe game '"+ gameArray[i].getGameName() + "' has received votes from all users, and the game is completed" +"\r\n" + "Sent by fff8e7";
-					manager.sendUserEmails("End game notification",  textToSend, gameArray[i].getProject());
-				} catch (UnsupportedEncodingException e1) {
-					e1.printStackTrace();
-				}
+				String textToSend;
+				textToSend = gameArray[i].getGameName() + " has received votes from all users, and the game is completed";
+				EmailAddressEntityManager.sendToALL("End game notification",  textToSend, gameArray[i].getProject());
 
 			}
 		}

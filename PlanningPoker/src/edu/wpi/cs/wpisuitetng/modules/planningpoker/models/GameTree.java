@@ -46,6 +46,7 @@ public class GameTree extends DefaultMutableTreeNode {
 		final DefaultMutableTreeNode archivedGames = new DefaultMutableTreeNode("Archived");
 		
 		top.add(myGames);
+		myDrafts.add(myActive);
 			myGames.add(myDrafts);
 			myGames.add(myActive);
 			myGames.add(myComplete);
