@@ -402,6 +402,7 @@ public class PlayGame extends JPanel implements Refreshable{
 			estimateTextField.setVisible(false);
 			notAnIntegerError.setVisible(false);
 			gameEnded.setVisible(true);
+			estimateTextField.setText("");
 
 		}
 		submit.setEnabled(canSubmit);
@@ -424,6 +425,7 @@ public class PlayGame extends JPanel implements Refreshable{
 			estimateTextField.setVisible(false);
 			notAnIntegerError.setVisible(false);
 			gameEnded.setVisible(true);
+			estimateTextField.setText("");
 
 
 		}
