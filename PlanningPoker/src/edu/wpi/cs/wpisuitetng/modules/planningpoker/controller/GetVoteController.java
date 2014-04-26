@@ -21,7 +21,11 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.RefreshableControlle
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
-
+/**
+ * The GetVoteController class
+ * @author Cosmic Latte
+ * @version 6
+ */
 public class GetVoteController extends RefreshableController implements ActionListener {
 
 	private static GetVoteController instance = null;
@@ -33,8 +37,9 @@ public class GetVoteController extends RefreshableController implements ActionLi
 	 * @return the GetVoteController instance
 	 */
 	public static GetVoteController getInstance(){
-		if (instance==null)
+		if (instance==null){
 			instance = new GetVoteController();
+		}
 
 		return instance;
 	}

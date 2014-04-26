@@ -259,8 +259,9 @@ public class GameModel extends AbstractListModel {
 		final List<GameSession> usersGames = new ArrayList<GameSession>();
 		
 		for (GameSession game : games)
-			if (game.getOwnerID() == userID)
+			if (game.getOwnerID() == userID){
 				usersGames.add(game);
+			}
 		
 		return usersGames;
 	}
@@ -276,11 +277,15 @@ public class GameModel extends AbstractListModel {
 		final List<GameSession> unVotedGames = new ArrayList<GameSession>(this.getActiveGameSessions());
 		unVotedGames.addAll(this.getInProgressGameSessions());
 		
-		for (GameSession game : games)
-			if (game.getGameStatus() == GameStatus.ACTIVE || game.getGameStatus() == GameStatus.INPROGRESS )
-				for (Vote aVote : game.getVotes())
-					if (aVote.getUID() == userID)
+		for (GameSession game : games){
+			if (game.getGameStatus() == GameStatus.ACTIVE || game.getGameStatus() == GameStatus.INPROGRESS ){
+				for (Vote aVote : game.getVotes()){
+					if (aVote.getUID() == userID){
 						votedGames.add(game);
+					}
+				}
+			}
+		}
 		
 		unVotedGames.removeAll(votedGames);
 		
@@ -296,11 +301,15 @@ public class GameModel extends AbstractListModel {
 	{
 		final List<GameSession> votedGames = new ArrayList<GameSession>();
 		
-		for (GameSession game : games)
-			if (game.getGameStatus() == GameStatus.INPROGRESS )
-				for (Vote aVote : game.getVotes())
-					if (aVote.getUID() == userID)
+		for (GameSession game : games){
+			if (game.getGameStatus() == GameStatus.INPROGRESS ){
+				for (Vote aVote : game.getVotes()){
+					if (aVote.getUID() == userID){
 						votedGames.add(game);
+					}
+				}
+			}
+		}
 		
 		return votedGames;
 	}

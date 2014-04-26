@@ -74,7 +74,7 @@ public class GameTree extends DefaultMutableTreeNode {
 	 * Making Codepro work, never used
 	 */
 	@Override
-	public GameTree clone(){
-		return this;
+	public Object clone(){
+		return super.clone();
 	}
 }

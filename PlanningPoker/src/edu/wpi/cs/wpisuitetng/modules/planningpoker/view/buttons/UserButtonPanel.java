@@ -39,8 +39,9 @@ public class UserButtonPanel extends ToolbarGroupView{
 	private final JPanel contentPanel = new JPanel();
 	private final JButton userButton = new JButton();
 	private ActionListener listener = null;
-	private ImageIcon viewImg, voteImg;
-	private Timer expireTimer = null;
+	private ImageIcon viewImg;
+	private ImageIcon voteImg;
+	private final Timer expireTimer = null;
 	
 	public UserButtonPanel(){
 		super("");

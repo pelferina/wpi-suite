@@ -93,7 +93,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 	 *  Initializing Optional Deck Selection 
 	 */
 	private final JCheckBox deckCheckBox = new JCheckBox("Use Deck");
-	private JComboBox<String> deckBox = new JComboBox<String>();
+	private final JComboBox<String> deckBox = new JComboBox<String>(); 
 	private final JButton createDeckButton = new JButton("Create Deck");
 
 	/*
@@ -379,8 +379,8 @@ public class NewGameInputDistributedPanel extends JPanel {
 		//If activating: Set game status to active and Send an activation email 
 		if(!editMode)
 		{
-			GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
-			if(activate == true)
+			final GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
+			if(activate)
 			{
 				newGame.setGameStatus(GameStatus.ACTIVE);
 			}
@@ -494,7 +494,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		setDeadlineDate();
 		hourTime = getHour(deadlineHourComboBox.getSelectedIndex() + 1);
 		minuteTime = deadlineMinuteComboBox.getSelectedIndex();
-		Calendar deadline = (Calendar) currentDate.clone();
+		final Calendar deadline = (Calendar) currentDate.clone();
 		deadline.set(deadlineYear, deadlineMonth, deadlineDay, hourTime, minuteTime);		 
 		if (deadline.after(currentDate)){
 			deadlineError.setVisible(false);
@@ -803,8 +803,9 @@ public class NewGameInputDistributedPanel extends JPanel {
 			return true;
 		}
 		//returns true if the user recently unselected the deadline and the saved deadline was not null
-		if (!deadlineCheckBox.isSelected() && currentGameSession.getEndDate() != null)
+		if (!deadlineCheckBox.isSelected() && currentGameSession.getEndDate() != null){
 			return true;
+		}
 		// Check if the user has changed the requirements
 		if (!selectionsMade.containsAll(currentGameSession.getGameReqs())
 				|| (selectionsMade.size() != currentGameSession.getGameReqs().size())){
@@ -854,11 +855,6 @@ public class NewGameInputDistributedPanel extends JPanel {
 		return (nameTextField.getText().length() > 0);
 	}
 
-	//Returns true if the description text field has text
-	private boolean descInputted(){
-		return  (descriptionTextField.getText().length() > 0);
-	}
-
 	/**
 	 * removes all error labels
 	 */
@@ -876,7 +872,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 	 */
 
 	private void setPanel(){
-		ButtonGroup AMPMgroup = new ButtonGroup();
+		final ButtonGroup AMPMgroup = new ButtonGroup();
 		AMPMgroup.add(AMButton);
 		AMPMgroup.add(PMButton);
 		final SpringLayout springLayout = new SpringLayout();

@@ -49,15 +49,15 @@ public class GameData extends JPanel{
 	private final JLabel gameReqsLabel = new JLabel("Game Requirements:");
 	private JTextField gameNameTextBox = new JTextField();
 	private JTextArea descriptionTextArea = new JTextArea();
-	private JScrollPane descriptionScrollPane = new JScrollPane(descriptionTextArea);
-	private JTable gameReqsTable;
+	private final JScrollPane descriptionScrollPane = new JScrollPane(descriptionTextArea);
+	private final JTable gameReqsTable;
 	private JScrollPane reqPane;
-	private List<Integer> gameReqIDs;
-	private List<Requirement> gameReqs = new ArrayList<Requirement>();
-	private List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
-	private GameSession completedGame;
-	private CompleteView completeView;
-	private HashMap<Integer, Integer> requirementIndexHash = new HashMap<Integer, Integer>();
+	private final List<Integer> gameReqIDs;
+	private final List<Requirement> gameReqs = new ArrayList<Requirement>();
+	private final List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
+	private final GameSession completedGame;
+	private final CompleteView completeView;
+	private final HashMap<Integer, Integer> requirementIndexHash = new HashMap<Integer, Integer>();
 	
 	/**
 	 * Constructor for the GameData class
@@ -98,7 +98,7 @@ public class GameData extends JPanel{
 	 * Places the GUI components for the panel, as well as filling the table with the requirements that are in the game name and descriptions
 	 */
 	private void init(){
-		DefaultTableModel reqTableModel = (DefaultTableModel) gameReqsTable.getModel();
+		final DefaultTableModel reqTableModel = (DefaultTableModel) gameReqsTable.getModel();
 		reqTableModel.setRowCount(gameReqs.size());
 		
 		//Adds the game requirements names and descriptions to the table
@@ -118,7 +118,7 @@ public class GameData extends JPanel{
 			gameReqsTable.getSelectionModel().addListSelectionListener(new tableListener(gameReqsTable));
 		}
 		
-		SpringLayout springLayout = new SpringLayout();
+		final SpringLayout springLayout = new SpringLayout();
 		
 		//Spring layout constraints for gameNameTextBox
 		springLayout.putConstraint(SpringLayout.EAST, gameNameTextBox, 0, SpringLayout.EAST, descriptionScrollPane);
@@ -199,7 +199,7 @@ public class GameData extends JPanel{
 	 * @param estimate The estimate getting passed along
 	 */
 	public void nextRequirement(int estimate) {
-		int selected = gameReqsTable.getSelectedRow();
+		final int selected = gameReqsTable.getSelectedRow();
 		gameReqsTable.setValueAt(estimate, selected, 2);
 		gameReqsTable.clearSelection();
 		if (selected + 1 < gameReqs.size()){
@@ -216,13 +216,20 @@ public class GameData extends JPanel{
 			gameReqsTable.addRowSelectionInterval(selected, selected);
 		}
 	}
-
+	/**
+	 * Grabs the final votes from the gameReqsTable
+	 * @param finalVote The List<Integer> of final votes
+	 */
 	public void receiveFinalVotes(List<Integer> finalVote) {
 		for (int i = 0; i < gameReqsTable.getRowCount(); i++){
 			gameReqsTable.setValueAt(finalVote.get(i), i, 2);
 		}
 	}
-	
+/**
+ * A tableListener class
+ * @author Cosmic Latte
+ * @version 6
+ */
 public class tableListener implements ListSelectionListener{
 		
 		JTable table;

@@ -68,8 +68,8 @@ public class PlayGame extends JPanel implements Refreshable{
 	private final JButton voteButton = new JButton("Vote");
 	private Vote userEstimates;
 	private Requirement currentReq;
-	private GameView gv;
-	private GameSession currentGame;
+	private final GameView gv;
+	private final GameSession currentGame;
 	private boolean hasVoted = false;
 	private TimerTask setFocus;
 	private Timer setFocusTimer;

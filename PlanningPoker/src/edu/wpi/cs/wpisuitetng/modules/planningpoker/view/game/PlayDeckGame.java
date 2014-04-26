@@ -60,13 +60,13 @@ public class PlayDeckGame extends JPanel{
 	private final JButton voteButton = new JButton("Vote");
 	private Vote userEstimates;
 	private Requirement currentReq;
-	private GameView gv;
-	private GameSession currentGame;
+	private final GameView gv;
+	private final GameSession currentGame;
 	private int deckId;
 	private List<Integer> gameCardList = new ArrayList<Integer>();
 	private int votesSoFarInt = 0;
-	private JLabel votesSoFarNameLabel = new JLabel("Estimate: ");
-	private JLabel votesSoFarLabel = new JLabel("0");
+	private final JLabel votesSoFarNameLabel = new JLabel("Estimate: ");
+	private final JLabel votesSoFarLabel = new JLabel("0");
 	//List of buttons associated with the cards. First element -> lowest card val
 	private final List<GameCard> cardButtons = new ArrayList<GameCard>();
 	
@@ -173,7 +173,7 @@ public class PlayDeckGame extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e){
 				gv.isNew = true;
-				AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
+				final AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
 				msgr.sendVote(userEstimates);
 				ViewEventController.getInstance().getMain().remove(gv);
 			}

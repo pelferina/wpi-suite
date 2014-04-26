@@ -53,12 +53,14 @@ public class VoteEntityManager implements EntityManager<Vote> {
 		} catch (WPISuiteException e) {
 			e.printStackTrace();
 		}
-		if(session.length != 1) throw new WPISuiteException();
+		if(session.length != 1){
+			throw new WPISuiteException();
+		}
 		
 		if (session[0].getGameStatus() != GameStatus.COMPLETED && session[0].getGameStatus() != GameStatus.ARCHIVED )
 		{
 			// Delete previous votes with this voteID
-			Vote[] prevVote = db.retrieve(Vote.class, "VoteID", v.getVoteID()).toArray(new Vote[0]);
+			final Vote[] prevVote = db.retrieve(Vote.class, "VoteID", v.getVoteID()).toArray(new Vote[0]);
 			if(prevVote.length != 0){
 				db.delete(prevVote[0]);
 			}
