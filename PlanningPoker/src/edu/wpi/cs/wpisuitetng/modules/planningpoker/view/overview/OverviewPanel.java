@@ -125,6 +125,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		
 		
 		tableView = new JScrollPane(table);
+		table.setFillsViewportHeight(true);
 		setLayout(new BorderLayout(0, 0));
 		
 		//Initializes the game tree
