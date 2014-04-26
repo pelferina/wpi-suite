@@ -17,6 +17,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -46,6 +48,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.TableSelectList
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTreeCellRenderer;
 
 
+
 /**
  * This is an OverviewPanel which extends JPanel and implements Refreshable
  * @author FFF8E7
@@ -54,6 +57,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTre
 
 @SuppressWarnings("serial")
 public class OverviewPanel extends JPanel implements Refreshable {
+
+
 	GetGamesController ggc; 
 	GameSession[] curSessions = {}; // store gameSessions here
 	GameModel gameModel;
@@ -65,11 +70,11 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	JTree gameTree;
 	TableRowSorter<JTableModel> sorter;
 	int currentUser;
+	private boolean hasPulled = false;
 
 	public OverviewPanel(){
 		gameModel = GameModel.getInstance();
 		ggc = GetGamesController.getInstance();
-		
 		
 		ggc.addRefreshable(this);
 		final GameSession[] sessions = {};
@@ -167,6 +172,9 @@ public class OverviewPanel extends JPanel implements Refreshable {
             }
         });
         splitPane.setBorder(null);
+        splitPane.setEnabled( false );
+
+
 		add(splitPane);	
 
 	}
@@ -258,7 +266,10 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		for (int i = 0; i < gameTree.getRowCount(); i++){
 			gameTree.expandRow(i);
 		}
-		GetRequirementsController.getInstance().actionPerformed(null);
+		if(!hasPulled){
+			GetRequirementsController.getInstance().actionPerformed(null);
+			hasPulled = true;
+		}
 	}
 
 	/**
