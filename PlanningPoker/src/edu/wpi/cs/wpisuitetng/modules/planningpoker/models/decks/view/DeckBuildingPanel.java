@@ -33,12 +33,8 @@ import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
-import javax.swing.SpringLayout;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 @SuppressWarnings({"serial"})
 public class DeckBuildingPanel extends JPanel {
@@ -51,6 +47,7 @@ public class DeckBuildingPanel extends JPanel {
 	private JComboBox<String> comboBoxDeckList = new JComboBox<String>();
 	private JLabel lblDeckName = new JLabel("Deck Name:");
 	private JLabel lblDecks = new JLabel("Decks:");
+	private JLabel errLabel = new JLabel("");
 	private JPanel cardPanel = new JPanel();
 	private JScrollPane cardArea = new JScrollPane(cardPanel);
 	private JTextField nameField = new JTextField();
@@ -119,7 +116,6 @@ public class DeckBuildingPanel extends JPanel {
 		// All listeners and their functions
 		btnSave.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				// TODO: Action corresponding to this
 				DeckModel.getInstance().addDeck(new Deck (newDeckName, newDeckCards));
 				System.out.println("added Deck " + newDeckName + " with cards: " + newDeckCards.toString());
 				System.out.println("Current DeckModel size is " + DeckModel.getInstance().getSize());
@@ -129,24 +125,25 @@ public class DeckBuildingPanel extends JPanel {
 		btnAddCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				GameCard card;
-				int cardNumber = Integer.parseInt(numberField.getText())
+				int cardNumber;
 				try {
+					cardNumber = Integer.parseInt(numberField.getText());
 					card = new GameCard(cardNumber);
-				}catch(NumberFormatException e){
+					cardPanel.add(card);
+					cardPanel.revalidate();
+		
+					// Stores new card value to the list
+					newDeckCards.add(cardNumber);
+					btnSave.setEnabled(true);
+					numberField.setText("");
+					resetPanel();
+					System.out.println("Added card " + cardNumber);
+					System.out.println("Current card list is: " + newDeckCards.toString());
+				} catch (NumberFormatException err) {
 					System.err.println("Incorrect use of gameCard constructor: param not a number");
 					errLabel.setText(numberField.getText()+ " is not a valid non-negative integer!");
 				} 
-				cardPanel.add(card);
-				cardPanel.revalidate();
-				//TODO: Sort cards by value
-
-				// Stores new card value to the list
-				newDeckCards.add(cardNumber);
-				btnSave.setEnabled(true);
-				numberField.setText("");
-				Collections.sort(newDeckCards);
-				System.out.println("Added card " + cardNumber);
-				System.out.println("Current card list is: " + newDeckCards.toString());
+				
 			}
 		});
 		
@@ -235,9 +232,22 @@ public class DeckBuildingPanel extends JPanel {
 		add(numberField);
 	}
 	
-	private void setUpDeckList(){
-		//TODO: Populate Combo Box with all existing Deck Names
+	private void resetPanel(){
+		// Sorts list
+		Collections.sort(newDeckCards);
+		
+		// Clears panel
+		cardPanel.removeAll();
+		cardPanel.revalidate();
+		cardPanel.repaint();
+		
+		// Adds sorted list
+		for(final int cardValue: newDeckCards){
+			GameCard card = new GameCard(cardValue);
+			cardPanel.add(card);
+		}
 	}
+	
 	/**
 	 * Checks if the inputed deck name is valid
 	 */
@@ -254,7 +264,7 @@ public class DeckBuildingPanel extends JPanel {
 		else {
 			btnSave.setEnabled(false);
 			if (DeckModel.getInstance().isDuplicateDeck(nameField.getText())){
-				//TODO: add errMsg: Duplicate Deck Name
+				//TODO: add errMSG: Duplicate Deck Name
 			}
 			else {
 				//TODO: add errMSG: Invalid Deck Name
