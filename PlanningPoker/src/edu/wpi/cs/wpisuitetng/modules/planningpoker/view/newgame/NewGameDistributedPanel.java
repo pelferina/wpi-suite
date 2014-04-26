@@ -17,6 +17,7 @@ import javax.swing.*;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.reqpanel.NewRequirementPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.deckcontroller.GetDecksController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 
@@ -50,6 +51,7 @@ public class NewGameDistributedPanel extends JSplitPane {
 		newGameReqPanel = new NewGameReqPanel(this, gameSession);
 		GetRequirementsController.getInstance().addRefreshable(newGameReqPanel); /** TODO this adds a refreshable whenever a new game tab is created.  We need to clean up refreshables when the tab is closed*/
 		newGameInputPanel = new NewGameInputDistributedPanel(this, gameSession);
+		GetDecksController.getInstance().addRefreshable(newGameInputPanel);
 		setPanel();
 	}
 	/**
@@ -61,6 +63,7 @@ public class NewGameDistributedPanel extends JSplitPane {
 		newGameReqPanel = new NewGameReqPanel(this);
 		GetRequirementsController.getInstance().addRefreshable(newGameReqPanel);
 		newGameInputPanel = new NewGameInputDistributedPanel(this);
+		GetDecksController.getInstance().addRefreshable(newGameInputPanel);
 		this.close = close;
 		
 		setEnabled(false);

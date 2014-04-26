@@ -430,6 +430,11 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		}
 		return newArray;
 	}
+
+	@Override
+	public void refreshDecks() {
+		//intentionally left blank
+	}
 }
 
 

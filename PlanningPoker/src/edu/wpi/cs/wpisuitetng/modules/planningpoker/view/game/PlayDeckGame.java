@@ -79,7 +79,6 @@ public class PlayDeckGame extends JPanel{
 		currentGame = gameToPlay;
 		gameReqs = currentGame.getGameReqs();
 		deckId = currentGame.getDeckId();
-		deckId = 0;
 		gameCardList = DeckModel.getInstance().getDeck(deckId).getCards();
 		generateButtons();
 		final ArrayList<Integer> estimates = new ArrayList<Integer>();

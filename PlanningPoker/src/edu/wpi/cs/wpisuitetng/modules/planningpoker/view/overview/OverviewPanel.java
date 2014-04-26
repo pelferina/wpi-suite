@@ -240,6 +240,12 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	public void refresh(){
 		ViewEventController.getInstance();
 	}
+
+
+	@Override
+	public void refreshDecks() {
+		//intentionally left blank
+	}
 	
 
 	

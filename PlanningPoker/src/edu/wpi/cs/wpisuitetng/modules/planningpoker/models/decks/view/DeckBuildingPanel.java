@@ -9,31 +9,27 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view;
 
-import javax.swing.JList;
-import javax.swing.JPanel;
-
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.deckcontroller.AddDeckController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameCard;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JScrollPane;
-import javax.swing.SpringLayout;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 @SuppressWarnings({"serial"})
 public class DeckBuildingPanel extends JPanel {
@@ -117,8 +113,9 @@ public class DeckBuildingPanel extends JPanel {
 			public void actionPerformed(ActionEvent e){
 				// TODO: Action corresponding to this
 				newDeckName = nameField.getText();
-				DeckModel.getInstance().addDeck(new Deck (newDeckName, newDeckCards));
-				System.out.println("added Deck " + newDeckName + " with cards: " + newDeckCards.toString());
+				Deck newDeck = new Deck (newDeckName, newDeckCards);
+				AddDeckController.getInstance().addDeck(newDeck);
+				System.out.println("added Deck " + newDeckName + "; Id = " + newDeck.getId() + "; with cards: " + newDeckCards.toString());
 				System.out.println("Current DeckModel size is " + DeckModel.getInstance().getSize());
 				nameField.setText("");
 				newDeckCards.clear();
@@ -147,7 +144,7 @@ public class DeckBuildingPanel extends JPanel {
 					System.err.println("Incorrect use of gameCard constructor: param not a number");
 					errLabel.setText(numberField.getText()+ " is not a valid non-negative integer!");
 				} 
-				
+				isValidDeckName();	
 			}
 		});
 		
@@ -284,7 +281,12 @@ public class DeckBuildingPanel extends JPanel {
 		if (numberField.getText().length() > 0 && isInteger(numberField.getText()) && !nameField.getText().isEmpty()){
 			if (Integer.parseInt(numberField.getText()) >= 0){
 				btnAddCard.setEnabled(true);
-				btnSave.setEnabled(true);
+				if (!DeckModel.getInstance().isDuplicateDeck(nameField.getText())){
+					btnSave.setEnabled(true);
+				}
+				else {
+					btnSave.setEnabled(false);
+				}
 				//TODO notAnIntegerError.setVisible(false);
 			}
 			else{

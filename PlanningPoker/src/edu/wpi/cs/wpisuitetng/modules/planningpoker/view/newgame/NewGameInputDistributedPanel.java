@@ -37,6 +37,7 @@ import javax.swing.SpringLayout;
 import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
 
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
@@ -48,7 +49,9 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 /**
  * This is the window for the user to create a planning poker session
@@ -56,7 +59,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  * @version $Revision: 1.0 $
  */
 @SuppressWarnings("serial")
-public class NewGameInputDistributedPanel extends JPanel {
+public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 
 	private Calendar currentDate; 
 
@@ -94,6 +97,8 @@ public class NewGameInputDistributedPanel extends JPanel {
 	 */
 	private final JCheckBox deckCheckBox = new JCheckBox("Use Deck");
 	private JComboBox<String> deckBox = new JComboBox<String>(); 
+	private List<Deck> decks = DeckModel.getInstance().getDecks();
+	private int selectedDeckIndex = 0;
 
 	/*
 	 * Initializing name and description labels and text fields
@@ -248,6 +253,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 			}	
 		});
 
+
 		//Adds a documentlistener to the name text field so that no name error can be handled, save button can be made visible  
 		//the pop-up will appear if the new game tab is closed.
 		nameTextField.getDocument().addDocumentListener(new DocumentListener(){
@@ -300,6 +306,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 		deckBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				selectedDeckIndex = deckBox.getSelectedIndex();
 				if (editMode){
 					if (deckBox.getSelectedIndex() != currentGameSession.getDeckId()){
 						newGameP.isNew = false;
@@ -660,6 +667,10 @@ public class NewGameInputDistributedPanel extends JPanel {
 		deckBox.removeAllItems();
 		//Initializes the deck combo box
 		addDecksToDeckComboBox();
+		if (editMode){
+			selectedDeckIndex = currentGameSession.getDeckId();
+		}
+		deckBox.setSelectedIndex(selectedDeckIndex);
 	}
 	/**
 	 * Add all available deck selections to the combo box
@@ -994,4 +1005,24 @@ public class NewGameInputDistributedPanel extends JPanel {
 		add(reqError);
 		add(activateGameButton);
 	}
+
+	@Override
+	public void refreshRequirements() {
+		//intentionally left blank
+	}
+
+	@Override
+	public void refreshGames() {
+		//intentionally left blank		
+	}
+
+	@Override
+	public void refreshDecks() {
+		final List<Deck> currentDecks =  DeckModel.getInstance().getDecks();
+		if (decks.size() != currentDecks.size()){
+			initializeDeckComboBox();
+		}
+		System.out.println("selected deck index is " + selectedDeckIndex);
+	}
+	
 }

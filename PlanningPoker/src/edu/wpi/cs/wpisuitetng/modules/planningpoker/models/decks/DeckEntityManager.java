@@ -22,6 +22,7 @@ import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 
 /**
  * This is the entity manager for the Deck in the
@@ -60,7 +61,11 @@ public class DeckEntityManager implements EntityManager<Deck> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#makeEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String) */
 	@Override
 	public Deck makeEntity(Session s, String content) throws WPISuiteException {
-		final Deck newDeck = Deck.fromJson(content);
+		final Deck importedDeck = Deck.fromJson(content);
+		System.out.println("Adding: " + content);
+		final Deck[] decks = getAll(s);
+		final Deck newDeck =  new Deck(importedDeck.getName(), importedDeck.getCards());
+		newDeck.setId(decks.length + 1);
 		if(!db.save(newDeck, s.getProject())) {
 			System.err.println("Deck not saved");
 			throw new WPISuiteException();
