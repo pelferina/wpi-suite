@@ -90,6 +90,8 @@ public class GameRequirements extends JSplitPane{
 		};
 		estimatesPending.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Name", "Description"}));
 		estimatesComplete.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Name", "Description", "Estimate"}));
+		estimatesPending.setFillsViewportHeight(true);
+		estimatesComplete.setFillsViewportHeight(true);
 		init(gameToPlay);
 	}
 
@@ -142,7 +144,7 @@ public class GameRequirements extends JSplitPane{
 		estimatesPending.getSelectionModel().addListSelectionListener(new tableListener(estimatesPending));
 		estimatesComplete.getSelectionModel().addListSelectionListener(new tableListener(estimatesComplete));
 		
-		setDividerLocation(250);
+		setResizeWeight(0.5);
 	}
 	
 	//This function is used to set the preferred width of JTables
