@@ -9,15 +9,17 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view;
 
-import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.Deck;
@@ -25,11 +27,15 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.DeckCard;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameCard;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.SpringLayout;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -45,14 +51,15 @@ public class DeckBuildingPanel extends JPanel {
 	private JComboBox<String> comboBoxDeckList = new JComboBox<String>();
 	private JLabel lblDeckName = new JLabel("Deck Name:");
 	private JLabel lblDecks = new JLabel("Decks:");
-	private JLabel errLabel = new JLabel("");
 	private JPanel cardPanel = new JPanel();
 	private JScrollPane cardArea = new JScrollPane(cardPanel);
 	private JTextField nameField = new JTextField();
 	private JTextField numberField = new JTextField();
 	private SpringLayout springLayout = new SpringLayout();
+	private String newDeckName;
+	private List<Integer> newDeckCards = new ArrayList<Integer>();
 	private List<GameCard> cardList = new ArrayList<GameCard>();
-	
+
 	/** Constructor for a DeckPanel panel
 	 */
 	public DeckBuildingPanel(){
@@ -63,10 +70,12 @@ public class DeckBuildingPanel extends JPanel {
 		
 		btnSave.setFont(size);
 		btnSave.setSize(80, 20);
+		btnSave.setEnabled(false);
 		btnDelete.setFont(size);
 		btnDelete.setSize(80, 20);
 		btnAddCard.setFont(size);
 		btnAddCard.setSize(80, 20);
+		btnAddCard.setEnabled(false);
 		btnRmvSelected.setFont(size);
 		btnRmvSelected.setSize(80, 20);
 		btnRmvAll.setFont(size);
@@ -74,19 +83,55 @@ public class DeckBuildingPanel extends JPanel {
 		
 		// Sets up cardArea
 		cardArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-	
+		
+		//This document listener will enable the submit button when something is inputed into the estimate text field
+		numberField.getDocument().addDocumentListener(new DocumentListener(){
+			@Override
+			public void changedUpdate(DocumentEvent e){
+				isValidCard();
+			}
+			@Override
+			public void removeUpdate(DocumentEvent e){
+				isValidCard();
+			}
+			@Override 
+			public void insertUpdate(DocumentEvent e){
+				isValidCard();
+			}
+		});
+		
+		//This document listener will perform actions accordingly when the test in nameField is changed
+		nameField.getDocument().addDocumentListener(new DocumentListener(){
+			@Override
+			public void changedUpdate(DocumentEvent e){
+				isValidDeckName();
+			}
+			@Override
+			public void removeUpdate(DocumentEvent e){
+				isValidDeckName();
+			}
+			@Override 
+			public void insertUpdate(DocumentEvent e){
+				isValidDeckName();
+			}
+		});
+		
 		// All listeners and their functions
 		btnSave.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				// TODO: Action corresponding to this
+				DeckModel.getInstance().addDeck(new Deck (newDeckName, newDeckCards));
+				System.out.println("added Deck " + newDeckName + " with cards: " + newDeckCards.toString());
+				System.out.println("Current DeckModel size is " + DeckModel.getInstance().getSize());
 			}
 		});
 		
 		btnAddCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				GameCard card;
+				int cardNumber = Integer.parseInt(numberField.getText())
 				try {
-					card = new GameCard(Integer.parseInt(numberField.getText()));
+					card = new GameCard(cardNumber);
 				}catch(NumberFormatException e){
 					System.err.println("Incorrect use of gameCard constructor: param not a number");
 					errLabel.setText(numberField.getText()+ " is not a valid non-negative integer!");
@@ -94,12 +139,20 @@ public class DeckBuildingPanel extends JPanel {
 				cardPanel.add(card);
 				cardPanel.revalidate();
 				//TODO: Sort cards by value
+
+				// Stores new card value to the list
+				newDeckCards.add(cardNumber);
+				btnSave.setEnabled(true);
+				numberField.setText("");
+				Collections.sort(newDeckCards);
+				System.out.println("Added card " + cardNumber);
+				System.out.println("Current card list is: " + newDeckCards.toString());
 			}
 		});
 		
 		btnRmvSelected.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				
+				// TODO: Action corresponding to this
 			}
 		});
 		
@@ -180,6 +233,73 @@ public class DeckBuildingPanel extends JPanel {
 		add(btnRmvAll);
 		add(btnRmvSelected);
 		add(numberField);
+	}
+	
+	private void setUpDeckList(){
+		//TODO: Populate Combo Box with all existing Deck Names
+	}
+	/**
+	 * Checks if the inputed deck name is valid
+	 */
+	private void isValidDeckName(){
+		if (nameField.getText().length() > 0 && !DeckModel.getInstance().isDuplicateDeck(nameField.getText())){
+			if (!newDeckCards.isEmpty()){
+				newDeckName = nameField.getText();
+				btnSave.setEnabled(true);
+			}
+			else {
+				btnSave.setEnabled(false);
+			}
+		}
+		else {
+			btnSave.setEnabled(false);
+			if (DeckModel.getInstance().isDuplicateDeck(nameField.getText())){
+				//TODO: add errMsg: Duplicate Deck Name
+			}
+			else {
+				//TODO: add errMSG: Invalid Deck Name
+			}
+		}
+	}
+	
+	
+	/**
+	 *checks if the inputed card number is valid and perform actions accordingly
+	 */
+	private void isValidCard(){
+		if (numberField.getText().length() > 0 && isInteger(numberField.getText()) && !nameField.getText().isEmpty()){
+			if (Integer.parseInt(numberField.getText()) >= 0){
+				btnAddCard.setEnabled(true);
+				btnSave.setEnabled(true);
+				//TODO notAnIntegerError.setVisible(false);
+			}
+			else{
+				btnAddCard.setEnabled(false);
+				//TODO notAnIntegerError.setVisible(true);
+			}
+		}
+		else{
+			btnAddCard.setEnabled(false);
+			//TODO notAnIntegerError.setVisible(true);
+		}
+		if (newDeckCards.isEmpty()){
+			btnSave.setEnabled(false);
+		}
+	}
+	
+	/**
+	 * Helper function for checking if the estimate text box contains an integer
+	 * @param s the string to be checking
+	 * @return boolean true if integer, false if otherwise
+	 */
+	public static boolean isInteger(String s) {
+	    try { 
+	        Integer.parseInt(s); 
+	    } catch(NumberFormatException e) { 
+	        return false; 
+	    }
+	    // only got here if we didn't return false
+	    return true;
 	}
 }
 
