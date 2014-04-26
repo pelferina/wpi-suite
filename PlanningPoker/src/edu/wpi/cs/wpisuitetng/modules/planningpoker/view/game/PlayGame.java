@@ -231,17 +231,19 @@ public class PlayGame extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.WEST, gameDesc, 0, SpringLayout.WEST, gameName);
 		
 		//Spring layout placement for vote button
-		springLayout.putConstraint(SpringLayout.NORTH, voteButton, 0, SpringLayout.NORTH, estimateTextField);
-		springLayout.putConstraint(SpringLayout.WEST, voteButton, 30, SpringLayout.EAST, estimateTextField);
+		springLayout.putConstraint(SpringLayout.SOUTH, voteButton, 0, SpringLayout.SOUTH, submit);
+		springLayout.putConstraint(SpringLayout.EAST, voteButton, -10, SpringLayout.WEST, submit);
+		springLayout.putConstraint(SpringLayout.WEST, voteButton, -100, SpringLayout.EAST, voteButton);
 		
 		//Spring layout placement for submit button
 		springLayout.putConstraint(SpringLayout.SOUTH, submit, -10, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, submit, -10, SpringLayout.EAST, this);
 		
 		//Spring layout placement for estimateTextField
-		springLayout.putConstraint(SpringLayout.NORTH, estimateTextField, 0, SpringLayout.NORTH, estimateLabel);
-		springLayout.putConstraint(SpringLayout.WEST, estimateTextField, 5, SpringLayout.EAST, estimateLabel);
-		springLayout.putConstraint(SpringLayout.EAST, estimateTextField, 40, SpringLayout.WEST, estimateTextField);
+		springLayout.putConstraint(SpringLayout.NORTH, estimateTextField, 0, SpringLayout.NORTH, voteButton);
+		springLayout.putConstraint(SpringLayout.SOUTH, estimateTextField, 0, SpringLayout.SOUTH, voteButton);
+		springLayout.putConstraint(SpringLayout.EAST, estimateTextField, -10, SpringLayout.WEST, voteButton);
+		springLayout.putConstraint(SpringLayout.WEST, estimateTextField, -60, SpringLayout.EAST, estimateTextField);
 		
 		//Spring layout for placement of gameNameTextField
 		springLayout.putConstraint(SpringLayout.WEST, gameNameTextField, 5, SpringLayout.EAST, gameName);
@@ -254,8 +256,8 @@ public class PlayGame extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.NORTH, reqNameTextField, 0, SpringLayout.NORTH, reqName);
 		
 		//Spring layout for estimateLabel
-		springLayout.putConstraint(SpringLayout.NORTH, estimateLabel, 30, SpringLayout.SOUTH, reqDescScroll);
-		springLayout.putConstraint(SpringLayout.WEST, estimateLabel, 0, SpringLayout.WEST, reqDesc);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, estimateLabel, 0, SpringLayout.VERTICAL_CENTER, estimateTextField);
+		springLayout.putConstraint(SpringLayout.EAST, estimateLabel, -5, SpringLayout.WEST, estimateTextField);
 		
 		//Spring layout for gameDescScroll
 		springLayout.putConstraint(SpringLayout.NORTH, gameDescScroll, 10, SpringLayout.SOUTH, gameDesc);
@@ -278,8 +280,8 @@ public class PlayGame extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.WEST, reqName, 0, SpringLayout.WEST, gameDesc);
 		
 		//Spring layout for notAnIntegerError label
-		springLayout.putConstraint(SpringLayout.NORTH, notAnIntegerError, 0, SpringLayout.SOUTH, voteButton);
-		springLayout.putConstraint(SpringLayout.WEST, notAnIntegerError, -20, SpringLayout.EAST, voteButton);
+		springLayout.putConstraint(SpringLayout.SOUTH, notAnIntegerError, -10, SpringLayout.NORTH, submit);
+		springLayout.putConstraint(SpringLayout.EAST, notAnIntegerError, 0, SpringLayout.EAST, submit);
 		
 		//Spring layout for GameEnded label
 		springLayout.putConstraint(SpringLayout.NORTH, gameEnded, 0, SpringLayout.SOUTH, notAnIntegerError);
