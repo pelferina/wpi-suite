@@ -17,6 +17,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Collections;
@@ -47,14 +49,14 @@ public class DeckBuildingPanel extends JPanel {
 	private JLabel lblDeckName = new JLabel("Deck Name:");
 	private JLabel lblDecks = new JLabel("Decks:");
 	private JLabel errLabel = new JLabel("");
-	private JPanel cardPanel = new JPanel();
-	private JScrollPane cardArea = new JScrollPane(cardPanel);
 	private JTextField nameField = new JTextField();
 	private JTextField numberField = new JTextField();
 	private SpringLayout springLayout = new SpringLayout();
 	private String newDeckName;
 	private List<Integer> newDeckCards = new ArrayList<Integer>();
-	private List<GameCard> cardList = new ArrayList<GameCard>();
+	private List<Integer> cardsToBeRemoved = new ArrayList<Integer>();
+	private JPanel cardPanel = new JPanel();
+	private JScrollPane cardArea = new JScrollPane(cardPanel);
 
 	/** Constructor for a DeckPanel panel
 	 */
@@ -115,7 +117,6 @@ public class DeckBuildingPanel extends JPanel {
 		// All listeners and their functions
 		btnSave.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				// TODO: Action corresponding to this
 				newDeckName = nameField.getText();
 				DeckModel.getInstance().addDeck(new Deck (newDeckName, newDeckCards));
 				System.out.println("added Deck " + newDeckName + " with cards: " + newDeckCards.toString());
@@ -128,19 +129,37 @@ public class DeckBuildingPanel extends JPanel {
 		
 		btnAddCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GameCard card;
+				final GameCard card;
 				int cardNumber;
 				try {
 					cardNumber = Integer.parseInt(numberField.getText());
 					card = new GameCard(cardNumber);
+					
+					// Sets listener for the  new card
+					card.addItemListener (new ItemListener(){
+						public void itemStateChanged ( ItemEvent ie) {
+							if (card.isSelected()){
+								cardsToBeRemoved.add(card.getValue()); // If card is selected, adds its value to the list of cards to be removed
+								Collections.sort(cardsToBeRemoved);
+							} else {
+								cardsToBeRemoved.remove(card.getValue()); // If unselected, remove from list
+							}
+						}
+					});
+					
+					// Adds card to panel
 					cardPanel.add(card);
 					cardPanel.revalidate();
 		
-					// Stores new card value to the list
+					// Stores new card to the lists
 					newDeckCards.add(cardNumber);
+					
+					// GUI calls
 					btnSave.setEnabled(true);
 					numberField.setText("");
 					resetPanel();
+					
+					// Outputs console msgs
 					System.out.println("Added card " + cardNumber);
 					System.out.println("Current card list is: " + newDeckCards.toString());
 				} catch (NumberFormatException err) {
@@ -153,7 +172,27 @@ public class DeckBuildingPanel extends JPanel {
 		
 		btnRmvSelected.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				// TODO: Action corresponding to this
+				List<Integer> tempDeckCards = new ArrayList<Integer>(newDeckCards);
+				
+				for(int valueToRemove: cardsToBeRemoved){
+					for(int cardValue: tempDeckCards){
+						if(cardValue == valueToRemove){
+							newDeckCards.remove(newDeckCards.indexOf(valueToRemove));
+							break;
+						}
+					}
+				}
+				
+				// Resets panel and list
+				resetPanel();
+				cardsToBeRemoved.clear();
+				
+				// Checks the amount of cards left and sets the save button to false if none is found
+				if(newDeckCards.isEmpty()) btnSave.setEnabled(false);
+				
+				// Outputs console messages
+				System.out.println("Removed cards from deck");
+				System.out.println("Current card list is: " + newDeckCards.toString());
 			}
 		});
 		
@@ -161,12 +200,18 @@ public class DeckBuildingPanel extends JPanel {
 			public void actionPerformed(ActionEvent e){
 				// Clears lists
 				newDeckCards.clear();
-				cardList.clear();
 				
 				// Clears panel
 				cardPanel.removeAll();
 				cardPanel.revalidate();
 				cardPanel.repaint();
+				
+				// Sets button status to false because there are no more cards on the new deck
+				btnSave.setEnabled(false);
+				
+				// Outputs console messages
+				System.out.println("Cleared current deck");
+				System.out.println("Current card list is: " + newDeckCards.toString());
 			}
 		});
 		
@@ -247,8 +292,20 @@ public class DeckBuildingPanel extends JPanel {
 		
 		// Adds sorted list
 		for(final int cardValue: newDeckCards){
-			GameCard card = new GameCard(cardValue);
+			final GameCard card = new GameCard(cardValue);
 			cardPanel.add(card);
+			
+			// Sets listener for the card
+			card.addItemListener (new ItemListener(){
+				public void itemStateChanged ( ItemEvent ie) {
+					if (card.isSelected()){
+						cardsToBeRemoved.add(card.getValue()); // If card is selected, adds its value to the list of cards to be removed
+						Collections.sort(cardsToBeRemoved);
+					} else {
+						cardsToBeRemoved.remove(Integer.valueOf(card.getValue())); // If unselected, remove from list
+					}
+				}
+			});
 		}
 	}
 	
