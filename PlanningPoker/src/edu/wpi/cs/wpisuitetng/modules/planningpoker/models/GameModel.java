@@ -47,9 +47,11 @@ public class GameModel extends AbstractListModel {
 	 */
 	public GameSession getGame(int gameID)
 	{
-		for (GameSession game : games)
-			if (game.getGameID() == gameID)
+		for (GameSession game : games){
+			if (game.getGameID() == gameID){
 				return game;
+			}
+		}
 		System.err.println("Game ID: "+ gameID +"not found in game model");
 		return null;
 	}

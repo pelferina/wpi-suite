@@ -409,8 +409,7 @@ public class PlayGame extends JPanel implements Refreshable{
 	}
 
 	@Override
-	public void refreshRequirements() {
-		return;
+	public void refreshRequirements(){
 	}
 
 	@Override
@@ -429,9 +428,5 @@ public class PlayGame extends JPanel implements Refreshable{
 
 
 		}
-	}
-
-	public void setFocusOnEstimate(){
-		estimateTextField.requestFocusInWindow();
 	}
 }

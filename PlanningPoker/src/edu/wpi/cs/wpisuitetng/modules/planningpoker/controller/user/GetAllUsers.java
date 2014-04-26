@@ -11,7 +11,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersRequestObserver;
+
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;

@@ -10,8 +10,8 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+
+
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -22,12 +22,12 @@ import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailAddressController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesRequestObserver;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetVoteController;
+
+
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddressModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;

@@ -10,8 +10,8 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -219,8 +219,9 @@ public class GameRequirements extends JSplitPane{
 		 */
 		public tableListener(JTable table){
 			this.table = table;
-			if(table.equals(estimatesPending) && estimatesPending.getRowCount() > 0)
+			if(table.equals(estimatesPending) && estimatesPending.getRowCount() > 0){
 				this.table.setRowSelectionInterval(0, 0);
+			}
 		}
 
 		@Override

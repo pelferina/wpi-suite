@@ -17,11 +17,11 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsCo
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
-import java.awt.Color;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Collection;
+
 import java.util.List;
 import java.util.TimerTask;
 
@@ -432,7 +432,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	 */
 	public int[] removeFirst(int[] Array){
 		final int[] newArray = new int[Array.length-1];
-		for (int i =0; i<Array.length-1; i++){
+		for (int i =0; i<Array.length-1; i++){ // $codepro.audit.disable useArraycopyRatherThanALoop
 			newArray[i]=Array[i+1];
 		}
 		return newArray;

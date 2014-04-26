@@ -12,8 +12,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.VoteModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;

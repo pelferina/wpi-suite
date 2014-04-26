@@ -11,13 +11,13 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.completedgame;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.swing.JButton;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -28,9 +28,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.TableSelectListener;
+
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 

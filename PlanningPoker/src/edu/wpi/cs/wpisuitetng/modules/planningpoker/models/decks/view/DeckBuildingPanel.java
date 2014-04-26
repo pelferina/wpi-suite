@@ -10,18 +10,18 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view;
 
 import javax.swing.JButton;
-import javax.swing.JList;
+
 import javax.swing.JPanel;
 
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.Deck;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
+
+import java.awt.Font;
+
+
+
+
+
+
 
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
