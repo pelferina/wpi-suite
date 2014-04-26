@@ -55,8 +55,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 
 /**
  * This is the window for the user to create a planning poker session
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author fff8e7
+ * @version 6
  */
 @SuppressWarnings("serial")
 public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
@@ -99,6 +99,8 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	private JComboBox<String> deckBox = new JComboBox<String>(); 
 	private List<Deck> decks = DeckModel.getInstance().getDecks();
 	private int selectedDeckIndex = 0;
+	private final JButton createDeckButton = new JButton("Create Deck");
+
 
 	/*
 	 * Initializing name and description labels and text fields
@@ -130,6 +132,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	 */
 	private final JButton saveGameButton;
 	private final JButton activateGameButton = new JButton("Activate Game");
+	private final JButton cancelButton = new JButton("Cancel");
 
 	/*
 	 * Initializing Time Checker
@@ -137,6 +140,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	private Timer canActivateChecker;
 
 	private boolean activate;
+	private boolean isFirstTimerRun = true;
 
 
 	/**
@@ -172,7 +176,10 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			saveGameButton.setIcon(new ImageIcon(img));
 
 			img = ImageIO.read(getClass().getResource("activate.png"));
-			activateGameButton.setIcon(new ImageIcon(img));		    
+			activateGameButton.setIcon(new ImageIcon(img));
+			
+			img = ImageIO.read(getClass().getResource("cancel.png"));
+			cancelButton.setIcon(new ImageIcon(img));
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
@@ -343,6 +350,12 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 				newGameP.close.doClick();
 			}
 		});
+
+		cancelButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				newGameP.close.doClick();
+			}
+		});
 	}
 
 	private void saveSelectedReqs(){
@@ -375,8 +388,8 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		//If activating: Set game status to active and Send an activation email 
 		if(!editMode)
 		{
-			GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
-			if(activate == true)
+			final GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
+			if(activate)
 			{
 				newGame.setGameStatus(GameStatus.ACTIVE);
 			}
@@ -418,6 +431,10 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	{
 		canActivateChecker = new Timer(100, new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				if (isFirstTimerRun){
+					nameTextField.requestFocusInWindow();
+					isFirstTimerRun = false;
+				}
 				if (!editMode){
 					newGameP.isNew = areFieldsEmpty();
 				}
@@ -490,7 +507,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		setDeadlineDate();
 		hourTime = getHour(deadlineHourComboBox.getSelectedIndex() + 1);
 		minuteTime = deadlineMinuteComboBox.getSelectedIndex();
-		Calendar deadline = (Calendar) currentDate.clone();
+		final Calendar deadline = (Calendar) currentDate.clone();
 		deadline.set(deadlineYear, deadlineMonth, deadlineDay, hourTime, minuteTime);		 
 		if (deadline.after(currentDate)){
 			deadlineError.setVisible(false);
@@ -524,6 +541,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	{
 		deckLabel.setVisible(isVisible);
 		deckBox.setVisible(isVisible);
+		createDeckButton.setVisible(isVisible);
 	}
 
 	/**
@@ -631,7 +649,18 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		hourTime = Integer.parseInt(hour);
 		minuteTime = Integer.parseInt(minute) + 1;
 		deadlineHourComboBox.setSelectedIndex(hourTime-1);
-		deadlineMinuteComboBox.setSelectedIndex(minuteTime);
+		if (minuteTime != 60){
+			deadlineMinuteComboBox.setSelectedIndex(minuteTime);
+		}
+		else{
+			deadlineMinuteComboBox.setSelectedIndex(0);
+			if (hourTime != 11){
+				deadlineHourComboBox.setSelectedIndex(hourTime);
+			}
+			else {
+				deadlineHourComboBox.setSelectedIndex(0);
+			}
+		}
 		if (currentDate.get(Calendar.AM_PM) == Calendar.PM) {
 			PMButton.setSelected(true);
 			isAM = false;
@@ -692,7 +721,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 
 			deadlineCheckBox.setSelected(true);
 			setDeadlineVisibility(true);
-			
+
 			final int year_index = currentGameSession.getEndDate().getYear() + 1900;
 
 			final int month_index = currentGameSession.getEndDate().getMonth();
@@ -791,8 +820,9 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			return true;
 		}
 		//returns true if the user recently unselected the deadline and the saved deadline was not null
-		if (!deadlineCheckBox.isSelected() && currentGameSession.getEndDate() != null)
+		if (!deadlineCheckBox.isSelected() && currentGameSession.getEndDate() != null){
 			return true;
+		}
 		// Check if the user has changed the requirements
 		if (!selectionsMade.containsAll(currentGameSession.getGameReqs())
 				|| (selectionsMade.size() != currentGameSession.getGameReqs().size())){
@@ -842,11 +872,6 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		return (nameTextField.getText().length() > 0);
 	}
 
-	//Returns true if the description text field has text
-	private boolean descInputted(){
-		return  (descriptionTextField.getText().length() > 0);
-	}
-
 	/**
 	 * removes all error labels
 	 */
@@ -864,7 +889,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	 */
 
 	private void setPanel(){
-		ButtonGroup AMPMgroup = new ButtonGroup();
+		final ButtonGroup AMPMgroup = new ButtonGroup();
 		AMPMgroup.add(AMButton);
 		AMPMgroup.add(PMButton);
 		final SpringLayout springLayout = new SpringLayout();
@@ -875,7 +900,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 
 		//Spring layout for the nameTextField
 		springLayout.putConstraint(SpringLayout.WEST, nameTextField, 100, SpringLayout.WEST, nameLabel);
-		springLayout.putConstraint(SpringLayout.EAST, nameTextField, 200, SpringLayout.EAST, nameLabel);
+		springLayout.putConstraint(SpringLayout.EAST, nameTextField, -23, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameTextField, 0, SpringLayout.VERTICAL_CENTER, nameLabel);
 
 		//Spring layout for the descriptionLabel
@@ -887,8 +912,8 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		descriptionTextField.setLineWrap(true);
 		springLayout.putConstraint(SpringLayout.NORTH, descriptionScrollPane, 10, SpringLayout.SOUTH, descriptionLabel);
 		springLayout.putConstraint(SpringLayout.WEST, descriptionScrollPane, 0, SpringLayout.WEST, descriptionLabel);
-		springLayout.putConstraint(SpringLayout.EAST, descriptionScrollPane, -10, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, descriptionScrollPane, -15, SpringLayout.NORTH, deadlineCheckBox);
+		springLayout.putConstraint(SpringLayout.EAST, descriptionScrollPane, -23, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, descriptionScrollPane, -50, SpringLayout.NORTH, deadlineCheckBox);
 
 		//Spring layout for the deadlineCheckBox
 		springLayout.putConstraint(SpringLayout.SOUTH, deadlineCheckBox, -230, SpringLayout.SOUTH, this);
@@ -896,16 +921,19 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 
 		//Spring layout for the deckCheckBox
 		springLayout.putConstraint(SpringLayout.SOUTH, deckCheckBox, -230, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, deckCheckBox, 25, SpringLayout.EAST, deadlineCheckBox);
+		springLayout.putConstraint(SpringLayout.WEST, deckCheckBox, 200, SpringLayout.EAST, deadlineCheckBox);
 
 		//Spring layout for the deckLabel
-		springLayout.putConstraint(SpringLayout.SOUTH, deckLabel, -230, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.NORTH, deckLabel, 0, SpringLayout.NORTH, deckCheckBox);
-		springLayout.putConstraint(SpringLayout.WEST, deckLabel, 20, SpringLayout.EAST, deckCheckBox);		
+		springLayout.putConstraint(SpringLayout.NORTH, deckLabel, 5, SpringLayout.SOUTH, deckCheckBox);
+		springLayout.putConstraint(SpringLayout.WEST, deckLabel, 0, SpringLayout.WEST, deckCheckBox);		
 
 		//Spring layout for the deckBox
 		springLayout.putConstraint(SpringLayout.WEST, deckBox, 5, SpringLayout.EAST, deckLabel);
 		springLayout.putConstraint(SpringLayout.SOUTH, deckBox, 0, SpringLayout.SOUTH, deckLabel);
+
+		//Spring layout for the createDeckButton
+		springLayout.putConstraint(SpringLayout.WEST, createDeckButton, 0, SpringLayout.WEST, deckBox);
+		springLayout.putConstraint(SpringLayout.NORTH, createDeckButton, 10, SpringLayout.SOUTH, deckBox);
 
 		//Spring layout for the deadlineLabel
 		springLayout.putConstraint(SpringLayout.SOUTH, deadlineLabel, -200, SpringLayout.SOUTH, this);
@@ -964,11 +992,15 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 
 		//Spring layout for the saveGameButton
 		springLayout.putConstraint(SpringLayout.SOUTH, saveGameButton, -10, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, saveGameButton, 50, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.WEST, saveGameButton, 10, SpringLayout.WEST, this);
 
 		//Spring layout for activateGameButton
-		springLayout.putConstraint(SpringLayout.WEST, activateGameButton, 100, SpringLayout.EAST, saveGameButton);
+		springLayout.putConstraint(SpringLayout.WEST, activateGameButton, 10, SpringLayout.EAST, saveGameButton);
 		springLayout.putConstraint(SpringLayout.NORTH, activateGameButton, 0, SpringLayout.NORTH, saveGameButton);
+
+		//Spring layout for cancelButton
+		springLayout.putConstraint(SpringLayout.WEST, cancelButton, 10, SpringLayout.EAST, activateGameButton);
+		springLayout.putConstraint(SpringLayout.NORTH, cancelButton, 0, SpringLayout.NORTH, saveGameButton);
 
 		setLayout(springLayout);
 
@@ -994,16 +1026,22 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		add(deckLabel);
 		add(deckBox);
 		add(deckCheckBox);
+		add(createDeckButton);
 
 		// Adds buttons at the bottom end of the GUI
 		add(saveGameButton);
+		add(activateGameButton);
+		add(cancelButton);
 
 		add(deadlineError);
 		add(hourError);
 		add(minuteError);
 		add(nameError);
 		add(reqError);
-		add(activateGameButton);
+	}
+	
+	public void setFocusNameText(){
+		nameTextField.requestFocusInWindow();
 	}
 
 	@Override

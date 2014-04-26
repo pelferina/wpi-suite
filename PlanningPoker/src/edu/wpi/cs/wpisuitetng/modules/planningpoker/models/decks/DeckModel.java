@@ -17,7 +17,7 @@ import java.util.List;
 import javax.swing.AbstractListModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.deckcontroller.AddDeckController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
+
 
 
 /**

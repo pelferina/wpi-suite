@@ -13,6 +13,7 @@ import javax.swing.event.ChangeListener;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 
 
+
 /**
  * Provides an interface for interaction with the main GUI elements
  * All actions on GUI elements should be conducted through this controller.
@@ -220,4 +221,5 @@ public class ViewEventController {
 	public void makeEditGameButtonInVisible() {
 		toolbar.makeEditGameButtonInvisible();		
 	}
+
 }

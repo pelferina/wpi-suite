@@ -35,8 +35,9 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 /**
- * @author fff8e7
- * @version $Revision: 1.0 $
+ * ViewGame class
+ * @author FFF8E7
+ * @version 6
  */
 public class ViewGame extends JPanel{
 

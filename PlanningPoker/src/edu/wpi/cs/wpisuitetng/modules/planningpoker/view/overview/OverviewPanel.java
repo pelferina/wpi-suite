@@ -11,30 +11,30 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
-import javax.swing.Timer;
+import javax.swing.border.Border;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 import javax.swing.table.TableRowSorter;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
@@ -43,18 +43,22 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.JTableModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.TableSelectListener;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTreeCellRenderer;
 
 
+
 /**
  * This is an OverviewPanel which extends JPanel and implements Refreshable
- * 
- * @author fff8e7
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
+
 @SuppressWarnings("serial")
 public class OverviewPanel extends JPanel implements Refreshable {
+
+
 	GetGamesController ggc; 
 	GameSession[] curSessions = {}; // store gameSessions here
 	GameModel gameModel;
@@ -66,90 +70,115 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	JTree gameTree;
 	TableRowSorter<JTableModel> sorter;
 	int currentUser;
-	
+	private boolean hasPulled = false;
+
 	public OverviewPanel(){
 		gameModel = GameModel.getInstance();
 		ggc = GetGamesController.getInstance();
+		
 		ggc.addRefreshable(this);
 		final GameSession[] sessions = {};
-		
+
 		table = new JTable(new JTableModel(sessions));
+		table.getColumnModel().getColumn(0).setPreferredWidth(250);
+		
 
 		//sort the table
 		table.setRowSorter(new TableRowSorter(table.getModel()));
-		
+
 		//This is used to refresh the overview table
-		
+
 		table.addMouseListener(new MouseAdapter() {
-			  public void mouseClicked(MouseEvent e) {
-				  final JTable target = (JTable)e.getSource();
-			      int selectedGame = target.getSelectedRow();
-			      selectedGame = target.convertRowIndexToModel(selectedGame);
-			      
-				    if (e.getClickCount() == 2) {
-				      final int gameID = (Integer)((JTableModel)target.getModel()).getIDFromRow(selectedGame);
-				      final List<GameSession> games = gameModel.getGames();
-				      GameSession clickedGame = null;
-				      for (GameSession gm: games){
-				    	  if (gm.getGameID() == gameID){
-				    		  clickedGame = gm;
-				    	  }
-				      }
-				      if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.DRAFT){
-				    	  final User currentUser = GetCurrentUser.getInstance().getCurrentUser();
-					      //End game button
-					      if(currentUser.getIdNum() == clickedGame.getOwnerID())
-					    	  ViewEventController.getInstance().editGameTab(clickedGame); // Make this edit insteadS
-				      }
-				      else if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.ACTIVE){
-				    	  ViewEventController.getInstance().playGameTab(clickedGame);
-				      }
-				      else if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.INPROGRESS){
-				    	  ViewEventController.getInstance().playGameTab(clickedGame);
-				      }
-				      else if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.COMPLETED){
-				    	  ViewEventController.getInstance().viewGameTab(clickedGame);
-				      }
-				      else if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.ARCHIVED){
-				    	  ViewEventController.getInstance().viewGameTab(clickedGame);
-				      }
-				    }
-				    if(e.getClickCount() == 1){
-				    	//System.out.println("In mouse listener " + row);
-				    }
-				  }
-				});
+			public void mouseClicked(MouseEvent e) {
+				final JTable target = (JTable)e.getSource();
+				int selectedGame = target.getSelectedRow();
+				if(selectedGame != -1){
+					selectedGame = target.convertRowIndexToModel(selectedGame);
+
+					if (e.getClickCount() == 2) {
+						final int gameID = (Integer)((JTableModel)target.getModel()).getIDFromRow(selectedGame);
+						final List<GameSession> games = gameModel.getGames();
+						GameSession clickedGame = null;
+						for (GameSession gm: games){
+							if (gm.getGameID() == gameID){
+								clickedGame = gm;
+							}
+						}
+						if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.DRAFT){
+							final User currentUser = GetCurrentUser.getInstance().getCurrentUser();
+							//End game button
+							if(currentUser.getIdNum() == clickedGame.getOwnerID()){
+								ViewEventController.getInstance().editGameTab(clickedGame); // Make this edit insteadS
+							}
+						}
+						else if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.ACTIVE){
+							ViewEventController.getInstance().playGameTab(clickedGame);
+						}
+						else if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.INPROGRESS){
+							ViewEventController.getInstance().playGameTab(clickedGame);
+						}
+						else if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.COMPLETED){
+							ViewEventController.getInstance().viewGameTab(clickedGame);
+						}
+						else if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.ARCHIVED){
+							ViewEventController.getInstance().viewGameTab(clickedGame);
+						}
+					}
+					if(e.getClickCount() == 1){
+						// if the Y location of the mouse click is off the table rows de-select from the table.
+						if(e.getY() > target.getRowHeight() *target.getRowCount()){
+							target.clearSelection();
+						}
+					}
+				}
+			}
+		});
 		//table.setToolTipText("Double Click to Edit");
 		table.getSelectionModel().addListSelectionListener(new TableSelectListener(table));
-		
-		
+
+
 		tableView = new JScrollPane(table);
+		table.setFillsViewportHeight(true);
 		setLayout(new BorderLayout(0, 0));
-		
+
 		//Initializes the game tree
-		
+
 		gameTreeModel = new GameTree(new DefaultMutableTreeNode("All Games"));
 		gameTree = new JTree(gameTreeModel.getTop());
 		gameTree.setCellRenderer(new CustomTreeCellRenderer());
 		gameTree.addTreeSelectionListener(    new TreeSelectionListener(){
 			public void valueChanged(TreeSelectionEvent e) {
 				final DefaultMutableTreeNode node = (DefaultMutableTreeNode)gameTree.getLastSelectedPathComponent();
-	            
-	            if (node == null){
-	            	return;
-	            }
 
-	            final Object nodeInfo = node.getUserObject();
-	            updateTable((String)nodeInfo);
-	    }});
+				if (node == null){
+					return;
+				}
+
+				final Object nodeInfo = node.getUserObject();
+				updateTable((String)nodeInfo);
+			}});
 
 		treeView = new JScrollPane(gameTree);
-		
+
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, treeView, tableView);
-		add(splitPane);	
+		splitPane.setDividerLocation(135);
 		
+		splitPane.setUI(new BasicSplitPaneUI() {
+            public BasicSplitPaneDivider createDefaultDivider() {
+            return new BasicSplitPaneDivider(this) {
+                public void setBorder(Border b) {
+                }
+            };
+            }
+        });
+        splitPane.setBorder(null);
+        splitPane.setEnabled( false );
+
+
+		add(splitPane);	
+
 	}
-	
+
 
 	/**
 	 * This is the function that updates the table with the current games that are stored in the database
@@ -158,9 +187,9 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	public void updateTable(String s){
 		/** TODO this should be in the constructor, but this panel gets loaded before a user logs in*/
 		currentUser = GetCurrentUser.getInstance().getCurrentUser().getIdNum();
-		
+
 		List<GameSession> sessions = new ArrayList<GameSession>();
-		
+
 		if (s.equals("All Games"))
 		{
 			sessions = gameModel.getDraftGameSessions(currentUser);
@@ -192,46 +221,55 @@ public class OverviewPanel extends JPanel implements Refreshable {
 			sessions = gameModel.getActiveGameSessions();
 			sessions.addAll(gameModel.getInProgressGameSessions());
 		}
-		else if (s.equals("Needs Vote"))
+		else if (s.equals("Needs Vote")){
 			sessions = gameModel.getGamesNeedingVote(currentUser);
-		else if (s.equals("Voted"))
+		}
+		else if (s.equals("Voted")){
 			sessions = gameModel.getGamesVoted(currentUser);
+		}
 		else if (s.equals("History"))
 		{
 			sessions = gameModel.getArchivedGameSessions();
 			sessions.addAll(gameModel.getCompletedGameSessions());
 		}
-		else if (s.equals("Completed"))
+		else if (s.equals("Completed")){
 			sessions = gameModel.getCompletedGameSessions();
-		else if (s.equals("Archived"))
+		}
+		else if (s.equals("Archived")){
 			sessions = gameModel.getArchivedGameSessions();	
-		
+		}
+
 		final JTableModel jModel = (JTableModel)table.getModel();
 		jModel.update((ArrayList<GameSession>)sessions);
 		table.setModel(jModel);
 		jModel.fireTableDataChanged();
-		
+
 	}
 
 	@Override
 	public void refreshRequirements() {
-		
+
 	}
 
 	@Override
 	public void refreshGames() {
-        //update the table for my selection.
+		//update the table for my selection.
 		final DefaultMutableTreeNode node = (DefaultMutableTreeNode)gameTree.getLastSelectedPathComponent();
-        if (node != null)
-        {
-            final Object nodeInfo = node.getUserObject();
-            updateTable((String)nodeInfo);        	
-        }
-        table.repaint();
-        
+		if (node != null)
+		{
+			final Object nodeInfo = node.getUserObject();
+			updateTable((String)nodeInfo);        	
+		}
+		table.repaint();
+
 		//Expand all folders
-		for (int i = 0; i < gameTree.getRowCount(); i++)
-	         gameTree.expandRow(i);
+		for (int i = 0; i < gameTree.getRowCount(); i++){
+			gameTree.expandRow(i);
+		}
+		if(!hasPulled){
+			GetRequirementsController.getInstance().actionPerformed(null);
+			hasPulled = true;
+		}
 	}
 
 	/**
@@ -246,7 +284,5 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	public void refreshDecks() {
 		//intentionally left blank
 	}
-	
-
 	
 }

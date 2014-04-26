@@ -26,11 +26,15 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddVoteController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.VoteModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
@@ -41,7 +45,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
  * @version 6
  */
 @SuppressWarnings("serial")
-public class PlayDeckGame extends JPanel{
+public class PlayDeckGame extends JPanel implements Refreshable{
 
 	private final List<Integer> gameReqs;
 	private final JLabel gameName = new JLabel("Game Name:");
@@ -60,15 +64,19 @@ public class PlayDeckGame extends JPanel{
 	private final JButton voteButton = new JButton("Vote");
 	private Vote userEstimates;
 	private Requirement currentReq;
-	private GameView gv;
+	private final GameView gv;
 	private GameSession currentGame;
 	private int deckId;
 	private List<Integer> gameCardList = new ArrayList<Integer>();
 	private int votesSoFarInt = 0;
-	private JLabel votesSoFarNameLabel = new JLabel("Estimate: ");
-	private JLabel votesSoFarLabel = new JLabel("0");
+	private final JLabel votesSoFarNameLabel = new JLabel("Estimate: ");
+	private final JLabel votesSoFarLabel = new JLabel("0");
 	//List of buttons associated with the cards. First element -> lowest card val
 	private final List<GameCard> cardButtons = new ArrayList<GameCard>();
+	/**
+	 * @wbp.nonvisual location=41,359
+	 */
+	private final JLabel gameEnded = new JLabel("Game Has Ended");
 	
 	/**
 	 * Constructor for a PlayGame panel
@@ -76,6 +84,8 @@ public class PlayDeckGame extends JPanel{
 	 * @param agv the active game view
 	 */
 	public PlayDeckGame(GameSession gameToPlay, GameView agv){
+		GetGamesController.getInstance().addRefreshable(this);
+		
 		currentGame = gameToPlay;
 		gameReqs = currentGame.getGameReqs();
 		deckId = currentGame.getDeckId();
@@ -172,7 +182,7 @@ public class PlayDeckGame extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e){
 				gv.isNew = true;
-				AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
+				final AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
 				msgr.sendVote(userEstimates);
 				ViewEventController.getInstance().getMain().remove(gv);
 			}
@@ -240,6 +250,11 @@ public class PlayDeckGame extends JPanel{
 		springLayout.putConstraint(SpringLayout.NORTH, votesSoFarLabel, 0, SpringLayout.NORTH, votesSoFarNameLabel);
 		springLayout.putConstraint(SpringLayout.WEST, votesSoFarLabel, 5, SpringLayout.EAST, votesSoFarNameLabel);
 		
+		//Spring layout for gameEnded
+		springLayout.putConstraint(SpringLayout.NORTH, gameEnded, 0, SpringLayout.SOUTH, votesSoFarLabel);
+		springLayout.putConstraint(SpringLayout.WEST, gameEnded, 0, SpringLayout.WEST, votesSoFarLabel);
+		gameEnded.setVisible(false);
+		
 		setLayout(springLayout);
 		
 		add(voteButton);
@@ -255,6 +270,7 @@ public class PlayDeckGame extends JPanel{
 		add(deckArea);
 		add(votesSoFarNameLabel);
 		add(votesSoFarLabel);
+		add(gameEnded);
 
 	}
 	
@@ -369,6 +385,43 @@ public class PlayDeckGame extends JPanel{
 				break;
 			}
 		}
+		
+		currentGame = GameModel.getInstance().getGame(currentGame.getGameID());
+		if (currentGame.getGameStatus() == GameStatus.COMPLETED || currentGame.getGameStatus() == GameStatus.ARCHIVED)
+		{
+			clear();
+			submit.setText("Game Ended");
+			submit.setVisible(false);
+			voteButton.setVisible(false);
+			deckArea.setVisible(false);
+			gameEnded.setVisible(true);
+			votesSoFarLabel.setVisible(false);
+			votesSoFarNameLabel.setVisible(false);
+
+		}
+		else
 		submit.setEnabled(canSubmit);
+	}
+	
+	@Override
+	public void refreshRequirements(){
+	}
+
+	@Override
+	public void refreshGames() {
+		currentGame = GameModel.getInstance().getGame(currentGame.getGameID());
+		if (currentGame.getGameStatus() == GameStatus.COMPLETED || currentGame.getGameStatus() == GameStatus.ARCHIVED)
+		{
+			clear();
+			submit.setText("Game Ended");
+			submit.setVisible(false);
+			voteButton.setVisible(false);
+			deckArea.setVisible(false);
+			gameEnded.setVisible(true);
+			votesSoFarLabel.setVisible(false);
+			votesSoFarNameLabel.setVisible(false);
+
+
+		}
 	}
 }

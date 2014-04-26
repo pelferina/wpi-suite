@@ -10,8 +10,8 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+
+
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -19,15 +19,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailAddressController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesRequestObserver;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetVoteController;
+
+
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddressModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
@@ -106,13 +107,40 @@ public class PreferencesPanel extends JPanel {
 		add(currentEmailNameLabel);
 		add(userName);
 		add(emailLabel);
+		emailField.getDocument().addDocumentListener(new DocumentListener(){
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				checkValid();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				checkValid();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				checkValid();
+
+			}
+			
+			private void checkValid(){
+				if(emailField.getText().toUpperCase().matches("[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}")){
+					submitButton.setEnabled(true);
+				}else{
+					submitButton.setEnabled(false);
+				}
+			}
+			
+		});
 		add(emailField);
 		add(submitButton);
 		add(enableCheckBox);
 		enableCheckBox.addItemListener(new CheckBoxChangedListener(this));
 		retrieveEmail();
 		emailField.setText(eModel.getAddress());
-		if(eModel.getEnable() == true){
+		if(eModel.getEnable()){
 			enableCheckBox.setSelected(true);
 			makeEmailEnable();
 		}else{
@@ -139,28 +167,36 @@ public class PreferencesPanel extends JPanel {
 	 * Enables Email Capabilities
 	 */
 	public void makeEmailEnable(){
-		this.submitButton.setEnabled(true);
-		this.emailField.setEnabled(true);
+		submitButton.setEnabled(true);
+		emailField.setEnabled(true);
 	}
 	/**
 	 * Disables Email Capabilities
 	 */
 	public void makeEmailDisable(){
-		this.submitButton.setEnabled(false);
-		this.emailField.setEnabled(false);
+		submitButton.setEnabled(false);
+		emailField.setEnabled(false);
 	}
 	public void setEmailModel(EmailAddressModel eModel){
 		this.eModel = eModel;
 	}
 	public EmailAddressModel getEmailModel(){
-		return this.eModel;
+		return eModel;
 	}
 	public String getEmailAddress(){
 		return emailField.getText();
 	}
+	public void updateDisplay(){
+		this.emailField.setText("");
+		this.currentEmailLabel.setText(eModel.getAddress());
+	}
 }
 
-
+/**
+ * EmailRequestObserver class
+ * @author Cosmic Latte
+ * @version 6
+ */
 class GetEmailRequestObserver implements RequestObserver {
 	
 	private final PreferencesPanel panel;
