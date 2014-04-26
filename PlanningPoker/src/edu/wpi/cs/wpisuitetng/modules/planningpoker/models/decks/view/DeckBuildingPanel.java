@@ -17,6 +17,10 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JButton;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.Deck;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.DeckCard;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameCard;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -52,8 +56,6 @@ public class DeckBuildingPanel extends JPanel {
 	 */
 	public DeckBuildingPanel(){
 		
-		// Sets up Combo Box for decks
-		setUpDeckList();
 		
 		// Sets a consistent font for all buttons
 		Font size = new Font(btnSave.getFont().getName(), btnSave.getFont().getStyle(), 10);
@@ -120,6 +122,11 @@ public class DeckBuildingPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				// TODO: Action corresponding to this
 				final int cardNumber = Integer.parseInt(numberField.getText());
+				GameCard card = new GameCard(cardNumber);
+				cardPanel.add(card);
+				cardPanel.revalidate();
+				//TODO: Sort cards by value
+				
 				newDeckCards.add(cardNumber);
 				btnSave.setEnabled(true);
 				numberField.setText("");
@@ -175,7 +182,7 @@ public class DeckBuildingPanel extends JPanel {
 	
 		//Spring layout for cardArea
 		springLayout.putConstraint(SpringLayout.NORTH, cardArea, 10, SpringLayout.SOUTH, nameField);
-		springLayout.putConstraint(SpringLayout.SOUTH, cardArea, 130, SpringLayout.NORTH, cardArea);
+		springLayout.putConstraint(SpringLayout.SOUTH, cardArea, 140, SpringLayout.NORTH, cardArea);
 		springLayout.putConstraint(SpringLayout.WEST, cardArea, 20, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.EAST, cardArea, -20, SpringLayout.EAST, this);
 
@@ -273,7 +280,6 @@ public class DeckBuildingPanel extends JPanel {
 	    // only got here if we didn't return false
 	    return true;
 	}
-	
 }
 
 
