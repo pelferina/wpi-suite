@@ -139,6 +139,7 @@ public class DeckBuildingPanel extends JPanel {
 				try {
 					cardNumber = Integer.parseInt(numberField.getText());
 					card = new GameCard(cardNumber);
+					card.setCancelCard(true);
 					cardPanel.add(card);
 					cardPanel.revalidate();
 		
@@ -256,6 +257,7 @@ public class DeckBuildingPanel extends JPanel {
 		// Adds sorted list
 		for(final int cardValue: newDeckCards){
 			GameCard card = new GameCard(cardValue);
+			card.setCancelCard(true);
 			cardPanel.add(card);
 		}
 	}

@@ -30,8 +30,10 @@ public class GameCard extends JToggleButton{
 	private final Integer value;
 	private BufferedImage cardSelectedImg;
 	private BufferedImage cardUnselectedImg;
-	private final ImageIcon cardSelectedIcon;
+	private ImageIcon cardSelectedIcon;
 	private final ImageIcon cardUnselectedIcon;
+	
+	private boolean isCancelCard;
 	
 	/**
 	 * Constructor to create the card with the given value
@@ -74,6 +76,40 @@ public class GameCard extends JToggleButton{
 	{
 		if(this.isSelected()) return cardSelectedImg;
 		else return cardUnselectedImg;
+	}
+	/**
+	 * Changes the image of the card to the Cancel icon
+	 * @param b sets to cancel icon if true, back to default otherwise
+	 */
+	public void setCancelCard(boolean b){
+		isCancelCard = b;
+		
+		if(b){
+			try {
+				cardSelectedImg = ImageIO.read(getClass().getResource("planningpokercardcancel.png"));
+			} catch (IOException ex) {
+				System.err.println(ex.getMessage());
+			}
+			cardSelectedIcon = new ImageIcon(cardSelectedImg);
+			this.setSelectedIcon(cardSelectedIcon);
+			
+		}else{
+			try {
+				cardSelectedImg = ImageIO.read(getClass().getResource("planningpokercardselected.png"));
+			} catch (IOException ex) {
+				System.err.println(ex.getMessage());
+			}
+			cardSelectedIcon = new ImageIcon(cardSelectedImg);
+			this.setSelectedIcon(cardSelectedIcon);
+		}
+	}
+	
+	/**
+	 * Determines if the card is the cancel card type
+	 * @return true if it is a cancel card, false otherwise
+	 */
+	public boolean isCancelCard(){
+		return isCancelCard;
 	}
 
 }
