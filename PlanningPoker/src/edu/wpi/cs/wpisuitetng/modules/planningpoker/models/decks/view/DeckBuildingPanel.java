@@ -111,9 +111,13 @@ public class DeckBuildingPanel extends JPanel {
 		btnSave.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				// TODO: Action corresponding to this
+				newDeckName = nameField.getText();
 				DeckModel.getInstance().addDeck(new Deck (newDeckName, newDeckCards));
 				System.out.println("added Deck " + newDeckName + " with cards: " + newDeckCards.toString());
 				System.out.println("Current DeckModel size is " + DeckModel.getInstance().getSize());
+				nameField.setText("");
+				newDeckCards.clear();
+				//TODO close tab
 			}
 		});
 		
@@ -222,8 +226,8 @@ public class DeckBuildingPanel extends JPanel {
 	private void isValidDeckName(){
 		if (nameField.getText().length() > 0 && !DeckModel.getInstance().isDuplicateDeck(nameField.getText())){
 			if (!newDeckCards.isEmpty()){
-				newDeckName = nameField.getText();
 				btnSave.setEnabled(true);
+				System.out.println("newDeckName is " + newDeckName);
 			}
 			else {
 				btnSave.setEnabled(false);
