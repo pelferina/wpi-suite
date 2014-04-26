@@ -69,7 +69,6 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		ownerButton.setVisible(false);
 		
 		contentPanel.add(editButton);
-		contentPanel.add(spacer);
 		contentPanel.add(ownerButton);
 
 		contentPanel.setOpaque(false);
@@ -243,10 +242,12 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		if ( ownerButton.isVisible() && editButton.isVisible() )
 		{
 			this.setPreferredWidth(315);
+			contentPanel.add(spacer,1);
 		}
 		else
 		{
-			this.setPreferredWidth(165);
+			this.setPreferredWidth(150);
+			contentPanel.remove(spacer);
 		}
 	}
 }
