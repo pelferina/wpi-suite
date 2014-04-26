@@ -19,7 +19,6 @@ import java.util.List;
 import javax.swing.JButton;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.DeckCard;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameCard;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
