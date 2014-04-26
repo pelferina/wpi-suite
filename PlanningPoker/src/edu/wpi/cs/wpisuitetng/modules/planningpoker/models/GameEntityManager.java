@@ -178,7 +178,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 		final GameSession importedGame = GameSession.fromJson(content);
 		
 		GameStatus oldGameStatus = null;
-		GameSession[] games;
+		final GameSession[] games;
 		try {
 			games = getAll(s);
 			for (GameSession g : games) {
@@ -318,9 +318,10 @@ public class GameEntityManager implements EntityManager<GameSession> {
 			/** TODO find a more elegent solution can't send only bcc's */
 
 			for (EmailAddressModel email : emails) {
-				if(email.getEnable() && email.getAddress()!=null)
+				if(email.getEnable() && email.getAddress()!=null){
 					message.addRecipients(Message.RecipientType.BCC,
 						InternetAddress.parse(email.getAddress()));
+				}
 			}
 
 			message.setSubject(subject);

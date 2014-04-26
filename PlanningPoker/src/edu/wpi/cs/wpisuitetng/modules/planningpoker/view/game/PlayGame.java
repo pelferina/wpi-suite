@@ -61,8 +61,8 @@ public class PlayGame extends JPanel{
 	private final JButton voteButton = new JButton("Vote");
 	private Vote userEstimates;
 	private Requirement currentReq;
-	private GameView gv;
-	private GameSession currentGame;
+	private final GameView gv;
+	private final GameSession currentGame;
 	private boolean hasVoted = false;
 	
 	/**
@@ -171,7 +171,7 @@ public class PlayGame extends JPanel{
 		submit.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
-				AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
+				final AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
 				msgr.sendVote(userEstimates);
 				gv.isNew = true;
 				ViewEventController.getInstance().getMain().remove(gv);

@@ -55,7 +55,7 @@ public class VoteEntityManager implements EntityManager<Vote> {
 		}
 		if(session.length != 1) throw new WPISuiteException();
 		// Delete previous votes with this voteID
-		Vote[] prevVote = db.retrieve(Vote.class, "VoteID", v.getVoteID()).toArray(new Vote[0]);
+		final Vote[] prevVote = db.retrieve(Vote.class, "VoteID", v.getVoteID()).toArray(new Vote[0]);
 		if(prevVote.length != 0){
 			db.delete(prevVote[0]);
 		}

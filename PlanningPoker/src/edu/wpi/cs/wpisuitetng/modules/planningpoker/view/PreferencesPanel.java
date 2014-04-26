@@ -112,7 +112,7 @@ public class PreferencesPanel extends JPanel {
 		enableCheckBox.addItemListener(new CheckBoxChangedListener(this));
 		retrieveEmail();
 		emailField.setText(eModel.getAddress());
-		if(eModel.getEnable() == true){
+		if(eModel.getEnable()){
 			enableCheckBox.setSelected(true);
 			makeEmailEnable();
 		}else{
@@ -139,28 +139,32 @@ public class PreferencesPanel extends JPanel {
 	 * Enables Email Capabilities
 	 */
 	public void makeEmailEnable(){
-		this.submitButton.setEnabled(true);
-		this.emailField.setEnabled(true);
+		submitButton.setEnabled(true);
+		emailField.setEnabled(true);
 	}
 	/**
 	 * Disables Email Capabilities
 	 */
 	public void makeEmailDisable(){
-		this.submitButton.setEnabled(false);
-		this.emailField.setEnabled(false);
+		submitButton.setEnabled(false);
+		emailField.setEnabled(false);
 	}
 	public void setEmailModel(EmailAddressModel eModel){
 		this.eModel = eModel;
 	}
 	public EmailAddressModel getEmailModel(){
-		return this.eModel;
+		return eModel;
 	}
 	public String getEmailAddress(){
 		return emailField.getText();
 	}
 }
 
-
+/**
+ * EmailRequestObserver class
+ * @author Cosmic Latte
+ * @version 6
+ */
 class GetEmailRequestObserver implements RequestObserver {
 	
 	private final PreferencesPanel panel;

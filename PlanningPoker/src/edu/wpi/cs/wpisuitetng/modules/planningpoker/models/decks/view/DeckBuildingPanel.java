@@ -31,22 +31,26 @@ import javax.swing.JLabel;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
+/**
+ * The DeckBuildingPanel class
+ * @author Cosmic Latte
+ * @version 6
+ */
 @SuppressWarnings({"serial"})
 public class DeckBuildingPanel extends JPanel {
 
-	private JButton btnAddCard = new JButton("Add Card");
-	private JButton btnRmvSelected = new JButton("Remove Selected");
-	private JButton btnRmvAll = new JButton("Remove all");
-	private JButton btnSave = new JButton("Save deck");
-	private JButton btnDelete = new JButton("Delete deck");
-	private JComboBox<String> comboBoxDeckList = new JComboBox<String>();
-	private JLabel lblDeckName = new JLabel("Deck Name:");
-	private JLabel lblDecks = new JLabel("Decks:");
-	private JPanel cardPanel = new JPanel();
-	private JScrollPane cardArea = new JScrollPane(cardPanel);
-	private JTextField textField = new JTextField();
-	private SpringLayout springLayout = new SpringLayout();
+	private final JButton btnAddCard = new JButton("Add Card");
+	private final JButton btnRmvSelected = new JButton("Remove Selected");
+	private final JButton btnRmvAll = new JButton("Remove all");
+	private final JButton btnSave = new JButton("Save deck");
+	private final JButton btnDelete = new JButton("Delete deck");
+	private final JComboBox<String> comboBoxDeckList = new JComboBox<String>();
+	private final JLabel lblDeckName = new JLabel("Deck Name:");
+	private final JLabel lblDecks = new JLabel("Decks:");
+	private final JPanel cardPanel = new JPanel();
+	private final JScrollPane cardArea = new JScrollPane(cardPanel);
+	private final JTextField textField = new JTextField();
+	private final SpringLayout springLayout = new SpringLayout();
 	
 	/** Constructor for a DeckPanel panel
 	 */
@@ -56,7 +60,7 @@ public class DeckBuildingPanel extends JPanel {
 		setUpDeckList();
 		
 		// Sets a consistent font for all buttons
-		Font size = new Font(btnSave.getFont().getName(), btnSave.getFont().getStyle(), 10);
+		final Font size = new Font(btnSave.getFont().getName(), btnSave.getFont().getStyle(), 10);
 		
 		btnSave.setFont(size);
 		btnSave.setSize(80, 20);

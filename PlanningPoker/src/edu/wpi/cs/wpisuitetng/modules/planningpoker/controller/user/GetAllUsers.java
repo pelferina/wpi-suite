@@ -64,7 +64,7 @@ public class GetAllUsers {
 		request.send(); // send the request// add an observer to process the response
 	}
 	public void setUsers(User[] users){
-		this.users = users;
+		GetAllUsers.users = users;
 	}
 
 }

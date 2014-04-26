@@ -38,7 +38,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	private final JTable unselectedTable;
 	private final JTable selectedTable;
 	private List<Requirement> reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
-	private NewGameDistributedPanel newGamePanel;
+	private final NewGameDistributedPanel newGamePanel;
 	// Declarations and initializations of GUI components
 	JLabel lblRequirementsAvailable = new JLabel("Requirements Available");
 	JButton btnAddReq = new JButton("Add New Requirement");
@@ -368,7 +368,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	}
 
 	//This gets only the requirements in the "Backlog" iteration from the requirements manager
-	
+	@SuppressWarnings("unused")
 	private void getReqs() {
 		GetRequirementsController.getInstance().retrieveRequirements();
 		reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
@@ -424,7 +424,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	 * @return int[] The newly shortened array
 	 */
 	public int[] removeFirst(int[] Array){
-		int[] newArray = new int[Array.length-1];
+		final int[] newArray = new int[Array.length-1];
 		for (int i =0; i<Array.length-1; i++){
 			newArray[i]=Array[i+1];
 		}
@@ -446,7 +446,6 @@ class RefreshTask extends TimerTask {
 
 	Timer timer;
 	NewGameReqPanel ngrp;
-
 	private RefreshTask(Timer timer, NewGameReqPanel ngrp){
 		this.timer = timer;
 		this.ngrp = ngrp;

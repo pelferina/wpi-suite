@@ -59,20 +59,20 @@ public class VoteData extends JPanel{
 	private final JLabel estimatesLabel = new JLabel("Estimates");
 	private final JLabel finalEstimateLabel = new JLabel ("Final Estimate:");
 	private final JLabel notAnIntegerError = new JLabel("Estimate must be a positive integer");
-	private JTextField finalEstimateText = new JTextField();
-	private JButton	finalSubmitButton = new JButton("Submit");
-	private JButton sendEstimatesButton = new JButton("Send Final Estimates");
-	private JTextField reqNameText = new JTextField();
+	private final JTextField finalEstimateText = new JTextField();
+	private final JButton	finalSubmitButton = new JButton("Submit");
+	private final JButton sendEstimatesButton = new JButton("Send Final Estimates");
+	private final JTextField reqNameText = new JTextField();
 	private JLabel meanTextField;
 	private JLabel medianTextField;
-	private JTextArea descriptionTextArea = new JTextArea();
-	private JScrollPane descriptionScrollPane = new JScrollPane(descriptionTextArea);
+	private final JTextArea descriptionTextArea = new JTextArea();
+	private final JScrollPane descriptionScrollPane = new JScrollPane(descriptionTextArea);
 	private JScrollPane estimatesPane;
 	private JTable estimatesTable;
-	private GameSession completedGame;
-	private CompleteView completeView;
+	private final GameSession completedGame;
+	private final CompleteView completeView;
 	private List<Integer> gameReqIDs;
-	private List<Requirement> gameReqs;
+	private final List<Requirement> gameReqs;
 	private Requirement currentReq;
 	private int	reqIndex;
 	private List<Integer> finalVote;
@@ -129,10 +129,10 @@ public class VoteData extends JPanel{
 		
 		//Sets the statistic text fields to the stats of the first requirement in the game, and disables user edits
 		if(completedGame.getMean().size() != 0){
-			float mean = completedGame.getMean().get(reqIndex);
+			final float mean = completedGame.getMean().get(reqIndex);
 			meanTextField = new JLabel(String.format("%.2f", mean));
 			meanTextField.setFont(new Font("Tahoma", Font.PLAIN, 20));
-			float median = completedGame.getMedian().get(reqIndex);
+			final float median = completedGame.getMedian().get(reqIndex);
 			medianTextField = new JLabel(String.format("%.2f", median));
 			medianTextField.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		} else {
@@ -148,7 +148,7 @@ public class VoteData extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e){
 				boolean allVotes = true;
-				int finalEstimate = Integer.parseInt(finalEstimateText.getText());
+				final int finalEstimate = Integer.parseInt(finalEstimateText.getText());
 				finalVote.set(reqIndex, finalEstimate);
 				for (int i: finalVote){
 					if (i == -1){
@@ -210,7 +210,7 @@ public class VoteData extends JPanel{
 		};
 		
 		estimatesTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"User Name", "Estimate"}));
-		DefaultTableModel estimatesModel = (DefaultTableModel) estimatesTable.getModel();
+		final DefaultTableModel estimatesModel = (DefaultTableModel) estimatesTable.getModel();
 		estimatesModel.setRowCount(completedGame.getVotes().size());
 		
 		int i = 0;
@@ -227,7 +227,7 @@ public class VoteData extends JPanel{
 		estimatesPane = new JScrollPane(estimatesTable);
 		estimatesPane.setViewportView(estimatesTable);
 		
-		SpringLayout springLayout = new SpringLayout();
+		final SpringLayout springLayout = new SpringLayout();
 		
 		// Spring layout constraints for sendEstimatesButton
 		springLayout.putConstraint(SpringLayout.NORTH, sendEstimatesButton, 24, SpringLayout.SOUTH, finalSubmitButton);
@@ -332,7 +332,7 @@ public class VoteData extends JPanel{
 		currentReq = req;
 		reqIndex = completeView.getIndex(currentReq.getId());
 		int i = 0;
-		DefaultTableModel estimatesModel = (DefaultTableModel) estimatesTable.getModel();
+		final DefaultTableModel estimatesModel = (DefaultTableModel) estimatesTable.getModel();
 		for (Vote v: completedGame.getVotes()){
 			for (User u: GetAllUsers.getInstance().getAllUsers()){
 				if (u.getIdNum() == v.getUID()){
