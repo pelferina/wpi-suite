@@ -9,6 +9,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,10 +17,10 @@ import java.io.IOException;
 import java.util.Calendar;
 
 import javax.imageio.ImageIO;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -43,12 +44,13 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	private ImageIcon archiveImg;
 	private ImageIcon editImg;
 	private Timer expireTimer = null;
+	Component spacer = Box.createRigidArea(new Dimension(15,0));
 	
 	public OwnerButtonPanel(){
 		super("");
 		
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
-		this.setPreferredWidth(330);
+		this.setPreferredWidth(315);
 		
 		ownerButton.setPreferredSize(new Dimension(150,50));	
 		editButton.setPreferredSize(new Dimension(150,50));
@@ -65,8 +67,9 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		editButton.setIcon(editImg);
 		editButton.setVisible(false);
 		ownerButton.setVisible(false);
-
+		
 		contentPanel.add(editButton);
+		contentPanel.add(spacer);
 		contentPanel.add(ownerButton);
 
 		contentPanel.setOpaque(false);
@@ -81,6 +84,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	public void makeOwnerButtonInvisible() {
 		ownerButton.setEnabled(false);
 		ownerButton.setVisible(false);
+		determineButtonSize();
 	}
 	
 	/**
@@ -103,6 +107,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		if (game.getEndDate()!=null){
 			expireThisButtonIn((int)(game.getEndDate().getTime()-Calendar.getInstance().getTime().getTime()));
 		}
+		determineButtonSize();
 
 	}
 	/**
@@ -126,6 +131,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		if (game.getEndDate()!=null){
 			expireThisButtonIn((int)(game.getEndDate().getTime()-Calendar.getInstance().getTime().getTime()));
 		}
+		determineButtonSize();
 	}
 	
 	/**
@@ -149,6 +155,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		if (game.getEndDate()!=null){
 			expireThisButtonIn((int)(game.getEndDate().getTime()-Calendar.getInstance().getTime().getTime()));
 		}
+		determineButtonSize();
 	}
 	/**
 	 * Disable the activate game button, and add a action listener
@@ -159,6 +166,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		ownerButton.setEnabled(false);
 		ownerButton.setIcon(activateImg);
 		ownerButton.setText("<html>Activate<br />Game</html>");
+		determineButtonSize();
 	}
 
 	/**
@@ -178,6 +186,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		}
 		listener = new ArchiveGameActionListener(game);
 		ownerButton.addActionListener(listener);
+		determineButtonSize();
 	}
 	
 	private void expireThisButtonIn(int expireTime) {
@@ -217,6 +226,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		}
 		listener = new EditGameActionListener(gameID);
 		editButton.addActionListener(listener);
+		determineButtonSize();
 	}
 	
 	/**
@@ -225,5 +235,18 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	public void makeEditGameButtonInvisible() {
 		editButton.setEnabled(false);
 		editButton.setVisible(false);
+		determineButtonSize();
+	}
+	
+	public void determineButtonSize()
+	{
+		if ( ownerButton.isVisible() && editButton.isVisible() )
+		{
+			this.setPreferredWidth(315);
+		}
+		else
+		{
+			this.setPreferredWidth(165);
+		}
 	}
 }
