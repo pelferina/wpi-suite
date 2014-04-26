@@ -19,6 +19,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailAddressController;
@@ -27,7 +29,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailAddressCo
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddressModel;
-
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
@@ -106,6 +107,33 @@ public class PreferencesPanel extends JPanel {
 		add(currentEmailNameLabel);
 		add(userName);
 		add(emailLabel);
+		emailField.getDocument().addDocumentListener(new DocumentListener(){
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				checkValid();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				checkValid();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				checkValid();
+
+			}
+			
+			private void checkValid(){
+				if(emailField.getText().toUpperCase().matches("[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}")){
+					submitButton.setEnabled(true);
+				}else{
+					submitButton.setEnabled(false);
+				}
+			}
+			
+		});
 		add(emailField);
 		add(submitButton);
 		add(enableCheckBox);
@@ -157,6 +185,10 @@ public class PreferencesPanel extends JPanel {
 	}
 	public String getEmailAddress(){
 		return emailField.getText();
+	}
+	public void updateDisplay(){
+		this.emailField.setText("");
+		this.currentEmailLabel.setText(eModel.getAddress());
 	}
 }
 
