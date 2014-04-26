@@ -73,6 +73,8 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		final GameSession[] sessions = {};
 		
 		table = new JTable(new JTableModel(sessions));
+		table.getColumnModel().getColumn(0).setPreferredWidth(250);
+		
 
 		//sort the table
 		table.setRowSorter(new TableRowSorter(table.getModel()));
