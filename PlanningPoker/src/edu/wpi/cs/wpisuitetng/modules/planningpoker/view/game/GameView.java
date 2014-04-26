@@ -56,8 +56,7 @@ public class GameView extends JSplitPane{
 			}
 		}
 		addImpl(gameReqs, JSplitPane.LEFT, 1);
-		final Dimension minimumSize = new Dimension(600, 200);
-		leftComponent.setMinimumSize(minimumSize);
+	
 		if(gameToPlay.getGameStatus() == GameStatus.COMPLETED)
 		{
 			addImpl(viewGame, JSplitPane.RIGHT, 2);
@@ -70,8 +69,10 @@ public class GameView extends JSplitPane{
 			else {
 				addImpl(playGame, JSplitPane.RIGHT, 2);
 			}
-		}
-		setDividerLocation(400);
+		}	
+		leftComponent.setMinimumSize(new Dimension(200, 200));
+		rightComponent.setMinimumSize(new Dimension(500, 200));
+		setResizeWeight(0.1);
 	}
 
 	/**

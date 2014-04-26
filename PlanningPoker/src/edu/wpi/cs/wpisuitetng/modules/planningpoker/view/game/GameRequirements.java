@@ -12,6 +12,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game;
 
 
 
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,11 +29,10 @@ import javax.swing.table.DefaultTableModel;
 
 
 
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
-
-
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -145,6 +145,10 @@ public class GameRequirements extends JSplitPane{
 		completePane.setViewportView(estimatesComplete);
 		estimatesPending.getSelectionModel().addListSelectionListener(new tableListener(estimatesPending));
 		estimatesComplete.getSelectionModel().addListSelectionListener(new tableListener(estimatesComplete));
+		
+		final Dimension minimumSize = new Dimension(200, 200);
+		rightComponent.setMinimumSize(minimumSize);
+		leftComponent.setMinimumSize(minimumSize);
 		
 		setResizeWeight(0.5);
 	}
