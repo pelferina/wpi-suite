@@ -33,6 +33,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.deckcontroller.AddDeckContro
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameCard;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 
 /**
  * The DeckBuildingPanel class
@@ -60,11 +61,13 @@ public class DeckBuildingPanel extends JPanel {
 	private List<Integer> cardsToBeRemoved = new ArrayList<Integer>();
 	private JPanel cardPanel = new JPanel();
 	private JScrollPane cardArea = new JScrollPane(cardPanel);
+	private NewGameDistributedPanel newGameDistributed;
 
 	/** Constructor for a DeckPanel panel
 	 */
-	public DeckBuildingPanel(){
+	public DeckBuildingPanel(NewGameDistributedPanel ngdp){
 		
+		this.newGameDistributed = ngdp;
 		
 		// Sets a consistent font for all buttons
 		final Font size = new Font(btnSave.getFont().getName(), btnSave.getFont().getStyle(), 10);
@@ -130,7 +133,7 @@ public class DeckBuildingPanel extends JPanel {
 				System.out.println("Current DeckModel size is " + DeckModel.getInstance().getSize());
 				nameField.setText("");
 				newDeckCards.clear();
-				//TODO close tab
+				newGameDistributed.closeDeck();
 			}
 		});
 		
@@ -418,13 +421,3 @@ public class DeckBuildingPanel extends JPanel {
 	    return true;
 	}
 }
-
-
-
-
-
-
-
-
-
-

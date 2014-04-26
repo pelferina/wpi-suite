@@ -259,6 +259,15 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 				}
 			}	
 		});
+		
+		//This will call a function in new game distributed panel that will open the deck creation panel
+		createDeckButton.addActionListener(new ActionListener(){
+			
+			@Override
+			public void actionPerformed(ActionEvent e){
+				newGameP.newDeck();
+			}
+		});
 
 
 		//Adds a documentlistener to the name text field so that no name error can be handled, save button can be made visible  
