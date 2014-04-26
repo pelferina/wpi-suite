@@ -73,6 +73,7 @@ public class NewGameDistributedPanel extends JSplitPane {
 	 * 
 	 */
 	private void setPanel(){
+		newGameInputPanel.setFocusNameText();
 		newRequirement = new NewRequirementPanel(this);
 		addImpl(newGameInputPanel, JSplitPane.LEFT, 1);
 		final Dimension minimumSize = new Dimension(DIVIDER_LOCATION, 200);
@@ -95,6 +96,7 @@ public class NewGameDistributedPanel extends JSplitPane {
 		setDividerLocation(DIVIDER_LOCATION);
 		newRequirement.setVisible(true);
 		newGameReqPanel.setVisible(false);
+		newRequirement.setFocusOnName();
 	}
 	/**
 	 * Sends the created Req
