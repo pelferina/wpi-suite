@@ -172,6 +172,9 @@ public class OverviewPanel extends JPanel implements Refreshable {
             }
         });
         splitPane.setBorder(null);
+        splitPane.setEnabled( false );
+
+
 		add(splitPane);	
 
 	}
