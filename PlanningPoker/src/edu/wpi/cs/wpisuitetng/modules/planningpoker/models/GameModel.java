@@ -42,6 +42,19 @@ public class GameModel extends AbstractListModel {
 	}
 	
 	/**
+	 * @param gameID to be retrieved
+	 * @return The GameSession with id gameID found in the game model
+	 */
+	public GameSession getGame(int gameID)
+	{
+		for (GameSession game : games)
+			if (game.getGameID() == gameID)
+				return game;
+		System.err.println("Game ID: "+ gameID +"not found in game model");
+		return null;
+	}
+	
+	/**
 	 * @param userID the user to get games for
 	 * @return the games for a current user
 	 */
