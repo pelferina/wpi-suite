@@ -219,7 +219,7 @@ public class GameRequirements extends JSplitPane{
 		 */
 		public tableListener(JTable table){
 			this.table = table;
-			if(table.equals(estimatesPending))
+			if(table.equals(estimatesPending) && estimatesPending.getRowCount() > 0)
 				this.table.setRowSelectionInterval(0, 0);
 		}
 
