@@ -76,7 +76,7 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 		for(Model e: emails){	
 			EmailAddressModel eModel = (EmailAddressModel)e;
 			if(eModel.getUsername().equals(s.getUser().getUsername())){
-				if(newEmailAddress.getEnable() == false){
+				if(!newEmailAddress.getEnable()){
 					System.out.println("Disable");
 					db.update(EmailAddressModel.class, "Username", s.getUser().getUsername(), "Enable", false);
 					return newEmailAddress;
@@ -99,8 +99,9 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 		if (!db.save(newEmailAddress, s.getProject())) {
 			throw new WPISuiteException();
 		}
-		if(!(newEmailAddress.getAddress()==null || newEmailAddress.getAddress().length() == 0))
+		if(!(newEmailAddress.getAddress()==null || newEmailAddress.getAddress().length() == 0)){
 			sendEmail(newEmailAddress.getAddress(), "Set Email", ("Hi " + s.getUser().getUsername() + ",\r\n\tYou just set your notification email address!\r\nsent by fff8e7"));
+		}
 
 
 		// Return the newly created email (this gets passed back to the client)
@@ -252,7 +253,12 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 			throw new RuntimeException(e);
 		}
 	}
-	
+	/**
+	 * Sends an email to all related to the project
+	 * @param send_subject The subject line of the email
+	 * @param send_text The body of the email
+	 * @param project The project to send email for
+	 */
 	public static void sendToALL(String send_subject, String send_text, Project project) {
 		final EmailAddressModel[] emails = db.retrieveAll(new EmailAddressModel(null, null, false), project).toArray(new EmailAddressModel[0]);
 		for(EmailAddressModel e: emails){

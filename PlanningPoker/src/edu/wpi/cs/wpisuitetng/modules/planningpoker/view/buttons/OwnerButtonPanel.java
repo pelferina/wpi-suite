@@ -19,7 +19,7 @@ import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
+
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -38,7 +38,10 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	private final JButton ownerButton = new JButton();
 	private final JButton editButton = new JButton("<html>Edit<br />Game</html>");
 	private ActionListener listener = null;
-	private ImageIcon endImg, activateImg, archiveImg, editImg;
+	private ImageIcon endImg;
+	private ImageIcon activateImg;
+	private ImageIcon archiveImg;
+	private ImageIcon editImg;
 	private Timer expireTimer = null;
 	
 	public OwnerButtonPanel(){
@@ -97,8 +100,9 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		}
 		listener = new EndGameActionListener(game);
 		ownerButton.addActionListener(listener);
-		if (game.getEndDate()!=null)
+		if (game.getEndDate()!=null){
 			expireThisButtonIn((int)(game.getEndDate().getTime()-Calendar.getInstance().getTime().getTime()));
+		}
 
 	}
 	/**
@@ -119,8 +123,9 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		listener = new ActivateGameActionListener(game);
 		ownerButton.addActionListener(listener);
 		
-		if (game.getEndDate()!=null)
+		if (game.getEndDate()!=null){
 			expireThisButtonIn((int)(game.getEndDate().getTime()-Calendar.getInstance().getTime().getTime()));
+		}
 	}
 	
 	/**
@@ -141,8 +146,9 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		listener = new ActivateGameActionListener(game);
 		ownerButton.addActionListener(listener);
 		
-		if (game.getEndDate()!=null)
+		if (game.getEndDate()!=null){
 			expireThisButtonIn((int)(game.getEndDate().getTime()-Calendar.getInstance().getTime().getTime()));
+		}
 	}
 	/**
 	 * Disable the activate game button, and add a action listener
@@ -175,10 +181,11 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	}
 	
 	private void expireThisButtonIn(int expireTime) {
-		if (expireTimer!=null)
+		if (expireTimer!=null){
 			expireTimer.stop();
+		}
 		
-		ActionListener al = new ActionListener(){
+		final ActionListener al = new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {

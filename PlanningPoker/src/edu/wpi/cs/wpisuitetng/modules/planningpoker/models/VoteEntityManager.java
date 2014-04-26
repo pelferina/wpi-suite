@@ -53,21 +53,29 @@ public class VoteEntityManager implements EntityManager<Vote> {
 		} catch (WPISuiteException e) {
 			e.printStackTrace();
 		}
-		if(session.length != 1) throw new WPISuiteException();
-		// Delete previous votes with this voteID
-		Vote[] prevVote = db.retrieve(Vote.class, "VoteID", v.getVoteID()).toArray(new Vote[0]);
-		if(prevVote.length != 0){
-			db.delete(prevVote[0]);
-		}
-		//check that vote saves properly
-		if (!db.save(v, s.getProject())) {
-			System.err.println("Vote not saved");
+		if(session.length != 1){
 			throw new WPISuiteException();
-		}else{
-			System.out.println("Vote saved");
+		}
+		
+		if (session[0].getGameStatus() != GameStatus.COMPLETED && session[0].getGameStatus() != GameStatus.ARCHIVED )
+		{
+			// Delete previous votes with this voteID
+			final Vote[] prevVote = db.retrieve(Vote.class, "VoteID", v.getVoteID()).toArray(new Vote[0]);
+			if(prevVote.length != 0){
+				db.delete(prevVote[0]);
 			}
-		// Return the newly created vote
-		return v;
+			//check that vote saves properly
+			if (!db.save(v, s.getProject())) {
+				System.err.println("Vote not saved");
+				throw new WPISuiteException();
+			}else{
+				System.out.println("Vote saved");
+				}
+			// Return the newly created vote
+			return v;
+		}
+		/** TODO figure out if this will break everything during a presentation or not */
+		return null;
 	}
 
 	/** Find a given entity from a example

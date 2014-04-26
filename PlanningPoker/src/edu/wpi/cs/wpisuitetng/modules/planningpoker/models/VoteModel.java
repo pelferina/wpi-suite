@@ -118,7 +118,7 @@ public class VoteModel implements Model {
 	 * @return the ArrayList<Vote> of the gameSession
 	 */
 	public List<Vote> getVotes(int gameID) {
-		List<Vote> ret = new ArrayList<Vote>();
+		final List<Vote> ret = new ArrayList<Vote>();
 		for(Vote v : votes){ 
 			if(v.getGameID() == gameID) {
 				ret.add(v);
@@ -133,7 +133,7 @@ public class VoteModel implements Model {
 	 * @return the List<Vote> of the Project's votes
 	 */
 	public List<Vote> getVotes(Project P){
-		List<Vote> ret = new ArrayList<Vote>();
+		final List<Vote> ret = new ArrayList<Vote>();
 		for(Vote v : votes){ 
 			if(v.getProject().equals(P)) {
 				ret.add(v);
@@ -148,8 +148,8 @@ public class VoteModel implements Model {
 	 * @return the List<Vote> of votes from the game session
 	 */
 	public List<Vote> getVotes(int gameID, Project P) {
-		List<Vote> VotesByProject = this.getVotes(P);
-		List<Vote> ret = new ArrayList<Vote>();
+		final List<Vote> VotesByProject = this.getVotes(P);
+		final List<Vote> ret = new ArrayList<Vote>();
 		for(Vote v : VotesByProject){ 
 			if(v.getGameID() == gameID) {
 				ret.add(v);

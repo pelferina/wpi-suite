@@ -21,7 +21,7 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
  *
  */
 public class AddVoteRequestObserver implements RequestObserver {
-	private AddVoteController controller;
+	private final AddVoteController controller;
 
 	/**
 	 * This constructor creates the AddVoteRequestObserverobject

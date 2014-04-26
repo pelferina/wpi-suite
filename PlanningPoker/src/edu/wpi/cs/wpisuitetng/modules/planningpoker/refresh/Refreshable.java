@@ -19,12 +19,12 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh;
 public interface Refreshable {
 	
 	/**
-	 * This method refreshes te requirements.
+	 * This method refreshes the requirements.
 	 */
-	public void refreshRequirements();
+	void refreshRequirements();
 	
 	/**
 	 * This method refreshes the games.
 	 */
-	public void refreshGames();
+	void refreshGames();
 }

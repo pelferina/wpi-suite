@@ -17,8 +17,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Collections;
@@ -37,6 +35,11 @@ import javax.swing.JLabel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+/**
+ * The DeckBuildingPanel class
+ * @author Cosmic Latte
+ * @version 6
+ */
 @SuppressWarnings({"serial"})
 public class DeckBuildingPanel extends JPanel {
 
@@ -64,7 +67,7 @@ public class DeckBuildingPanel extends JPanel {
 		
 		
 		// Sets a consistent font for all buttons
-		Font size = new Font(btnSave.getFont().getName(), btnSave.getFont().getStyle(), 10);
+		final Font size = new Font(btnSave.getFont().getName(), btnSave.getFont().getStyle(), 10);
 		
 		btnSave.setFont(size);
 		btnSave.setSize(80, 20);
@@ -129,12 +132,12 @@ public class DeckBuildingPanel extends JPanel {
 		
 		btnAddCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				final GameCard card;
+				GameCard card;
 				int cardNumber;
 				try {
 					cardNumber = Integer.parseInt(numberField.getText());
 					card = new GameCard(cardNumber);
-					
+					card.setCancelCard(true);
 					// Sets listener for the  new card
 					card.addItemListener (new ItemListener(){
 						public void itemStateChanged ( ItemEvent ie) {
@@ -151,7 +154,7 @@ public class DeckBuildingPanel extends JPanel {
 					cardPanel.add(card);
 					cardPanel.revalidate();
 		
-					// Stores new card to the lists
+					// Stores new card value to the list
 					newDeckCards.add(cardNumber);
 					
 					// GUI calls
@@ -205,13 +208,15 @@ public class DeckBuildingPanel extends JPanel {
 				cardPanel.removeAll();
 				cardPanel.revalidate();
 				cardPanel.repaint();
-				
+				isValidCard();
+
 				// Sets button status to false because there are no more cards on the new deck
 				btnSave.setEnabled(false);
 				
 				// Outputs console messages
 				System.out.println("Cleared current deck");
 				System.out.println("Current card list is: " + newDeckCards.toString());
+
 			}
 		});
 		
@@ -292,7 +297,8 @@ public class DeckBuildingPanel extends JPanel {
 		
 		// Adds sorted list
 		for(final int cardValue: newDeckCards){
-			final GameCard card = new GameCard(cardValue);
+			GameCard card = new GameCard(cardValue);
+			card.setCancelCard(true);
 			cardPanel.add(card);
 			
 			// Sets listener for the card
@@ -338,24 +344,35 @@ public class DeckBuildingPanel extends JPanel {
 	 *checks if the inputed card number is valid and perform actions accordingly
 	 */
 	private void isValidCard(){
-		if (numberField.getText().length() > 0 && isInteger(numberField.getText()) && !nameField.getText().isEmpty()){
-			if (Integer.parseInt(numberField.getText()) >= 0){
-				btnAddCard.setEnabled(true);
-				btnSave.setEnabled(true);
-				//TODO notAnIntegerError.setVisible(false);
-			}
-			else{
-				btnAddCard.setEnabled(false);
-				//TODO notAnIntegerError.setVisible(true);
-			}
+		boolean needsName = false;
+		boolean allValid = true;
+		
+		//Name field checking
+		if(!nameField.getText().isEmpty()){
+			btnSave.setEnabled(true);
+		}else{
+			errLabel.setText("Deck must have a name.");
+			needsName = true;
+			allValid = false;
 		}
-		else{
+		
+		//Number field checking
+		if(numberField.getText().length() > 0 && isInteger(numberField.getText()) && Integer.parseInt(numberField.getText()) >= 0){
+			btnAddCard.setEnabled(true);
+		}else if(needsName){
 			btnAddCard.setEnabled(false);
-			//TODO notAnIntegerError.setVisible(true);
+			errLabel.setText("Deck must have name and card must be a non-negative integer.");
+		}else{
+			btnAddCard.setEnabled(false);
+			errLabel.setText("Card must be a non-negative integer.");
 		}
+		
+		//Checks that a card has been added to deck
 		if (newDeckCards.isEmpty()){
-			btnSave.setEnabled(false);
+			allValid = false;
 		}
+		
+		btnSave.setEnabled(allValid);
 	}
 	
 	/**

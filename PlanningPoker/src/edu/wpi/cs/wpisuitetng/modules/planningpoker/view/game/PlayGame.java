@@ -9,12 +9,16 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -24,10 +28,14 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddVoteController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.VoteModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
@@ -41,7 +49,7 @@ import javax.swing.event.DocumentListener;
  * @author Cosmic Latte
  * @version $Revision: 1.0 $
  */
-public class PlayGame extends JPanel{
+public class PlayGame extends JPanel implements Refreshable{
 
 	private final List<Integer> gameReqs;
 	private final JLabel gameName = new JLabel("Game Name:");
@@ -49,21 +57,24 @@ public class PlayGame extends JPanel{
 	private final JLabel reqName = new JLabel("Requirement Name:");
 	private final JLabel reqDesc = new JLabel("Requirement Description:");
 	private final JLabel estimateLabel = new JLabel("Input Estimate:");
+	private final JLabel gameEnded = new JLabel("The Game Has Ended.");
 	private final JLabel notAnIntegerError = new JLabel("Estimate must be a positive integer");
 	private final JTextField estimateTextField = new JTextField();
 	private final JTextField gameNameTextField = new JTextField();
 	private final JTextField reqNameTextField = new JTextField();
 	private final JTextArea gameDescTextArea = new JTextArea();
 	private final JTextArea reqDescTextArea = new JTextArea();
-	private final JScrollPane nd = new JScrollPane(gameDescTextArea);
-	private final JScrollPane rd = new JScrollPane(reqDescTextArea);
+	private final JScrollPane gameDescScroll = new JScrollPane(gameDescTextArea);
+	private final JScrollPane reqDescScroll = new JScrollPane(reqDescTextArea);
 	private final JButton submit = new JButton("Submit");
 	private final JButton voteButton = new JButton("Vote");
 	private Vote userEstimates;
 	private Requirement currentReq;
-	private GameView gv;
+	private final GameView gv;
 	private GameSession currentGame;
 	private boolean hasVoted = false;
+	private TimerTask setFocus;
+	private Timer setFocusTimer;
 	
 	/**
 	 * Constructor for a PlayGame panel
@@ -71,6 +82,21 @@ public class PlayGame extends JPanel{
 	 * @param agv the active game view
 	 */
 	public PlayGame(GameSession gameToPlay, GameView agv){
+		GetGamesController.getInstance().addRefreshable(this);
+		gameEnded.setVisible(false);
+
+		setFocus = new TimerTask(){
+
+			@Override
+			public void run() {
+				estimateTextField.requestFocusInWindow();
+				getRootPane().setDefaultButton(voteButton);
+			}
+			
+		};
+		setFocusTimer = new Timer();
+		setFocusTimer.schedule(setFocus, 100);
+		
 		currentGame = gameToPlay;
 		gameReqs = currentGame.getGameReqs();
 		notAnIntegerError.setVisible(false);
@@ -111,6 +137,7 @@ public class PlayGame extends JPanel{
 		if (currentReq != null){
 			reqNameTextField.setText(currentReq.getName());
 			reqDescTextArea.setText(currentReq.getDescription());
+			estimateTextField.requestFocusInWindow();
 		}
 		gameDescTextArea.setText(currentGame.getGameDescription());
 		gameNameTextField.setEditable(false);
@@ -121,6 +148,10 @@ public class PlayGame extends JPanel{
 		gameDescTextArea.setWrapStyleWord(true);
 		reqDescTextArea.setLineWrap(true);
 		reqDescTextArea.setWrapStyleWord(true);
+		gameNameTextField.setBackground(Color.WHITE);
+		gameNameTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GRAY));
+		reqNameTextField.setBackground(Color.WHITE);
+		reqNameTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GRAY));		
 		
 		//This document listener will enable the submit button when something is inputted into the estimate text field
 		estimateTextField.getDocument().addDocumentListener(new DocumentListener(){
@@ -162,6 +193,7 @@ public class PlayGame extends JPanel{
 					System.out.println(userEstimates.getVote());
 					sendEstimatetoGameView(currentReq, estimate);
 				}
+				estimateTextField.requestFocusInWindow();
 				gv.isNew = false;
 			}
 			
@@ -171,10 +203,19 @@ public class PlayGame extends JPanel{
 		submit.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
-				AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
-				msgr.sendVote(userEstimates);
-				gv.isNew = true;
-				ViewEventController.getInstance().getMain().remove(gv);
+				currentGame = GameModel.getInstance().getGame(currentGame.getGameID());
+				if (currentGame.getGameStatus() == GameStatus.COMPLETED || currentGame.getGameStatus() == GameStatus.ARCHIVED)
+				{
+					submit.setText("Game Ended");
+					submit.setEnabled(false);
+				}
+				else
+				{
+					AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
+					msgr.sendVote(userEstimates);
+					gv.isNew = true;
+					ViewEventController.getInstance().getMain().remove(gv);					
+				}
 			}
 		});
 		
@@ -183,62 +224,68 @@ public class PlayGame extends JPanel{
 
 		//Spring layout placement for gameName label
 		springLayout.putConstraint(SpringLayout.NORTH, gameName, 15, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, voteButton, 30, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.WEST, gameName, 30, SpringLayout.WEST, this);
 		
 		//Spring layout placement for gameDesc label
-		springLayout.putConstraint(SpringLayout.NORTH, gameDesc, 15, SpringLayout.SOUTH, gameName);
+		springLayout.putConstraint(SpringLayout.NORTH, gameDesc, 10, SpringLayout.SOUTH, gameName);
 		springLayout.putConstraint(SpringLayout.WEST, gameDesc, 0, SpringLayout.WEST, gameName);
 		
 		//Spring layout placement for vote button
-		springLayout.putConstraint(SpringLayout.NORTH, voteButton, 0, SpringLayout.NORTH, estimateTextField);
-		springLayout.putConstraint(SpringLayout.WEST, voteButton, 30, SpringLayout.EAST, estimateTextField);
+		springLayout.putConstraint(SpringLayout.SOUTH, voteButton, 0, SpringLayout.SOUTH, submit);
+		springLayout.putConstraint(SpringLayout.EAST, voteButton, -10, SpringLayout.WEST, submit);
+		springLayout.putConstraint(SpringLayout.WEST, voteButton, -100, SpringLayout.EAST, voteButton);
 		
 		//Spring layout placement for submit button
 		springLayout.putConstraint(SpringLayout.SOUTH, submit, -10, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, submit, -10, SpringLayout.EAST, this);
 		
 		//Spring layout placement for estimateTextField
-		springLayout.putConstraint(SpringLayout.NORTH, estimateTextField, 0, SpringLayout.NORTH, estimateLabel);
-		springLayout.putConstraint(SpringLayout.WEST, estimateTextField, 0, SpringLayout.WEST, rd);
-		springLayout.putConstraint(SpringLayout.EAST, estimateTextField, 40, SpringLayout.WEST, estimateTextField);
+		springLayout.putConstraint(SpringLayout.NORTH, estimateTextField, 0, SpringLayout.NORTH, voteButton);
+		springLayout.putConstraint(SpringLayout.SOUTH, estimateTextField, 0, SpringLayout.SOUTH, voteButton);
+		springLayout.putConstraint(SpringLayout.EAST, estimateTextField, -10, SpringLayout.WEST, voteButton);
+		springLayout.putConstraint(SpringLayout.WEST, estimateTextField, -60, SpringLayout.EAST, estimateTextField);
 		
 		//Spring layout for placement of gameNameTextField
-		springLayout.putConstraint(SpringLayout.WEST, gameNameTextField, 0, SpringLayout.WEST, rd);
-		springLayout.putConstraint(SpringLayout.EAST, gameNameTextField, 600, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.WEST, gameNameTextField, 5, SpringLayout.EAST, gameName);
+		springLayout.putConstraint(SpringLayout.EAST, gameNameTextField, 0, SpringLayout.EAST, gameDescScroll);
 		springLayout.putConstraint(SpringLayout.NORTH, gameNameTextField, 0, SpringLayout.NORTH, gameName);
 		
 		//Spring layout for placement of reqNameTextField
-		springLayout.putConstraint(SpringLayout.WEST, reqNameTextField, 0, SpringLayout.WEST, rd);
-		springLayout.putConstraint(SpringLayout.EAST, reqNameTextField, 600, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.WEST, reqNameTextField, 5, SpringLayout.EAST, reqName);
+		springLayout.putConstraint(SpringLayout.EAST, reqNameTextField, 0, SpringLayout.EAST, gameDescScroll);
 		springLayout.putConstraint(SpringLayout.NORTH, reqNameTextField, 0, SpringLayout.NORTH, reqName);
 		
 		//Spring layout for estimateLabel
-		springLayout.putConstraint(SpringLayout.NORTH, estimateLabel, 30, SpringLayout.SOUTH, rd);
-		springLayout.putConstraint(SpringLayout.WEST, estimateLabel, 0, SpringLayout.WEST, reqDesc);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, estimateLabel, 0, SpringLayout.VERTICAL_CENTER, estimateTextField);
+		springLayout.putConstraint(SpringLayout.EAST, estimateLabel, -5, SpringLayout.WEST, estimateTextField);
 		
-		//Spring layout for nd
-		springLayout.putConstraint(SpringLayout.NORTH, nd, 0, SpringLayout.NORTH, gameDesc);
-		springLayout.putConstraint(SpringLayout.WEST, nd, 0, SpringLayout.WEST, rd);
-		springLayout.putConstraint(SpringLayout.EAST, nd, -30, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, nd, 125, SpringLayout.NORTH, nd);
+		//Spring layout for gameDescScroll
+		springLayout.putConstraint(SpringLayout.NORTH, gameDescScroll, 10, SpringLayout.SOUTH, gameDesc);
+		springLayout.putConstraint(SpringLayout.WEST, gameDescScroll, 0, SpringLayout.WEST, gameDesc);
+		springLayout.putConstraint(SpringLayout.EAST, gameDescScroll, -30, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, gameDescScroll, 125, SpringLayout.NORTH, gameDescScroll);
 		
-		//Spring layout for rd
-		springLayout.putConstraint(SpringLayout.NORTH, rd, 0, SpringLayout.NORTH, reqDesc);
-		springLayout.putConstraint(SpringLayout.WEST, rd, 10, SpringLayout.EAST, reqDesc);
-		springLayout.putConstraint(SpringLayout.EAST, rd, -30, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, rd, 125, SpringLayout.NORTH, rd);
+		//Spring layout for reqDescScroll
+		springLayout.putConstraint(SpringLayout.NORTH, reqDescScroll, 10, SpringLayout.SOUTH, reqDesc);
+		springLayout.putConstraint(SpringLayout.WEST, reqDescScroll, 0, SpringLayout.WEST, reqDesc);
+		springLayout.putConstraint(SpringLayout.EAST, reqDescScroll, -30, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, reqDescScroll, 125, SpringLayout.NORTH, reqDescScroll);
 		
 		//Spring layout for reqDesc label
-		springLayout.putConstraint(SpringLayout.NORTH, reqDesc, 15, SpringLayout.SOUTH, reqName);
+		springLayout.putConstraint(SpringLayout.NORTH, reqDesc, 10, SpringLayout.SOUTH, reqName);
 		springLayout.putConstraint(SpringLayout.WEST, reqDesc, 0, SpringLayout.WEST, reqName);
 		
 		//Spring layout for reqName label
-		springLayout.putConstraint(SpringLayout.NORTH, reqName, 140, SpringLayout.SOUTH, gameDesc);
+		springLayout.putConstraint(SpringLayout.NORTH, reqName, 20, SpringLayout.SOUTH, gameDescScroll);
 		springLayout.putConstraint(SpringLayout.WEST, reqName, 0, SpringLayout.WEST, gameDesc);
 		
 		//Spring layout for notAnIntegerError label
-		springLayout.putConstraint(SpringLayout.NORTH, notAnIntegerError, 0, SpringLayout.SOUTH, voteButton);
-		springLayout.putConstraint(SpringLayout.WEST, notAnIntegerError, -20, SpringLayout.EAST, voteButton);
+		springLayout.putConstraint(SpringLayout.SOUTH, notAnIntegerError, -10, SpringLayout.NORTH, submit);
+		springLayout.putConstraint(SpringLayout.EAST, notAnIntegerError, 0, SpringLayout.EAST, submit);
+		
+		//Spring layout for GameEnded label
+		springLayout.putConstraint(SpringLayout.NORTH, gameEnded, 0, SpringLayout.SOUTH, notAnIntegerError);
+		springLayout.putConstraint(SpringLayout.EAST, gameEnded, 0, SpringLayout.EAST, notAnIntegerError);
 		
 		setLayout(springLayout);
 	
@@ -253,8 +300,9 @@ public class PlayGame extends JPanel{
 		add(gameNameTextField);
 		add(reqNameTextField);
 		add(notAnIntegerError);
-		add(nd);
-		add(rd);
+		add(gameEnded);
+		add(gameDescScroll);
+		add(reqDescScroll);
 	}
 	
 	/**
@@ -351,6 +399,42 @@ public class PlayGame extends JPanel{
 				break;
 			}
 		}
+		
+		if (currentGame.getGameStatus() == GameStatus.COMPLETED || currentGame.getGameStatus() == GameStatus.ARCHIVED)
+		{
+			clear();
+			submit.setText("Game Ended");
+			canSubmit = false;
+			submit.setVisible(false);
+			voteButton.setVisible(false);
+			estimateTextField.setVisible(false);
+			notAnIntegerError.setVisible(false);
+			gameEnded.setVisible(true);
+			estimateTextField.setText("");
+
+		}
 		submit.setEnabled(canSubmit);
+	}
+
+	@Override
+	public void refreshRequirements(){
+	}
+
+	@Override
+	public void refreshGames() {
+		currentGame = GameModel.getInstance().getGame(currentGame.getGameID());
+		if (currentGame.getGameStatus() == GameStatus.COMPLETED || currentGame.getGameStatus() == GameStatus.ARCHIVED)
+		{
+			clear();
+			submit.setText("Game Ended");
+			submit.setVisible(false);
+			voteButton.setVisible(false);
+			estimateTextField.setVisible(false);
+			notAnIntegerError.setVisible(false);
+			gameEnded.setVisible(true);
+			estimateTextField.setText("");
+
+
+		}
 	}
 }

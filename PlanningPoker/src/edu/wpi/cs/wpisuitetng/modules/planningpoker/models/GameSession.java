@@ -22,7 +22,7 @@ import java.util.List;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetVoteController;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 
 
@@ -57,7 +57,7 @@ public class GameSession extends AbstractModel {
 	private List<Float> median;
 	private List<Float> mean;
 	private int deckId;
-	private List<Vote> votes;
+	private final List<Vote> votes;
 	private List<Integer> finalVotes;
 	
 	/**
@@ -283,12 +283,12 @@ public class GameSession extends AbstractModel {
 	 * This method calculates the statistics of the votes, such as mean and median
 	 */
 	public void calculateStats(){
-		List<Vote> votes = this.getVotes();
-		int requirementNum = gameReqs.size();
-		int userNum = votes.size();
+		final List<Vote> votes = this.getVotes();
+		final int requirementNum = gameReqs.size();
+		final int userNum = votes.size();
 		mean = new ArrayList<Float>();
 		median = new ArrayList<Float>();
-		int[][] voteResult = new int[requirementNum][userNum];
+		final int[][] voteResult = new int[requirementNum][userNum];
 		for(int i=0; i < userNum; i++){
 			for(int j=0;j < requirementNum; j++){
 				voteResult[j][i] = votes.get(i).getVote().get(j);

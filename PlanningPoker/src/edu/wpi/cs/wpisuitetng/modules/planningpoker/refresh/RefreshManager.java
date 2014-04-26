@@ -25,6 +25,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
 
 /**
  * This method manages refresh requests
@@ -39,6 +40,7 @@ public class RefreshManager {
 	List<GameSession> gameCache;
 	
 	public RefreshManager() {
+	
 		gameController = GetGamesController.getInstance();
 		reqController = GetRequirementsController.getInstance();
 		
@@ -103,7 +105,6 @@ public class RefreshManager {
 		//Make a request to the database
 		
 		if (differentList(reqCache, RequirementModel.getInstance().getRequirements())){
-			reqController.actionPerformed(null);
 			reqController.refresh();
 			reqCache = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
 		}	
