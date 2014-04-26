@@ -69,6 +69,8 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	public OverviewPanel(){
 		gameModel = GameModel.getInstance();
 		ggc = GetGamesController.getInstance();
+		
+		
 		ggc.addRefreshable(this);
 		final GameSession[] sessions = {};
 
@@ -254,6 +256,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		for (int i = 0; i < gameTree.getRowCount(); i++){
 			gameTree.expandRow(i);
 		}
+		GetRequirementsController.getInstance().actionPerformed(null);
 	}
 
 	/**
