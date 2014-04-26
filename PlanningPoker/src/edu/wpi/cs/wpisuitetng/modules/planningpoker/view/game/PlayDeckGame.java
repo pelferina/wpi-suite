@@ -424,4 +424,10 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 
 		}
 	}
+
+	@Override
+	public void refreshDecks() {
+		// TODO Auto-generated method stub
+		
+	}
 }
