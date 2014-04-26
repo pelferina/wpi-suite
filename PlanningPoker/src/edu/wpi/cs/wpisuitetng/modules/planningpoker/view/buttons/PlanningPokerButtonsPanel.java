@@ -43,7 +43,7 @@ public class PlanningPokerButtonsPanel extends ToolbarGroupView{
 		super("");
 		
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
-		this.setPreferredWidth(300);
+		this.setPreferredWidth(330);
 		
 		createButton.setPreferredSize(new Dimension(150,50));
 		optionsButton.setPreferredSize(new Dimension(150,50));	
