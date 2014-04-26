@@ -25,8 +25,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  */
 public class CompleteView extends JSplitPane {
 
-	private GameData gameData;
-	private VoteData voteData;
+	private final GameData gameData;
+	private final VoteData voteData;
 
 	public boolean isNew = true;
 

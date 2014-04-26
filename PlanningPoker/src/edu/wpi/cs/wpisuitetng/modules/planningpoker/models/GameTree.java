@@ -9,8 +9,8 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 import javax.swing.tree.*;
 
-import java.util.ArrayList;
-import java.util.List;
+
+
 
 /**
  * @author Anthony
@@ -74,7 +74,7 @@ public class GameTree extends DefaultMutableTreeNode {
 	 * Making Codepro work, never used
 	 */
 	@Override
-	public GameTree clone(){
-		return this;
+	public Object clone(){
+		return super.clone();
 	}
 }

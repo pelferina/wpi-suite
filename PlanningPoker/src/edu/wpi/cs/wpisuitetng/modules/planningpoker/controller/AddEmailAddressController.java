@@ -47,9 +47,10 @@ public class AddEmailAddressController implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		EmailAddressModel eModel = panel.getEmailModel();
+		final EmailAddressModel eModel = panel.getEmailModel();
 		eModel.setAddress(panel.getEmailAddress());
 		saveEmail(eModel);
+		this.panel.updateDisplay();
 	}
 
 	/**

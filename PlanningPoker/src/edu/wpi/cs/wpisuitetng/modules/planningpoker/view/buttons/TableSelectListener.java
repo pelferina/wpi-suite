@@ -55,7 +55,7 @@ public class TableSelectListener implements ListSelectionListener{
     	final GameStatus status = gameSelected.getGameStatus();
     	final User currentUser = GetCurrentUser.getInstance().getCurrentUser();
     	
-    	boolean hasCategory = false;
+    	final boolean hasCategory = false;
     	if(currentUser.getIdNum() == ownerID){
     		if(status.equals(GameStatus.ACTIVE) || status.equals(GameStatus.INPROGRESS)){
     			ViewEventController.getInstance().makeEndGameButtonVisible(gameSelected);

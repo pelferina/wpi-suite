@@ -42,6 +42,21 @@ public class GameModel extends AbstractListModel {
 	}
 	
 	/**
+	 * @param gameID to be retrieved
+	 * @return The GameSession with id gameID found in the game model
+	 */
+	public GameSession getGame(int gameID)
+	{
+		for (GameSession game : games){
+			if (game.getGameID() == gameID){
+				return game;
+			}
+		}
+		System.err.println("Game ID: "+ gameID +"not found in game model");
+		return null;
+	}
+	
+	/**
 	 * @param userID the user to get games for
 	 * @return the games for a current user
 	 */
@@ -246,8 +261,9 @@ public class GameModel extends AbstractListModel {
 		final List<GameSession> usersGames = new ArrayList<GameSession>();
 		
 		for (GameSession game : games)
-			if (game.getOwnerID() == userID)
+			if (game.getOwnerID() == userID){
 				usersGames.add(game);
+			}
 		
 		return usersGames;
 	}
@@ -263,11 +279,15 @@ public class GameModel extends AbstractListModel {
 		final List<GameSession> unVotedGames = new ArrayList<GameSession>(this.getActiveGameSessions());
 		unVotedGames.addAll(this.getInProgressGameSessions());
 		
-		for (GameSession game : games)
-			if (game.getGameStatus() == GameStatus.ACTIVE || game.getGameStatus() == GameStatus.INPROGRESS )
-				for (Vote aVote : game.getVotes())
-					if (aVote.getUID() == userID)
+		for (GameSession game : games){
+			if (game.getGameStatus() == GameStatus.ACTIVE || game.getGameStatus() == GameStatus.INPROGRESS ){
+				for (Vote aVote : game.getVotes()){
+					if (aVote.getUID() == userID){
 						votedGames.add(game);
+					}
+				}
+			}
+		}
 		
 		unVotedGames.removeAll(votedGames);
 		
@@ -283,11 +303,15 @@ public class GameModel extends AbstractListModel {
 	{
 		final List<GameSession> votedGames = new ArrayList<GameSession>();
 		
-		for (GameSession game : games)
-			if (game.getGameStatus() == GameStatus.INPROGRESS )
-				for (Vote aVote : game.getVotes())
-					if (aVote.getUID() == userID)
+		for (GameSession game : games){
+			if (game.getGameStatus() == GameStatus.INPROGRESS ){
+				for (Vote aVote : game.getVotes()){
+					if (aVote.getUID() == userID){
 						votedGames.add(game);
+					}
+				}
+			}
+		}
 		
 		return votedGames;
 	}

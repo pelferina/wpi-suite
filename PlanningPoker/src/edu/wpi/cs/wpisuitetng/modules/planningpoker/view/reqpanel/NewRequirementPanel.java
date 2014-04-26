@@ -31,6 +31,8 @@ import javax.swing.event.DocumentListener;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JComboBox;
 
@@ -41,17 +43,17 @@ import javax.swing.JComboBox;
  * @version 6
  */
 public class NewRequirementPanel extends JPanel {
-	private Requirement currentRequirement;
-	private JTextField nameField;
-	private JTextArea descriptionField = new JTextArea();
-	private JScrollPane descriptionScrollPane = new JScrollPane(descriptionField);
+	private final Requirement currentRequirement;
+	private JTextField nameField = new JTextField();
+	private final JTextArea descriptionField = new JTextArea();
+	private final JScrollPane descriptionScrollPane = new JScrollPane(descriptionField);
 	private final JLabel nameLabel = new JLabel("Requirement Name: ");
 	private final JLabel descriptionLabel = new JLabel("Requirement Description: ");
 	private final JButton CreateRequirementButton = new JButton("Create Requirement");
 	private final JButton cancelButton = new JButton("Cancel");
 	private JComboBox<RequirementPriority> priorityComboBox = new JComboBox<RequirementPriority>();
 	private JComboBox<RequirementType> typeComboBox = new JComboBox<RequirementType>();
-	private NewGameDistributedPanel newGamePanel;
+	private final NewGameDistributedPanel newGamePanel;
 	private boolean isCreatable;
 	private final JLabel reqError = new JLabel("Can not have a requirement with no name or description");
 	
@@ -66,7 +68,7 @@ public class NewRequirementPanel extends JPanel {
 		priorityComboBox = new JComboBox<RequirementPriority>(RequirementPriority.values());
 		typeComboBox = new JComboBox<RequirementType>(RequirementType.values());
 		panelSetup();
-		currentRequirement= new Requirement();
+		currentRequirement = new Requirement();
 		
 	}
 	
@@ -77,11 +79,11 @@ public class NewRequirementPanel extends JPanel {
 	 * 		places and sizes everything
 	 */
 	public void panelSetup() {
-		nameField = new JTextField();
-		JLabel lblPriority = new JLabel("Priority:");
-		JLabel lblType = new JLabel("Type:");
+	
+		final JLabel lblPriority = new JLabel("Priority:");
+		final JLabel lblType = new JLabel("Type:");
 		descriptionField.setLineWrap(true);
-		SpringLayout springLayout = new SpringLayout();
+		final SpringLayout springLayout = new SpringLayout();
 		
 		//Spring layout constraints for cancelButton
 		springLayout.putConstraint(SpringLayout.WEST, cancelButton, 29, SpringLayout.EAST, CreateRequirementButton);
@@ -183,7 +185,10 @@ public class NewRequirementPanel extends JPanel {
 			
 			public void checkInput(DocumentEvent e){
 				isCreatable = (!nameField.getText().isEmpty() && !descriptionField.getText().isEmpty());
-				CreateRequirementButton.setEnabled(isCreatable);
+				if (isCreatable){
+					CreateRequirementButton.setEnabled(isCreatable);
+					getRootPane().setDefaultButton(CreateRequirementButton);
+				}
 				reqError.setVisible(!isCreatable);
 			}
 		});
@@ -220,16 +225,16 @@ public class NewRequirementPanel extends JPanel {
 		currentRequirement.setId(RequirementModel.getInstance().getNextID());
 		currentRequirement.setWasCreated(true);		
 		// Extract the name, release number, and description from the GUI fields
-		String stringName = nameField.getText();
+		final String stringName = nameField.getText();
 
-		String stringDescription = descriptionField.getText();
+		final String stringDescription = descriptionField.getText();
 
-		String stringIteration = "Backlog";
+		final String stringIteration = "Backlog";
 		
 
-		RequirementStatus status = RequirementStatus.NEW;
-		RequirementType type = (RequirementType) typeComboBox.getSelectedItem();
-		RequirementPriority priority = (RequirementPriority) priorityComboBox.getSelectedItem();
+		final RequirementStatus status = RequirementStatus.NEW;
+		final RequirementType type = (RequirementType) typeComboBox.getSelectedItem();
+		final RequirementPriority priority = (RequirementPriority) priorityComboBox.getSelectedItem();
 
 		currentRequirement.setName(stringName);
 
@@ -268,6 +273,10 @@ public class NewRequirementPanel extends JPanel {
 	}
 	public JLabel getReqError(){
 		return reqError;
+	}
+
+	public void setFocusOnName() {
+		nameField.requestFocusInWindow();
 	}
 }
 	

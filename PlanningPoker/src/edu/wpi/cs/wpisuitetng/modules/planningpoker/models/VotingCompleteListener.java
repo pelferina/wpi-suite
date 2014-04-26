@@ -11,7 +11,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.UnsupportedEncodingException;
+
 import java.util.Date;
 
 import edu.wpi.cs.wpisuitetng.database.Data;

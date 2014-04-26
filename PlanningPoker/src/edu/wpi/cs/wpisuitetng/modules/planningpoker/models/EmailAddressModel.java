@@ -35,7 +35,7 @@ public class EmailAddressModel extends AbstractModel {
 	 * Sets userID to -1 until on server side
 	 * 
 	 *  @param address This is the address to send the email to
-	 *  @param userID the user's id, as integer
+	 *  @param username The name of the user as  a string
 	 *  @param enable true if the model is enabled, false otherwise
 	 */
 	public EmailAddressModel(String address, String username, boolean enable) {

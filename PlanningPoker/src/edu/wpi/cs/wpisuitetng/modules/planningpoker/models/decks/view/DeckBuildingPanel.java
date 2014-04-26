@@ -10,10 +10,11 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view;
 
 import javax.swing.JList;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,6 +36,11 @@ import javax.swing.JLabel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+/**
+ * The DeckBuildingPanel class
+ * @author Cosmic Latte
+ * @version 6
+ */
 @SuppressWarnings({"serial"})
 public class DeckBuildingPanel extends JPanel {
 
@@ -62,7 +68,7 @@ public class DeckBuildingPanel extends JPanel {
 		
 		
 		// Sets a consistent font for all buttons
-		Font size = new Font(btnSave.getFont().getName(), btnSave.getFont().getStyle(), 10);
+		final Font size = new Font(btnSave.getFont().getName(), btnSave.getFont().getStyle(), 10);
 		
 		btnSave.setFont(size);
 		btnSave.setSize(80, 20);
