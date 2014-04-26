@@ -171,4 +171,12 @@ public class DeckModel extends AbstractListModel {
 		}
 		return null;
 	}
+	
+	public boolean isDuplicateDeck(String s){
+		for (Deck deck: listOfDecks)
+		{
+			if (deck.getName().equals(s)) {return true;}
+		}
+		return false;
+	}
 }
