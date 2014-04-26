@@ -45,11 +45,13 @@ public class DeckBuildingPanel extends JPanel {
 	private JComboBox<String> comboBoxDeckList = new JComboBox<String>();
 	private JLabel lblDeckName = new JLabel("Deck Name:");
 	private JLabel lblDecks = new JLabel("Decks:");
+	private JLabel errLabel = new JLabel("");
 	private JPanel cardPanel = new JPanel();
 	private JScrollPane cardArea = new JScrollPane(cardPanel);
 	private JTextField nameField = new JTextField();
 	private JTextField numberField = new JTextField();
 	private SpringLayout springLayout = new SpringLayout();
+	private List<GameCard> cardList = new ArrayList<GameCard>();
 	
 	/** Constructor for a DeckPanel panel
 	 */
@@ -82,7 +84,13 @@ public class DeckBuildingPanel extends JPanel {
 		
 		btnAddCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GameCard card = new GameCard(Integer.parseInt(numberField.getText()));
+				GameCard card;
+				try {
+					card = new GameCard(Integer.parseInt(numberField.getText()));
+				}catch(NumberFormatException e){
+					System.err.println("Incorrect use of gameCard constructor: param not a number");
+					errLabel.setText(numberField.getText()+ " is not a valid non-negative integer!");
+				} 
 				cardPanel.add(card);
 				cardPanel.revalidate();
 				//TODO: Sort cards by value
@@ -91,13 +99,20 @@ public class DeckBuildingPanel extends JPanel {
 		
 		btnRmvSelected.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				// TODO: Action corresponding to this
+				
 			}
 		});
 		
 		btnRmvAll.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				// TODO: Action corresponding to this
+				// Clears lists
+				newDeckCards.clear();
+				cardList.clear();
+				
+				// Clears panel
+				cardPanel.removeAll();
+				cardPanel.revalidate();
+				cardPanel.repaint();
 			}
 		});
 		
