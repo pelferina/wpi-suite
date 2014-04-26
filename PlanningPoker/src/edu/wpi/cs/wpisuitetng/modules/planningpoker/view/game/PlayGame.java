@@ -9,6 +9,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -62,8 +64,8 @@ public class PlayGame extends JPanel implements Refreshable{
 	private final JTextField reqNameTextField = new JTextField();
 	private final JTextArea gameDescTextArea = new JTextArea();
 	private final JTextArea reqDescTextArea = new JTextArea();
-	private final JScrollPane nd = new JScrollPane(gameDescTextArea);
-	private final JScrollPane rd = new JScrollPane(reqDescTextArea);
+	private final JScrollPane gameDescScroll = new JScrollPane(gameDescTextArea);
+	private final JScrollPane reqDescScroll = new JScrollPane(reqDescTextArea);
 	private final JButton submit = new JButton("Submit");
 	private final JButton voteButton = new JButton("Vote");
 	private Vote userEstimates;
@@ -146,6 +148,10 @@ public class PlayGame extends JPanel implements Refreshable{
 		gameDescTextArea.setWrapStyleWord(true);
 		reqDescTextArea.setLineWrap(true);
 		reqDescTextArea.setWrapStyleWord(true);
+		gameNameTextField.setBackground(Color.WHITE);
+		gameNameTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GRAY));
+		reqNameTextField.setBackground(Color.WHITE);
+		reqNameTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GRAY));		
 		
 		//This document listener will enable the submit button when something is inputted into the estimate text field
 		estimateTextField.getDocument().addDocumentListener(new DocumentListener(){
@@ -221,7 +227,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.WEST, gameName, 30, SpringLayout.WEST, this);
 		
 		//Spring layout placement for gameDesc label
-		springLayout.putConstraint(SpringLayout.NORTH, gameDesc, 15, SpringLayout.SOUTH, gameName);
+		springLayout.putConstraint(SpringLayout.NORTH, gameDesc, 10, SpringLayout.SOUTH, gameName);
 		springLayout.putConstraint(SpringLayout.WEST, gameDesc, 0, SpringLayout.WEST, gameName);
 		
 		//Spring layout placement for vote button
@@ -234,41 +240,41 @@ public class PlayGame extends JPanel implements Refreshable{
 		
 		//Spring layout placement for estimateTextField
 		springLayout.putConstraint(SpringLayout.NORTH, estimateTextField, 0, SpringLayout.NORTH, estimateLabel);
-		springLayout.putConstraint(SpringLayout.WEST, estimateTextField, 0, SpringLayout.WEST, rd);
+		springLayout.putConstraint(SpringLayout.WEST, estimateTextField, 5, SpringLayout.EAST, estimateLabel);
 		springLayout.putConstraint(SpringLayout.EAST, estimateTextField, 40, SpringLayout.WEST, estimateTextField);
 		
 		//Spring layout for placement of gameNameTextField
-		springLayout.putConstraint(SpringLayout.WEST, gameNameTextField, 0, SpringLayout.WEST, rd);
-		springLayout.putConstraint(SpringLayout.EAST, gameNameTextField, 600, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.WEST, gameNameTextField, 5, SpringLayout.EAST, gameName);
+		springLayout.putConstraint(SpringLayout.EAST, gameNameTextField, 0, SpringLayout.EAST, gameDescScroll);
 		springLayout.putConstraint(SpringLayout.NORTH, gameNameTextField, 0, SpringLayout.NORTH, gameName);
 		
 		//Spring layout for placement of reqNameTextField
-		springLayout.putConstraint(SpringLayout.WEST, reqNameTextField, 0, SpringLayout.WEST, rd);
-		springLayout.putConstraint(SpringLayout.EAST, reqNameTextField, 600, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.WEST, reqNameTextField, 5, SpringLayout.EAST, reqName);
+		springLayout.putConstraint(SpringLayout.EAST, reqNameTextField, 0, SpringLayout.EAST, gameDescScroll);
 		springLayout.putConstraint(SpringLayout.NORTH, reqNameTextField, 0, SpringLayout.NORTH, reqName);
 		
 		//Spring layout for estimateLabel
-		springLayout.putConstraint(SpringLayout.NORTH, estimateLabel, 30, SpringLayout.SOUTH, rd);
+		springLayout.putConstraint(SpringLayout.NORTH, estimateLabel, 30, SpringLayout.SOUTH, reqDescScroll);
 		springLayout.putConstraint(SpringLayout.WEST, estimateLabel, 0, SpringLayout.WEST, reqDesc);
 		
-		//Spring layout for nd
-		springLayout.putConstraint(SpringLayout.NORTH, nd, 0, SpringLayout.NORTH, gameDesc);
-		springLayout.putConstraint(SpringLayout.WEST, nd, 0, SpringLayout.WEST, rd);
-		springLayout.putConstraint(SpringLayout.EAST, nd, -30, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, nd, 125, SpringLayout.NORTH, nd);
+		//Spring layout for gameDescScroll
+		springLayout.putConstraint(SpringLayout.NORTH, gameDescScroll, 10, SpringLayout.SOUTH, gameDesc);
+		springLayout.putConstraint(SpringLayout.WEST, gameDescScroll, 0, SpringLayout.WEST, gameDesc);
+		springLayout.putConstraint(SpringLayout.EAST, gameDescScroll, -30, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, gameDescScroll, 125, SpringLayout.NORTH, gameDescScroll);
 		
-		//Spring layout for rd
-		springLayout.putConstraint(SpringLayout.NORTH, rd, 0, SpringLayout.NORTH, reqDesc);
-		springLayout.putConstraint(SpringLayout.WEST, rd, 10, SpringLayout.EAST, reqDesc);
-		springLayout.putConstraint(SpringLayout.EAST, rd, -30, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, rd, 125, SpringLayout.NORTH, rd);
+		//Spring layout for reqDescScroll
+		springLayout.putConstraint(SpringLayout.NORTH, reqDescScroll, 10, SpringLayout.SOUTH, reqDesc);
+		springLayout.putConstraint(SpringLayout.WEST, reqDescScroll, 0, SpringLayout.WEST, reqDesc);
+		springLayout.putConstraint(SpringLayout.EAST, reqDescScroll, -30, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, reqDescScroll, 125, SpringLayout.NORTH, reqDescScroll);
 		
 		//Spring layout for reqDesc label
-		springLayout.putConstraint(SpringLayout.NORTH, reqDesc, 15, SpringLayout.SOUTH, reqName);
+		springLayout.putConstraint(SpringLayout.NORTH, reqDesc, 10, SpringLayout.SOUTH, reqName);
 		springLayout.putConstraint(SpringLayout.WEST, reqDesc, 0, SpringLayout.WEST, reqName);
 		
 		//Spring layout for reqName label
-		springLayout.putConstraint(SpringLayout.NORTH, reqName, 140, SpringLayout.SOUTH, gameDesc);
+		springLayout.putConstraint(SpringLayout.NORTH, reqName, 20, SpringLayout.SOUTH, gameDescScroll);
 		springLayout.putConstraint(SpringLayout.WEST, reqName, 0, SpringLayout.WEST, gameDesc);
 		
 		//Spring layout for notAnIntegerError label
@@ -293,8 +299,8 @@ public class PlayGame extends JPanel implements Refreshable{
 		add(reqNameTextField);
 		add(notAnIntegerError);
 		add(gameEnded);
-		add(nd);
-		add(rd);
+		add(gameDescScroll);
+		add(reqDescScroll);
 	}
 	
 	/**
