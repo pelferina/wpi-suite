@@ -250,8 +250,9 @@ public class VoteData extends JPanel{
 		final SpringLayout springLayout = new SpringLayout();
 		
 		// Spring layout constraints for sendEstimatesButton
-		springLayout.putConstraint(SpringLayout.NORTH, sendEstimatesButton, 24, SpringLayout.SOUTH, finalSubmitButton);
-		springLayout.putConstraint(SpringLayout.WEST, sendEstimatesButton, 0, SpringLayout.WEST, descriptionScrollPane);
+		springLayout.putConstraint(SpringLayout.NORTH, sendEstimatesButton, 20, SpringLayout.SOUTH, finalSubmitButton);
+		springLayout.putConstraint(SpringLayout.WEST, sendEstimatesButton, 0, SpringLayout.WEST, finalSubmitButton);
+		springLayout.putConstraint(SpringLayout.EAST, sendEstimatesButton, 0, SpringLayout.EAST, finalSubmitButton);
 		
 		//Spring layout constraints for finalEstimatetext
 		springLayout.putConstraint(SpringLayout.WEST, finalEstimateText, 6, SpringLayout.EAST, finalEstimateLabel);
