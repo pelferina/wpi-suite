@@ -34,7 +34,7 @@ import javax.swing.table.DefaultTableModel;
  */
 @SuppressWarnings("serial")
 public class NewGameReqPanel extends JPanel implements Refreshable {
-
+	
 	DefaultListModel<String> listValue = new DefaultListModel<String>();
 	private List<Requirement> selected = new ArrayList<Requirement>();
 	private final JTable unselectedTable;
@@ -57,6 +57,8 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	 * @param ngdp The NewGamePanel it is a part of
 	 */
 	public NewGameReqPanel(NewGameDistributedPanel ngdp) {
+
+		GetRequirementsController.getInstance().addRefreshable(this);
 		newGamePanel = ngdp;
 		unselectedTable = new JTable() {
 			@Override
