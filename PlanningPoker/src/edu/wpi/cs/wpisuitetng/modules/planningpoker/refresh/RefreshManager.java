@@ -13,15 +13,17 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import java.util.List;
 
 import javax.swing.Timer;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetVoteController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.VoteModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -36,6 +38,8 @@ public class RefreshManager {
 	
 	GetGamesController gameController;
 	GetRequirementsController reqController;
+	GetVoteController voteController;
+	List<Vote> voteCache;
 	List<Requirement> reqCache;
 	List<GameSession> gameCache;
 	
@@ -43,11 +47,13 @@ public class RefreshManager {
 	
 		gameController = GetGamesController.getInstance();
 		reqController = GetRequirementsController.getInstance();
+		voteController = GetVoteController.getInstance();
 		
 		reqCache = new ArrayList<Requirement>();
 		gameCache =  new ArrayList<GameSession>();
+		voteCache = new ArrayList<Vote>();
 		
-		//Create action listener for timer
+		//Create action listener for Games
 		final ActionListener gameCheck = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -63,7 +69,7 @@ public class RefreshManager {
 				}
 			}
 		};
-		//Create action listener for timer
+		//Create action listener for Requirements
 		final ActionListener reqCheck = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -82,10 +88,11 @@ public class RefreshManager {
 		// Timer will update RefreshManager every 2 seconds
 		final Timer g = new Timer(1000, gameCheck);
 		final Timer r = new Timer(1000, reqCheck);
+
 		g.start();
 		r.start();
 	}
-	
+
 	/**
 	 * This method updates games
 	 */
@@ -93,11 +100,15 @@ public class RefreshManager {
 	{
 		//Make a request to the database
 		gameController.actionPerformed(null);
-	
-		if ( differentList(gameCache, GameModel.getInstance().getGames())){
+		voteController.actionPerformed(null);
+		if ( differentList(gameCache, GameModel.getInstance().getGames()) || differentList(voteCache, VoteModel.getInstance().getVotes())){
 			gameController.refresh();
 			gameCache = new ArrayList<GameSession>(GameModel.getInstance().getGames());
+			voteCache = new ArrayList<Vote>(VoteModel.getInstance().getVotes());
+
 		}
+
+		
 	}
 	
 	private void updateRequirements()
