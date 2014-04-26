@@ -17,6 +17,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Collections;
@@ -132,7 +134,7 @@ public class DeckBuildingPanel extends JPanel {
 		
 		btnAddCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GameCard card;
+				final GameCard card;
 				int cardNumber;
 				try {
 					cardNumber = Integer.parseInt(numberField.getText());
@@ -297,7 +299,7 @@ public class DeckBuildingPanel extends JPanel {
 		
 		// Adds sorted list
 		for(final int cardValue: newDeckCards){
-			GameCard card = new GameCard(cardValue);
+			final GameCard card = new GameCard(cardValue);
 			card.setCancelCard(true);
 			cardPanel.add(card);
 			
