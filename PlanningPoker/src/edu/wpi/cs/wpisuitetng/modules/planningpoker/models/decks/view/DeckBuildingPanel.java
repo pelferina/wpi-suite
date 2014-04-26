@@ -115,7 +115,7 @@ public class DeckBuildingPanel extends JPanel {
 		// All listeners and their functions
 		btnSave.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				// TODO: Action corresponding to this
+				
 				newDeckName = nameField.getText();
 				DeckModel.getInstance().addDeck(new Deck (newDeckName, newDeckCards));
 				System.out.println("added Deck " + newDeckName + " with cards: " + newDeckCards.toString());
@@ -167,6 +167,8 @@ public class DeckBuildingPanel extends JPanel {
 				cardPanel.removeAll();
 				cardPanel.revalidate();
 				cardPanel.repaint();
+				
+				isValidCard();
 			}
 		});
 		
@@ -281,24 +283,35 @@ public class DeckBuildingPanel extends JPanel {
 	 *checks if the inputed card number is valid and perform actions accordingly
 	 */
 	private void isValidCard(){
-		if (numberField.getText().length() > 0 && isInteger(numberField.getText()) && !nameField.getText().isEmpty()){
-			if (Integer.parseInt(numberField.getText()) >= 0){
-				btnAddCard.setEnabled(true);
-				btnSave.setEnabled(true);
-				//TODO notAnIntegerError.setVisible(false);
-			}
-			else{
-				btnAddCard.setEnabled(false);
-				//TODO notAnIntegerError.setVisible(true);
-			}
+		boolean needsName = false;
+		boolean allValid = true;
+		
+		//Name field checking
+		if(!nameField.getText().isEmpty()){
+			btnSave.setEnabled(true);
+		}else{
+			errLabel.setText("Deck must have a name.");
+			needsName = true;
+			allValid = false;
 		}
-		else{
+		
+		//Number field checking
+		if(numberField.getText().length() > 0 && isInteger(numberField.getText()) && Integer.parseInt(numberField.getText()) >= 0){
+			btnAddCard.setEnabled(true);
+		}else if(needsName){
 			btnAddCard.setEnabled(false);
-			//TODO notAnIntegerError.setVisible(true);
+			errLabel.setText("Deck must have name and card must be a non-negative integer.");
+		}else{
+			btnAddCard.setEnabled(false);
+			errLabel.setText("Card must be a non-negative integer.");
 		}
+		
+		//Checks that a card has been added to deck
 		if (newDeckCards.isEmpty()){
-			btnSave.setEnabled(false);
+			allValid = false;
 		}
+		
+		btnSave.setEnabled(allValid);
 	}
 	
 	/**
