@@ -80,8 +80,8 @@ public class PlayGame extends JPanel implements Refreshable{
 	 * @param agv the active game view
 	 */
 	public PlayGame(GameSession gameToPlay, GameView agv){
-	GetGamesController.getInstance().addRefreshable(this);
-	gameEnded.setVisible(false);
+		GetGamesController.getInstance().addRefreshable(this);
+		gameEnded.setVisible(false);
 
 		setFocus = new TimerTask(){
 

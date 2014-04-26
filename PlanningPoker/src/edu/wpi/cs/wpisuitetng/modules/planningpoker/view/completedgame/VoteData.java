@@ -15,6 +15,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -31,10 +33,8 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetAllUsers;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -76,6 +76,7 @@ public class VoteData extends JPanel{
 	private Requirement currentReq;
 	private int	reqIndex;
 	private List<Integer> finalVote;
+	private Timer setFocusTimer;
 	
 	/**
 	 * The constructor for the VoteData class
@@ -83,8 +84,23 @@ public class VoteData extends JPanel{
 	 * @param cv The CompleteView that called the constructor for VoteData
 	 */
 	public VoteData(GameSession gs, CompleteView cv){
-		completeView = cv;
 		completedGame = gs;
+		
+		//This timer schedules a TimerTask that will set the default text field and buttons for the panel
+		TimerTask setFocus = new TimerTask(){
+
+			@Override
+			public void run() {
+				if (completedGame.getGameStatus() != GameStatus.ARCHIVED){
+					finalEstimateText.requestFocusInWindow();
+					getRootPane().setDefaultButton(finalSubmitButton);
+				}
+			}
+			
+		};
+		setFocusTimer = new Timer();
+		setFocusTimer.schedule(setFocus, 100);
+		completeView = cv;
 		gameReqs = cv.getGameRequirements();
 		finalVote = new ArrayList<Integer>();
 		notAnIntegerError.setVisible(false);
@@ -93,7 +109,7 @@ public class VoteData extends JPanel{
 		descriptionTextArea.setLineWrap(true);
 		descriptionTextArea.setWrapStyleWord(true);
 		if(completedGame.getFinalVotes() != null){
-			if (completedGame.getGameStatus() == GameStatus.ARCHIVED || completedGame.getFinalVotes().size() > 0){
+			if (completedGame.getGameStatus() == GameStatus.ARCHIVED && completedGame.getFinalVotes().size() > 0){
 				finalVote = completedGame.getFinalVotes();
 				finalEstimateText.setText(Integer.toString(finalVote.get(0)));
 				completeView.sendEstimatesToTable(finalVote);
