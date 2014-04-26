@@ -31,6 +31,8 @@ import javax.swing.event.DocumentListener;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JComboBox;
 
@@ -42,7 +44,7 @@ import javax.swing.JComboBox;
  */
 public class NewRequirementPanel extends JPanel {
 	private final Requirement currentRequirement;
-	private JTextField nameField;
+	private JTextField nameField = new JTextField();
 	private final JTextArea descriptionField = new JTextArea();
 	private final JScrollPane descriptionScrollPane = new JScrollPane(descriptionField);
 	private final JLabel nameLabel = new JLabel("Requirement Name: ");
@@ -66,7 +68,7 @@ public class NewRequirementPanel extends JPanel {
 		priorityComboBox = new JComboBox<RequirementPriority>(RequirementPriority.values());
 		typeComboBox = new JComboBox<RequirementType>(RequirementType.values());
 		panelSetup();
-		currentRequirement= new Requirement();
+		currentRequirement = new Requirement();
 		
 	}
 	
@@ -77,7 +79,7 @@ public class NewRequirementPanel extends JPanel {
 	 * 		places and sizes everything
 	 */
 	public void panelSetup() {
-		nameField = new JTextField();
+	
 		final JLabel lblPriority = new JLabel("Priority:");
 		final JLabel lblType = new JLabel("Type:");
 		descriptionField.setLineWrap(true);
@@ -183,7 +185,10 @@ public class NewRequirementPanel extends JPanel {
 			
 			public void checkInput(DocumentEvent e){
 				isCreatable = (!nameField.getText().isEmpty() && !descriptionField.getText().isEmpty());
-				CreateRequirementButton.setEnabled(isCreatable);
+				if (isCreatable){
+					CreateRequirementButton.setEnabled(isCreatable);
+					getRootPane().setDefaultButton(CreateRequirementButton);
+				}
 				reqError.setVisible(!isCreatable);
 			}
 		});
@@ -268,6 +273,10 @@ public class NewRequirementPanel extends JPanel {
 	}
 	public JLabel getReqError(){
 		return reqError;
+	}
+
+	public void setFocusOnName() {
+		nameField.requestFocusInWindow();
 	}
 }
 	

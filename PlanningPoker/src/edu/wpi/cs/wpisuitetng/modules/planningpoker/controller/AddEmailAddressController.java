@@ -50,6 +50,7 @@ public class AddEmailAddressController implements ActionListener {
 		final EmailAddressModel eModel = panel.getEmailModel();
 		eModel.setAddress(panel.getEmailAddress());
 		saveEmail(eModel);
+		this.panel.updateDisplay();
 	}
 
 	/**
