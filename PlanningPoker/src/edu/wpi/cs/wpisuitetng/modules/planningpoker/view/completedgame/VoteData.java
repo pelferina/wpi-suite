@@ -109,7 +109,7 @@ public class VoteData extends JPanel{
 		descriptionTextArea.setLineWrap(true);
 		descriptionTextArea.setWrapStyleWord(true);
 		if(completedGame.getFinalVotes() != null){
-			if (completedGame.getGameStatus() == GameStatus.ARCHIVED && completedGame.getFinalVotes().size() > 0){
+			if (completedGame.getFinalVotes().size() > 0){
 				finalVote = completedGame.getFinalVotes();
 				finalEstimateText.setText(Integer.toString(finalVote.get(0)));
 				completeView.sendEstimatesToTable(finalVote);
@@ -171,9 +171,6 @@ public class VoteData extends JPanel{
 						allVotes = false;
 					}
 				}
-				sendEstimatesButton.setEnabled(allVotes);
-				completeView.nextRequirement(finalEstimate);
-				completeView.isNew = false;
 				final UpdateRequirementController reqmsgr = UpdateRequirementController.getInstance();
 				for (Requirement r: gameReqs){
 					if (r.getId() == currentReq.getId()){
@@ -182,6 +179,9 @@ public class VoteData extends JPanel{
 						break;
 					}
 				}
+				sendEstimatesButton.setEnabled(allVotes);
+				completeView.nextRequirement(finalEstimate);
+				completeView.isNew = false;
 			}
 		});
 		
@@ -189,12 +189,8 @@ public class VoteData extends JPanel{
 			
 			@Override 
 			public void actionPerformed(ActionEvent e){
-				completedGame.setFinalVotes(finalVote);
 				completedGame.setGameStatus(GameStatus.ARCHIVED);
-				final UpdateGameController msgr = new UpdateGameController();
-				msgr.sendGame(completedGame);
-				final UpdateRequirementController reqmsgr = UpdateRequirementController.getInstance();
-				completeView.isNew = true;
+				saveGame();
 				ViewEventController.getInstance().getMain().remove(completeView);
 				}
 		});
@@ -406,5 +402,11 @@ public class VoteData extends JPanel{
 	    }
 	    // only got here if we didn't return false
 	    return true;
+	}
+
+	public void saveGame() {
+		completedGame.setFinalVotes(finalVote);
+		final UpdateGameController msgr = new UpdateGameController();
+		msgr.sendGame(completedGame);
 	}
 }
