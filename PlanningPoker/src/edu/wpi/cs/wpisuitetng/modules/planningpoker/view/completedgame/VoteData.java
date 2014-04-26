@@ -130,10 +130,10 @@ public class VoteData extends JPanel{
 		//Sets the statistic text fields to the stats of the first requirement in the game, and disables user edits
 		if(completedGame.getMean().size() != 0){
 			final float mean = completedGame.getMean().get(reqIndex);
-			meanTextField = new JLabel(String.format("%.2f", mean));
+			meanTextField = new JLabel(String.format("%.1f", mean));
 			meanTextField.setFont(new Font("Tahoma", Font.PLAIN, 20));
 			final float median = completedGame.getMedian().get(reqIndex);
-			medianTextField = new JLabel(String.format("%.2f", median));
+			medianTextField = new JLabel(String.format("%.1f", median));
 			medianTextField.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		} else {
 			meanTextField = new JLabel("");
