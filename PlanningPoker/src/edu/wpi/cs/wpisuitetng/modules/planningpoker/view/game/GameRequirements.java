@@ -10,8 +10,8 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,6 +92,8 @@ public class GameRequirements extends JSplitPane{
 		};
 		estimatesPending.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Name", "Description"}));
 		estimatesComplete.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Name", "Description", "Estimate"}));
+		estimatesPending.setFillsViewportHeight(true);
+		estimatesComplete.setFillsViewportHeight(true);
 		init(gameToPlay);
 	}
 
@@ -132,7 +134,6 @@ public class GameRequirements extends JSplitPane{
 			}
 			completedModel.setNumRows(0);
 		}
-		
 		completedModel.setColumnCount(COLUMN_NUM + 1);
 		setColumnWidth(estimatesComplete);
 		pendingPane = new JScrollPane(estimatesPending);
@@ -145,7 +146,7 @@ public class GameRequirements extends JSplitPane{
 		estimatesPending.getSelectionModel().addListSelectionListener(new tableListener(estimatesPending));
 		estimatesComplete.getSelectionModel().addListSelectionListener(new tableListener(estimatesComplete));
 		
-		setDividerLocation(250);
+		setResizeWeight(0.5);
 	}
 	
 	//This function is used to set the preferred width of JTables
@@ -186,20 +187,20 @@ public class GameRequirements extends JSplitPane{
 			}
 		}
 		if (isRevote){
-			for (int j=0; i < complete.getRowCount(); j++){
+			for (int j=0; j < complete.getRowCount(); j++){
 				if (r.getId() == (int) complete.getValueAt(j, 0)){
 					complete.setValueAt(estimate, j, 3);
 				}
 			}
 		}
-		while (i > 0) {
-			if (estimatesPending.getRowCount() > i) {
-				estimatesPending.setRowSelectionInterval(i, i);
-				break;
-			}
-			i--;
-		}
-		if (i == 0){
+		while (i >= 0) {
+  			if (estimatesPending.getRowCount() > i) {
+  				estimatesPending.setRowSelectionInterval(i, i);
+  				break;
+  			}
+  			i--;
+  		}
+		if (i == -1){
 			gv.clearBoxes();
 		}
 	}
@@ -220,6 +221,9 @@ public class GameRequirements extends JSplitPane{
 		 */
 		public tableListener(JTable table){
 			this.table = table;
+			if(table.equals(estimatesPending) && estimatesPending.getRowCount() > 0){
+				this.table.setRowSelectionInterval(0, 0);
+			}
 		}
 
 		@Override

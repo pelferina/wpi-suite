@@ -11,6 +11,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.BorderLayout;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -21,11 +22,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
+
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.table.TableRowSorter;
 import javax.swing.tree.DefaultMutableTreeNode;
-
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
@@ -92,8 +93,9 @@ public class OverviewPanel extends JPanel implements Refreshable {
 				      if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.DRAFT){
 				    	  final User currentUser = GetCurrentUser.getInstance().getCurrentUser();
 					      //End game button
-					      if(currentUser.getIdNum() == clickedGame.getOwnerID())
+					      if(currentUser.getIdNum() == clickedGame.getOwnerID()){
 					    	  ViewEventController.getInstance().editGameTab(clickedGame); // Make this edit insteadS
+					      }
 				      }
 				      else if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.ACTIVE){
 				    	  ViewEventController.getInstance().playGameTab(clickedGame);
@@ -118,6 +120,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		
 		
 		tableView = new JScrollPane(table);
+		table.setFillsViewportHeight(true);
 		setLayout(new BorderLayout(0, 0));
 		
 		//Initializes the game tree
@@ -186,19 +189,23 @@ public class OverviewPanel extends JPanel implements Refreshable {
 			sessions = gameModel.getActiveGameSessions();
 			sessions.addAll(gameModel.getInProgressGameSessions());
 		}
-		else if (s.equals("Needs Vote"))
+		else if (s.equals("Needs Vote")){
 			sessions = gameModel.getGamesNeedingVote(currentUser);
-		else if (s.equals("Voted"))
+		}
+		else if (s.equals("Voted")){
 			sessions = gameModel.getGamesVoted(currentUser);
+		}
 		else if (s.equals("History"))
 		{
 			sessions = gameModel.getArchivedGameSessions();
 			sessions.addAll(gameModel.getCompletedGameSessions());
 		}
-		else if (s.equals("Completed"))
+		else if (s.equals("Completed")){
 			sessions = gameModel.getCompletedGameSessions();
-		else if (s.equals("Archived"))
+		}
+		else if (s.equals("Archived")){
 			sessions = gameModel.getArchivedGameSessions();	
+		}
 		
 		final JTableModel jModel = (JTableModel)table.getModel();
 		jModel.update((ArrayList<GameSession>)sessions);
@@ -224,8 +231,9 @@ public class OverviewPanel extends JPanel implements Refreshable {
         table.repaint();
         
 		//Expand all folders
-		for (int i = 0; i < gameTree.getRowCount(); i++)
+		for (int i = 0; i < gameTree.getRowCount(); i++){
 	         gameTree.expandRow(i);
+		}
 	}
 
 	/**

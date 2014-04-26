@@ -11,7 +11,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersRequestObserver;
+
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -64,7 +64,7 @@ public class GetAllUsers {
 		request.send(); // send the request// add an observer to process the response
 	}
 	public void setUsers(User[] users){
-		this.users = users;
+		GetAllUsers.users = users;
 	}
 
 }

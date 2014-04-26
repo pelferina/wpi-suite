@@ -17,9 +17,13 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddressModel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
-
+/**
+ * a checkBox listener class
+ * @author Cosmic Latte
+ * @version 6
+ */
 public class CheckBoxChangedListener implements ItemListener{
-	private PreferencesPanel panel;
+	private final PreferencesPanel panel;
 	/**
 	 * Constructor for CheckBoxChangedListener
 	 * @param panel The panel to listen to
@@ -30,7 +34,7 @@ public class CheckBoxChangedListener implements ItemListener{
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
-		EmailAddressModel eModel = panel.getEmailModel();
+		final EmailAddressModel eModel = panel.getEmailModel();
 		if(e.getStateChange() == ItemEvent.SELECTED){
 			eModel.setEnable(true);
 			panel.makeEmailEnable();

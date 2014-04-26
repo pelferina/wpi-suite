@@ -10,10 +10,10 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
+
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateGameRequestObserver;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.network.Network;

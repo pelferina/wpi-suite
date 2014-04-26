@@ -27,11 +27,11 @@ import javax.swing.JToggleButton;
 @SuppressWarnings("serial")
 public class GameCard extends JToggleButton{
 	
-	private Integer value;
+	private final Integer value;
 	private BufferedImage cardSelectedImg;
 	private BufferedImage cardUnselectedImg;
-	private ImageIcon cardSelectedIcon;
-	private ImageIcon cardUnselectedIcon;
+	private final ImageIcon cardSelectedIcon;
+	private final ImageIcon cardUnselectedIcon;
 	
 	/**
 	 * Constructor to create the card with the given value
@@ -45,7 +45,7 @@ public class GameCard extends JToggleButton{
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
-		String cardText = value.toString();
+		final String cardText = value.toString();
 		cardUnselectedIcon = new ImageIcon(cardUnselectedImg);
 		cardSelectedIcon = new ImageIcon(cardSelectedImg); 
 		this.setText(cardText);

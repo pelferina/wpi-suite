@@ -17,9 +17,11 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsCo
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.TimerTask;
 
@@ -38,15 +40,15 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	private final JTable unselectedTable;
 	private final JTable selectedTable;
 	private List<Requirement> reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
-	private NewGameDistributedPanel newGamePanel;
+	private final NewGameDistributedPanel newGamePanel;
 	// Declarations and initializations of GUI components
 	JLabel lblRequirementsAvailable = new JLabel("Requirements Available");
 	JButton btnAddReq = new JButton("Add New Requirement");
 	JButton btnRemoveOne = new JButton("\u2191");
 	JLabel lblRequirementsSelected = new JLabel("Requirements Selected");
 	JButton btnAddOne = new JButton("\u2193");
-	JButton btnRemoveAll = new JButton("\u21c8");
-	JButton btnAddAll = new JButton("\u21ca");
+	JButton btnRemoveAll = new JButton("\u2191"+"\uFEFF"+"\u2191");
+	JButton btnAddAll = new JButton("\u2193"+"\uFEFF"+"\u2193");
 	JScrollPane unselected_table = new JScrollPane();
 	JScrollPane selected_table = new JScrollPane();
 
@@ -161,6 +163,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		btnAddAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
+				refreshRequirements();
 				if(reqs.size() != 0){
 					final DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
 					final DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
@@ -294,6 +297,8 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		unselectedTable.getColumnModel().getColumn(0).setMinWidth(100);
 		unselectedTable.getColumnModel().getColumn(0).setMaxWidth(200);
 		unselectedTable.getColumnModel().getColumn(0).setPreferredWidth(150);
+		
+		unselectedTable.setFillsViewportHeight(true);
 
 		//Puts the requirements from the requirement manager into the unselected requirements table
 		
@@ -326,6 +331,8 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		selectedTable.getColumnModel().getColumn(0).setMinWidth(100);
 		selectedTable.getColumnModel().getColumn(0).setMaxWidth(200);
 		selectedTable.getColumnModel().getColumn(0).setPreferredWidth(150);
+		
+		selectedTable.setFillsViewportHeight(true);
 
 		//Puts the selected requirements into the selected requirements table. This is only applicable when an edit game tab is opened
 		
@@ -368,7 +375,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	}
 
 	//This gets only the requirements in the "Backlog" iteration from the requirements manager
-	
+	@SuppressWarnings("unused")
 	private void getReqs() {
 		GetRequirementsController.getInstance().retrieveRequirements();
 		reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
@@ -424,8 +431,8 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	 * @return int[] The newly shortened array
 	 */
 	public int[] removeFirst(int[] Array){
-		int[] newArray = new int[Array.length-1];
-		for (int i =0; i<Array.length-1; i++){
+		final int[] newArray = new int[Array.length-1];
+		for (int i =0; i<Array.length-1; i++){ // $codepro.audit.disable useArraycopyRatherThanALoop
 			newArray[i]=Array[i+1];
 		}
 		return newArray;
@@ -446,7 +453,6 @@ class RefreshTask extends TimerTask {
 
 	Timer timer;
 	NewGameReqPanel ngrp;
-
 	private RefreshTask(Timer timer, NewGameReqPanel ngrp){
 		this.timer = timer;
 		this.ngrp = ngrp;

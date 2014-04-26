@@ -64,6 +64,6 @@ public class GetCurrentUser {
 		request.send(); // send the request	
 	}
 	public void setUser(User user){
-		this.user = user;
+		GetCurrentUser.user = user;
 	}
 }

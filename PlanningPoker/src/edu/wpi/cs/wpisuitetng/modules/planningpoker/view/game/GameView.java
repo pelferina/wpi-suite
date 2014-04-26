@@ -119,5 +119,4 @@ public class GameView extends JSplitPane{
 			playGame.clear();
 		}	
 	}
-	
 }

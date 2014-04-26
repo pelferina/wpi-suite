@@ -14,6 +14,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -24,10 +26,14 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddVoteController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.VoteModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
@@ -41,7 +47,7 @@ import javax.swing.event.DocumentListener;
  * @author Cosmic Latte
  * @version $Revision: 1.0 $
  */
-public class PlayGame extends JPanel{
+public class PlayGame extends JPanel implements Refreshable{
 
 	private final List<Integer> gameReqs;
 	private final JLabel gameName = new JLabel("Game Name:");
@@ -49,6 +55,7 @@ public class PlayGame extends JPanel{
 	private final JLabel reqName = new JLabel("Requirement Name:");
 	private final JLabel reqDesc = new JLabel("Requirement Description:");
 	private final JLabel estimateLabel = new JLabel("Input Estimate:");
+	private final JLabel gameEnded = new JLabel("The Game Has Ended.");
 	private final JLabel notAnIntegerError = new JLabel("Estimate must be a positive integer");
 	private final JTextField estimateTextField = new JTextField();
 	private final JTextField gameNameTextField = new JTextField();
@@ -61,9 +68,11 @@ public class PlayGame extends JPanel{
 	private final JButton voteButton = new JButton("Vote");
 	private Vote userEstimates;
 	private Requirement currentReq;
-	private GameView gv;
+	private final GameView gv;
 	private GameSession currentGame;
 	private boolean hasVoted = false;
+	private TimerTask setFocus;
+	private Timer setFocusTimer;
 	
 	/**
 	 * Constructor for a PlayGame panel
@@ -71,6 +80,21 @@ public class PlayGame extends JPanel{
 	 * @param agv the active game view
 	 */
 	public PlayGame(GameSession gameToPlay, GameView agv){
+	GetGamesController.getInstance().addRefreshable(this);
+	gameEnded.setVisible(false);
+
+		setFocus = new TimerTask(){
+
+			@Override
+			public void run() {
+				estimateTextField.requestFocusInWindow();
+				getRootPane().setDefaultButton(voteButton);
+			}
+			
+		};
+		setFocusTimer = new Timer();
+		setFocusTimer.schedule(setFocus, 100);
+		
 		currentGame = gameToPlay;
 		gameReqs = currentGame.getGameReqs();
 		notAnIntegerError.setVisible(false);
@@ -111,6 +135,7 @@ public class PlayGame extends JPanel{
 		if (currentReq != null){
 			reqNameTextField.setText(currentReq.getName());
 			reqDescTextArea.setText(currentReq.getDescription());
+			estimateTextField.requestFocusInWindow();
 		}
 		gameDescTextArea.setText(currentGame.getGameDescription());
 		gameNameTextField.setEditable(false);
@@ -162,6 +187,7 @@ public class PlayGame extends JPanel{
 					System.out.println(userEstimates.getVote());
 					sendEstimatetoGameView(currentReq, estimate);
 				}
+				estimateTextField.requestFocusInWindow();
 				gv.isNew = false;
 			}
 			
@@ -171,10 +197,19 @@ public class PlayGame extends JPanel{
 		submit.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
-				AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
-				msgr.sendVote(userEstimates);
-				gv.isNew = true;
-				ViewEventController.getInstance().getMain().remove(gv);
+				currentGame = GameModel.getInstance().getGame(currentGame.getGameID());
+				if (currentGame.getGameStatus() == GameStatus.COMPLETED || currentGame.getGameStatus() == GameStatus.ARCHIVED)
+				{
+					submit.setText("Game Ended");
+					submit.setEnabled(false);
+				}
+				else
+				{
+					AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
+					msgr.sendVote(userEstimates);
+					gv.isNew = true;
+					ViewEventController.getInstance().getMain().remove(gv);					
+				}
 			}
 		});
 		
@@ -240,6 +275,10 @@ public class PlayGame extends JPanel{
 		springLayout.putConstraint(SpringLayout.NORTH, notAnIntegerError, 0, SpringLayout.SOUTH, voteButton);
 		springLayout.putConstraint(SpringLayout.WEST, notAnIntegerError, -20, SpringLayout.EAST, voteButton);
 		
+		//Spring layout for GameEnded label
+		springLayout.putConstraint(SpringLayout.NORTH, gameEnded, 0, SpringLayout.SOUTH, notAnIntegerError);
+		springLayout.putConstraint(SpringLayout.EAST, gameEnded, 0, SpringLayout.EAST, notAnIntegerError);
+		
 		setLayout(springLayout);
 	
 		add(voteButton);
@@ -253,6 +292,7 @@ public class PlayGame extends JPanel{
 		add(gameNameTextField);
 		add(reqNameTextField);
 		add(notAnIntegerError);
+		add(gameEnded);
 		add(nd);
 		add(rd);
 	}
@@ -351,6 +391,42 @@ public class PlayGame extends JPanel{
 				break;
 			}
 		}
+		
+		if (currentGame.getGameStatus() == GameStatus.COMPLETED || currentGame.getGameStatus() == GameStatus.ARCHIVED)
+		{
+			clear();
+			submit.setText("Game Ended");
+			canSubmit = false;
+			submit.setVisible(false);
+			voteButton.setVisible(false);
+			estimateTextField.setVisible(false);
+			notAnIntegerError.setVisible(false);
+			gameEnded.setVisible(true);
+			estimateTextField.setText("");
+
+		}
 		submit.setEnabled(canSubmit);
+	}
+
+	@Override
+	public void refreshRequirements(){
+	}
+
+	@Override
+	public void refreshGames() {
+		currentGame = GameModel.getInstance().getGame(currentGame.getGameID());
+		if (currentGame.getGameStatus() == GameStatus.COMPLETED || currentGame.getGameStatus() == GameStatus.ARCHIVED)
+		{
+			clear();
+			submit.setText("Game Ended");
+			submit.setVisible(false);
+			voteButton.setVisible(false);
+			estimateTextField.setVisible(false);
+			notAnIntegerError.setVisible(false);
+			gameEnded.setVisible(true);
+			estimateTextField.setText("");
+
+
+		}
 	}
 }
