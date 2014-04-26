@@ -1060,7 +1060,6 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		if (decks.size() != currentDecks.size()){
 			initializeDeckComboBox();
 		}
-		System.out.println("selected deck index is " + selectedDeckIndex);
 	}
 	
 }
