@@ -165,7 +165,6 @@ public class GameData extends JPanel{
 	 * @return
 	 */
 	public List<Requirement> getGameReqs() {
-		// TODO Auto-generated method stub
 		return gameReqs;
 	}
 	
@@ -222,7 +221,9 @@ public class GameData extends JPanel{
 	 */
 	public void receiveFinalVotes(List<Integer> finalVote) {
 		for (int i = 0; i < gameReqsTable.getRowCount(); i++){
-			gameReqsTable.setValueAt(finalVote.get(i), i, 2);
+			if (finalVote.get(i) != -1){
+				gameReqsTable.setValueAt(finalVote.get(i), i, 2);
+			}
 		}
 	}
 /**

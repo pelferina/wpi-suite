@@ -34,7 +34,7 @@ import javax.swing.table.DefaultTableModel;
  */
 @SuppressWarnings("serial")
 public class NewGameReqPanel extends JPanel implements Refreshable {
-
+	
 	DefaultListModel<String> listValue = new DefaultListModel<String>();
 	private List<Requirement> selected = new ArrayList<Requirement>();
 	private final JTable unselectedTable;
@@ -57,6 +57,8 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	 * @param ngdp The NewGamePanel it is a part of
 	 */
 	public NewGameReqPanel(NewGameDistributedPanel ngdp) {
+
+		GetRequirementsController.getInstance().addRefreshable(this);
 		newGamePanel = ngdp;
 		unselectedTable = new JTable() {
 			@Override
@@ -290,6 +292,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		add(selected_table);
 
 		final DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
+		filterBacklog();
 		dtm.setNumRows(reqs.size());
 		dtm.setColumnCount(2);
 
@@ -353,9 +356,11 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	//This gets only the requirements in the "Backlog" iteration from the requirements manager
 	private void filterBacklog()
 	{
+		ArrayList<Requirement> reqsToRemove = new ArrayList<Requirement>();
 		for (Requirement req : reqs) {
-			if (!req.getIteration().equals("Backlog")) reqs.remove(req);
+			if (!req.getIteration().equals("Backlog")) reqsToRemove.add(req);
 		}
+		reqs.removeAll(reqsToRemove);
 	}
 
 	@Override
@@ -371,7 +376,8 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 				dtm.setValueAt(reqs.get(i).getName(), i, 0);
 				dtm.setValueAt(reqs.get(i).getDescription(), i, 1);
 		}
-		unselectedTable.repaint();
+		System.out.println("NEWGAMETABLEUPDATE" + reqs);
+		dtm.fireTableDataChanged();
 	}
 
 	//This gets only the requirements in the "Backlog" iteration from the requirements manager

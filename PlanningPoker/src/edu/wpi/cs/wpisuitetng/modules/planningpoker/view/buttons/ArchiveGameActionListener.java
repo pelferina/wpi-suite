@@ -42,6 +42,7 @@ public class ArchiveGameActionListener implements ActionListener{
 		request.setBody(game.toJSON()); // put the new session in the body of the request
 		request.addObserver(new UpdateGameRequestObserver()); // add an observer to process the response
 		request.send(); // send the request
+		game.setGameStatus(GameStatus.COMPLETED);
 	}
 	
 }

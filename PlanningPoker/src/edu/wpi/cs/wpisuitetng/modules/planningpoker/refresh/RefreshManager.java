@@ -19,15 +19,17 @@ import javax.swing.Timer;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetVoteController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.deckcontroller.GetDecksController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.VoteModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.network.Network;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
 
 /**
  * This method manages refresh requests
@@ -39,6 +41,8 @@ public class RefreshManager {
 	GetGamesController gameController;
 	GetRequirementsController reqController;
 	GetDecksController deckController;
+	GetVoteController voteController;
+	List<Vote> voteCache;
 	List<Requirement> reqCache;
 	List<GameSession> gameCache;
 	List<Deck> deckCache;
@@ -46,13 +50,15 @@ public class RefreshManager {
 	
 		gameController = GetGamesController.getInstance();
 		reqController = GetRequirementsController.getInstance();
+		voteController = GetVoteController.getInstance();
 		deckController = GetDecksController.getInstance();
 		
 		reqCache = new ArrayList<Requirement>();
 		gameCache =  new ArrayList<GameSession>();
 		deckCache = new ArrayList<Deck>();
+		voteCache = new ArrayList<Vote>();
 		
-		//Create action listener for timer
+		//Create action listener for Games
 		final ActionListener gameCheck = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -68,7 +74,7 @@ public class RefreshManager {
 				}
 			}
 		};
-		//Create action listener for timer
+		//Create action listener for Requirements
 		final ActionListener reqCheck = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -108,7 +114,7 @@ public class RefreshManager {
 		r.start();
 		d.start();
 	}
-	
+
 	/**
 	 * This method updates games
 	 */
@@ -116,17 +122,23 @@ public class RefreshManager {
 	{
 		//Make a request to the database
 		gameController.actionPerformed(null);
-	
-		if ( differentList(gameCache, GameModel.getInstance().getGames())){
+		voteController.actionPerformed(null);
+		if ( differentList(gameCache, GameModel.getInstance().getGames()) || differentList(voteCache, VoteModel.getInstance().getVotes())){
 			gameController.refresh();
 			gameCache = new ArrayList<GameSession>(GameModel.getInstance().getGames());
+			voteCache = new ArrayList<Vote>(VoteModel.getInstance().getVotes());
+
 		}
+
+		
 	}
 	
 	private void updateRequirements()
 	{
-		//Make a request to the database
 		
+		reqController.actionPerformed(null);
+		
+		//Make a request to the database
 		if (differentList(reqCache, RequirementModel.getInstance().getRequirements())){
 			reqController.refresh();
 			reqCache = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());

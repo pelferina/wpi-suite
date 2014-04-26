@@ -61,7 +61,6 @@ public class NewGameDistributedPanel extends JSplitPane {
 	 */
 	public NewGameDistributedPanel(List<Requirement> reqs, JButton close) {
 		newGameReqPanel = new NewGameReqPanel(this);
-		GetRequirementsController.getInstance().addRefreshable(newGameReqPanel);
 		newGameInputPanel = new NewGameInputDistributedPanel(this);
 		GetDecksController.getInstance().addRefreshable(newGameInputPanel);
 		this.close = close;

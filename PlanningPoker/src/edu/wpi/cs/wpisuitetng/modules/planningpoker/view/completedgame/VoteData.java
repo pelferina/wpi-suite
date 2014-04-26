@@ -60,8 +60,8 @@ public class VoteData extends JPanel{
 	private final JLabel finalEstimateLabel = new JLabel ("Final Estimate:");
 	private final JLabel notAnIntegerError = new JLabel("Estimate must be a positive integer");
 	private final JTextField finalEstimateText = new JTextField();
-	private final JButton	finalSubmitButton = new JButton("Submit");
-	private final JButton sendEstimatesButton = new JButton("Send Final Estimates");
+	private final JButton	finalSubmitButton = new JButton("Submit Estimate");
+	private final JButton sendEstimatesButton = new JButton("Archive Game");
 	private final JTextField reqNameText = new JTextField();
 	private JLabel meanTextField;
 	private JLabel medianTextField;
@@ -109,7 +109,7 @@ public class VoteData extends JPanel{
 		descriptionTextArea.setLineWrap(true);
 		descriptionTextArea.setWrapStyleWord(true);
 		if(completedGame.getFinalVotes() != null){
-			if (completedGame.getGameStatus() == GameStatus.ARCHIVED && completedGame.getFinalVotes().size() > 0){
+			if (completedGame.getFinalVotes().size() > 0){
 				finalVote = completedGame.getFinalVotes();
 				finalEstimateText.setText(Integer.toString(finalVote.get(0)));
 				completeView.sendEstimatesToTable(finalVote);
@@ -171,6 +171,14 @@ public class VoteData extends JPanel{
 						allVotes = false;
 					}
 				}
+				final UpdateRequirementController reqmsgr = UpdateRequirementController.getInstance();
+				for (Requirement r: gameReqs){
+					if (r.getId() == currentReq.getId()){
+						r.setEstimate(finalEstimate);
+						reqmsgr.updateRequirement(r);
+						break;
+					}
+				}
 				sendEstimatesButton.setEnabled(allVotes);
 				completeView.nextRequirement(finalEstimate);
 				completeView.isNew = false;
@@ -181,16 +189,8 @@ public class VoteData extends JPanel{
 			
 			@Override 
 			public void actionPerformed(ActionEvent e){
-				completedGame.setFinalVotes(finalVote);
 				completedGame.setGameStatus(GameStatus.ARCHIVED);
-				final UpdateGameController msgr = new UpdateGameController();
-				msgr.sendGame(completedGame);
-				final UpdateRequirementController reqmsgr = UpdateRequirementController.getInstance();
-				for (Requirement r: gameReqs){
-					r.setEstimate(finalVote.get(completeView.getIndex(r.getId())));
-					reqmsgr.updateRequirement(r);
-				}
-				completeView.isNew = true;
+				saveGame();
 				ViewEventController.getInstance().getMain().remove(completeView);
 				}
 		});
@@ -246,8 +246,9 @@ public class VoteData extends JPanel{
 		final SpringLayout springLayout = new SpringLayout();
 		
 		// Spring layout constraints for sendEstimatesButton
-		springLayout.putConstraint(SpringLayout.NORTH, sendEstimatesButton, 24, SpringLayout.SOUTH, finalSubmitButton);
-		springLayout.putConstraint(SpringLayout.WEST, sendEstimatesButton, 0, SpringLayout.WEST, descriptionScrollPane);
+		springLayout.putConstraint(SpringLayout.NORTH, sendEstimatesButton, 20, SpringLayout.SOUTH, finalSubmitButton);
+		springLayout.putConstraint(SpringLayout.WEST, sendEstimatesButton, 0, SpringLayout.WEST, finalSubmitButton);
+		springLayout.putConstraint(SpringLayout.EAST, sendEstimatesButton, 0, SpringLayout.EAST, finalSubmitButton);
 		
 		//Spring layout constraints for finalEstimatetext
 		springLayout.putConstraint(SpringLayout.WEST, finalEstimateText, 6, SpringLayout.EAST, finalEstimateLabel);
@@ -401,5 +402,11 @@ public class VoteData extends JPanel{
 	    }
 	    // only got here if we didn't return false
 	    return true;
+	}
+
+	public void saveGame() {
+		completedGame.setFinalVotes(finalVote);
+		final UpdateGameController msgr = new UpdateGameController();
+		msgr.sendGame(completedGame);
 	}
 }
