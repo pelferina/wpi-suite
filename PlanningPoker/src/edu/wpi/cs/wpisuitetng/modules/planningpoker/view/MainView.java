@@ -410,15 +410,8 @@ public class MainView extends JTabbedPane {
 	        		ViewEventController.getInstance().getMain().remove(gameView);
 				}
 			} else if (type == 3){
-				if (!completeView.isNew) {
-					final int option = JOptionPane.showOptionDialog(gameView, "Discard unsaved changes and close tab?", "Discard changes?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-					if (option == 0){
-						ViewEventController.getInstance().getMain().remove(completeView);
-					}
-						
-				} else {
-					ViewEventController.getInstance().getMain().remove(completeView);
-				}
+				completeView.saveGame();
+				ViewEventController.getInstance().getMain().remove(completeView);
 			}
 			else if (type == 4){
 				ViewEventController.getInstance().getMain().remove(userPreferences);
