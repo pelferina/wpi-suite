@@ -143,6 +143,8 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		treeView = new JScrollPane(gameTree);
 		
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, treeView, tableView);
+		splitPane.setDividerLocation(135);
+		
 		add(splitPane);	
 		
 	}
