@@ -52,8 +52,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * This is the window for the user to create a planning poker session
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author fff8e7
+ * @version 6
  */
 @SuppressWarnings("serial")
 public class NewGameInputDistributedPanel extends JPanel {
@@ -134,6 +134,7 @@ public class NewGameInputDistributedPanel extends JPanel {
 	private Timer canActivateChecker;
 
 	private boolean activate;
+	private boolean isFirstTimerRun = true;
 
 
 	/**
@@ -422,6 +423,10 @@ public class NewGameInputDistributedPanel extends JPanel {
 	{
 		canActivateChecker = new Timer(100, new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				if (isFirstTimerRun){
+					nameTextField.requestFocusInWindow();
+					isFirstTimerRun = false;
+				}
 				if (!editMode){
 					newGameP.isNew = areFieldsEmpty();
 				}
@@ -1021,5 +1026,9 @@ public class NewGameInputDistributedPanel extends JPanel {
 		add(minuteError);
 		add(nameError);
 		add(reqError);
+	}
+	
+	public void setFocusNameText(){
+		nameTextField.requestFocusInWindow();
 	}
 }
