@@ -201,7 +201,7 @@ public class DeckBuildingPanel extends JPanel {
 			public void actionPerformed(ActionEvent e){
 				// Clears lists
 				newDeckCards.clear();
-				
+				cardsToBeRemoved.clear();
 				// Clears panel
 				cardPanel.removeAll();
 				cardPanel.revalidate();
