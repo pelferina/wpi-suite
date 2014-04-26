@@ -28,6 +28,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.RefreshManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ToolbarView;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 
 /**
@@ -46,14 +48,12 @@ public class PlanningPoker implements IJanewayModule{
 	final private RefreshManager refresh;
 	Timer getUserTimer;
 	
-	
 	/**
 	 * Construct a new PlanningPoker module
 	 */
 	public PlanningPoker() {
 		//Setup refreshing
 		refresh = new RefreshManager();
-
 		tabs = new ArrayList<JanewayTabModel>();
 		
 		final MainView mainPanel = new MainView();
