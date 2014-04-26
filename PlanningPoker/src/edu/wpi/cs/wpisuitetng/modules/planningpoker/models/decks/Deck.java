@@ -15,6 +15,7 @@ import java.util.List;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
 
 /**
  * A deck in a game. Decks can be assigned to a game.
@@ -24,7 +25,7 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 public class Deck extends AbstractModel {
 
 	/** the ID of the deck */
-	private final int id;
+	private int id;
 	private final String name;
 	private final List<Integer> cards;
 	
@@ -45,7 +46,7 @@ public class Deck extends AbstractModel {
 	 */
 	public Deck(String name, List<Integer> cards)
 	{
-		id = DeckModel.getInstance().getNextID();
+		this.id = -1;
 		this.name = name;
 		this.cards = cards;
 	}
@@ -72,6 +73,15 @@ public class Deck extends AbstractModel {
 	 */
 	public int getId() {
 		return id;
+	}
+	
+	/**
+	 * @param id to be set
+	 * @return this Deck object
+	 */
+	public Deck setId(int id){
+		this.id = id;
+		return this;
 	}
 	
 	/**
@@ -155,4 +165,5 @@ public class Deck extends AbstractModel {
 	public void delete() {
 
 	}
+
 }

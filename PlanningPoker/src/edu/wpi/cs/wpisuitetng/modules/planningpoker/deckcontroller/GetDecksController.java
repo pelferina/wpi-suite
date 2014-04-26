@@ -15,6 +15,8 @@ import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.RefreshableController;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -27,7 +29,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * @author Cosmic Latte
  * @version $Revision: 1.0 $
  */
-public class GetDecksController implements ActionListener {
+public class GetDecksController extends RefreshableController implements ActionListener {
 
 	final private GetDecksRequestObserver observer;
 	private static GetDecksController instance = null;
@@ -89,6 +91,13 @@ public class GetDecksController implements ActionListener {
 		{	
 			// add the Decks to the local model
 			DeckModel.getInstance().addDecks(decks);
+		}
+	}
+
+	@Override
+	public void refresh() {
+		for (Refreshable r: refreshables){
+			r.refreshDecks();
 		}
 	}
 }

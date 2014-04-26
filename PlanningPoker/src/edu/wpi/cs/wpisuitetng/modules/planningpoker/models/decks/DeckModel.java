@@ -34,7 +34,7 @@ public class DeckModel extends AbstractListModel {
 	 * The list in which all the Decks for a single project are contained
 	 */
 	private final List<Deck> listOfDecks;
-	private int nextID; // the next available ID number for the Decks that
+//	private int nextID; // the next available ID number for the Decks that
 						// are added.
 	
 	private final Deck defaultDeck;
@@ -48,7 +48,7 @@ public class DeckModel extends AbstractListModel {
 	private DeckModel() {
 		defaultDeck = new Deck();
 		listOfDecks = new ArrayList<Deck>(Arrays.asList(defaultDeck));
-		nextID = 1;
+		//nextID = 1;
 	}
 	
 	/**
@@ -97,9 +97,9 @@ public class DeckModel extends AbstractListModel {
 	 * is created.
 	 * 
 	 * @return the next open id number */
-	public int getNextID() {
-		return nextID++;
-	}
+//	public int getNextID() {
+//		return nextID++;
+//	}
 
 	/**
 	 * This function takes an index and finds the Deck in the list of
@@ -136,16 +136,16 @@ public class DeckModel extends AbstractListModel {
 	/**
 	 * Adds the given array of Decks to the list
 	 * 
-	 * @param Decks
+	 * @param decks
 	 *            the array of Decks to add
 	 */
-	public void addDecks(Deck[] Decks) {
-		System.out.println("Got decks.." + Decks.length);
-		for (int i = 0; i < Decks.length; i++) {
-			listOfDecks.add(Decks[i]);
-			if (Decks[i].getId() >= nextID) nextID = Decks[i].getId() + 1;
+	public void addDecks(Deck[] decks) {
+		listOfDecks.clear();
+		listOfDecks.add(defaultDeck);
+		//System.out.println("Got decks.." + decks.length);
+		for (int i = 0; i < decks.length; i++) {
+			listOfDecks.add(decks[i]);
 		}
-		
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 		//ViewEventController.getInstance().refreshTree();
 	}
@@ -175,7 +175,8 @@ public class DeckModel extends AbstractListModel {
 	public boolean isDuplicateDeck(String s){
 		for (Deck deck: listOfDecks)
 		{
-			if (deck.getName().equals(s)) {return true;}
+			System.out.print(deck.getId() +  ":" + deck.getName() + "	");
+			if (deck.getName().compareTo(s) == 0) {return true;}
 		}
 		return false;
 	}

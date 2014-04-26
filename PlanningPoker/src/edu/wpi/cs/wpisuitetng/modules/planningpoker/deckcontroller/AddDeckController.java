@@ -15,7 +15,9 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.deckcontroller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.Deck;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -70,5 +72,12 @@ public class AddDeckController implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+	/**
+	 * When the new Deck is received back from the server, add it to the local model.
+	 * @param Deck
+	 */
+	public void addDeckToModel(Deck deck) {
+		DeckModel.getInstance().addDeck(deck);
 	}
 }

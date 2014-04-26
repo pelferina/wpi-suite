@@ -26,5 +26,12 @@ public interface Refreshable {
 	/**
 	 * This method refreshes the games.
 	 */
-	void refreshGames();
+
+	public void refreshGames();
+	
+	/**
+	 * This method refreshes the decks.
+	 */
+	public void refreshDecks();
+
 }
