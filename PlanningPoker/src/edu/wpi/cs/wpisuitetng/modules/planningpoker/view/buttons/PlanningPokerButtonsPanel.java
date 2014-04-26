@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -42,9 +43,9 @@ public class PlanningPokerButtonsPanel extends ToolbarGroupView{
 		super("");
 		
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
-		this.setPreferredWidth(330);
+		this.setPreferredWidth(345);
 		
-		createButton.setPreferredSize(new Dimension(150,50));	
+		createButton.setPreferredSize(new Dimension(150,50));
 		optionsButton.setPreferredSize(new Dimension(150,50));	
 
 //		createButton.setHorizontalAlignment(SwingConstants.CENTER);
@@ -79,8 +80,9 @@ public class PlanningPokerButtonsPanel extends ToolbarGroupView{
 				}
 		//	}
 		});
-			
+		
 		contentPanel.add(createButton);
+		contentPanel.add(Box.createRigidArea(new Dimension(15,0)));
 		contentPanel.add(optionsButton);
 		contentPanel.setOpaque(false);
 		
