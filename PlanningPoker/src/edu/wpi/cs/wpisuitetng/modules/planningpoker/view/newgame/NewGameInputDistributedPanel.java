@@ -169,7 +169,10 @@ public class NewGameInputDistributedPanel extends JPanel {
 			saveGameButton.setIcon(new ImageIcon(img));
 
 			img = ImageIO.read(getClass().getResource("activate.png"));
-			activateGameButton.setIcon(new ImageIcon(img));		    
+			activateGameButton.setIcon(new ImageIcon(img));
+			
+			img = ImageIO.read(getClass().getResource("cancel.png"));
+			cancelButton.setIcon(new ImageIcon(img));
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
