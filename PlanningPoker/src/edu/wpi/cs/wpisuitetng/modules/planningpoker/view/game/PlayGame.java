@@ -167,7 +167,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		gameNameTextField.setBackground(Color.WHITE);
 		gameNameTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GRAY));
 		reqNameTextField.setBackground(Color.WHITE);
-		reqNameTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GRAY));		
+		reqNameTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GRAY));
 		
 		//This document listener will enable the submit button when something is inputted into the estimate text field
 		estimateTextField.getDocument().addDocumentListener(new DocumentListener(){
@@ -253,7 +253,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		
 		//Spring layout placement for submit button
 		springLayout.putConstraint(SpringLayout.SOUTH, submit, -10, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, submit, -10, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.EAST, submit, 0, SpringLayout.EAST, reqDescScroll);
 		
 		//Spring layout placement for estimateTextField
 		springLayout.putConstraint(SpringLayout.NORTH, estimateTextField, 0, SpringLayout.NORTH, voteButton);
