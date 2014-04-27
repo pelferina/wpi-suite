@@ -132,21 +132,10 @@ public class DeckBuildingPanel extends JPanel {
 				newDeckName = nameField.getText();
 				Deck newDeck = new Deck (newDeckName, newDeckCards);
 				AddDeckController.getInstance().addDeck(newDeck);
-				
-				// Console output
 				System.out.println("added Deck " + newDeckName + "; Id = " + newDeck.getId() + "; with cards: " + newDeckCards.toString());
 				System.out.println("Current DeckModel size is " + DeckModel.getInstance().getSize());
-				
-				// Clears data
 				nameField.setText("");
-				newDeckCards.clear();
-				cardsToBeRemoved.clear();				
-
-				// Clears panel
-				cardPanel.removeAll();
-				cardPanel.revalidate();
-				cardPanel.repaint();
-				newGameDistributed.newGameInputPanel.initializeDeckComboBox();
+				newDeckCards.clear();				
 				newGameDistributed.closeDeck();
 			}
 		});
@@ -449,13 +438,3 @@ public class DeckBuildingPanel extends JPanel {
 	    return true;
 	}
 }
-
-
-
-
-
-
-
-
-
-
