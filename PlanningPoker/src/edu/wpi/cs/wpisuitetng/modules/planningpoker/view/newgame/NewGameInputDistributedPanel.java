@@ -173,7 +173,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	private void setupButtonIcons()
 	{
 		try {
-			Image img = ImageIO.read(getClass().getResource("create.png"));
+			Image img = ImageIO.read(getClass().getResource("save.png"));
 			saveGameButton.setIcon(new ImageIcon(img));
 
 			img = ImageIO.read(getClass().getResource("activate.png"));

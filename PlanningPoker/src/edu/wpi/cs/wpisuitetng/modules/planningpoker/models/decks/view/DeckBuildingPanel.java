@@ -11,14 +11,18 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -67,6 +71,7 @@ public class DeckBuildingPanel extends JPanel {
 	/** Constructor for a DeckPanel panel
 	 */
 	public DeckBuildingPanel(NewGameDistributedPanel ngdp){
+		setupButtonIcons();
 		
 		this.newGameDistributed = ngdp;
 		
@@ -318,7 +323,17 @@ public class DeckBuildingPanel extends JPanel {
 		add(btnRmvSelected);
 		add(btnCancel);
 	}
-	
+	private void setupButtonIcons()
+	{
+		try{
+			Image img = ImageIO.read(getClass().getResource("cancel.png"));
+			btnCancel.setIcon(new ImageIcon(img));
+			img = ImageIO.read(getClass().getResource("save.png"));
+			btnSave.setIcon(new ImageIcon(img));
+		} catch (IOException ex) {
+			System.err.println(ex.getMessage());
+		}
+	}
 	private void resetPanel(){
 		// Sorts list
 		Collections.sort(newDeckCards);
