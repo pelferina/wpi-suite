@@ -10,6 +10,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.reqpanel;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -32,6 +33,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -92,7 +94,14 @@ public class NewRequirementPanel extends JPanel {
 	 * 		places and sizes everything
 	 */
 	public void panelSetup() {
-	
+		//Add padding
+		descriptionField.setBorder(BorderFactory.createCompoundBorder(
+				descriptionField.getBorder(), 
+		        BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+		descriptionField.setWrapStyleWord(true);
+		
+		nameField.setMargin(new Insets(0, 5, 0, 0));
+		
 		final JLabel lblPriority = new JLabel("Priority:");
 		final JLabel lblType = new JLabel("Type:");
 		descriptionField.setLineWrap(true);
