@@ -20,9 +20,13 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
+import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 import javax.swing.table.DefaultTableModel;
+
 
 
 
@@ -55,7 +59,7 @@ public class GameRequirements extends JSplitPane{
 	private final List<Integer> gameReqIDs;
 	private final List<Requirement> gameReqs = new ArrayList<Requirement>();
 	private final GameView gv;
-	final private int COLUMN_NUM = 3;
+	final private int COLUMN_NUM = 2;
 	
 	/**
 	 * Constructor for GameRequirements
@@ -90,8 +94,8 @@ public class GameRequirements extends JSplitPane{
 		       return false;
 		    }
 		};
-		estimatesPending.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Name", "Description"}));
-		estimatesComplete.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Name", "Description", "Estimate"}));
+		estimatesPending.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Name"}));
+		estimatesComplete.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Name", "Estimate"}));
 		estimatesPending.setFillsViewportHeight(true);
 		estimatesComplete.setFillsViewportHeight(true);
 		init(gameToPlay);
@@ -121,8 +125,7 @@ public class GameRequirements extends JSplitPane{
 			for (int i = 0; i < userVote.getVote().size(); i++){
 				completedModel.setValueAt(gameReqs.get(i).getId(), i, 0);
 				completedModel.setValueAt(gameReqs.get(i).getName(), i, 1);
-				completedModel.setValueAt(gameReqs.get(i).getDescription(), i, 2);
-				completedModel.setValueAt(userVote.getVote().get(i), i, 3);
+				completedModel.setValueAt(userVote.getVote().get(i), i, 2);
 			}
 		}
 		
@@ -130,7 +133,6 @@ public class GameRequirements extends JSplitPane{
 			for (int i = 0; i < gameReqs.size(); i++){
 				pendingModel.setValueAt(gameReqs.get(i).getId(), i, 0);
 				pendingModel.setValueAt(gameReqs.get(i).getName(), i, 1);
-				pendingModel.setValueAt(gameReqs.get(i).getDescription(), i, 2);
 			}
 			completedModel.setNumRows(0);
 		}
@@ -151,6 +153,16 @@ public class GameRequirements extends JSplitPane{
 		leftComponent.setMinimumSize(minimumSize);
 		
 		setResizeWeight(0.5);
+		
+		this.setUI(new BasicSplitPaneUI() {
+            public BasicSplitPaneDivider createDefaultDivider() {
+            return new BasicSplitPaneDivider(this) {
+                public void setBorder(Border b) {
+                }
+            };
+            }
+        });
+        this.setBorder(null);
 	}
 	
 	//This function is used to set the preferred width of JTables
@@ -183,9 +195,8 @@ public class GameRequirements extends JSplitPane{
 			if (r.getId() == (int)reqNames.getValueAt(i, 0)){
 				int reqId = (int) reqNames.getValueAt(i, 0);
 				String name = (String) reqNames.getValueAt(i, 1);
-				String description = (String) reqNames.getValueAt(i, 2);
 				reqNames.removeRow(i);
-				complete.addRow(new Object[]{reqId, name, description, estimate});
+				complete.addRow(new Object[]{reqId, name, estimate});
 				isRevote = false;
 				break;
 			}
