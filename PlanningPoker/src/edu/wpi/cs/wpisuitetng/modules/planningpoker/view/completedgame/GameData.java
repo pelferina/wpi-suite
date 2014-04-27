@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -28,9 +27,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
-
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -91,7 +88,7 @@ public class GameData extends JPanel{
 		    }
 		};
 		
-		gameReqsTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Estimate"}));
+		gameReqsTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Mean", "Median", "Estimate"}));
 		init();	
 	}
 	
@@ -101,12 +98,41 @@ public class GameData extends JPanel{
 	private void init(){
 		final DefaultTableModel reqTableModel = (DefaultTableModel) gameReqsTable.getModel();
 		reqTableModel.setRowCount(gameReqs.size());
+		completedGame.calculateStats();
 		
 		//Adds the game requirements names and descriptions to the table
 		for (int i = 0; i < gameReqs.size(); i++){
+			float mean;
+			float median;
+			
+			if(completedGame.getMean().size() != 0){
+				mean = completedGame.getMean().get(i);
+				median = completedGame.getMedian().get(i);
+			} else {
+				mean = -1;
+				median = -1;
+			}
+			
 			requirementIndexHash.put(gameReqs.get(i).getId(), i);
 			reqTableModel.setValueAt(gameReqs.get(i).getName(), i, 0);
-			reqTableModel.setValueAt("", i, 1);
+			
+			if (mean != -1)
+			{
+				reqTableModel.setValueAt(mean, i, 1);
+			}
+			else
+			{
+				reqTableModel.setValueAt("", i, 1);
+			}
+			if (median != -1)
+			{
+				reqTableModel.setValueAt(median, i, 2);
+			}
+			else
+			{
+				reqTableModel.setValueAt("", i, 2);
+			}
+			reqTableModel.setValueAt("", i, 3);
 		}
 		reqPane = new JScrollPane(gameReqsTable);
 		reqPane.setViewportView(gameReqsTable);
@@ -199,7 +225,7 @@ public class GameData extends JPanel{
 	 */
 	public void nextRequirement(int estimate) {
 		final int selected = gameReqsTable.getSelectedRow();
-		gameReqsTable.setValueAt(estimate, selected, 2);
+		gameReqsTable.setValueAt(estimate, selected, 3);
 		gameReqsTable.clearSelection();
 		if (selected + 1 < gameReqs.size()){
 			gameReqsTable.addRowSelectionInterval(selected + 1, selected + 1);
@@ -222,7 +248,7 @@ public class GameData extends JPanel{
 	public void receiveFinalVotes(List<Integer> finalVote) {
 		for (int i = 0; i < gameReqsTable.getRowCount(); i++){
 			if (finalVote.get(i) != -1){
-				gameReqsTable.setValueAt(finalVote.get(i), i, 2);
+				gameReqsTable.setValueAt(finalVote.get(i), i, 3);
 			}
 		}
 	}
