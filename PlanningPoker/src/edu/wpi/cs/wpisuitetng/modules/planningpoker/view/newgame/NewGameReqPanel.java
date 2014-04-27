@@ -20,6 +20,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 
 
 
+
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -147,7 +149,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		final SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 		btnAddReq.setFont(new Font("Tahoma", Font.PLAIN, 18));
-
+		
 		// Observers
 
 		btnAddReq.addActionListener(new ActionListener(){
