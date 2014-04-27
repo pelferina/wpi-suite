@@ -140,7 +140,16 @@ public class DeckBuildingPanel extends JPanel {
 				System.out.println("added Deck " + newDeckName + "; Id = " + newDeck.getId() + "; with cards: " + newDeckCards.toString());
 				System.out.println("Current DeckModel size is " + DeckModel.getInstance().getSize());
 				nameField.setText("");
-				newDeckCards.clear();				
+				
+				// Clears lists
+				newDeckCards.clear();
+				cardsToBeRemoved.clear();
+				
+				// Clears panel
+				cardPanel.removeAll();
+				cardPanel.revalidate();
+				cardPanel.repaint();
+				
 				newGameDistributed.closeDeck();
 			}
 		});
@@ -148,7 +157,16 @@ public class DeckBuildingPanel extends JPanel {
 		btnCancel.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				nameField.setText("");
+				
+				// Clears lists
 				newDeckCards.clear();
+				cardsToBeRemoved.clear();
+				
+				// Clears panel
+				cardPanel.removeAll();
+				cardPanel.revalidate();
+				cardPanel.repaint();
+				
 				newGameDistributed.closeDeck();
 			}
 		});
