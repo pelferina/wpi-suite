@@ -117,6 +117,7 @@ public class NewGameDistributedPanel extends JSplitPane {
 		addImpl(deckPanel, JSplitPane.RIGHT, 4);
 		setDividerLocation(DIVIDER_LOCATION);
 		deckPanel.setVisible(true);
+		deckPanel.setFocusOnName();
 		newRequirement.setVisible(false);
 		newGameReqPanel.setVisible(false);
 		newRequirement.setFocusOnName();

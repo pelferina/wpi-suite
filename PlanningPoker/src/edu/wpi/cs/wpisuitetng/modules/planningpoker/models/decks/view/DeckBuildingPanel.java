@@ -437,4 +437,9 @@ public class DeckBuildingPanel extends JPanel {
 	    // only got here if we didn't return false
 	    return true;
 	}
+
+	public void setFocusOnName() {
+		nameField.requestFocusInWindow();
+		getRootPane().setDefaultButton(btnAddCard);
+	}
 }
