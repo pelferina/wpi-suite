@@ -46,6 +46,7 @@ public class RefreshManager {
 	List<Requirement> reqCache;
 	List<GameSession> gameCache;
 	List<Deck> deckCache;
+	private final Timer refreshRequirementsTimer,refreshGamesTimer,refreshDeckTimer;
 	public RefreshManager() {
 	
 		gameController = GetGamesController.getInstance();
@@ -107,12 +108,10 @@ public class RefreshManager {
 		};
 		
 		// Timer will update RefreshManager every 2 seconds
-		final Timer g = new Timer(1000, gameCheck);
-		final Timer r = new Timer(1000, reqCheck);
-		final Timer d = new Timer(1000, deckCheck);
-		g.start();
-		r.start();
-		d.start();
+		refreshGamesTimer = new Timer(1000, gameCheck);
+		refreshRequirementsTimer = new Timer(1000, reqCheck);
+		refreshDeckTimer = new Timer(1000, deckCheck);
+		pauseRefreshHandler.addRefreshManager(this);
 	}
 
 	/**
@@ -177,6 +176,19 @@ public class RefreshManager {
 	    }
 	    
 	    return false;
+	}
+
+	public void stopRefresh() {
+		this.refreshRequirementsTimer.stop();
+		this.refreshGamesTimer.stop();
+		this.refreshDeckTimer.stop();
+		
+	}
+
+	public void startRefresh() {
+		this.refreshRequirementsTimer.start();
+		this.refreshGamesTimer.start();
+		this.refreshDeckTimer.start();
 	}
 
 }
