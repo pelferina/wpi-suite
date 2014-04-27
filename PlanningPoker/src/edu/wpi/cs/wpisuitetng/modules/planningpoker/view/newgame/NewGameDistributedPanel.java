@@ -13,6 +13,9 @@ import java.awt.Dimension;
 import java.util.List;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckBuildingPanel;
@@ -90,6 +93,20 @@ public class NewGameDistributedPanel extends JSplitPane {
 		newRequirement.setVisible(false);
 		deckPanel.setVisible(false);
 		setDividerLocation(DIVIDER_LOCATION);
+		
+		
+		this.setUI(new BasicSplitPaneUI() {
+            public BasicSplitPaneDivider createDefaultDivider() {
+            return new BasicSplitPaneDivider(this) {
+                public void setBorder(Border b) {
+                }
+            };
+            }
+        });
+        this.setBorder(null);
+        this.setEnabled( false );
+		
+		
 	}
 	
 	public List<Requirement> getSelected(){
