@@ -11,6 +11,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -117,7 +118,18 @@ public class PlayGame extends JPanel implements Refreshable{
 		else {
 			userEstimates = new Vote(estimates, currentGame.getGameID());
 		}
+
+		
+		//Add padding
+		gameDescTextArea.setBorder(BorderFactory.createCompoundBorder(
+				gameDescTextArea.getBorder(), 
+		        BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+		gameDescTextArea.setWrapStyleWord(true);
+		reqDescTextArea.setBorder(BorderFactory.createCompoundBorder(
+				reqDescTextArea.getBorder(), 
+		        BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 		reqDescTextArea.setWrapStyleWord(true);
+		
 		voteButton.setEnabled(false);
 		submit.setEnabled(false);
 		gv = agv;
