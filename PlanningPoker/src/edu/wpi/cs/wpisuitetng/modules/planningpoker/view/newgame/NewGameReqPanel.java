@@ -291,7 +291,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		// Spring Layout of unselected_table
 		springLayout.putConstraint(SpringLayout.WEST, unselected_table, 10, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, unselected_table, -10, SpringLayout.NORTH, btnAddReq);
-		springLayout.putConstraint(SpringLayout.EAST, unselected_table, -10, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.EAST, unselected_table, -23, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, unselected_table, 10, SpringLayout.SOUTH, lblRequirementsAvailable);
 
 		// Spring Layout of Buttons
