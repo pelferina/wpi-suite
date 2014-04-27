@@ -91,7 +91,7 @@ public class GameData extends JPanel{
 		    }
 		};
 		
-		gameReqsTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Description", "Estimate"}));
+		gameReqsTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Estimate"}));
 		init();	
 	}
 	
@@ -106,8 +106,7 @@ public class GameData extends JPanel{
 		for (int i = 0; i < gameReqs.size(); i++){
 			requirementIndexHash.put(gameReqs.get(i).getId(), i);
 			reqTableModel.setValueAt(gameReqs.get(i).getName(), i, 0);
-			reqTableModel.setValueAt(gameReqs.get(i).getDescription(), i, 1);
-			reqTableModel.setValueAt("", i, 2);
+			reqTableModel.setValueAt("", i, 1);
 		}
 		reqPane = new JScrollPane(gameReqsTable);
 		reqPane.setViewportView(gameReqsTable);
