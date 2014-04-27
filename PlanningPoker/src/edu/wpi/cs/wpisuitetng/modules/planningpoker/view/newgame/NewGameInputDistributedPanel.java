@@ -10,6 +10,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -22,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -111,6 +113,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	private final JLabel deckLabel = new JLabel("Choose a deck:");
 	private final JTextField nameTextField = new JTextField();
 	private final JTextArea descriptionTextField = new JTextArea();
+	
 	private final JScrollPane descriptionScrollPane = new JScrollPane(descriptionTextField);
 
 	/*
@@ -198,15 +201,22 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		newGameP = ngdp;
 		
 		currentDate = Calendar.getInstance();
-
-
+		
 		setupButtonIcons();	
 
 		saveGameButton.setEnabled(false);
 		activateGameButton.setEnabled(false);
 
 		setPanel();
-
+		
+		//Add padding
+		descriptionTextField.setBorder(BorderFactory.createCompoundBorder(
+				descriptionTextField.getBorder(), 
+		        BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+		descriptionTextField.setWrapStyleWord(true);
+		
+		nameTextField.setMargin(new Insets(0, 5, 0, 0));
+		
 		// Set initial save/activate game visibility		
 		setSaveGameButtonVisibility(false);
 		setActivateGameButtonVisibility(false);
@@ -915,7 +925,8 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 
 		//Spring layout for the nameTextField
 		springLayout.putConstraint(SpringLayout.WEST, nameTextField, 100, SpringLayout.WEST, nameLabel);
-		springLayout.putConstraint(SpringLayout.EAST, nameTextField, -23, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.EAST, nameTextField, 0, SpringLayout.EAST, descriptionScrollPane);
+		springLayout.putConstraint(SpringLayout.NORTH, nameTextField, -2, SpringLayout.NORTH, nameLabel);
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameTextField, 0, SpringLayout.VERTICAL_CENTER, nameLabel);
 
 		//Spring layout for the descriptionLabel
@@ -927,8 +938,8 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		descriptionTextField.setLineWrap(true);
 		springLayout.putConstraint(SpringLayout.NORTH, descriptionScrollPane, 10, SpringLayout.SOUTH, descriptionLabel);
 		springLayout.putConstraint(SpringLayout.WEST, descriptionScrollPane, 0, SpringLayout.WEST, descriptionLabel);
-		springLayout.putConstraint(SpringLayout.EAST, descriptionScrollPane, -23, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, descriptionScrollPane, -50, SpringLayout.NORTH, deadlineCheckBox);
+		springLayout.putConstraint(SpringLayout.EAST, descriptionScrollPane, -10, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, descriptionScrollPane, -350, SpringLayout.SOUTH, this);
 
 		//Spring layout for the deadlineCheckBox
 		springLayout.putConstraint(SpringLayout.SOUTH, deadlineCheckBox, -230, SpringLayout.SOUTH, this);
@@ -958,9 +969,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.WEST, datePicker, 75, SpringLayout.WEST, deadlineLabel);
 		springLayout.putConstraint(SpringLayout.NORTH, datePicker, 0, SpringLayout.NORTH, deadlineLabel);
 
-		//Spring layout for the activateGameButton
-		springLayout.putConstraint(SpringLayout.SOUTH, saveGameButton, -10, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, saveGameButton, 180, SpringLayout.WEST, this);
+
 
 		//Spring layout for the deadlineError
 		springLayout.putConstraint(SpringLayout.WEST, deadlineError, 50, SpringLayout.WEST, saveGameButton);
@@ -1007,8 +1016,8 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 
 		//Spring layout for the saveGameButton
 		springLayout.putConstraint(SpringLayout.SOUTH, saveGameButton, -10, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, saveGameButton, 10, SpringLayout.WEST, this);
-
+		springLayout.putConstraint(SpringLayout.WEST, saveGameButton, 0, SpringLayout.WEST, descriptionLabel);
+		
 		//Spring layout for activateGameButton
 		springLayout.putConstraint(SpringLayout.WEST, activateGameButton, 10, SpringLayout.EAST, saveGameButton);
 		springLayout.putConstraint(SpringLayout.NORTH, activateGameButton, 0, SpringLayout.NORTH, saveGameButton);
