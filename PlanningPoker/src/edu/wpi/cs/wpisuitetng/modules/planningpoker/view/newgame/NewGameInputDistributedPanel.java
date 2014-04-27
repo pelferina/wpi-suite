@@ -44,6 +44,7 @@ import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateGameController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.deckcontroller.GetDecksController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
@@ -195,7 +196,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	private void init(NewGameDistributedPanel ngdp)
 	{
 		newGameP = ngdp;
-
+		
 		currentDate = Calendar.getInstance();
 
 
@@ -213,6 +214,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		//Set deadline and deck to not be visible
 		setDeadlineVisibility(false);	
 		setDeckVisibility(false);
+		GetDecksController.getInstance().addRefreshable(this);
 
 		// Initialize the error Messages		
 		initializeErrorMessages();
@@ -703,7 +705,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			}
 		}
 	}
-	private void initializeDeckComboBox()
+	public void initializeDeckComboBox()
 	{	
 		deckBox.removeAllItems();
 		//Initializes the deck combo box
@@ -1069,10 +1071,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 
 	@Override
 	public void refreshDecks() {
-		final List<Deck> currentDecks =  DeckModel.getInstance().getDecks();
-		if (decks.size() != currentDecks.size()){
-			initializeDeckComboBox();
-		}
+		initializeDeckComboBox();
 	}
 	
 }

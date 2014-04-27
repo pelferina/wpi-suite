@@ -48,6 +48,7 @@ public class DeckBuildingPanel extends JPanel {
 	private JButton btnRmvAll = new JButton("Remove all");
 	private JButton btnSave = new JButton("Save deck");
 	private JButton btnDelete = new JButton("Delete deck");
+	private JButton btnCancel = new JButton("Cancel");
 	private JComboBox<String> comboBoxDeckList = new JComboBox<String>();
 	private JLabel lblDeckName = new JLabel("Deck Name:");
 	private JLabel lblDecks = new JLabel("Decks:");
@@ -84,6 +85,8 @@ public class DeckBuildingPanel extends JPanel {
 		btnRmvSelected.setSize(80, 20);
 		btnRmvAll.setFont(size);
 		btnRmvAll.setSize(80, 20);
+		btnCancel.setFont(size);
+		btnCancel.setSize(80,20);
 		
 		//cardPanel.setMinimumSize(new Dimension(200, 13));
 		cardArea.setMinimumSize(new Dimension(200, 135));
@@ -131,6 +134,15 @@ public class DeckBuildingPanel extends JPanel {
 				AddDeckController.getInstance().addDeck(newDeck);
 				System.out.println("added Deck " + newDeckName + "; Id = " + newDeck.getId() + "; with cards: " + newDeckCards.toString());
 				System.out.println("Current DeckModel size is " + DeckModel.getInstance().getSize());
+				nameField.setText("");
+				newDeckCards.clear();
+				newGameDistributed.newGameInputPanel.initializeDeckComboBox();
+				newGameDistributed.closeDeck();
+			}
+		});
+		
+		btnCancel.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
 				nameField.setText("");
 				newDeckCards.clear();
 				newGameDistributed.closeDeck();
@@ -288,6 +300,11 @@ public class DeckBuildingPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, btnRmvAll, 0, SpringLayout.WEST, btnRmvSelected);
 		springLayout.putConstraint(SpringLayout.EAST, btnRmvAll, 0, SpringLayout.EAST, btnRmvSelected);
 		
+		//Spring layout for btnCancel
+		springLayout.putConstraint(SpringLayout.NORTH, btnCancel, 10, SpringLayout.SOUTH, btnAddCard);
+		springLayout.putConstraint(SpringLayout.WEST, btnCancel, 0, SpringLayout.WEST, btnAddCard);
+		springLayout.putConstraint(SpringLayout.EAST, btnCancel, 0, SpringLayout.EAST, btnAddCard);
+		
 		setLayout(springLayout);
 		
 		add(lblDeckName);
@@ -299,6 +316,7 @@ public class DeckBuildingPanel extends JPanel {
 		add(btnAddCard);
 		add(btnRmvAll);
 		add(btnRmvSelected);
+		add(btnCancel);
 	}
 	
 	private void resetPanel(){
