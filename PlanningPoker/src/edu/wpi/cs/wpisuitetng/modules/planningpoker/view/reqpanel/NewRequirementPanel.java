@@ -135,24 +135,25 @@ public class NewRequirementPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.NORTH, descriptionScrollPane, 116, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, descriptionScrollPane, -44, SpringLayout.NORTH, typeComboBox);
 		springLayout.putConstraint(SpringLayout.WEST, descriptionScrollPane, 0, SpringLayout.WEST, nameLabel);
-		springLayout.putConstraint(SpringLayout.EAST, descriptionScrollPane, -45, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.EAST, descriptionScrollPane, -23, SpringLayout.EAST, this);
 		
 		//Spring layout constraints for lblPriority
 		springLayout.putConstraint(SpringLayout.NORTH, lblPriority, 45, SpringLayout.SOUTH, descriptionScrollPane);
 		springLayout.putConstraint(SpringLayout.WEST, lblPriority, 53, SpringLayout.WEST, this);
 		
 		//Spring layout constraints for descriptionLabel
-		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 53, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, descriptionLabel, -16, SpringLayout.NORTH, descriptionScrollPane);
+		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 0, SpringLayout.WEST, nameLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, descriptionLabel, 30, SpringLayout.NORTH, nameLabel);
 		
 		//Spring layout constraints for nameField
 		springLayout.putConstraint(SpringLayout.WEST, nameField, 6, SpringLayout.EAST, nameLabel);
-		springLayout.putConstraint(SpringLayout.EAST, nameField, -45, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, nameField, -3, SpringLayout.NORTH, nameLabel);
+		springLayout.putConstraint(SpringLayout.EAST, nameField, 0, SpringLayout.EAST, descriptionScrollPane);
+		springLayout.putConstraint(SpringLayout.NORTH, nameField, -2, SpringLayout.NORTH, nameLabel);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameField, 0, SpringLayout.VERTICAL_CENTER, nameLabel);
 		
 		//Spring layout constraints for the nameLabel
-		springLayout.putConstraint(SpringLayout.NORTH, nameLabel, 29, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, nameLabel, 53, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, nameLabel, 34, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, nameLabel, 23, SpringLayout.WEST, this);
 		
 		springLayout.putConstraint(SpringLayout.WEST, reqError, 5, SpringLayout.WEST, CreateRequirementButton);
 		springLayout.putConstraint(SpringLayout.NORTH, reqError, 5, SpringLayout.SOUTH, CreateRequirementButton);
