@@ -111,9 +111,6 @@ public class RefreshManager {
 		refreshGamesTimer = new Timer(1000, gameCheck);
 		refreshRequirementsTimer = new Timer(1000, reqCheck);
 		refreshDeckTimer = new Timer(1000, deckCheck);
-		refreshGamesTimer.start();
-		refreshRequirementsTimer.start();
-		refreshDeckTimer.start();
 		pauseRefreshHandler.addRefreshManager(this);
 	}
 
