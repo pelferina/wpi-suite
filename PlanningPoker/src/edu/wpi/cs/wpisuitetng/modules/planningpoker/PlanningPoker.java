@@ -18,12 +18,15 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetAllUsers;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.RefreshManager;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.pauseRefreshHandler;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ToolbarView;
@@ -40,13 +43,13 @@ public class PlanningPoker implements IJanewayModule{
 
 	/** The tabs used by this module */
 	private final List<JanewayTabModel> tabs;
-	
-	
+
+
 	private MainView mainPanel;
 	private JPanel buttonPanel;
 	final private RefreshManager refresh;
 	Timer getUserTimer;
-	
+
 	/**
 	 * Construct a new PlanningPoker module
 	 */
@@ -54,17 +57,17 @@ public class PlanningPoker implements IJanewayModule{
 		//Setup refreshing
 		refresh = new RefreshManager();
 		tabs = new ArrayList<JanewayTabModel>();
-		
+
 		final MainView mainPanel = new MainView();
 		final ToolbarView toolBar = new ToolbarView(true);
-				
+
 		ViewEventController.getInstance().setMainView(mainPanel);
 		ViewEventController.getInstance().setToolBar(toolBar);
-		
+
 		final JanewayTabModel tab = new JanewayTabModel("PlanningPoker", new ImageIcon(), toolBar, mainPanel);
 		tabs.add(tab);
-		
-		
+
+
 		getUserTimer = new Timer(1000, new ActionListener(){
 
 			@Override
@@ -76,8 +79,9 @@ public class PlanningPoker implements IJanewayModule{
 			}
 		});
 		getUserTimer.start();
+		mainPanel.addAncestorListener(pauseRefreshHandler.getInstance());
 	}
-	
+
 	/*
 	 * @see edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule#getName()
 	 */
