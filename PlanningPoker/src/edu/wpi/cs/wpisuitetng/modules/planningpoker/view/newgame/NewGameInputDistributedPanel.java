@@ -97,7 +97,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	 */
 	private final JCheckBox deckCheckBox = new JCheckBox("Use Deck");
 	private JComboBox<String> deckBox = new JComboBox<String>(); 
-	private List<Deck> decks = DeckModel.getInstance().getDecks();
+	private List<Deck> decks = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
 	private int selectedDeckIndex = 0;
 	private final JButton createDeckButton = new JButton("Create Deck");
 
@@ -719,8 +719,8 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	 */
 	private void addDecksToDeckComboBox()
 	{
-		final List<Deck> allDecks = DeckModel.getInstance().getDecks();
-		for (Deck d: allDecks){
+		decks = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
+		for (Deck d: decks){
 			deckBox.addItem(d.getName());
 		}
 	}
@@ -1069,10 +1069,9 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 
 	@Override
 	public void refreshDecks() {
-		final List<Deck> currentDecks =  DeckModel.getInstance().getDecks();
-		if (decks.size() != currentDecks.size()){
+		List<Deck> currentDecks = DeckModel.getInstance().getDecks();
+		if (decks.size() != DeckModel.getInstance().getDecks().size()){
 			initializeDeckComboBox();
 		}
 	}
-	
 }
