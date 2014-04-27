@@ -135,8 +135,7 @@ public class DeckBuildingPanel extends JPanel {
 				System.out.println("added Deck " + newDeckName + "; Id = " + newDeck.getId() + "; with cards: " + newDeckCards.toString());
 				System.out.println("Current DeckModel size is " + DeckModel.getInstance().getSize());
 				nameField.setText("");
-				newDeckCards.clear();
-				newGameDistributed.newGameInputPanel.initializeDeckComboBox();
+				newDeckCards.clear();				
 				newGameDistributed.closeDeck();
 			}
 		});

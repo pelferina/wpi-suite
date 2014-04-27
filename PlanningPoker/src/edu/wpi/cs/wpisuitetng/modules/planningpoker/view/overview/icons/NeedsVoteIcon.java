@@ -33,7 +33,6 @@ public class NeedsVoteIcon implements Icon {
 	/**
 	 * Method getIconWidth.
 	
-	
 	 * @return int * @see javax.swing.Icon#getIconWidth() */
 	@Override
 	public int getIconWidth() {
