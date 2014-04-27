@@ -167,6 +167,9 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				int[] index = unselectedTable.getSelectedRows();
+				boolean last = false;
+				if(unselectedTable.getSelectedRow() == unselectedTable.getRowCount() - 1)
+					last = true;
 				int offset = 0;
 				while(index.length > 0){
 					final Requirement selectedReq = reqs.get(index[0]-offset);
@@ -186,9 +189,13 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 				}
 				selectedTable.clearSelection();
 				unselectedTable.clearSelection();
-				if(unselectedTable.getRowCount()>0)
+				int rowIndex = unselectedTable.getRowCount() - 1;
+				if(!last && unselectedTable.getRowCount()>0)
 					unselectedTable.setRowSelectionInterval(0, 0);
-				selectedTable.setRowSelectionInterval(0, 0);
+				else if(last && unselectedTable.getRowCount()>0)
+					unselectedTable.setRowSelectionInterval(rowIndex, rowIndex);			
+				rowIndex = selectedTable.getRowCount() - 1;
+				selectedTable.setRowSelectionInterval(rowIndex, rowIndex);
 			}
 		});
 
@@ -239,9 +246,11 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 					}
 				selectedTable.clearSelection();
 				unselectedTable.clearSelection();
+				int rowIndex = selectedTable.getRowCount() - 1;
 				if(selectedTable.getRowCount()>0)
-					selectedTable.setRowSelectionInterval(0, 0);
-				unselectedTable.setRowSelectionInterval(0, 0);
+					selectedTable.setRowSelectionInterval(rowIndex, rowIndex);
+				rowIndex = unselectedTable.getRowCount() - 1;				
+				unselectedTable.setRowSelectionInterval(rowIndex, rowIndex);
 			}
 		});
 
@@ -345,10 +354,6 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 			dtm.setValueAt(reqs.get(i).getName(), i, 0);
 			dtm.setValueAt(reqs.get(i).getDescription(), i, 1);
 		}
-		if (i > 0)
-		{
-			unselectedTable.setRowSelectionInterval(0, 0);
-		}
 		
 		unselected_table.setViewportView(unselectedTable);
 		
@@ -385,12 +390,17 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 			dtm_1.setValueAt(selected.get(j).getDescription(), j, 1);
 		}
 		
+		unselectedTable.repaint();
+		if (i > 0)
+		{
+			unselectedTable.setRowSelectionInterval(0, 0);
+		}
+		
 		if (j > 0)
 		{
 			selectedTable.setRowSelectionInterval(0, 0);
 		}
-		
-		unselectedTable.repaint();
+	
 	}
 	
 	//Getter for newGameInputDistributedPanel to get the selected requirements
