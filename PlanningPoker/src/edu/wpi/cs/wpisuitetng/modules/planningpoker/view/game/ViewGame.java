@@ -95,7 +95,7 @@ public class ViewGame extends JPanel{
 		}
 		reqNameTextField.setEditable(false);
 		reqDescTextArea.setEditable(false);
-		
+		reqDescTextArea.setOpaque(false);
 		//This document listener will enable the submit button when something is inputted into the estimate text field
 		estimateTextField.getDocument().addDocumentListener(new DocumentListener(){
 			@Override

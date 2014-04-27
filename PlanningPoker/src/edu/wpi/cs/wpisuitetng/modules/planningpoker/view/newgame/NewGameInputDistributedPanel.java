@@ -785,6 +785,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		{	
 			nameTextField.setEditable(false);
 			descriptionTextField.setEditable(false);	
+			descriptionTextField.setOpaque(false);
 		}
 	}
 
