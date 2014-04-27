@@ -151,6 +151,7 @@ public class RefreshManager {
 		deckController.actionPerformed(null);
 	
 		if ( differentList(deckCache, DeckModel.getInstance().getDecks())){
+			System.out.println("Refreshin decks\n"+deckCache+"\n"+DeckModel.getInstance().getDecks());
 			deckController.refresh();
 			deckCache = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
 		}
