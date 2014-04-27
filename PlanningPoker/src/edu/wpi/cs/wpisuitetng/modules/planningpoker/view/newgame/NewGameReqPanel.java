@@ -9,6 +9,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
@@ -18,14 +19,18 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 
+
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.TimerTask;
 
 import javax.swing.table.DefaultTableModel;
+
+import java.awt.Font;
 
 /**
  * This class shows the requirements that are currently in the game
@@ -44,17 +49,18 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	// Declarations and initializations of GUI components
 	JLabel lblRequirementsAvailable = new JLabel("Requirements Available");
 	JButton btnAddReq = new JButton("Add New Requirement");
-	JButton btnRemoveOne = new JButton("\u2191");
+	JButton btnRemoveOne = new JButton();
 	JLabel lblRequirementsSelected = new JLabel("Requirements Selected");
-	JButton btnAddOne = new JButton("\u2193");
-	JButton btnRemoveAll = new JButton("\u2191"+"\uFEFF"+"\u2191");
-	JButton btnAddAll = new JButton("\u2193"+"\uFEFF"+"\u2193");
+	JButton btnAddOne = new JButton();
+	JButton btnRemoveAll = new JButton();
+	JButton btnAddAll = new JButton();
 	JScrollPane unselected_table = new JScrollPane();
 	JScrollPane selected_table = new JScrollPane();
 
 	/**
 	 * Constructor for NewGameReqPanel
 	 * @param ngdp The NewGamePanel it is a part of
+	 * @wbp.parser.constructor
 	 */
 	public NewGameReqPanel(NewGameDistributedPanel ngdp) {
 
@@ -113,14 +119,34 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		reqs = reqList;
 		init();
 	}
+	
+	private void setupButtonIcons()
+	{
+		try {
+			Image img = ImageIO.read(getClass().getResource("down.png"));
+			btnAddOne.setIcon(new ImageIcon(img));
+
+			img = ImageIO.read(getClass().getResource("addall.png"));
+			btnAddAll.setIcon(new ImageIcon(img));
+			
+			img = ImageIO.read(getClass().getResource("up.png"));
+			btnRemoveOne.setIcon(new ImageIcon(img));
+			
+			img = ImageIO.read(getClass().getResource("removeall.png"));
+			btnRemoveAll.setIcon(new ImageIcon(img));
+		} catch (IOException ex) {
+			System.err.println(ex.getMessage());
+		}
+	}
 
 	//Initializes the reqpanel
 	
 	private void init()
 	{	
-		
+		setupButtonIcons();
 		final SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
+		btnAddReq.setFont(new Font("Tahoma", Font.PLAIN, 18));
 
 		// Observers
 
@@ -158,6 +184,9 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 				}
 				selectedTable.clearSelection();
 				unselectedTable.clearSelection();
+				if(unselectedTable.getRowCount()>0)
+					unselectedTable.setRowSelectionInterval(0, 0);
+				selectedTable.setRowSelectionInterval(0, 0);
 			}
 		});
 
@@ -180,6 +209,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 				}
 				selectedTable.clearSelection();
 				unselectedTable.clearSelection();
+				selectedTable.setRowSelectionInterval(0, 0);
 			}
 		});
 
@@ -207,6 +237,9 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 					}
 				selectedTable.clearSelection();
 				unselectedTable.clearSelection();
+				if(selectedTable.getRowCount()>0)
+					selectedTable.setRowSelectionInterval(0, 0);
+				unselectedTable.setRowSelectionInterval(0, 0);
 			}
 		});
 
@@ -227,7 +260,8 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 					dtm_1.setRowCount(0);
 				}
 				selectedTable.clearSelection();
-				unselectedTable.clearSelection();
+				unselectedTable.clearSelection();	
+				unselectedTable.setRowSelectionInterval(0, 0);
 			}
 		});
 
@@ -304,13 +338,18 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		unselectedTable.setFillsViewportHeight(true);
 
 		//Puts the requirements from the requirement manager into the unselected requirements table
-		
-		for (int i = 0; i < reqs.size(); i++){
+		int i;
+		for (i = 0; i < reqs.size(); i++){
 			dtm.setValueAt(reqs.get(i).getName(), i, 0);
 			dtm.setValueAt(reqs.get(i).getDescription(), i, 1);
 		}
+		if (i > 0)
+		{
+			unselectedTable.setRowSelectionInterval(0, 0);
+		}
+		
 		unselected_table.setViewportView(unselectedTable);
-
+		
 		//Initializes the selected requirements table
 		
 		selectedTable.setModel(new DefaultTableModel(
@@ -338,12 +377,16 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		selectedTable.setFillsViewportHeight(true);
 
 		//Puts the selected requirements into the selected requirements table. This is only applicable when an edit game tab is opened
-		
-		for (int i = 0; i < selected.size(); i++){
-			dtm_1.setValueAt(selected.get(i).getName(), i, 0);
-			dtm_1.setValueAt(selected.get(i).getDescription(), i, 1);
+		int j;
+		for (j = 0; j < selected.size(); j++){
+			dtm_1.setValueAt(selected.get(j).getName(), j, 0);
+			dtm_1.setValueAt(selected.get(j).getDescription(), j, 1);
 		}
 		
+		if (j > 0)
+		{
+			selectedTable.setRowSelectionInterval(0, 0);
+		}
 		
 		unselectedTable.repaint();
 	}

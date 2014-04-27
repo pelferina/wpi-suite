@@ -9,6 +9,8 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.reqpanel;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -29,8 +31,10 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventControlle
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -62,6 +66,15 @@ public class NewRequirementPanel extends JPanel {
 	 * @param ngdp The NewGameDistributedPanel to add this to
 	 */
 	public NewRequirementPanel(NewGameDistributedPanel ngdp){
+		try{
+			Image img = ImageIO.read(getClass().getResource("cancel.png"));
+			cancelButton.setIcon(new ImageIcon(img));
+			img = ImageIO.read(getClass().getResource("create.png"));
+			CreateRequirementButton.setIcon(new ImageIcon(img));
+		} catch (IOException ex) {
+			System.err.println(ex.getMessage());
+		}
+		
 		CreateRequirementButton.setEnabled(false);
 		reqError.setVisible(true);
 		newGamePanel = ngdp;

@@ -33,6 +33,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.deckcontroller.AddDeckContro
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameCard;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 
 /**
  * The DeckBuildingPanel class
@@ -47,6 +48,7 @@ public class DeckBuildingPanel extends JPanel {
 	private JButton btnRmvAll = new JButton("Remove all");
 	private JButton btnSave = new JButton("Save deck");
 	private JButton btnDelete = new JButton("Delete deck");
+	private JButton btnCancel = new JButton("Cancel");
 	private JComboBox<String> comboBoxDeckList = new JComboBox<String>();
 	private JLabel lblDeckName = new JLabel("Deck Name:");
 	private JLabel lblDecks = new JLabel("Decks:");
@@ -60,11 +62,13 @@ public class DeckBuildingPanel extends JPanel {
 	private List<Integer> cardsToBeRemoved = new ArrayList<Integer>();
 	private JPanel cardPanel = new JPanel();
 	private JScrollPane cardArea = new JScrollPane(cardPanel);
+	private NewGameDistributedPanel newGameDistributed;
 
 	/** Constructor for a DeckPanel panel
 	 */
-	public DeckBuildingPanel(){
+	public DeckBuildingPanel(NewGameDistributedPanel ngdp){
 		
+		this.newGameDistributed = ngdp;
 		
 		// Sets a consistent font for all buttons
 		final Font size = new Font(btnSave.getFont().getName(), btnSave.getFont().getStyle(), 10);
@@ -81,6 +85,8 @@ public class DeckBuildingPanel extends JPanel {
 		btnRmvSelected.setSize(80, 20);
 		btnRmvAll.setFont(size);
 		btnRmvAll.setSize(80, 20);
+		btnCancel.setFont(size);
+		btnCancel.setSize(80,20);
 		
 		//cardPanel.setMinimumSize(new Dimension(200, 13));
 		cardArea.setMinimumSize(new Dimension(200, 135));
@@ -134,14 +140,22 @@ public class DeckBuildingPanel extends JPanel {
 				// Clears data
 				nameField.setText("");
 				newDeckCards.clear();
-				cardsToBeRemoved.clear();
-				
+				cardsToBeRemoved.clear();				
+
 				// Clears panel
 				cardPanel.removeAll();
 				cardPanel.revalidate();
 				cardPanel.repaint();
-				
-				//TODO close tab
+				newGameDistributed.newGameInputPanel.initializeDeckComboBox();
+				newGameDistributed.closeDeck();
+			}
+		});
+		
+		btnCancel.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				nameField.setText("");
+				newDeckCards.clear();
+				newGameDistributed.closeDeck();
 			}
 		});
 		
@@ -296,6 +310,11 @@ public class DeckBuildingPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, btnRmvAll, 0, SpringLayout.WEST, btnRmvSelected);
 		springLayout.putConstraint(SpringLayout.EAST, btnRmvAll, 0, SpringLayout.EAST, btnRmvSelected);
 		
+		//Spring layout for btnCancel
+		springLayout.putConstraint(SpringLayout.NORTH, btnCancel, 10, SpringLayout.SOUTH, btnAddCard);
+		springLayout.putConstraint(SpringLayout.WEST, btnCancel, 0, SpringLayout.WEST, btnAddCard);
+		springLayout.putConstraint(SpringLayout.EAST, btnCancel, 0, SpringLayout.EAST, btnAddCard);
+		
 		setLayout(springLayout);
 		
 		add(lblDeckName);
@@ -307,6 +326,7 @@ public class DeckBuildingPanel extends JPanel {
 		add(btnAddCard);
 		add(btnRmvAll);
 		add(btnRmvSelected);
+		add(btnCancel);
 	}
 	
 	private void resetPanel(){

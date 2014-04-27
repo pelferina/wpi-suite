@@ -141,9 +141,13 @@ public class PlayGame extends JPanel implements Refreshable{
 		}
 		gameDescTextArea.setText(currentGame.getGameDescription());
 		gameNameTextField.setEditable(false);
+		gameNameTextField.setOpaque(false);
 		reqNameTextField.setEditable(false);
+		reqNameTextField.setOpaque(false);
 		gameDescTextArea.setEditable(false);
+		gameDescTextArea.setOpaque(false);
 		reqDescTextArea.setEditable(false);
+		reqDescTextArea.setOpaque(false);
 		gameDescTextArea.setLineWrap(true);
 		gameDescTextArea.setWrapStyleWord(true);
 		reqDescTextArea.setLineWrap(true);

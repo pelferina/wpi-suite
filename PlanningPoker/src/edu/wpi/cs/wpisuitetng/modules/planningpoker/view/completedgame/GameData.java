@@ -72,6 +72,7 @@ public class GameData extends JPanel{
 		descriptionTextArea.setText(gs.getGameDescription());
 		gameNameTextBox.setEditable(false);
 		descriptionTextArea.setEditable(false);
+		descriptionTextArea.setOpaque(false);
 		gameReqIDs = gs.getGameReqs();
 		descriptionTextArea.setLineWrap(true);
 		descriptionTextArea.setWrapStyleWord(true);

@@ -141,6 +141,7 @@ public class VoteData extends JPanel{
 		descriptionTextArea.setText(currentReq.getDescription());
 		descriptionTextArea.setWrapStyleWord(true);
 		descriptionTextArea.setEditable(false);
+		descriptionTextArea.setOpaque(false);
 		gs.calculateStats();
 		
 		//Sets the statistic text fields to the stats of the first requirement in the game, and disables user edits

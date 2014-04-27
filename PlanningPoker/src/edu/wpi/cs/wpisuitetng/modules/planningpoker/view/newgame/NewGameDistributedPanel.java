@@ -15,6 +15,7 @@ import java.util.List;
 import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckBuildingPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.reqpanel.NewRequirementPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.deckcontroller.GetDecksController;
@@ -36,7 +37,10 @@ public class NewGameDistributedPanel extends JSplitPane {
 	public NewGameInputDistributedPanel newGameInputPanel;
 	public NewGameReqPanel newGameReqPanel;
 	public NewRequirementPanel newRequirement;
+	private DeckBuildingPanel deckPanel;
 	public JButton close;
+	private boolean isDeckOpen = false;
+	private boolean isRequirementOpen = false;
 	
 	final private int DIVIDER_LOCATION = 600;
 	
@@ -77,12 +81,14 @@ public class NewGameDistributedPanel extends JSplitPane {
 	private void setPanel(){
 		newGameInputPanel.setFocusNameText();
 		newRequirement = new NewRequirementPanel(this);
+		deckPanel = new DeckBuildingPanel(this);
 		addImpl(newGameInputPanel, JSplitPane.LEFT, 1);
 		final Dimension minimumSize = new Dimension(DIVIDER_LOCATION, 200);
 		leftComponent.setMinimumSize(minimumSize);
 		addImpl(newGameReqPanel, JSplitPane.RIGHT, 2);
 		newGameReqPanel.setVisible(true);
 		newRequirement.setVisible(false);
+		deckPanel.setVisible(false);
 		setDividerLocation(DIVIDER_LOCATION);
 	}
 	
@@ -97,8 +103,40 @@ public class NewGameDistributedPanel extends JSplitPane {
 		addImpl(newRequirement, JSplitPane.RIGHT, 3);
 		setDividerLocation(DIVIDER_LOCATION);
 		newRequirement.setVisible(true);
+		deckPanel.setVisible(false);
 		newGameReqPanel.setVisible(false);
 		newRequirement.setFocusOnName();
+		isRequirementOpen = true;
+	}
+	
+	/**
+	 * Setup method for the deck creation panel
+	 */
+	public void newDeck() {
+		addImpl(newGameInputPanel, JSplitPane.LEFT, 1);
+		addImpl(deckPanel, JSplitPane.RIGHT, 4);
+		setDividerLocation(DIVIDER_LOCATION);
+		deckPanel.setVisible(true);
+		newRequirement.setVisible(false);
+		newGameReqPanel.setVisible(false);
+		newRequirement.setFocusOnName();
+		isDeckOpen = true;
+	}
+	
+	public void closeDeck(){
+		if (!isRequirementOpen){
+			addImpl(newGameInputPanel, JSplitPane.LEFT, 1);
+			addImpl(newGameReqPanel, JSplitPane.RIGHT, 2);
+			setDividerLocation(DIVIDER_LOCATION);
+			newGameReqPanel.setVisible(true);
+		}
+		else {
+			addImpl(newGameInputPanel, JSplitPane.LEFT, 1);
+			addImpl(newRequirement, JSplitPane.RIGHT, 3);
+			setDividerLocation(DIVIDER_LOCATION);
+			newRequirement.setVisible(true);
+		}
+		isDeckOpen = false;
 	}
 	/**
 	 * Sends the created Req
@@ -111,12 +149,21 @@ public class NewGameDistributedPanel extends JSplitPane {
 	 * Closes the create requirement panel
 	 */
 	public void closeReq(){
-		addImpl(newGameInputPanel, JSplitPane.LEFT, 1);
-		addImpl(newGameReqPanel, JSplitPane.RIGHT, 2);
-		setDividerLocation(DIVIDER_LOCATION);
+		if (!isDeckOpen){
+			addImpl(newGameInputPanel, JSplitPane.LEFT, 1);
+			addImpl(newGameReqPanel, JSplitPane.RIGHT, 2);
+			setDividerLocation(DIVIDER_LOCATION);
+			newGameReqPanel.setVisible(true);
+		}
+		else{
+			addImpl(newGameInputPanel, JSplitPane.LEFT, 1);
+			addImpl(deckPanel, JSplitPane.RIGHT, 4);
+			setDividerLocation(DIVIDER_LOCATION);
+			deckPanel.setVisible(true);
+		}
 		newRequirement.clearFields();
 		newRequirement.setVisible(false);
-		newGameReqPanel.setVisible(true);
+		isRequirementOpen = false;
 	}
 	/**
 	 * Stops the timer in newGameInputPanel

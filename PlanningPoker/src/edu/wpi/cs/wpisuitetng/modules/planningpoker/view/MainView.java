@@ -63,12 +63,10 @@ public class MainView extends JTabbedPane {
 
 	public MainView() {
 		overviewPanel = new OverviewPanel();
-		final DeckBuildingPanel decktestpanel = new DeckBuildingPanel();
 		
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
 		addTab("Overview", overviewPanel);
-		addTab("DeckStuff", decktestpanel);
 		
 		ViewEventController.getInstance().setMainView(this);
 	}
