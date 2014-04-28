@@ -108,9 +108,9 @@ public class RefreshManager {
 		};
 		
 		// Timer will update RefreshManager every 2 seconds
-		refreshGamesTimer = new Timer(100, gameCheck);
-		refreshRequirementsTimer = new Timer(100, reqCheck);
-		refreshDeckTimer = new Timer(100, deckCheck);
+		refreshGamesTimer = new Timer(1000, gameCheck);
+		refreshRequirementsTimer = new Timer(1000, reqCheck);
+		refreshDeckTimer = new Timer(1000, deckCheck);
 		pauseRefreshHandler.addRefreshManager(this);
 	}
 

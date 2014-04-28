@@ -169,6 +169,7 @@ public class PreferencesPanel extends JPanel {
 	public void makeEmailEnable(){
 		submitButton.setEnabled(true);
 		emailField.setEnabled(true);
+		emailField.setOpaque(true);
 	}
 	/**
 	 * Disables Email Capabilities
@@ -176,6 +177,7 @@ public class PreferencesPanel extends JPanel {
 	public void makeEmailDisable(){
 		submitButton.setEnabled(false);
 		emailField.setEnabled(false);
+		emailField.setOpaque(false);
 	}
 	public void setEmailModel(EmailAddressModel eModel){
 		this.eModel = eModel;

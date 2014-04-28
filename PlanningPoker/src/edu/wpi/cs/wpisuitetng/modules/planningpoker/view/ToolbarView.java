@@ -9,6 +9,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.DefaultToolbarView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.GreetingPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.OwnerButtonPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerButtonsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.UserButtonPanel;
@@ -27,6 +28,7 @@ public class ToolbarView  extends DefaultToolbarView {
 	public PlanningPokerButtonsPanel gameButton = new PlanningPokerButtonsPanel();
 	public OwnerButtonPanel ownerButton = new OwnerButtonPanel();
 	public UserButtonPanel userButton = new UserButtonPanel();
+	public GreetingPanel greetingPanel = new GreetingPanel();
 	/**
 	 * Creates and positions option buttons in upper toolbar
 	 * @param visible boolean
@@ -35,6 +37,7 @@ public class ToolbarView  extends DefaultToolbarView {
 		this.addGroup(gameButton);
 		this.addGroup(userButton);
 		this.addGroup(ownerButton);
+		this.addGroup(greetingPanel);
 	}
 	
 	/**
