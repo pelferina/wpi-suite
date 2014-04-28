@@ -255,22 +255,11 @@ public class VoteData extends JPanel{
 		
 		final SpringLayout springLayout = new SpringLayout();
 		
-		
-
-
-		springLayout.putConstraint(SpringLayout.SOUTH, finalEstimateLabel, -157, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.NORTH, notAnIntegerError, 6, SpringLayout.SOUTH, finalEstimateLabel);
 		springLayout.putConstraint(SpringLayout.WEST, notAnIntegerError, 0, SpringLayout.WEST, descriptionScrollPane);
-		springLayout.putConstraint(SpringLayout.EAST, finalEstimateLabel, -6, SpringLayout.WEST, finalEstimateText);
-		springLayout.putConstraint(SpringLayout.NORTH, finalEstimateText, -3, SpringLayout.NORTH, finalEstimateLabel);
-		springLayout.putConstraint(SpringLayout.WEST, finalEstimateText, 130, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.EAST, finalEstimateText, 0, SpringLayout.EAST, reqDescriptionLabel);
-		springLayout.putConstraint(SpringLayout.NORTH, meanLabel, 36, SpringLayout.SOUTH, descriptionScrollPane);
-		
-		
-		
 
-		
+
+		springLayout.putConstraint(SpringLayout.NORTH, meanLabel, 36, SpringLayout.SOUTH, descriptionScrollPane);
 		
 		//Spring layout constraints for medianTextField
 		springLayout.putConstraint(SpringLayout.NORTH, medianTextField, 0, SpringLayout.NORTH, medianLabel);
@@ -311,19 +300,28 @@ public class VoteData extends JPanel{
 		springLayout.putConstraint(SpringLayout.WEST, estimatesLabel, 0, SpringLayout.WEST, estimatesPane);
 		
 		//Spring layout constraints for estimatesPane
-		springLayout.putConstraint(SpringLayout.EAST, estimatesPane, 0, SpringLayout.EAST, descriptionScrollPane);
-		springLayout.putConstraint(SpringLayout.WEST, estimatesPane, 312, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.EAST, estimatesPane, -30, SpringLayout.WEST, finalEstimateLabel);
+		springLayout.putConstraint(SpringLayout.WEST, estimatesPane, 0, SpringLayout.WEST, reqNameLabel);
 		springLayout.putConstraint(SpringLayout.SOUTH, estimatesPane, -30, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.NORTH, estimatesPane, 15, SpringLayout.SOUTH, estimatesLabel);
 		
 		//Spring layout constraints for finalSubmitButton		
 		springLayout.putConstraint(SpringLayout.SOUTH, finalSubmitButton, -6, SpringLayout.NORTH, sendEstimatesButton);
-		springLayout.putConstraint(SpringLayout.WEST, finalSubmitButton, 0, SpringLayout.WEST, reqNameLabel);
+		springLayout.putConstraint(SpringLayout.EAST, finalSubmitButton, 0, SpringLayout.EAST, reqNameText);
 		
 		//Spring layout constraints for sendEstimatesButton
-		springLayout.putConstraint(SpringLayout.WEST, sendEstimatesButton, 0, SpringLayout.WEST, reqNameLabel);
+		springLayout.putConstraint(SpringLayout.WEST, sendEstimatesButton, 0, SpringLayout.WEST, finalSubmitButton);
 		springLayout.putConstraint(SpringLayout.SOUTH, sendEstimatesButton, -30, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, sendEstimatesButton, 0, SpringLayout.EAST, finalSubmitButton);
+		springLayout.putConstraint(SpringLayout.EAST, sendEstimatesButton, 0, SpringLayout.EAST, reqNameText);
+		
+		//Spring layout constraints for finalEstimateText
+		springLayout.putConstraint(SpringLayout.SOUTH, finalEstimateText, -6, SpringLayout.NORTH, finalSubmitButton);
+		springLayout.putConstraint(SpringLayout.EAST, finalEstimateText, 0, SpringLayout.EAST, reqNameText);
+		springLayout.putConstraint(SpringLayout.WEST, finalEstimateText, -40, SpringLayout.EAST, finalEstimateText);
+		
+		//Spring layout constraints for finalEstimateLabel
+		springLayout.putConstraint(SpringLayout.EAST, finalEstimateLabel, -6, SpringLayout.WEST, finalEstimateText);
+		springLayout.putConstraint(SpringLayout.SOUTH, finalEstimateLabel, 0, SpringLayout.SOUTH, finalEstimateText);
 		
 		setLayout(springLayout);
 		add(notAnIntegerError);
