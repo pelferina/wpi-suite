@@ -37,7 +37,7 @@ public class ToolbarView  extends DefaultToolbarView {
 		this.addGroup(gameButton);
 		this.addGroup(userButton);
 		this.addGroup(ownerButton);
-		this.addGroup(greetingPanel);
+		this.insertGroupAt(greetingPanel, 6);
 	}
 	
 	/**
