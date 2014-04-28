@@ -15,6 +15,9 @@ import java.awt.Dimension;
 import java.util.List;
 
 import javax.swing.JSplitPane;
+import javax.swing.border.Border;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -44,6 +47,20 @@ public class CompleteView extends JSplitPane {
 		addImpl(voteData, JSplitPane.RIGHT, 2);
 		setDividerLocation(400);
 		setEnabled(false);
+		
+		//Flatten the divider
+		this.setUI(new BasicSplitPaneUI() {
+            public BasicSplitPaneDivider createDefaultDivider() {
+            return new BasicSplitPaneDivider(this) {
+                public void setBorder(Border b) {
+                }
+            };
+            }
+        });
+        this.setBorder(null);
+        this.setEnabled( false );
+		
+		
 	}
 
 	/**
