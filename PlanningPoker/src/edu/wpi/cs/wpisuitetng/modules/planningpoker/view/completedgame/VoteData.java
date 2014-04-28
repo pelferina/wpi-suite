@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,8 +29,6 @@ import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetAllUsers;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
@@ -45,6 +44,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.Font;
+import java.awt.Insets;
 /**
  * VoteData class
  * @author FFF8E7
@@ -217,6 +217,15 @@ public class VoteData extends JPanel{
 	 * requirement in the game
 	 */
 	private void init(){
+		
+		//Adds padding
+		descriptionTextArea.setBorder(BorderFactory.createCompoundBorder(
+				descriptionTextArea.getBorder(), 
+		        BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+		descriptionTextArea.setWrapStyleWord(true);
+		
+		reqNameText.setMargin(new Insets(0, 5, 0, 0));
+		
 		
 		estimatesTable = new JTable() {
 			@Override
