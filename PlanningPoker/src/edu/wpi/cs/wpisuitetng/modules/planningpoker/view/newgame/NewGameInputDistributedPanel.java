@@ -274,6 +274,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 					initializeDeckComboBox();
 					setDeckVisibility(true);		        
 				} else {
+					newGameP.closeDeck();
 					setDeckVisibility(false);
 				}
 			}	
