@@ -57,6 +57,7 @@ public class VoteData extends JPanel{
 	private final JLabel meanLabel = new JLabel("Mean:");
 	private final JLabel medianLabel = new JLabel("Median:");
 	private final JLabel estimatesLabel = new JLabel("Estimates");
+	private final JLabel statsLabel = new JLabel("Statistics");
 	private final JLabel finalEstimateLabel = new JLabel ("Final Estimate:");
 	private final JLabel notAnIntegerError = new JLabel("Estimate must be a positive integer");
 	private final JTextField finalEstimateText = new JTextField();
@@ -68,7 +69,9 @@ public class VoteData extends JPanel{
 	private final JTextArea descriptionTextArea = new JTextArea();
 	private final JScrollPane descriptionScrollPane = new JScrollPane(descriptionTextArea);
 	private JScrollPane estimatesPane;
+	private JScrollPane statsPane;
 	private JTable estimatesTable;
+	private JTable statsTable;
 	private final GameSession completedGame;
 	private final CompleteView completeView;
 	private List<Integer> gameReqIDs;
@@ -226,7 +229,7 @@ public class VoteData extends JPanel{
 		
 		reqNameText.setMargin(new Insets(0, 5, 0, 0));
 		
-		
+		//Estimates Table (By User)
 		estimatesTable = new JTable() {
 			@Override
 		    public boolean isCellEditable(int row, int column) {
@@ -252,6 +255,27 @@ public class VoteData extends JPanel{
 		
 		estimatesPane = new JScrollPane(estimatesTable);
 		estimatesPane.setViewportView(estimatesTable);
+		
+		//Statistics Table
+		statsTable = new JTable() {
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all -cells false
+		       return false;
+		    }
+		};
+		
+		statsTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Statistic", "Value"}));
+		final DefaultTableModel statsModel = (DefaultTableModel) statsTable.getModel();
+		statsModel.setRowCount(2);
+		statsModel.setValueAt("Mean",0,0);
+		statsModel.setValueAt("Median",1,0);
+		statsModel.setValueAt(completedGame.getMean().get(reqIndex), 0, 1);
+		statsModel.setValueAt(completedGame.getMedian().get(reqIndex), 1, 1);
+		
+		statsPane = new JScrollPane(statsTable);
+		statsPane.setViewportView(statsTable);	
+		
 		
 		final SpringLayout springLayout = new SpringLayout();
 		
@@ -300,10 +324,20 @@ public class VoteData extends JPanel{
 		springLayout.putConstraint(SpringLayout.WEST, estimatesLabel, 0, SpringLayout.WEST, estimatesPane);
 		
 		//Spring layout constraints for estimatesPane
-		springLayout.putConstraint(SpringLayout.EAST, estimatesPane, -30, SpringLayout.WEST, finalEstimateLabel);
+		springLayout.putConstraint(SpringLayout.EAST, estimatesPane, 200, SpringLayout.WEST, estimatesPane);
 		springLayout.putConstraint(SpringLayout.WEST, estimatesPane, 0, SpringLayout.WEST, reqNameLabel);
 		springLayout.putConstraint(SpringLayout.SOUTH, estimatesPane, -30, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.NORTH, estimatesPane, 15, SpringLayout.SOUTH, estimatesLabel);
+		
+		//Spring layout constraints for statsLabel
+		springLayout.putConstraint(SpringLayout.SOUTH, statsLabel, 45, SpringLayout.SOUTH, descriptionScrollPane);
+		springLayout.putConstraint(SpringLayout.WEST, statsLabel, 0, SpringLayout.WEST, statsPane);
+		
+		//Spring layout constraints for statsPane
+		springLayout.putConstraint(SpringLayout.EAST, statsPane, -30, SpringLayout.WEST, finalEstimateLabel);
+		springLayout.putConstraint(SpringLayout.WEST, statsPane, 100, SpringLayout.EAST, estimatesPane);
+		springLayout.putConstraint(SpringLayout.SOUTH, statsPane, -30, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.NORTH, statsPane, 15, SpringLayout.SOUTH, estimatesLabel);
 		
 		//Spring layout constraints for finalSubmitButton		
 		springLayout.putConstraint(SpringLayout.SOUTH, finalSubmitButton, -6, SpringLayout.NORTH, sendEstimatesButton);
@@ -326,18 +360,20 @@ public class VoteData extends JPanel{
 		setLayout(springLayout);
 		add(notAnIntegerError);
 		add(estimatesPane);
+		add(statsPane);
 		add(descriptionScrollPane);
-		add(medianTextField);
-		add(meanTextField);
+		//add(medianTextField);
+		//add(meanTextField);
 		add(reqNameText);
-		estimatesLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		//estimatesLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		add(estimatesLabel);
+		add(statsLabel);
 		//reqDescriptionLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		add(reqDescriptionLabel);
-		medianLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		add(medianLabel);
-		meanLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		add(meanLabel);
+		//medianLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		//add(medianLabel);
+		//meanLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		//add(meanLabel);
 		//reqNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		add(reqNameLabel);
 		finalEstimateLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -357,6 +393,12 @@ public class VoteData extends JPanel{
 	public void receiveNewReq(Requirement req) {
 		currentReq = req;
 		reqIndex = completeView.getIndex(currentReq.getId());
+		
+		//Repopulate statistics table
+		final DefaultTableModel statsModel = (DefaultTableModel) statsTable.getModel();
+		statsModel.setValueAt(completedGame.getMean().get(reqIndex), 0, 1);
+		statsModel.setValueAt(completedGame.getMedian().get(reqIndex), 1, 1);
+		
 		int i = 0;
 		final DefaultTableModel estimatesModel = (DefaultTableModel) estimatesTable.getModel();
 		for (Vote v: completedGame.getVotes()){
