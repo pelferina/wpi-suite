@@ -9,6 +9,7 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -596,10 +597,15 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	private void initializeErrorMessages()
 	{
 		hourError.setVisible(false);
+		hourError.setForeground(Color.red);
 		minuteError.setVisible(false);
+		minuteError.setForeground(Color.red);
 		deadlineError.setVisible(false);
+		deadlineError.setForeground(Color.red);
 		nameError.setVisible(false);
+		nameError.setForeground(Color.red);
 		reqError.setVisible(false);
+		reqError.setForeground(Color.red);
 	}
 
 	/**
@@ -976,7 +982,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 
 
 		//Spring layout for the deadlineError
-		springLayout.putConstraint(SpringLayout.WEST, deadlineError, 50, SpringLayout.WEST, saveGameButton);
+		springLayout.putConstraint(SpringLayout.WEST, deadlineError, 0, SpringLayout.WEST, saveGameButton);
 		springLayout.putConstraint(SpringLayout.NORTH, deadlineError, -20, SpringLayout.NORTH, saveGameButton);
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameTextField, 0, SpringLayout.VERTICAL_CENTER, nameLabel);
 		deadlineError.setVisible(false);
