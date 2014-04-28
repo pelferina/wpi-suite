@@ -14,9 +14,11 @@ import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.GuiStandards;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+
 
 
 
@@ -298,9 +300,9 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		springLayout.putConstraint(SpringLayout.NORTH, lblRequirementsAvailable, 10, SpringLayout.NORTH, this);
 
 		// Spring Layout of unselected_table
-		springLayout.putConstraint(SpringLayout.WEST, unselected_table, 10, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.WEST, unselected_table, GuiStandards.DIVIDER_MARGIN.getValue(), SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, unselected_table, -10, SpringLayout.NORTH, btnAddReq);
-		springLayout.putConstraint(SpringLayout.EAST, unselected_table, -23, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.EAST, unselected_table, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, unselected_table, 10, SpringLayout.SOUTH, lblRequirementsAvailable);
 
 		// Spring Layout of Buttons
@@ -320,9 +322,9 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		springLayout.putConstraint(SpringLayout.WEST, lblRequirementsSelected, 0, SpringLayout.WEST, lblRequirementsAvailable);
 
 		// Spring Layout of selected_table
-		springLayout.putConstraint(SpringLayout.NORTH, selected_table, 10, SpringLayout.SOUTH, lblRequirementsSelected);
+		springLayout.putConstraint(SpringLayout.NORTH, selected_table, GuiStandards.DIVIDER_MARGIN.getValue(), SpringLayout.SOUTH, lblRequirementsSelected);
 		springLayout.putConstraint(SpringLayout.WEST, selected_table, 0, SpringLayout.WEST, unselected_table);
-		springLayout.putConstraint(SpringLayout.SOUTH, selected_table, -10, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, selected_table, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, selected_table, -0, SpringLayout.EAST, unselected_table);
 
 		// Adds elements to the panel
