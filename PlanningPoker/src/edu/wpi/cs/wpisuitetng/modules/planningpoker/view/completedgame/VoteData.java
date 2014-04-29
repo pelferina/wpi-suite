@@ -82,6 +82,7 @@ public class VoteData extends JPanel{
 	private int	reqIndex;
 	private List<Integer> finalVote;
 	private Timer setFocusTimer;
+	private Histogram aHistogram;
 	
 	/**
 	 * The constructor for the VoteData class
@@ -222,7 +223,7 @@ public class VoteData extends JPanel{
 	 * requirement in the game
 	 */
 	private void init(){
-		Histogram aHistogram = new Histogram("A test hist", completedGame, reqIndex);
+		aHistogram = new Histogram(completedGame, reqIndex);
 		
 		
 		//Adds padding
@@ -405,10 +406,12 @@ public class VoteData extends JPanel{
 		currentReq = req;
 		reqIndex = completeView.getIndex(currentReq.getId());
 		
+		
 		//Repopulate statistics table
 		final DefaultTableModel statsModel = (DefaultTableModel) statsTable.getModel();
 		statsModel.setValueAt(completedGame.getMean().get(reqIndex), 0, 1);
 		statsModel.setValueAt(completedGame.getMedian().get(reqIndex), 1, 1);
+		
 		
 		int i = 0;
 		final DefaultTableModel estimatesModel = (DefaultTableModel) estimatesTable.getModel();
