@@ -19,7 +19,7 @@ public enum GuiStandards {
 	DIVIDER_MARGIN(10),
 	
 	// margins for text areas
-	TEXT_AREA_MARGINS(10),
+	TEXT_AREA_MARGINS(5),
 	
 	// left margin for single line text boxes
 	TEXT_BOX_MARGIN(5),
@@ -32,7 +32,10 @@ public enum GuiStandards {
 	TEXT_HIEGHT_OFFSET(2),
 	
 	// distance between a label and its text box/area bellow it
-	LABEL_TEXT_OFFSET(10),
+	LABEL_TEXT_OFFSET(7),
+	
+	// distance between a label of a text field/area and the previous text field/area above it
+	NEXT_LABEL_OFFSET(15),
 	
 	// distance between in-line buttons
 	BUTTON_OFFSET(10),

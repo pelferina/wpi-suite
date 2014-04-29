@@ -9,6 +9,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -35,6 +37,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.VoteModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.GuiStandards;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
@@ -77,7 +80,7 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 	 * @wbp.nonvisual location=41,359
 	 */
 	private final JLabel gameEnded = new JLabel("Game Has Ended");
-	
+
 	/**
 	 * Constructor for a PlayGame panel
 	 * @param gameToPlay the game session that is being played
@@ -85,7 +88,7 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 	 */
 	public PlayDeckGame(GameSession gameToPlay, GameView agv){
 		GetGamesController.getInstance().addRefreshable(this);
-		
+
 		currentGame = gameToPlay;
 		gameReqs = currentGame.getGameReqs();
 		deckId = currentGame.getDeckId();
@@ -105,7 +108,7 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 		submit.setEnabled(false);
 		gv = agv;
 		final List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
-		
+
 		//Finds the requirement that is first in the to estimate table. The play game screen will default to displaying the first requirement
 		//in the estimates pending table
 		for (Requirement r: allReqs){
@@ -114,7 +117,7 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 				break;
 			}
 		}
-		
+
 		//Sets the description and name text fields to the first requirement in the to estimate table
 		gameNameTextField.setText(currentGame.getGameName());
 		if (currentReq != null){
@@ -132,8 +135,37 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 		gameDescTextArea.setWrapStyleWord(true);
 		reqDescTextArea.setLineWrap(true);
 		reqDescTextArea.setWrapStyleWord(true);
+
+		gameNameTextField.setBackground(Color.WHITE);
+		gameNameTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GRAY));
+		reqNameTextField.setBackground(Color.WHITE);
+		reqNameTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GRAY));
+
+		//Add padding
+		gameDescTextArea.setBorder(BorderFactory.createCompoundBorder(
+				gameDescTextArea.getBorder(), 
+				BorderFactory.createEmptyBorder(GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+						GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+						GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+						GuiStandards.TEXT_AREA_MARGINS.getValue())));
+
+		reqDescTextArea.setBorder(BorderFactory.createCompoundBorder(
+				reqDescTextArea.getBorder(), 
+				BorderFactory.createEmptyBorder(GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+						GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+						GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+						GuiStandards.TEXT_AREA_MARGINS.getValue())));
+
+		gameNameTextField.setBorder(BorderFactory.createCompoundBorder(
+				gameNameTextField.getBorder(), 
+				BorderFactory.createEmptyBorder(0, GuiStandards.TEXT_BOX_MARGIN.getValue(), 0, 0)));	
+
+		reqNameTextField.setBorder(BorderFactory.createCompoundBorder(
+				reqNameTextField.getBorder(), 
+				BorderFactory.createEmptyBorder(0, GuiStandards.TEXT_BOX_MARGIN.getValue(), 0, 0)));
+
 		deckArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-		
+
 		for (final GameCard card: cardButtons){
 			card.addItemListener (new ItemListener() {
 				public void itemStateChanged ( ItemEvent ie ) {
@@ -147,11 +179,11 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 				}
 			});
 		}
-		
+
 		//Observer for the vote button. It will save the vote client side, the submit button will handle sending it to the database.
-		
+
 		voteButton.addActionListener(new ActionListener(){
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e){
 				//final int estimate = Integer.parseInt(estimateTextField.getText());
@@ -174,9 +206,9 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 				}
 				gv.isNew = false;
 			}
-			
+
 		});
-		
+
 		//adds the action listener for controlling the submit button
 		submit.addActionListener(new ActionListener(){
 			@Override
@@ -189,74 +221,74 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 		});
 		//set layout
 		final SpringLayout springLayout = new SpringLayout();
-		
+
 		//Spring layout placement for gameName label
 		springLayout.putConstraint(SpringLayout.NORTH, gameName, 15, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, voteButton, 280, SpringLayout.WEST, this);
-		
+
 		//Spring layout placement for gameDesc label
 		springLayout.putConstraint(SpringLayout.NORTH, gameDesc, 15, SpringLayout.SOUTH, gameName);
 		springLayout.putConstraint(SpringLayout.WEST, gameDesc, 0, SpringLayout.WEST, gameName);
-		
+
 		//Spring layout placement for vote button
 		springLayout.putConstraint(SpringLayout.NORTH, voteButton, 0, SpringLayout.NORTH, votesSoFarLabel);
 		springLayout.putConstraint(SpringLayout.WEST, voteButton, 30, SpringLayout.EAST, votesSoFarLabel);
-		
+
 		//Spring layout placement for submit button
 		springLayout.putConstraint(SpringLayout.SOUTH, submit, -10, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, submit, -10, SpringLayout.EAST, this);
-		
+
 		//Spring layout for placement of gameNameTextField
 		springLayout.putConstraint(SpringLayout.WEST, gameNameTextField, 0, SpringLayout.WEST, rd);
 		springLayout.putConstraint(SpringLayout.EAST, gameNameTextField, 600, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, gameNameTextField, 0, SpringLayout.NORTH, gameName);
-		
+
 		//Spring layout for placement of reqNameTextField
 		springLayout.putConstraint(SpringLayout.WEST, reqNameTextField, 0, SpringLayout.WEST, rd);
 		springLayout.putConstraint(SpringLayout.EAST, reqNameTextField, 600, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, reqNameTextField, 0, SpringLayout.NORTH, reqName);
-		
+
 		//Spring layout for nd
 		springLayout.putConstraint(SpringLayout.NORTH, nd, 0, SpringLayout.NORTH, gameDesc);
 		springLayout.putConstraint(SpringLayout.WEST, nd, 0, SpringLayout.WEST, rd);
 		springLayout.putConstraint(SpringLayout.EAST, nd, -30, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, nd, 75, SpringLayout.NORTH, nd);
-		
+
 		//Spring layout for rd
 		springLayout.putConstraint(SpringLayout.NORTH, rd, 0, SpringLayout.NORTH, reqDesc);
 		springLayout.putConstraint(SpringLayout.WEST, rd, 10, SpringLayout.EAST, reqDesc);
 		springLayout.putConstraint(SpringLayout.EAST, rd, -30, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, rd, 75, SpringLayout.NORTH, rd);
-		
+
 		//Spring layout for reqDesc label
 		springLayout.putConstraint(SpringLayout.NORTH, reqDesc, 15, SpringLayout.SOUTH, reqName);
 		springLayout.putConstraint(SpringLayout.WEST, reqDesc, 0, SpringLayout.WEST, reqName);
-		
+
 		//Spring layout for reqName label
 		springLayout.putConstraint(SpringLayout.NORTH, reqName, 90, SpringLayout.SOUTH, gameDesc);
 		springLayout.putConstraint(SpringLayout.WEST, reqName, 0, SpringLayout.WEST, gameDesc);
-		
+
 		//Spring layout for deckArea
 		springLayout.putConstraint(SpringLayout.NORTH, deckArea, 15, SpringLayout.SOUTH, rd);
 		springLayout.putConstraint(SpringLayout.WEST, deckArea, 15, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.EAST, deckArea, -15, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, deckArea, 135, SpringLayout.NORTH, deckArea);
-		
+
 		//Spring layout for votesSoFarNameLabel
 		springLayout.putConstraint(SpringLayout.NORTH, votesSoFarNameLabel, 15, SpringLayout.SOUTH, deckArea);
 		springLayout.putConstraint(SpringLayout.WEST, votesSoFarNameLabel, 0, SpringLayout.WEST, reqDesc);
-		
+
 		//Spring layout for votesSoFarLabel
 		springLayout.putConstraint(SpringLayout.NORTH, votesSoFarLabel, 0, SpringLayout.NORTH, votesSoFarNameLabel);
 		springLayout.putConstraint(SpringLayout.WEST, votesSoFarLabel, 5, SpringLayout.EAST, votesSoFarNameLabel);
-		
+
 		//Spring layout for gameEnded
 		springLayout.putConstraint(SpringLayout.NORTH, gameEnded, 0, SpringLayout.SOUTH, votesSoFarLabel);
 		springLayout.putConstraint(SpringLayout.WEST, gameEnded, 0, SpringLayout.WEST, votesSoFarLabel);
 		gameEnded.setVisible(false);
-		
+
 		setLayout(springLayout);
-		
+
 		add(voteButton);
 		add(submit);
 		add(gameName);
@@ -273,7 +305,7 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 		add(gameEnded);
 
 	}
-	
+
 	/**
 	 * This function cycles through available cards and generate the appropriate buttons
 	 */
@@ -282,36 +314,36 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 		final Iterator<Integer> cardIterator = gameCardList.iterator();
 
 		System.out.println(gameCardList);
-		
-		
+
+
 		//This loop will cycle through the deck's values, and create buttons for them.
 		//The buttons will have the value as its text
 		while(cardIterator.hasNext()){
 			cardButtons.add(new GameCard(cardIterator.next()));
 		}
-		
+
 		//Loops through all the cards, and adds it to the scroll pane's panel
 		for(GameCard i: cardButtons){
 			deckAreaPanel.add(i);
 		}
-		
+
 		System.out.println("CI:"+cardButtons);
 		System.out.println("v2:"+gameCardList);
 		//This loop will cycle through all of the buttons that have been created and display them
-		
+
 	}
-	
+
 	/**
 	 * This function cycles through available cards and unselect all of them
 	 */
 	private void uncheckButtons(){
 		for(int i=0; i < cardButtons.size(); i++)
 		{
-		   GameCard c = cardButtons.get(i);
-		   c.setSelected(false);
+			GameCard c = cardButtons.get(i);
+			c.setSelected(false);
 		}
 	}
-	
+
 	//This function is used when a requirement is double clicked in one of the two requirement tables, and it sets the name and description fields to the 
 	//selected requirement
 	/**
@@ -337,7 +369,7 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 			uncheckButtons();
 		}
 	}
-	
+
 
 	/**
 	 * This function will be used when the user submits an estimate for a requirement and it will notify GameRequirements to move the requirement from 
@@ -348,20 +380,20 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 	public void sendEstimatetoGameView(Requirement r, int estimate){
 		gv.updateReqTables(r, estimate);
 	}
-	
+
 	/**
 	 * Helper function for checking if the estimate text box contains an integer
 	 * @param s the string to be checking
 	 * @return boolean true if integer, false if otherwise
 	 */
 	public static boolean isInteger(String s) {
-	    try { 
-	        Integer.parseInt(s); 
-	    } catch(NumberFormatException e) { 
-	        return false; 
-	    }
-	    // only got here if we didn't return false
-	    return true;
+		try { 
+			Integer.parseInt(s); 
+		} catch(NumberFormatException e) { 
+			return false; 
+		}
+		// only got here if we didn't return false
+		return true;
 	}
 
 	/**
@@ -373,7 +405,7 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 		votesSoFarLabel.setText("0");
 		uncheckButtons();
 	}
-	
+
 	/**
 	 * changes whether or not the user can submit vote
 	 */
@@ -385,7 +417,7 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 				break;
 			}
 		}
-		
+
 		currentGame = GameModel.getInstance().getGame(currentGame.getGameID());
 		if (currentGame.getGameStatus() == GameStatus.COMPLETED || currentGame.getGameStatus() == GameStatus.ARCHIVED)
 		{
@@ -400,9 +432,9 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 
 		}
 		else
-		submit.setEnabled(canSubmit);
+			submit.setEnabled(canSubmit);
 	}
-	
+
 	@Override
 	public void refreshRequirements(){
 	}
@@ -428,6 +460,6 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 	@Override
 	public void refreshDecks() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
