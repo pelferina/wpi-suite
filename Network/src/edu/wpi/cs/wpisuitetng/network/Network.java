@@ -83,7 +83,8 @@ public class Network {
 	 */
 	public NetworkConfiguration getDefaultNetworkConfiguration() {
 		if (defaultNetworkConfiguration == null) {
-			throw new RuntimeException("Default network configuration is null.");
+			// Session has not been made yet
+			//throw new RuntimeException("Default network configuration is null.");
 		}
 		
 		return new NetworkConfiguration(defaultNetworkConfiguration);
