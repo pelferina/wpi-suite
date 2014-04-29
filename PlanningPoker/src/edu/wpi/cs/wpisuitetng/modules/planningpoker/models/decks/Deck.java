@@ -28,6 +28,7 @@ public class Deck extends AbstractModel {
 	private int id;
 	private final String name;
 	private final List<Integer> cards;
+	private boolean isDeleted;
 	
 	/**
 	 * Constructs a Deck with default cards
@@ -37,6 +38,7 @@ public class Deck extends AbstractModel {
 		id = 0;
 		name = "Default Deck";
 		cards = Arrays.asList(0,1,1,2,3,5,8,13); 
+		isDeleted = false;
 	}
 	
 	/**
@@ -49,6 +51,7 @@ public class Deck extends AbstractModel {
 		this.id = -1;
 		this.name = name;
 		this.cards = cards;
+		this.isDeleted = false;
 	}
 	/**
 	 * compares two decks for equality based on name
@@ -94,6 +97,18 @@ public class Deck extends AbstractModel {
 	 */
 	public String getName(){
 		return name;
+	}
+	
+	/**
+	 * @return status of the deck (isDeleted)
+	 */
+	public boolean getStatus(){
+		return isDeleted;
+	}
+	
+	public Deck setStatus(boolean isDeleted){
+		this.isDeleted = isDeleted;
+		return this;
 	}
 	
 	/**
