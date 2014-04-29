@@ -36,6 +36,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.completedgame.charts.Histogram;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 import javax.swing.SpringLayout;
@@ -43,6 +44,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
+import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.Insets;
 /**
@@ -220,6 +222,8 @@ public class VoteData extends JPanel{
 	 * requirement in the game
 	 */
 	private void init(){
+		Histogram aHistogram = new Histogram("A test hist", completedGame, reqIndex);
+		
 		
 		//Adds padding
 		descriptionTextArea.setBorder(BorderFactory.createCompoundBorder(
@@ -357,32 +361,39 @@ public class VoteData extends JPanel{
 		springLayout.putConstraint(SpringLayout.EAST, finalEstimateLabel, -6, SpringLayout.WEST, finalEstimateText);
 		springLayout.putConstraint(SpringLayout.SOUTH, finalEstimateLabel, 0, SpringLayout.SOUTH, finalEstimateText);
 		
+		springLayout.putConstraint(SpringLayout.NORTH, aHistogram, 0, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, aHistogram, 0, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, aHistogram, 0, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.WEST, aHistogram, 0, SpringLayout.WEST, this);
+		
 		setLayout(springLayout);
-		add(notAnIntegerError);
-		add(estimatesPane);
-		add(statsPane);
-		add(descriptionScrollPane);
-		//add(medianTextField);
-		//add(meanTextField);
-		add(reqNameText);
-		//estimatesLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		add(estimatesLabel);
-		add(statsLabel);
-		//reqDescriptionLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		add(reqDescriptionLabel);
-		//medianLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		//add(medianLabel);
-		//meanLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		//add(meanLabel);
-		//reqNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		add(reqNameLabel);
-		finalEstimateLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		add(finalEstimateLabel);
-		finalEstimateText.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		add(finalEstimateText);
-		add(finalSubmitButton);
-		sendEstimatesButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		add(sendEstimatesButton);
+//		add(notAnIntegerError);
+//		add(estimatesPane);
+//		add(statsPane);
+//		add(descriptionScrollPane);
+//		//add(medianTextField);
+//		//add(meanTextField);
+//		add(reqNameText);
+//		//estimatesLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+//		add(estimatesLabel);
+//		add(statsLabel);
+//		//reqDescriptionLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+//		add(reqDescriptionLabel);
+//		//medianLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+//		//add(medianLabel);
+//		//meanLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+//		//add(meanLabel);
+//		//reqNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+//		add(reqNameLabel);
+//		finalEstimateLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
+//		add(finalEstimateLabel);
+//		finalEstimateText.setFont(new Font("Tahoma", Font.PLAIN, 18));
+//		add(finalEstimateText);
+//		add(finalSubmitButton);
+//		sendEstimatesButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
+//		add(sendEstimatesButton);
+		add(aHistogram.getPanel(),BorderLayout.CENTER);
+		validate();
 	}
 	
 	/**
