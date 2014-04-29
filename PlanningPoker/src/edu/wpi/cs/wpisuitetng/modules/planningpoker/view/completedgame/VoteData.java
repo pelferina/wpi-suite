@@ -92,6 +92,7 @@ public class VoteData extends JPanel{
 	 * @param cv The CompleteView that called the constructor for VoteData
 	 */
 	public VoteData(GameSession gs, CompleteView cv){
+		boolean allVotes = true;
 		completedGame = gs;
 		
 		//This timer schedules a TimerTask that will set the default text field and buttons for the panel
@@ -107,7 +108,7 @@ public class VoteData extends JPanel{
 			
 		};
 		setFocusTimer = new Timer();
-		setFocusTimer.schedule(setFocus, 100);
+		setFocusTimer.schedule(setFocus, 250);
 		completeView = cv;
 		gameReqs = cv.getGameRequirements();
 		finalVote = new ArrayList<Integer>();
@@ -117,16 +118,24 @@ public class VoteData extends JPanel{
 		descriptionTextArea.setLineWrap(true);
 		descriptionTextArea.setWrapStyleWord(true);
 		if(completedGame.getFinalVotes() != null){
-			if (completedGame.getFinalVotes().size() > 0){
+			if (completedGame.getFinalVotes().size() > 0 && completedGame.getFinalVotes().get(0) >= 0){
 				finalVote = completedGame.getFinalVotes();
 				finalEstimateText.setText(Integer.toString(finalVote.get(0)));
 				completeView.sendEstimatesToTable(finalVote);
+				for (int i: finalVote){
+					if (i == -1){
+						allVotes = false;
+					}
+				}
 			}
 			else {
 				for (int i = 0; i < gameReqs.size(); i++){
 					finalVote.add(-1);
 				}
 			}
+		}
+		if (allVotes){
+			sendEstimatesButton.setEnabled(true);
 		}
 		currentReq = gameReqs.get(0);
 		reqIndex = 0;
