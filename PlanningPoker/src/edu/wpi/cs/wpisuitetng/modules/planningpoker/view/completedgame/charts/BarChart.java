@@ -132,6 +132,7 @@ private static int theReq;
 		    rend.setShadowYOffset( 0 );
 		    rend.setShadowPaint( Color.decode( "#C0C0C0"));
 		    rend.setMaximumBarWidth( 0.1);
+		    
 		    return chart;
 		}
 		
@@ -140,25 +141,30 @@ private static int theReq;
 		 * @return the created bar graph **/
 		public static ChartPanel createPanel() {
 			JFreeChart chart = createChart(setData());
+			ChartPanel aPanel = new ChartPanel(chart);
+			aPanel.setDomainZoomable(false);
+			aPanel.setRangeZoomable(false);
 			
-			return new ChartPanel(chart);
+			return aPanel;
 		}
 		
-		/**
-		 * Method paintComponent.
-		 * @param g Graphics
-		 */
-		@Override
-		public void paintComponent(Graphics g){
-			barChart.setChart(createChart(setData()));
-			barChart.setPreferredSize(super.getSize());
-			super.paintComponent(g);
-		}
+//		/**
+//		 * Method paintComponent.
+//		 * @param g Graphics
+//		 */
+//		@Override
+//		public void paintComponent(Graphics g){
+//			barChart.setChart(createChart(setData()));
+//			barChart.setPreferredSize(super.getSize());
+//			super.paintComponent(g);
+//		}
 		
 		public void updateChart(GameSession aGame, int aReq)
 		{
 			theGame = aGame;
 			theReq = aReq;
 			barChart.setChart(createChart(setData()));
+			barChart.setDomainZoomable(false);
+			barChart.setRangeZoomable(false);
 		}
 }
