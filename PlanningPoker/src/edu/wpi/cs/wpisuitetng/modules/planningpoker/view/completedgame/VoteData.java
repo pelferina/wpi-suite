@@ -36,6 +36,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.completedgame.charts.BarChart;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 import javax.swing.SpringLayout;
@@ -43,6 +44,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
+import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.Insets;
 /**
@@ -80,6 +82,7 @@ public class VoteData extends JPanel{
 	private int	reqIndex;
 	private List<Integer> finalVote;
 	private Timer setFocusTimer;
+	private BarChart aChart;
 	
 	/**
 	 * The constructor for the VoteData class
@@ -220,6 +223,8 @@ public class VoteData extends JPanel{
 	 * requirement in the game
 	 */
 	private void init(){
+		aChart = new BarChart(completedGame, reqIndex);
+		
 		
 		//Adds padding
 		descriptionTextArea.setBorder(BorderFactory.createCompoundBorder(
@@ -357,17 +362,24 @@ public class VoteData extends JPanel{
 		springLayout.putConstraint(SpringLayout.EAST, finalEstimateLabel, -6, SpringLayout.WEST, finalEstimateText);
 		springLayout.putConstraint(SpringLayout.SOUTH, finalEstimateLabel, 0, SpringLayout.SOUTH, finalEstimateText);
 		
+		//Spring layout constraints for estimatesPane
+		springLayout.putConstraint(SpringLayout.EAST, aChart, -30, SpringLayout.WEST, finalEstimateLabel);
+		springLayout.putConstraint(SpringLayout.WEST, aChart, 100, SpringLayout.EAST, estimatesPane);
+		springLayout.putConstraint(SpringLayout.SOUTH, aChart, -30, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.NORTH, aChart, 15, SpringLayout.SOUTH, estimatesLabel);
+		
+		
 		setLayout(springLayout);
 		add(notAnIntegerError);
 		add(estimatesPane);
-		add(statsPane);
+		//add(statsPane);
 		add(descriptionScrollPane);
 		//add(medianTextField);
 		//add(meanTextField);
 		add(reqNameText);
 		//estimatesLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		add(estimatesLabel);
-		add(statsLabel);
+		//add(statsLabel);
 		//reqDescriptionLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		add(reqDescriptionLabel);
 		//medianLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -383,6 +395,7 @@ public class VoteData extends JPanel{
 		add(finalSubmitButton);
 		sendEstimatesButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		add(sendEstimatesButton);
+		add(aChart);
 	}
 	
 	/**
@@ -394,10 +407,12 @@ public class VoteData extends JPanel{
 		currentReq = req;
 		reqIndex = completeView.getIndex(currentReq.getId());
 		
+		
 		//Repopulate statistics table
 		final DefaultTableModel statsModel = (DefaultTableModel) statsTable.getModel();
 		statsModel.setValueAt(completedGame.getMean().get(reqIndex), 0, 1);
 		statsModel.setValueAt(completedGame.getMedian().get(reqIndex), 1, 1);
+		
 		
 		int i = 0;
 		final DefaultTableModel estimatesModel = (DefaultTableModel) estimatesTable.getModel();
@@ -422,6 +437,9 @@ public class VoteData extends JPanel{
 			meanTextField.setText(Float.toString(completedGame.getMean().get(reqIndex)));
 			medianTextField.setText(Float.toString(completedGame.getMedian().get(reqIndex)));	
 		}
+		
+		aChart.updateChart(completedGame, reqIndex);
+		
 	}
 	
 	private void isValidEstimate(){
