@@ -19,7 +19,7 @@ public enum GuiStandards {
 	DIVIDER_MARGIN(10),
 	
 	// margins for text areas
-	TEXT_AREA_MARGINS(10),
+	TEXT_AREA_MARGINS(5),
 	
 	// left margin for single line text boxes
 	TEXT_BOX_MARGIN(5),

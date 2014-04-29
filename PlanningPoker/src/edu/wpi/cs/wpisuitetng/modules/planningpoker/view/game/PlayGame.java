@@ -170,7 +170,6 @@ public class PlayGame extends JPanel implements Refreshable{
 						GuiStandards.TEXT_AREA_MARGINS.getValue(), 
 						GuiStandards.TEXT_AREA_MARGINS.getValue(), 
 						GuiStandards.TEXT_AREA_MARGINS.getValue())));
-		gameDescTextArea.setWrapStyleWord(true);
 
 		reqDescTextArea.setBorder(BorderFactory.createCompoundBorder(
 				reqDescTextArea.getBorder(), 
@@ -178,11 +177,14 @@ public class PlayGame extends JPanel implements Refreshable{
 						GuiStandards.TEXT_AREA_MARGINS.getValue(), 
 						GuiStandards.TEXT_AREA_MARGINS.getValue(), 
 						GuiStandards.TEXT_AREA_MARGINS.getValue())));
-		reqDescTextArea.setWrapStyleWord(true);
 
-		gameNameTextField.setMargin(new Insets(0, GuiStandards.TEXT_BOX_MARGIN.getValue(), 0, 0));
-		reqNameTextField.setMargin(new Insets(0, GuiStandards.TEXT_BOX_MARGIN.getValue(), 0, 0));
-
+		gameNameTextField.setBorder(BorderFactory.createCompoundBorder(
+				gameNameTextField.getBorder(), 
+				BorderFactory.createEmptyBorder(0, GuiStandards.TEXT_BOX_MARGIN.getValue(), 0, 0)));	
+		
+		reqNameTextField.setBorder(BorderFactory.createCompoundBorder(
+				reqNameTextField.getBorder(), 
+				BorderFactory.createEmptyBorder(0, GuiStandards.TEXT_BOX_MARGIN.getValue(), 0, 0)));
 
 		//This document listener will enable the submit button when something is inputted into the estimate text field
 		estimateTextField.getDocument().addDocumentListener(new DocumentListener(){
