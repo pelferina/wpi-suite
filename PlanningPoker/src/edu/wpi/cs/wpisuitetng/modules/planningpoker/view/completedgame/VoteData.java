@@ -36,7 +36,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.completedgame.charts.Histogram;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.completedgame.charts.BarChart;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 import javax.swing.SpringLayout;
@@ -82,7 +82,7 @@ public class VoteData extends JPanel{
 	private int	reqIndex;
 	private List<Integer> finalVote;
 	private Timer setFocusTimer;
-	private Histogram aHistogram;
+	private BarChart aChart;
 	
 	/**
 	 * The constructor for the VoteData class
@@ -223,7 +223,7 @@ public class VoteData extends JPanel{
 	 * requirement in the game
 	 */
 	private void init(){
-		aHistogram = new Histogram(completedGame, reqIndex);
+		aChart = new BarChart(completedGame, reqIndex);
 		
 		
 		//Adds padding
@@ -362,39 +362,40 @@ public class VoteData extends JPanel{
 		springLayout.putConstraint(SpringLayout.EAST, finalEstimateLabel, -6, SpringLayout.WEST, finalEstimateText);
 		springLayout.putConstraint(SpringLayout.SOUTH, finalEstimateLabel, 0, SpringLayout.SOUTH, finalEstimateText);
 		
-		springLayout.putConstraint(SpringLayout.NORTH, aHistogram, 0, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, aHistogram, 0, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, aHistogram, 0, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.WEST, aHistogram, 0, SpringLayout.WEST, this);
+		//Spring layout constraints for estimatesPane
+		springLayout.putConstraint(SpringLayout.EAST, aChart, -30, SpringLayout.WEST, finalEstimateLabel);
+		springLayout.putConstraint(SpringLayout.WEST, aChart, 100, SpringLayout.EAST, estimatesPane);
+		springLayout.putConstraint(SpringLayout.SOUTH, aChart, -30, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.NORTH, aChart, 15, SpringLayout.SOUTH, estimatesLabel);
+		
 		
 		setLayout(springLayout);
-//		add(notAnIntegerError);
-//		add(estimatesPane);
-//		add(statsPane);
-//		add(descriptionScrollPane);
-//		//add(medianTextField);
-//		//add(meanTextField);
-//		add(reqNameText);
-//		//estimatesLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-//		add(estimatesLabel);
-//		add(statsLabel);
-//		//reqDescriptionLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-//		add(reqDescriptionLabel);
-//		//medianLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-//		//add(medianLabel);
-//		//meanLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-//		//add(meanLabel);
-//		//reqNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-//		add(reqNameLabel);
-//		finalEstimateLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
-//		add(finalEstimateLabel);
-//		finalEstimateText.setFont(new Font("Tahoma", Font.PLAIN, 18));
-//		add(finalEstimateText);
-//		add(finalSubmitButton);
-//		sendEstimatesButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
-//		add(sendEstimatesButton);
-		add(aHistogram.getPanel(),BorderLayout.CENTER);
-		validate();
+		add(notAnIntegerError);
+		add(estimatesPane);
+		//add(statsPane);
+		add(descriptionScrollPane);
+		//add(medianTextField);
+		//add(meanTextField);
+		add(reqNameText);
+		//estimatesLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		add(estimatesLabel);
+		//add(statsLabel);
+		//reqDescriptionLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		add(reqDescriptionLabel);
+		//medianLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		//add(medianLabel);
+		//meanLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		//add(meanLabel);
+		//reqNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		add(reqNameLabel);
+		finalEstimateLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		add(finalEstimateLabel);
+		finalEstimateText.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		add(finalEstimateText);
+		add(finalSubmitButton);
+		sendEstimatesButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		add(sendEstimatesButton);
+		add(aChart);
 	}
 	
 	/**
@@ -436,6 +437,9 @@ public class VoteData extends JPanel{
 			meanTextField.setText(Float.toString(completedGame.getMean().get(reqIndex)));
 			medianTextField.setText(Float.toString(completedGame.getMedian().get(reqIndex)));	
 		}
+		
+		aChart.updateChart(completedGame, reqIndex);
+		
 	}
 	
 	private void isValidEstimate(){
