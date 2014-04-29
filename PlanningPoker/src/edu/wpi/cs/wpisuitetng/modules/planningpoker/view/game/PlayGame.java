@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddVoteController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
@@ -37,6 +38,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.VoteModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.GuiStandards;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
@@ -44,6 +46,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 import javax.swing.SpringLayout;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.plaf.ColorUIResource;
 
 /**
  * A panel for playing a game session
@@ -76,7 +79,7 @@ public class PlayGame extends JPanel implements Refreshable{
 	private boolean hasVoted = false;
 	private TimerTask setFocus;
 	private Timer setFocusTimer;
-	
+
 	/**
 	 * Constructor for a PlayGame panel
 	 * @param gameToPlay the game session that is being played
@@ -93,11 +96,11 @@ public class PlayGame extends JPanel implements Refreshable{
 				estimateTextField.requestFocusInWindow();
 				getRootPane().setDefaultButton(voteButton);
 			}
-			
+
 		};
 		setFocusTimer = new Timer();
 		setFocusTimer.schedule(setFocus, 100);
-		
+
 		currentGame = gameToPlay;
 		gameReqs = currentGame.getGameReqs();
 		notAnIntegerError.setVisible(false);
@@ -119,22 +122,11 @@ public class PlayGame extends JPanel implements Refreshable{
 			userEstimates = new Vote(estimates, currentGame.getGameID());
 		}
 
-		
-		//Add padding
-		gameDescTextArea.setBorder(BorderFactory.createCompoundBorder(
-				gameDescTextArea.getBorder(), 
-		        BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-		gameDescTextArea.setWrapStyleWord(true);
-		reqDescTextArea.setBorder(BorderFactory.createCompoundBorder(
-				reqDescTextArea.getBorder(), 
-		        BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-		reqDescTextArea.setWrapStyleWord(true);
-		
 		voteButton.setEnabled(false);
 		submit.setEnabled(false);
 		gv = agv;
 		final List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
-		
+
 		//Finds the requirement that is first in the to estimate table. The play game screen will default to displaying the first requirement
 		//in the estimates pending table
 		for (Requirement r: allReqs){
@@ -143,7 +135,7 @@ public class PlayGame extends JPanel implements Refreshable{
 				break;
 			}
 		}
-		
+
 		//Sets the description and name text fields to the first requirement in the to estimate table
 		gameNameTextField.setText(currentGame.getGameName());
 		if (currentReq != null){
@@ -152,23 +144,46 @@ public class PlayGame extends JPanel implements Refreshable{
 			estimateTextField.requestFocusInWindow();
 		}
 		gameDescTextArea.setText(currentGame.getGameDescription());
+
+		// set not editable
 		gameNameTextField.setEditable(false);
-		gameNameTextField.setOpaque(false);
 		reqNameTextField.setEditable(false);
-		reqNameTextField.setOpaque(false);
 		gameDescTextArea.setEditable(false);
-		gameDescTextArea.setOpaque(false);
 		reqDescTextArea.setEditable(false);
-		reqDescTextArea.setOpaque(false);
+
+		// set word wrap
 		gameDescTextArea.setLineWrap(true);
 		gameDescTextArea.setWrapStyleWord(true);
 		reqDescTextArea.setLineWrap(true);
 		reqDescTextArea.setWrapStyleWord(true);
+
+		// set colors
 		gameNameTextField.setBackground(Color.WHITE);
 		gameNameTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GRAY));
 		reqNameTextField.setBackground(Color.WHITE);
 		reqNameTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GRAY));
-		
+
+		//Add padding
+		gameDescTextArea.setBorder(BorderFactory.createCompoundBorder(
+				gameDescTextArea.getBorder(), 
+				BorderFactory.createEmptyBorder(GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+						GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+						GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+						GuiStandards.TEXT_AREA_MARGINS.getValue())));
+		gameDescTextArea.setWrapStyleWord(true);
+
+		reqDescTextArea.setBorder(BorderFactory.createCompoundBorder(
+				reqDescTextArea.getBorder(), 
+				BorderFactory.createEmptyBorder(GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+						GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+						GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+						GuiStandards.TEXT_AREA_MARGINS.getValue())));
+		reqDescTextArea.setWrapStyleWord(true);
+
+		gameNameTextField.setMargin(new Insets(0, GuiStandards.TEXT_BOX_MARGIN.getValue(), 0, 0));
+		reqNameTextField.setMargin(new Insets(0, GuiStandards.TEXT_BOX_MARGIN.getValue(), 0, 0));
+
+
 		//This document listener will enable the submit button when something is inputted into the estimate text field
 		estimateTextField.getDocument().addDocumentListener(new DocumentListener(){
 			@Override
@@ -184,11 +199,11 @@ public class PlayGame extends JPanel implements Refreshable{
 				isValidEstimate();
 			}
 		});
-		
+
 		//Observer for the vote button. It will save the vote client side, the submit button will handle sending it to the database.
-		
+
 		voteButton.addActionListener(new ActionListener(){
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e){
 				final int estimate = Integer.parseInt(estimateTextField.getText());
@@ -212,9 +227,9 @@ public class PlayGame extends JPanel implements Refreshable{
 				estimateTextField.requestFocusInWindow();
 				gv.isNew = false;
 			}
-			
+
 		});
-		
+
 		//adds the action listener for controlling the submit button
 		submit.addActionListener(new ActionListener(){
 			@Override
@@ -234,77 +249,77 @@ public class PlayGame extends JPanel implements Refreshable{
 				}
 			}
 		});
-		
+
 		final SpringLayout springLayout = new SpringLayout();
-		
+
 
 		//Spring layout placement for gameName label
 		springLayout.putConstraint(SpringLayout.NORTH, gameName, 15, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, gameName, 30, SpringLayout.WEST, this);
-		
+
 		//Spring layout placement for gameDesc label
 		springLayout.putConstraint(SpringLayout.NORTH, gameDesc, 10, SpringLayout.SOUTH, gameName);
 		springLayout.putConstraint(SpringLayout.WEST, gameDesc, 0, SpringLayout.WEST, gameName);
-		
+
 		//Spring layout placement for vote button
 		springLayout.putConstraint(SpringLayout.SOUTH, voteButton, 0, SpringLayout.SOUTH, submit);
 		springLayout.putConstraint(SpringLayout.EAST, voteButton, -10, SpringLayout.WEST, submit);
 		springLayout.putConstraint(SpringLayout.WEST, voteButton, -100, SpringLayout.EAST, voteButton);
-		
+
 		//Spring layout placement for submit button
 		springLayout.putConstraint(SpringLayout.SOUTH, submit, -10, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, submit, 0, SpringLayout.EAST, reqDescScroll);
-		
+
 		//Spring layout placement for estimateTextField
 		springLayout.putConstraint(SpringLayout.NORTH, estimateTextField, 0, SpringLayout.NORTH, voteButton);
 		springLayout.putConstraint(SpringLayout.SOUTH, estimateTextField, 0, SpringLayout.SOUTH, voteButton);
 		springLayout.putConstraint(SpringLayout.EAST, estimateTextField, -10, SpringLayout.WEST, voteButton);
 		springLayout.putConstraint(SpringLayout.WEST, estimateTextField, -60, SpringLayout.EAST, estimateTextField);
-		
+
 		//Spring layout for placement of gameNameTextField
 		springLayout.putConstraint(SpringLayout.WEST, gameNameTextField, 5, SpringLayout.EAST, gameName);
 		springLayout.putConstraint(SpringLayout.EAST, gameNameTextField, 0, SpringLayout.EAST, gameDescScroll);
 		springLayout.putConstraint(SpringLayout.NORTH, gameNameTextField, 0, SpringLayout.NORTH, gameName);
-		
+
 		//Spring layout for placement of reqNameTextField
 		springLayout.putConstraint(SpringLayout.WEST, reqNameTextField, 5, SpringLayout.EAST, reqName);
 		springLayout.putConstraint(SpringLayout.EAST, reqNameTextField, 0, SpringLayout.EAST, gameDescScroll);
 		springLayout.putConstraint(SpringLayout.NORTH, reqNameTextField, 0, SpringLayout.NORTH, reqName);
-		
+
 		//Spring layout for estimateLabel
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, estimateLabel, 0, SpringLayout.VERTICAL_CENTER, estimateTextField);
 		springLayout.putConstraint(SpringLayout.EAST, estimateLabel, -5, SpringLayout.WEST, estimateTextField);
-		
+
 		//Spring layout for gameDescScroll
 		springLayout.putConstraint(SpringLayout.NORTH, gameDescScroll, 10, SpringLayout.SOUTH, gameDesc);
 		springLayout.putConstraint(SpringLayout.WEST, gameDescScroll, 0, SpringLayout.WEST, gameDesc);
 		springLayout.putConstraint(SpringLayout.EAST, gameDescScroll, -30, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, gameDescScroll, 125, SpringLayout.NORTH, gameDescScroll);
-		
+
 		//Spring layout for reqDescScroll
 		springLayout.putConstraint(SpringLayout.NORTH, reqDescScroll, 10, SpringLayout.SOUTH, reqDesc);
 		springLayout.putConstraint(SpringLayout.WEST, reqDescScroll, 0, SpringLayout.WEST, reqDesc);
 		springLayout.putConstraint(SpringLayout.EAST, reqDescScroll, -30, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, reqDescScroll, 125, SpringLayout.NORTH, reqDescScroll);
-		
+
 		//Spring layout for reqDesc label
 		springLayout.putConstraint(SpringLayout.NORTH, reqDesc, 10, SpringLayout.SOUTH, reqName);
 		springLayout.putConstraint(SpringLayout.WEST, reqDesc, 0, SpringLayout.WEST, reqName);
-		
+
 		//Spring layout for reqName label
 		springLayout.putConstraint(SpringLayout.NORTH, reqName, 20, SpringLayout.SOUTH, gameDescScroll);
 		springLayout.putConstraint(SpringLayout.WEST, reqName, 0, SpringLayout.WEST, gameDesc);
-		
+
 		//Spring layout for notAnIntegerError label
 		springLayout.putConstraint(SpringLayout.SOUTH, notAnIntegerError, -10, SpringLayout.NORTH, submit);
 		springLayout.putConstraint(SpringLayout.EAST, notAnIntegerError, 0, SpringLayout.EAST, submit);
-		
+
 		//Spring layout for GameEnded label
 		springLayout.putConstraint(SpringLayout.NORTH, gameEnded, 0, SpringLayout.SOUTH, notAnIntegerError);
 		springLayout.putConstraint(SpringLayout.EAST, gameEnded, 0, SpringLayout.EAST, notAnIntegerError);
-		
+
 		setLayout(springLayout);
-	
+
 		add(voteButton);
 		add(submit);
 		add(gameName);
@@ -320,7 +335,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		add(gameDescScroll);
 		add(reqDescScroll);
 	}
-	
+
 	/**
 	 * This function is used when a requirement is double clicked in one of the two requirement tables 
 	 * and it sets the name and description fields to the selected requirement
@@ -343,7 +358,7 @@ public class PlayGame extends JPanel implements Refreshable{
 			notAnIntegerError.setVisible(true);
 		}
 	}
-	
+
 	//This function is used when a requirement is double clicked in one of the two requirement tables, and it sets the name and description fields to the 
 	//selected requirement
 	/**
@@ -368,7 +383,7 @@ public class PlayGame extends JPanel implements Refreshable{
 			estimateTextField.setText("");
 		}
 	}
-	
+
 
 	/**
 	 * This function will be used when the user submits an estimate for a requirement and it will notify GameRequirements to move the requirement from 
@@ -379,20 +394,20 @@ public class PlayGame extends JPanel implements Refreshable{
 	public void sendEstimatetoGameView(Requirement r, int estimate){
 		gv.updateReqTables(r, estimate);
 	}
-	
+
 	/**
 	 * Helper function for checking if the estimate text box contains an integer
 	 * @param s the string to be checking
 	 * @return boolean true if integer, false if otherwise
 	 */
 	public static boolean isInteger(String s) {
-	    try { 
-	        Integer.parseInt(s); 
-	    } catch(NumberFormatException e) { 
-	        return false; 
-	    }
-	    // only got here if we didn't return false
-	    return true;
+		try { 
+			Integer.parseInt(s); 
+		} catch(NumberFormatException e) { 
+			return false; 
+		}
+		// only got here if we didn't return false
+		return true;
 	}
 
 	/**
@@ -403,7 +418,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		reqDescTextArea.setText("");
 		estimateTextField.setText("");
 	}
-	
+
 	/**
 	 * changes whether or not the user can submit vote
 	 */
@@ -415,7 +430,7 @@ public class PlayGame extends JPanel implements Refreshable{
 				break;
 			}
 		}
-		
+
 		if (currentGame.getGameStatus() == GameStatus.COMPLETED || currentGame.getGameStatus() == GameStatus.ARCHIVED)
 		{
 			clear();
@@ -457,6 +472,6 @@ public class PlayGame extends JPanel implements Refreshable{
 	@Override
 	public void refreshDecks() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
