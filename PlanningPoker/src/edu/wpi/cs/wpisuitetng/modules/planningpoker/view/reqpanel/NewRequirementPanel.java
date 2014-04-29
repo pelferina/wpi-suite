@@ -38,8 +38,8 @@ import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
+
+
 
 import javax.swing.JComboBox;
 
@@ -302,6 +302,9 @@ public class NewRequirementPanel extends JPanel {
 		return reqError;
 	}
 
+	/**
+	 * This sets the cursor focus on the name box
+	 */
 	public void setFocusOnName() {
 		nameField.requestFocusInWindow();
 	}

@@ -23,7 +23,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 
 
 
-import java.awt.Dimension;
+
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -64,7 +64,6 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	/**
 	 * Constructor for NewGameReqPanel
 	 * @param ngdp The NewGamePanel it is a part of
-	 * @wbp.parser.constructor
 	 */
 	public NewGameReqPanel(NewGameDistributedPanel ngdp) {
 

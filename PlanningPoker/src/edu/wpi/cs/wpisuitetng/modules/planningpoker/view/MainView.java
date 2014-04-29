@@ -30,14 +30,14 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckBuildingPanel;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.completedgame.CompleteView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameView;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.reqpanel.NewRequirementPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
+
 
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;

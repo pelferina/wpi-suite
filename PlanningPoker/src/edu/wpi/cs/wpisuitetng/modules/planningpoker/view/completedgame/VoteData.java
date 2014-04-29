@@ -45,10 +45,10 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
-import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Insets;
+
 /**
  * VoteData class
  * @author FFF8E7
@@ -485,6 +485,9 @@ public class VoteData extends JPanel{
 	    return true;
 	}
 
+	/**
+	 * This saves the final votes of a completed game
+	 */
 	public void saveGame() {
 		completedGame.setFinalVotes(finalVote);
 		final UpdateGameController msgr = new UpdateGameController();

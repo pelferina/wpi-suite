@@ -179,17 +179,23 @@ public class RefreshManager {
 	    return false;
 	}
 
+	/**
+	 * This stops refreshing timers
+	 */
 	public void stopRefresh() {
-		this.refreshRequirementsTimer.stop();
-		this.refreshGamesTimer.stop();
-		this.refreshDeckTimer.stop();
+		refreshRequirementsTimer.stop();
+		refreshGamesTimer.stop();
+		refreshDeckTimer.stop();
 		
 	}
 
+	/**
+	 * This restarts the refreshing timers
+	 */
 	public void startRefresh() {
-		this.refreshRequirementsTimer.start();
-		this.refreshGamesTimer.start();
-		this.refreshDeckTimer.start();
+		refreshRequirementsTimer.start();
+		refreshGamesTimer.start();
+		refreshDeckTimer.start();
 	}
 
 }

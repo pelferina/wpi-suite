@@ -15,7 +15,7 @@ import java.util.List;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
+
 
 /**
  * A deck in a game. Decks can be assigned to a game.
@@ -46,7 +46,7 @@ public class Deck extends AbstractModel {
 	 */
 	public Deck(String name, List<Integer> cards)
 	{
-		this.id = -1;
+		id = -1;
 		this.name = name;
 		this.cards = cards;
 	}
@@ -61,7 +61,7 @@ public class Deck extends AbstractModel {
 	public boolean equals(Object that) {
 		if (that instanceof Deck){
 			Deck o = (Deck) that;
-			return (this.id == o.getId() && this.cards.equals(o.getCards()));
+			return (id == o.getId() && cards.equals(o.getCards()));
 		}
 		else return false; // if it's not a deck, it's not equal.
 	}

@@ -71,12 +71,14 @@ public class DeckBuildingPanel extends JPanel {
 //	private final JLabel duplicateNameError = new JLabel ("This deck name already exists!");
 //	private final JLabel noCardError = new JLabel ("You need to have at least one card in the deck!");
 
-	/** Constructor for a DeckPanel panel
+	/** 
+	 * Constructor for a DeckPanel panel
+	 * @param ngdp The NewGameDistributedPanel to be based off of
 	 */
 	public DeckBuildingPanel(NewGameDistributedPanel ngdp){
 		setupButtonIcons();
 		
-		this.newGameDistributed = ngdp;
+		newGameDistributed = ngdp;
 		
 		// Sets a consistent font for all buttons
 		final Font size = new Font(btnSave.getFont().getName(), btnSave.getFont().getStyle(), 10);
@@ -498,6 +500,9 @@ public class DeckBuildingPanel extends JPanel {
 	    return true;
 	}
 
+	/**
+	 * This function sets the focus on the name field.
+	 */
 	public void setFocusOnName() {
 		nameField.requestFocusInWindow();
 		getRootPane().setDefaultButton(btnAddCard);

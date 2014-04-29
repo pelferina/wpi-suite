@@ -119,6 +119,9 @@ public class CompleteView extends JSplitPane {
 		gameData.receiveFinalVotes(finalVote);
 	}
 	
+	/**
+	 * This saves the vote data of the game
+	 */
 	public void saveGame(){
 		voteData.saveGame();
 	}

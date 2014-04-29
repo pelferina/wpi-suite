@@ -147,7 +147,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	 * .Session)
 	 */
 	@Override
-	public GameSession[] getAll(Session s) throws WPISuiteException {
+	public GameSession[] getAll(Session s) {
 		// Ask the database to retrieve all objects of the type
 		// PostBoardMessage.
 		// Passing a dummy PostBoardMessage lets the db know what type of object
@@ -187,7 +187,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 					break;
 				}
 			}
-		} catch (WPISuiteException e2) {
+		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
 
@@ -238,7 +238,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	 * .Session, edu.wpi.cs.wpisuitetng.modules.Model)
 	 */
 	@Override
-	public void save(Session s, GameSession model) throws WPISuiteException {
+	public void save(Session s, GameSession model) {
 
 		// Save the given defect in the database
 		db.save(model);
@@ -257,7 +257,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 			sendUserEmails("Planning Poker Alert",
 					"Planning Poker voting has ended for game: " + gameID,
 					project);
-		} catch (UnsupportedEncodingException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			throw new WPISuiteException(e.toString());
 		}
@@ -280,10 +280,9 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	 * @param textToSend the message to be sent
 	 * @param subject the subject of the email
 	 * @param project the project it is being called from
-	 * @throws UnsupportedEncodingException
 	 */
 	public void sendUserEmails(String subject, String textToSend,
-			Project project) throws UnsupportedEncodingException {
+			Project project) {
 		final String username = "fff8e7.email@gmail.com";
 		final String password = "fff8e7team5";
 

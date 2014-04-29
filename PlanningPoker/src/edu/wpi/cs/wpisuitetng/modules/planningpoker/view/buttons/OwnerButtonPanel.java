@@ -237,6 +237,9 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		determineButtonSize();
 	}
 	
+	/**
+	 * This function determines and sets button size based on their visibility
+	 */
 	public void determineButtonSize()
 	{
 		if ( ownerButton.isVisible() && editButton.isVisible() )

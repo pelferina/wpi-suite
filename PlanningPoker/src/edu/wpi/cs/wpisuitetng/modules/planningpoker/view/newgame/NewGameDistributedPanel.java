@@ -141,6 +141,9 @@ public class NewGameDistributedPanel extends JSplitPane {
 		isDeckOpen = true;
 	}
 	
+	/**
+	 * This closes the deck panel
+	 */
 	public void closeDeck(){
 		if (!isRequirementOpen){
 			addImpl(newGameInputPanel, JSplitPane.LEFT, 1);

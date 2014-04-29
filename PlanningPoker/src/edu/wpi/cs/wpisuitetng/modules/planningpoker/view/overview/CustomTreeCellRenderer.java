@@ -15,9 +15,9 @@ import javax.swing.Icon;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.TreePath;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+
+
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
@@ -33,7 +33,7 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 	Icon voteIcon;
 
 	public CustomTreeCellRenderer() {
-		super();
+		//super();
 		normalIcon = new NormalIcon();
 		voteIcon = new NeedsVoteIcon();
 	}
