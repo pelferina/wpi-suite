@@ -32,7 +32,10 @@ public enum GuiStandards {
 	TEXT_HIEGHT_OFFSET(2),
 	
 	// distance between a label and its text box/area bellow it
-	LABEL_TEXT_OFFSET(10),
+	LABEL_TEXT_OFFSET(7),
+	
+	// distance between a label of a text field/area and the previous text field/area above it
+	NEXT_LABEL_OFFSET(15),
 	
 	// distance between in-line buttons
 	BUTTON_OFFSET(10),
