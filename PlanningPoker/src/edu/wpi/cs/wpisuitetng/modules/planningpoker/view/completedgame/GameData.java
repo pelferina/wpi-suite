@@ -29,6 +29,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.GuiStandards;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -58,7 +59,7 @@ public class GameData extends JPanel{
 	private final GameSession completedGame;
 	private final CompleteView completeView;
 	private final HashMap<Integer, Integer> requirementIndexHash = new HashMap<Integer, Integer>();
-	
+
 	/**
 	 * Constructor for the GameData class
 	 * @param gs The completed game session that is going to be viewed
@@ -72,29 +73,29 @@ public class GameData extends JPanel{
 		descriptionTextArea.setText(gs.getGameDescription());
 		gameNameTextBox.setEditable(false);
 		descriptionTextArea.setEditable(false);
-		descriptionTextArea.setOpaque(false);
 		gameReqIDs = gs.getGameReqs();
 		descriptionTextArea.setLineWrap(true);
 		descriptionTextArea.setWrapStyleWord(true);
-		
+
 		for (Requirement r: allReqs){
 			if (gameReqIDs.contains(r.getId())){
 				gameReqs.add(r);
 			}
 		}
-		
+
 		gameReqsTable = new JTable() {
 			@Override
-		    public boolean isCellEditable(int row, int column) {
-		       //all -cells false
-		       return false;
-		    }
+			public boolean isCellEditable(int row, int column) {
+				//all -cells false
+				return false;
+			}
 		};
-		
+
 		gameReqsTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Mean", "Median", "Estimate"}));
+		gameReqsTable.setFillsViewportHeight(true);
 		init();	
 	}
-	
+
 	/**
 	 * Places the GUI components for the panel, as well as filling the table with the requirements that are in the game name and descriptions
 	 */
@@ -102,20 +103,31 @@ public class GameData extends JPanel{
 		final DefaultTableModel reqTableModel = (DefaultTableModel) gameReqsTable.getModel();
 		reqTableModel.setRowCount(gameReqs.size());
 		completedGame.calculateStats();
+
+		descriptionTextArea.setWrapStyleWord(true);
+		
+		// set colors
+		gameNameTextBox.setBackground(Color.WHITE);
+		gameNameTextBox.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GRAY));
 		
 		//Adds padding
 		descriptionTextArea.setBorder(BorderFactory.createCompoundBorder(
 				descriptionTextArea.getBorder(), 
-		        BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-		descriptionTextArea.setWrapStyleWord(true);
+				BorderFactory.createEmptyBorder(GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+						GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+						GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+						GuiStandards.TEXT_AREA_MARGINS.getValue())));
 		
-		gameNameTextBox.setMargin(new Insets(0, 5, 0, 0));
-		
+
+		gameNameTextBox.setBorder(BorderFactory.createCompoundBorder(
+				gameNameTextBox.getBorder(), 
+				BorderFactory.createEmptyBorder(0, GuiStandards.TEXT_BOX_MARGIN.getValue(), 0, 0)));
+
 		//Adds the game requirements names and descriptions to the table
 		for (int i = 0; i < gameReqs.size(); i++){
 			float mean;
 			float median;
-			
+
 			if(completedGame.getMean().size() != 0){
 				mean = completedGame.getMean().get(i);
 				median = completedGame.getMedian().get(i);
@@ -123,10 +135,10 @@ public class GameData extends JPanel{
 				mean = -1;
 				median = -1;
 			}
-			
+
 			requirementIndexHash.put(gameReqs.get(i).getId(), i);
 			reqTableModel.setValueAt(gameReqs.get(i).getName(), i, 0);
-			
+
 			if (mean != -1)
 			{
 				reqTableModel.setValueAt(mean, i, 1);
@@ -154,47 +166,47 @@ public class GameData extends JPanel{
 			gameReqsTable.setRowSelectionInterval(0, 0);
 			gameReqsTable.getSelectionModel().addListSelectionListener(new tableListener(gameReqsTable));
 		}
-		
+
 		final SpringLayout springLayout = new SpringLayout();
-		
+
 		//Spring layout constraints for gameNameLabel
-		springLayout.putConstraint(SpringLayout.NORTH, gameNameLabel, 30, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, gameNameLabel, 23, SpringLayout.WEST, this);
-		
+		springLayout.putConstraint(SpringLayout.NORTH, gameNameLabel, GuiStandards.TOP_MARGIN.getValue(), SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, gameNameLabel, GuiStandards.LEFT_MARGIN.getValue(), SpringLayout.WEST, this);
+
 		//Spring layout constraints for gameNameTextBox
 		springLayout.putConstraint(SpringLayout.EAST, gameNameTextBox, -23, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, gameNameTextBox, -3, SpringLayout.NORTH, gameNameLabel);
 		springLayout.putConstraint(SpringLayout.WEST, gameNameTextBox, 5, SpringLayout.EAST, gameNameLabel);
-		
+
 		//Spring layout constraints for descriptionLabel
 		springLayout.putConstraint(SpringLayout.SOUTH, descriptionLabel, 45, SpringLayout.SOUTH, gameNameLabel);
 		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 0, SpringLayout.WEST, gameNameLabel);
-		
+
 		//Spring layout constraints for descriptionScrollPane
 		springLayout.putConstraint(SpringLayout.NORTH, descriptionScrollPane, 15, SpringLayout.SOUTH, descriptionLabel);
 		springLayout.putConstraint(SpringLayout.SOUTH, descriptionScrollPane, 150, SpringLayout.NORTH, descriptionScrollPane);
 		springLayout.putConstraint(SpringLayout.WEST, descriptionScrollPane, 0, SpringLayout.WEST, descriptionLabel);
 		springLayout.putConstraint(SpringLayout.EAST, descriptionScrollPane, 0, SpringLayout.EAST, gameNameTextBox);
-		
+
 		//Spring layout constraints for gameReqsLabel
 		springLayout.putConstraint(SpringLayout.SOUTH, gameReqsLabel, 45, SpringLayout.SOUTH, descriptionScrollPane);
 		springLayout.putConstraint(SpringLayout.WEST, gameReqsLabel, 0, SpringLayout.WEST, descriptionScrollPane);
-		
+
 		//Spring layout constraints for reqPane
 		springLayout.putConstraint(SpringLayout.WEST, reqPane, 0, SpringLayout.WEST, gameNameLabel);
 		springLayout.putConstraint(SpringLayout.EAST, reqPane, 0, SpringLayout.EAST, gameNameTextBox);
 		springLayout.putConstraint(SpringLayout.NORTH, reqPane, 15, SpringLayout.SOUTH, gameReqsLabel);
 		springLayout.putConstraint(SpringLayout.SOUTH, reqPane, -30, SpringLayout.SOUTH, this);
-		
+
 		setLayout(springLayout);
-		
+
 		add(gameNameLabel);
 		add(descriptionLabel);
 		add(gameReqsLabel);
 		add(gameNameTextBox);
 		add(descriptionScrollPane);
 		add(reqPane);
-		
+
 	}
 
 	/**
@@ -204,7 +216,7 @@ public class GameData extends JPanel{
 	public List<Requirement> getGameReqs() {
 		return gameReqs;
 	}
-	
+
 	/**
 	 * Returns the index of the given requirement id
 	 * @param id The requirement id
@@ -263,15 +275,15 @@ public class GameData extends JPanel{
 			}
 		}
 	}
-/**
- * A tableListener class
- * @author Cosmic Latte
- * @version 6
- */
-public class tableListener implements ListSelectionListener{
-		
+	/**
+	 * A tableListener class
+	 * @author Cosmic Latte
+	 * @version 6
+	 */
+	public class tableListener implements ListSelectionListener{
+
 		JTable table;
-		
+
 		/**
 		 * constructor for the table listener
 		 * @param table the table to listen to
@@ -279,12 +291,12 @@ public class tableListener implements ListSelectionListener{
 		public tableListener(JTable table){
 			this.table = table;
 		}
-		
+
 
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			if (table.getSelectedRow() != -1){
-			    final int row = table.getSelectedRow();
+				final int row = table.getSelectedRow();
 				final List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
 				Requirement req = null;
 				for (Requirement r: allReqs){
@@ -296,5 +308,5 @@ public class tableListener implements ListSelectionListener{
 			}
 		}
 	}
-	
+
 }

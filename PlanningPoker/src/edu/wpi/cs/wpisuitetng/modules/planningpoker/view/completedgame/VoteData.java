@@ -35,6 +35,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUs
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.GuiStandards;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.completedgame.charts.BarChart;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -45,6 +46,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Insets;
 /**
@@ -147,7 +149,6 @@ public class VoteData extends JPanel{
 		descriptionTextArea.setText(currentReq.getDescription());
 		descriptionTextArea.setWrapStyleWord(true);
 		descriptionTextArea.setEditable(false);
-		descriptionTextArea.setOpaque(false);
 		gs.calculateStats();
 		
 		//Sets the statistic text fields to the stats of the first requirement in the game, and disables user edits
@@ -225,14 +226,23 @@ public class VoteData extends JPanel{
 	private void init(){
 		aChart = new BarChart(completedGame, reqIndex);
 		
+		descriptionTextArea.setWrapStyleWord(true);
+		
+		// set colors
+		reqNameText.setBackground(Color.WHITE);
+		reqNameText.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GRAY));
 		
 		//Adds padding
 		descriptionTextArea.setBorder(BorderFactory.createCompoundBorder(
 				descriptionTextArea.getBorder(), 
-		        BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-		descriptionTextArea.setWrapStyleWord(true);
+		        BorderFactory.createEmptyBorder(GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+		        		GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+		        		GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+		        		GuiStandards.TEXT_AREA_MARGINS.getValue())));
 		
-		reqNameText.setMargin(new Insets(0, 5, 0, 0));
+		reqNameText.setBorder(BorderFactory.createCompoundBorder(
+				reqNameText.getBorder(), 
+				BorderFactory.createEmptyBorder(0, GuiStandards.TEXT_BOX_MARGIN.getValue(), 0, 0)));
 		
 		//Estimates Table (By User)
 		estimatesTable = new JTable() {
@@ -244,6 +254,7 @@ public class VoteData extends JPanel{
 		};
 		
 		estimatesTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"User Name", "Estimate"}));
+		estimatesTable.setFillsViewportHeight(true);
 		final DefaultTableModel estimatesModel = (DefaultTableModel) estimatesTable.getModel();
 		estimatesModel.setRowCount(completedGame.getVotes().size());
 		

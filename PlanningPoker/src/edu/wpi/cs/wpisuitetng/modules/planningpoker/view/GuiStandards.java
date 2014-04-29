@@ -26,7 +26,7 @@ public enum GuiStandards {
 	
 	/* 
 	 * height offset for single line text boxes. This is applied to both
-	 * the top and bottom of the box, so the change in hieght is 
+	 * the top and bottom of the box, so the change in height is 
 	 * actually double this value
 	 */
 	TEXT_HIEGHT_OFFSET(2),
