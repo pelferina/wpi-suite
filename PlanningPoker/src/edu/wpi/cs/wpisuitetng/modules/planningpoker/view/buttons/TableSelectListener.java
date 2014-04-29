@@ -104,7 +104,7 @@ public class TableSelectListener implements ListSelectionListener{
 	 * @return true if valid, false otherwise
 	 */
 	public boolean isValid(GameSession gs) { // if all neccessary fields are filled out, returns true
-		if (gs.getGameName().length()>0 && gs.getGameDescription().length()>0 && gs.getGameReqs().size()>0){
+		if (gs.getGameName().length()>0 && gs.getGameReqs().size()>0){
 			if (gs.getEndDate()==null || gs.getEndDate().getTime()>System.currentTimeMillis()){
 				return true;
 			}
