@@ -86,6 +86,7 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 	 * @wbp.nonvisual location=41,359
 	 */
 	private final JLabel gameEnded = new JLabel("Game Has Ended");
+	private boolean isDeckSingleSelection;
 
 	/**
 	 * Constructor for a PlayGame panel
@@ -116,6 +117,7 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 		gameReqs = currentGame.getGameReqs();
 		deckId = currentGame.getDeckId();
 		gameCardList = DeckModel.getInstance().getDeck(deckId).getCards();
+		isDeckSingleSelection = DeckModel.getInstance().getDeck(deckId).isSingleSelection();
 		generateButtons();
 		final ArrayList<Integer> estimates = new ArrayList<Integer>();
 		System.out.println(gameReqs.size());
