@@ -65,8 +65,8 @@ public class VoteData extends JPanel{
 	private final JLabel finalEstimateLabel = new JLabel ("Final Estimate:");
 	private final JLabel notAnIntegerError = new JLabel("Estimate must be a positive integer");
 	private final JTextField finalEstimateText = new JTextField();
-	private final JButton	finalSubmitButton = new JButton("Submit Estimate");
-	private final JButton sendEstimatesButton = new JButton("Archive Game");
+	private final JButton	submitEstimateButton = new JButton("Submit Estimate");
+	private final JButton archiveGameButton = new JButton("Archive Game");
 	private final JTextField reqNameText = new JTextField();
 	private JLabel meanTextField;
 	private JLabel medianTextField;
@@ -101,7 +101,7 @@ public class VoteData extends JPanel{
 			public void run() {
 				if (completedGame.getGameStatus() != GameStatus.ARCHIVED){
 					finalEstimateText.requestFocusInWindow();
-					getRootPane().setDefaultButton(finalSubmitButton);
+					getRootPane().setDefaultButton(submitEstimateButton);
 				}
 			}
 			
@@ -112,8 +112,8 @@ public class VoteData extends JPanel{
 		gameReqs = cv.getGameRequirements();
 		finalVote = new ArrayList<Integer>();
 		notAnIntegerError.setVisible(false);
-		sendEstimatesButton.setEnabled(false);
-		finalSubmitButton.setEnabled(false);
+		archiveGameButton.setEnabled(false);
+		submitEstimateButton.setEnabled(false);
 		descriptionTextArea.setLineWrap(true);
 		descriptionTextArea.setWrapStyleWord(true);
 		if(completedGame.getFinalVotes() != null){
@@ -137,7 +137,7 @@ public class VoteData extends JPanel{
 		}
 		else {
 			finalEstimateText.setEditable(false);
-			finalSubmitButton.setVisible(false);
+			submitEstimateButton.setVisible(false);
 		}
 		reqNameText.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		
@@ -164,10 +164,10 @@ public class VoteData extends JPanel{
 			medianTextField = new JLabel("");
 		}
 		init();
-		finalSubmitButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		submitEstimateButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		
 		//Action listener for the submit button that will save the final estimate for the requirement
-		finalSubmitButton.addActionListener(new ActionListener(){
+		submitEstimateButton.addActionListener(new ActionListener(){
 			
 			@Override
 			public void actionPerformed(ActionEvent e){
@@ -187,13 +187,13 @@ public class VoteData extends JPanel{
 						break;
 					}
 				}
-				sendEstimatesButton.setEnabled(allVotes);
+				archiveGameButton.setEnabled(allVotes);
 				completeView.nextRequirement(finalEstimate);
 				completeView.isNew = false;
 			}
 		});
 		
-		sendEstimatesButton.addActionListener(new ActionListener() {
+		archiveGameButton.addActionListener(new ActionListener() {
 			
 			@Override 
 			public void actionPerformed(ActionEvent e){
@@ -295,8 +295,8 @@ public class VoteData extends JPanel{
 		
 		final SpringLayout springLayout = new SpringLayout();
 		
-		springLayout.putConstraint(SpringLayout.NORTH, notAnIntegerError, 6, SpringLayout.SOUTH, finalEstimateLabel);
-		springLayout.putConstraint(SpringLayout.WEST, notAnIntegerError, 0, SpringLayout.WEST, descriptionScrollPane);
+		springLayout.putConstraint(SpringLayout.SOUTH, notAnIntegerError, -GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.NORTH, finalEstimateLabel);
+		springLayout.putConstraint(SpringLayout.WEST, notAnIntegerError, 0, SpringLayout.WEST, finalEstimateLabel);
 
 
 		springLayout.putConstraint(SpringLayout.NORTH, meanLabel, 36, SpringLayout.SOUTH, descriptionScrollPane);
@@ -311,22 +311,22 @@ public class VoteData extends JPanel{
 		springLayout.putConstraint(SpringLayout.WEST, medianLabel, 0, SpringLayout.WEST, reqDescriptionLabel);
 		
 		//Spring layout constraints for reqNameLabel
-		springLayout.putConstraint(SpringLayout.NORTH, reqNameLabel, 30, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, reqNameLabel, 23, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, reqNameLabel, GuiStandards.TOP_MARGIN.getValue(), SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, reqNameLabel, GuiStandards.DIVIDER_MARGIN.getValue(), SpringLayout.WEST, this);
 		
 		//Spring layout constraints for reqNameText
-		springLayout.putConstraint(SpringLayout.NORTH, reqNameText, -3, SpringLayout.NORTH, reqNameLabel);
-		springLayout.putConstraint(SpringLayout.WEST, reqNameText, 5, SpringLayout.EAST, reqNameLabel);
-		springLayout.putConstraint(SpringLayout.EAST, reqNameText, -23, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, reqNameText, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, reqNameLabel);
+		springLayout.putConstraint(SpringLayout.WEST, reqNameText, 0, SpringLayout.WEST, reqNameLabel);
+		springLayout.putConstraint(SpringLayout.EAST, reqNameText, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.EAST, this);
 		
 		//Spring layout constraints for reqDescriptionLabel
-		springLayout.putConstraint(SpringLayout.SOUTH, reqDescriptionLabel, 45, SpringLayout.SOUTH, reqNameLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, reqDescriptionLabel, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, reqNameText);
 		springLayout.putConstraint(SpringLayout.WEST, reqDescriptionLabel, 0, SpringLayout.WEST, reqNameLabel);
 		
 		//Spring layout constraints for descriptionScrollPane
 		springLayout.putConstraint(SpringLayout.EAST, descriptionScrollPane, 0, SpringLayout.EAST, reqNameText);
-		springLayout.putConstraint(SpringLayout.SOUTH, descriptionScrollPane, 150, SpringLayout.NORTH, descriptionScrollPane);
-		springLayout.putConstraint(SpringLayout.NORTH, descriptionScrollPane, 15, SpringLayout.SOUTH, reqDescriptionLabel);
+		springLayout.putConstraint(SpringLayout.SOUTH, descriptionScrollPane, -GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.NORTH, estimatesLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, descriptionScrollPane, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, reqDescriptionLabel);
 		springLayout.putConstraint(SpringLayout.WEST, descriptionScrollPane, 0, SpringLayout.WEST, reqDescriptionLabel);
 		
 		//Spring layout constraints for meanTextField
@@ -336,14 +336,14 @@ public class VoteData extends JPanel{
 		springLayout.putConstraint(SpringLayout.WEST, meanLabel, 0, SpringLayout.WEST, reqDescriptionLabel);
 		
 		//Spring layout constraints for estimatesLabel
-		springLayout.putConstraint(SpringLayout.SOUTH, estimatesLabel, 45, SpringLayout.SOUTH, descriptionScrollPane);
+		springLayout.putConstraint(SpringLayout.SOUTH, estimatesLabel, -GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.NORTH, estimatesPane);
 		springLayout.putConstraint(SpringLayout.WEST, estimatesLabel, 0, SpringLayout.WEST, estimatesPane);
 		
 		//Spring layout constraints for estimatesPane
-		springLayout.putConstraint(SpringLayout.EAST, estimatesPane, 200, SpringLayout.WEST, estimatesPane);
-		springLayout.putConstraint(SpringLayout.WEST, estimatesPane, 0, SpringLayout.WEST, reqNameLabel);
-		springLayout.putConstraint(SpringLayout.SOUTH, estimatesPane, -10, SpringLayout.NORTH, finalEstimateLabel);
-		springLayout.putConstraint(SpringLayout.NORTH, estimatesPane, 15, SpringLayout.SOUTH, estimatesLabel);
+		springLayout.putConstraint(SpringLayout.EAST, estimatesPane, 0, SpringLayout.EAST, descriptionScrollPane);
+		springLayout.putConstraint(SpringLayout.WEST, estimatesPane, -200, SpringLayout.EAST, estimatesPane);
+		springLayout.putConstraint(SpringLayout.SOUTH, estimatesPane, -GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.NORTH, notAnIntegerError);
+		springLayout.putConstraint(SpringLayout.NORTH, estimatesPane, -250, SpringLayout.SOUTH, estimatesPane);
 		
 		//Spring layout constraints for statsLabel
 		springLayout.putConstraint(SpringLayout.SOUTH, statsLabel, 45, SpringLayout.SOUTH, descriptionScrollPane);
@@ -355,29 +355,30 @@ public class VoteData extends JPanel{
 		springLayout.putConstraint(SpringLayout.SOUTH, statsPane, -30, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.NORTH, statsPane, 15, SpringLayout.SOUTH, estimatesLabel);
 		
-		//Spring layout constraints for finalSubmitButton		
-		springLayout.putConstraint(SpringLayout.SOUTH, finalSubmitButton, -6, SpringLayout.NORTH, sendEstimatesButton);
-		springLayout.putConstraint(SpringLayout.WEST, finalSubmitButton, 0, SpringLayout.WEST, reqNameLabel);
-		springLayout.putConstraint(SpringLayout.EAST, finalSubmitButton, 0, SpringLayout.EAST, sendEstimatesButton);
+		//Spring layout constraints for submitEstimateButton		
+		springLayout.putConstraint(SpringLayout.SOUTH, submitEstimateButton, 0, SpringLayout.SOUTH, archiveGameButton);
+//		springLayout.putConstraint(SpringLayout.WEST, submitEstimateButton, 0, SpringLayout.WEST, reqNameLabel);
+		springLayout.putConstraint(SpringLayout.EAST, submitEstimateButton, -GuiStandards.BUTTON_OFFSET.getValue(), SpringLayout.WEST, archiveGameButton);
 		
 		//Spring layout constraints for BarChart
-		springLayout.putConstraint(SpringLayout.EAST, aChart, 0, SpringLayout.EAST, reqNameText);
-		springLayout.putConstraint(SpringLayout.WEST, aChart, 100, SpringLayout.EAST, estimatesPane);
-		springLayout.putConstraint(SpringLayout.SOUTH, aChart, -30, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.NORTH, aChart, 15, SpringLayout.SOUTH, estimatesLabel);
+		springLayout.putConstraint(SpringLayout.WEST, aChart, GuiStandards.DIVIDER_MARGIN.getValue(), SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.EAST, aChart, -100, SpringLayout.WEST, estimatesPane);
+		springLayout.putConstraint(SpringLayout.SOUTH, aChart, -GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.NORTH, notAnIntegerError);
+		springLayout.putConstraint(SpringLayout.NORTH, aChart, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, descriptionScrollPane);
 		
-		//Spring layout constraints for sendEstimatesButton
-		springLayout.putConstraint(SpringLayout.EAST, sendEstimatesButton, 0, SpringLayout.EAST, estimatesPane);
-		springLayout.putConstraint(SpringLayout.SOUTH, sendEstimatesButton, -30, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, sendEstimatesButton, 0, SpringLayout.WEST, reqNameLabel);
+		//Spring layout constraints for archiveGameButton
+		springLayout.putConstraint(SpringLayout.EAST, archiveGameButton, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, archiveGameButton, -GuiStandards.BOTTOM_MARGIN.getValue(), SpringLayout.SOUTH, this);
+//		springLayout.putConstraint(SpringLayout.WEST, archiveGameButton, 0, SpringLayout.WEST, reqNameLabel);
 		
 		//Spring layout constraints for finalEstimateText
-		springLayout.putConstraint(SpringLayout.SOUTH, finalEstimateText, -6, SpringLayout.NORTH, finalSubmitButton);
-		springLayout.putConstraint(SpringLayout.EAST, finalEstimateText, 0, SpringLayout.EAST, estimatesPane);
-		springLayout.putConstraint(SpringLayout.WEST, finalEstimateText, 5, SpringLayout.EAST, finalEstimateLabel);
+		springLayout.putConstraint(SpringLayout.SOUTH, finalEstimateText, 0, SpringLayout.SOUTH, submitEstimateButton);
+		springLayout.putConstraint(SpringLayout.NORTH, finalEstimateText, 0, SpringLayout.NORTH, submitEstimateButton);
+		springLayout.putConstraint(SpringLayout.EAST, finalEstimateText, -GuiStandards.BUTTON_OFFSET.getValue(), SpringLayout.WEST, submitEstimateButton);
+		springLayout.putConstraint(SpringLayout.WEST, finalEstimateText, -50, SpringLayout.EAST, finalEstimateText);
 		
 		//Spring layout constraints for finalEstimateLabel
-		springLayout.putConstraint(SpringLayout.WEST, finalEstimateLabel, 0, SpringLayout.WEST, reqNameLabel);
+		springLayout.putConstraint(SpringLayout.EAST, finalEstimateLabel, -5, SpringLayout.WEST, finalEstimateText);
 		springLayout.putConstraint(SpringLayout.SOUTH, finalEstimateLabel, 0, SpringLayout.SOUTH, finalEstimateText);
 		
 		
@@ -404,9 +405,9 @@ public class VoteData extends JPanel{
 		add(finalEstimateLabel);
 		finalEstimateText.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		add(finalEstimateText);
-		add(finalSubmitButton);
-		sendEstimatesButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		add(sendEstimatesButton);
+		add(submitEstimateButton);
+		archiveGameButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		add(archiveGameButton);
 		add(aChart);
 	}
 	
@@ -457,16 +458,16 @@ public class VoteData extends JPanel{
 	private void isValidEstimate(){
 		if (finalEstimateText.getText().length() > 0 && isInteger(finalEstimateText.getText())){
 			if (Integer.parseInt(finalEstimateText.getText()) >= 0){
-				finalSubmitButton.setEnabled(true);
+				submitEstimateButton.setEnabled(true);
 				notAnIntegerError.setVisible(false);
 			}
 			else {
-				finalSubmitButton.setEnabled(false);
+				submitEstimateButton.setEnabled(false);
 				notAnIntegerError.setVisible(true);
 			}
 		}
 		else{
-			finalSubmitButton.setEnabled(false);
+			submitEstimateButton.setEnabled(false);
 			notAnIntegerError.setVisible(true);
 		}
 	}
