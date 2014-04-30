@@ -431,8 +431,6 @@ public class VoteData extends JPanel{
 	public void receiveNewReq(Requirement req) {
 		currentReq = req;
 		reqIndex = completeView.getIndex(currentReq.getId());
-		
-		
 		//Repopulate statistics table
 		final DefaultTableModel statsModel = (DefaultTableModel) statsTable.getModel();
 		
