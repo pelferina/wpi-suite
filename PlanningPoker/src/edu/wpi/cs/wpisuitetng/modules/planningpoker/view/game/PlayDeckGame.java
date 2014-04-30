@@ -67,6 +67,7 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 	private final GameView gv;
 	private GameSession currentGame;
 	private int deckId;
+	private boolean isDeckSingleSelection;
 	private List<Integer> gameCardList = new ArrayList<Integer>();
 	private int votesSoFarInt = 0;
 	private final JLabel votesSoFarNameLabel = new JLabel("Estimate: ");
@@ -90,6 +91,7 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 		gameReqs = currentGame.getGameReqs();
 		deckId = currentGame.getDeckId();
 		gameCardList = DeckModel.getInstance().getDeck(deckId).getCards();
+		isDeckSingleSelection = DeckModel.getInstance().getDeck(deckId).isSingleSelection();
 		generateButtons();
 		final ArrayList<Integer> estimates = new ArrayList<Integer>();
 		System.out.println(gameReqs.size());
@@ -135,17 +137,30 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 		deckArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 		
 		for (final GameCard card: cardButtons){
-			card.addItemListener (new ItemListener() {
-				public void itemStateChanged ( ItemEvent ie ) {
-					if (card.isSelected()) {
-						votesSoFarInt += card.getValue();
-						votesSoFarLabel.setText (Integer.toString(votesSoFarInt)) ;
-					} else {
-						votesSoFarInt -= card.getValue();
-						votesSoFarLabel.setText (Integer.toString(votesSoFarInt)) ;
+			if(!isDeckSingleSelection){ // MULTIPLE SELECTION 
+				card.addItemListener (new ItemListener() {
+					public void itemStateChanged ( ItemEvent ie ) {
+						if (card.isSelected()) {
+							votesSoFarInt += card.getValue();
+							votesSoFarLabel.setText (Integer.toString(votesSoFarInt)) ;
+						} else {
+							votesSoFarInt -= card.getValue();
+							votesSoFarLabel.setText (Integer.toString(votesSoFarInt)) ;
+						}
 					}
-				}
-			});
+				});
+			}
+			else { // SINGLE SELECTION
+				card.addItemListener (new ItemListener() {
+					public void itemStateChanged ( ItemEvent ie ) {
+						if (card.isSelected()) {
+							votesSoFarInt = card.getValue();
+							votesSoFarLabel.setText (Integer.toString(votesSoFarInt)) ;
+							unselectOtherCards(card);
+						}
+					}
+				});
+			}
 		}
 		
 		//Observer for the vote button. It will save the vote client side, the submit button will handle sending it to the database.
@@ -274,6 +289,15 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 
 	}
 	
+	protected void unselectOtherCards(GameCard selectedCard) {
+		boolean selectedFlag = false; // If loop keeps a card selected, this flag will prevent selecting other cards with the same value
+		for(GameCard card: cardButtons){
+			if(card == selectedCard && !selectedFlag) selectedFlag = true; // if current card is the same as the given card, skip the unselection
+			else card.setSelected(false); // else, unselect it
+		}
+		
+	}
+
 	/**
 	 * This function cycles through available cards and generate the appropriate buttons
 	 */
