@@ -75,6 +75,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		
 
 		this.add(contentPanel);
+		super.setContent(contentPanel);
 	}
 	
 	/**

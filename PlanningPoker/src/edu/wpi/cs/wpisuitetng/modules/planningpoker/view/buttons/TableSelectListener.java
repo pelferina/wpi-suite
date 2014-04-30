@@ -85,7 +85,7 @@ public class TableSelectListener implements ListSelectionListener{
     	
     	if(status.equals(GameStatus.ACTIVE) || status.equals(GameStatus.INPROGRESS)){
 			ViewEventController.getInstance().makeVoteGameButtonVisible(gameSelected);
-		}else if(status.equals(GameStatus.ARCHIVED) || status.equals(GameStatus.COMPLETED) || status.equals(GameStatus.DRAFT)){
+		}else if(status.equals(GameStatus.ARCHIVED) || status.equals(GameStatus.COMPLETED)){
 			ViewEventController.getInstance().makeViewGameButtonVisible(gameSelected);
 		}else {
 			ViewEventController.getInstance().makeUserButtonInvisible();

@@ -58,9 +58,8 @@ public class EditButtonsPanel extends ToolbarGroupView{
 		editButton.setEnabled(true);
 	}
 
-	public EditButtonsPanel(){
+	public EditButtonsPanel(){	
 		super("");
-		
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
 		this.setPreferredWidth(300);
 		
@@ -78,6 +77,7 @@ public class EditButtonsPanel extends ToolbarGroupView{
 		contentPanel.setOpaque(false);
 		
 		this.add(contentPanel);
+		super.setContent(contentPanel);
 	}
 	
 	/**

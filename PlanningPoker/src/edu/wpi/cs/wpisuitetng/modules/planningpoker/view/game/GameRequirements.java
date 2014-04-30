@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
+import javax.swing.SpringLayout;
 import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -34,9 +35,12 @@ import javax.swing.table.DefaultTableModel;
 
 
 
+
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.GuiStandards;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -94,8 +98,8 @@ public class GameRequirements extends JSplitPane{
 		       return false;
 		    }
 		};
-		estimatesPending.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Name"}));
-		estimatesComplete.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Name", "Estimate"}));
+		estimatesPending.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Requirements to Estimate"}));
+		estimatesComplete.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Requirements Estimated", "Your Estimates"}));
 		estimatesPending.setFillsViewportHeight(true);
 		estimatesComplete.setFillsViewportHeight(true);
 		init(gameToPlay);
@@ -204,7 +208,7 @@ public class GameRequirements extends JSplitPane{
 		if (isRevote){
 			for (int j=0; j < complete.getRowCount(); j++){
 				if (r.getId() == (int) complete.getValueAt(j, 0)){
-					complete.setValueAt(estimate, j, 3);
+					complete.setValueAt(estimate, j, 2);
 				}
 			}
 		}

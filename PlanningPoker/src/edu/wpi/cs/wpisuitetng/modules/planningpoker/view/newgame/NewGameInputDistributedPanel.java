@@ -359,7 +359,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		saveGameButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				saveOrActivateGame();
-				if(editMode)
+				if(editMode) // TODO: do we really need an if statement here?
 				{
 					newGameP.close.doClick();
 				}
@@ -367,7 +367,6 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 				{
 					newGameP.close.doClick();
 				}
-
 			}
 		});
 
@@ -442,12 +441,13 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			{
 				currentGameSession.setGameStatus(GameStatus.ACTIVE);
 			}
+			
 			if (deckCheckBox.isSelected()){
-				//TODO set correct deck
 				currentGameSession.setDeckId(deckBox.getSelectedIndex());
 			} else {
 				currentGameSession.setDeckId(-1);
 			}
+			
 			final UpdateGameController msgr = new UpdateGameController();
 			msgr.sendGame(currentGameSession);
 		}		
@@ -844,12 +844,13 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		// Check if the user has changed the name
 		if (!(nameTextField.getText().equals(currentGameSession.getGameName()))){
 			return true;}
+		
 		// Check if the user has changed the description
 		if (!(descriptionTextField.getText().equals(currentGameSession.getGameDescription()))){
 			return true;}
 
-		// Check if the user has changed the deadline
 		@SuppressWarnings("deprecation")
+		// Check if the user has changed the deadline
 		//returns true if deadline checkbox was recently selected and the deadline was changed
 		final Date deadlineDate = new Date(deadlineYear - 1900, deadlineMonth, deadlineDay, getHour(deadlineHourComboBox.getSelectedIndex() + 1), minuteTime);
 		if(deadlineCheckBox.isSelected() && !deadlineDate.equals(currentGameSession.getEndDate())){
@@ -865,10 +866,16 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			return true;
 		}
 		// Check if the user has changed the deck
+		//returns true if user selected or unselected deckCheckBox
 		if ((currentGameSession.getDeckId() != -1 && !deckCheckBox.isSelected())
-				|| (currentGameSession.getDeckId() == -1 && deckCheckBox.isSelected())){
+				|| (currentGameSession.getDeckId() == -1 && deckCheckBox.isSelected())){ 
 			return true;
 		}
+		//returns true if user changed the selected deck
+		if ((currentGameSession.getDeckId() != deckBox.getSelectedIndex())){
+			return true;
+		}
+		
 		return false;
 	}
 	//TODO: Test midnight deadline -- this should be working, but we haven't been able to go past midnight or noon	

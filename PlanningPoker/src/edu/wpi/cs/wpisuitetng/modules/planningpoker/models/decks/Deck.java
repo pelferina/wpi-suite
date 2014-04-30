@@ -29,6 +29,7 @@ public class Deck extends AbstractModel {
 	private final String name;
 	private final List<Integer> cards;
 	private boolean isDeleted;
+	private boolean isSingleSelection;
 	
 	/**
 	 * Constructs a Deck with default cards
@@ -39,6 +40,7 @@ public class Deck extends AbstractModel {
 		name = "Default Deck";
 		cards = Arrays.asList(0,1,1,2,3,5,8,13); 
 		isDeleted = false;
+		isSingleSelection = false;
 	}
 	
 	/**
@@ -52,6 +54,7 @@ public class Deck extends AbstractModel {
 		this.name = name;
 		this.cards = cards;
 		this.isDeleted = false;
+		this.isSingleSelection = false;
 	}
 	/**
 	 * compares two decks for equality based on name
@@ -184,6 +187,15 @@ public class Deck extends AbstractModel {
 	@Override
 	public void delete() {
 
+	}
+
+	public boolean isSingleSelection() {
+		return isSingleSelection;
+	}
+
+	public Deck setSingleSelection(boolean isSingleSelection) {
+		this.isSingleSelection = isSingleSelection;
+		return this;
 	}
 
 }
