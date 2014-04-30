@@ -204,7 +204,7 @@ public class GameRequirements extends JSplitPane{
 		if (isRevote){
 			for (int j=0; j < complete.getRowCount(); j++){
 				if (r.getId() == (int) complete.getValueAt(j, 0)){
-					complete.setValueAt(estimate, j, 3);
+					complete.setValueAt(estimate, j, 2);
 				}
 			}
 		}
