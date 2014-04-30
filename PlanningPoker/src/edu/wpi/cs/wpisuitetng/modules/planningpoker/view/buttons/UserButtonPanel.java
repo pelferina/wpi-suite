@@ -63,6 +63,7 @@ public class UserButtonPanel extends ToolbarGroupView{
 		contentPanel.add(userButton);
 		contentPanel.setOpaque(false);
 		this.add(contentPanel);
+		super.setContent(contentPanel);
 	}
 	
 	/**

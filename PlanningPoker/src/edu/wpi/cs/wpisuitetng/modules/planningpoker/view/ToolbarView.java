@@ -40,10 +40,10 @@ public class ToolbarView  extends DefaultToolbarView {
 	 * @param visible boolean
 	 */
 	public ToolbarView(boolean visible) {
+		this.insertGroupAt(greetingPanel, 0);
 		this.addGroup(gameButton);
 		this.addGroup(userButton);
 		this.addGroup(ownerButton);
-		this.insertGroupAt(greetingPanel, 6);
 	}
 	
 	/**
