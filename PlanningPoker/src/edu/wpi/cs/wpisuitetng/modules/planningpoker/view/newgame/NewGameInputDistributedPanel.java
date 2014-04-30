@@ -9,6 +9,7 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -53,6 +54,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.GuiStandards;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -212,10 +214,13 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		//Add padding
 		descriptionTextField.setBorder(BorderFactory.createCompoundBorder(
 				descriptionTextField.getBorder(), 
-		        BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+		        BorderFactory.createEmptyBorder(GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+		        		GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+		        		GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+		        		GuiStandards.TEXT_AREA_MARGINS.getValue())));
 		descriptionTextField.setWrapStyleWord(true);
 		
-		nameTextField.setMargin(new Insets(0, 5, 0, 0));
+		nameTextField.setMargin(new Insets(0, GuiStandards.TEXT_BOX_MARGIN.getValue(), 0, 0));
 		
 		// Set initial save/activate game visibility		
 		setSaveGameButtonVisibility(false);
@@ -270,6 +275,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 					initializeDeckComboBox();
 					setDeckVisibility(true);		        
 				} else {
+					newGameP.closeDeck();
 					setDeckVisibility(false);
 				}
 			}	
@@ -592,10 +598,15 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	private void initializeErrorMessages()
 	{
 		hourError.setVisible(false);
+		hourError.setForeground(Color.red);
 		minuteError.setVisible(false);
+		minuteError.setForeground(Color.red);
 		deadlineError.setVisible(false);
+		deadlineError.setForeground(Color.red);
 		nameError.setVisible(false);
+		nameError.setForeground(Color.red);
 		reqError.setVisible(false);
+		reqError.setForeground(Color.red);
 	}
 
 	/**
@@ -920,26 +931,26 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		final SpringLayout springLayout = new SpringLayout();
 
 		//Spring layout for the nameLabel
-		springLayout.putConstraint(SpringLayout.NORTH, nameLabel, 34, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, nameLabel, 23, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, nameLabel, GuiStandards.TOP_MARGIN.getValue(), SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, nameLabel, GuiStandards.LEFT_MARGIN.getValue(), SpringLayout.WEST, this);
 
 		//Spring layout for the nameTextField
 		springLayout.putConstraint(SpringLayout.WEST, nameTextField, 100, SpringLayout.WEST, nameLabel);
 		springLayout.putConstraint(SpringLayout.EAST, nameTextField, 0, SpringLayout.EAST, descriptionScrollPane);
-		springLayout.putConstraint(SpringLayout.NORTH, nameTextField, -2, SpringLayout.NORTH, nameLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, nameTextField, -GuiStandards.TEXT_HIEGHT_OFFSET.getValue(), SpringLayout.NORTH, nameLabel);
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameTextField, 0, SpringLayout.VERTICAL_CENTER, nameLabel);
 
 		//Spring layout for the descriptionLabel
 		springLayout.putConstraint(SpringLayout.NORTH, descriptionLabel, 30, SpringLayout.NORTH, nameLabel);
-		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 23, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, GuiStandards.LEFT_MARGIN.getValue(), SpringLayout.WEST, this);
 
 		//Spring layout for the descTextArea
 		descriptionTextField.setRows(3);
 		descriptionTextField.setLineWrap(true);
-		springLayout.putConstraint(SpringLayout.NORTH, descriptionScrollPane, 10, SpringLayout.SOUTH, descriptionLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, descriptionScrollPane, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, descriptionLabel);
 		springLayout.putConstraint(SpringLayout.WEST, descriptionScrollPane, 0, SpringLayout.WEST, descriptionLabel);
-		springLayout.putConstraint(SpringLayout.EAST, descriptionScrollPane, -10, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, descriptionScrollPane, -350, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, descriptionScrollPane, -GuiStandards.DIVIDER_MARGIN.getValue(), SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, descriptionScrollPane, -20, SpringLayout.NORTH, deadlineCheckBox);
 
 		//Spring layout for the deadlineCheckBox
 		springLayout.putConstraint(SpringLayout.SOUTH, deadlineCheckBox, -230, SpringLayout.SOUTH, this);
@@ -955,7 +966,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 
 		//Spring layout for the deckBox
 		springLayout.putConstraint(SpringLayout.WEST, deckBox, 5, SpringLayout.EAST, deckLabel);
-		springLayout.putConstraint(SpringLayout.SOUTH, deckBox, 0, SpringLayout.SOUTH, deckLabel);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, deckBox, 0, SpringLayout.VERTICAL_CENTER, deckLabel);
 
 		//Spring layout for the createDeckButton
 		springLayout.putConstraint(SpringLayout.WEST, createDeckButton, 0, SpringLayout.WEST, deckBox);
@@ -972,7 +983,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 
 
 		//Spring layout for the deadlineError
-		springLayout.putConstraint(SpringLayout.WEST, deadlineError, 50, SpringLayout.WEST, saveGameButton);
+		springLayout.putConstraint(SpringLayout.WEST, deadlineError, 0, SpringLayout.WEST, saveGameButton);
 		springLayout.putConstraint(SpringLayout.NORTH, deadlineError, -20, SpringLayout.NORTH, saveGameButton);
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameTextField, 0, SpringLayout.VERTICAL_CENTER, nameLabel);
 		deadlineError.setVisible(false);
@@ -1015,15 +1026,15 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.WEST, PMButton, 0, SpringLayout.WEST, deadlineMinuteComboBox);
 
 		//Spring layout for the saveGameButton
-		springLayout.putConstraint(SpringLayout.SOUTH, saveGameButton, -10, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, saveGameButton, -GuiStandards.BOTTOM_MARGIN.getValue(), SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, saveGameButton, 0, SpringLayout.WEST, descriptionLabel);
 		
 		//Spring layout for activateGameButton
-		springLayout.putConstraint(SpringLayout.WEST, activateGameButton, 10, SpringLayout.EAST, saveGameButton);
+		springLayout.putConstraint(SpringLayout.WEST, activateGameButton, GuiStandards.BUTTON_OFFSET.getValue(), SpringLayout.EAST, saveGameButton);
 		springLayout.putConstraint(SpringLayout.NORTH, activateGameButton, 0, SpringLayout.NORTH, saveGameButton);
 
 		//Spring layout for cancelButton
-		springLayout.putConstraint(SpringLayout.WEST, cancelButton, 10, SpringLayout.EAST, activateGameButton);
+		springLayout.putConstraint(SpringLayout.WEST, cancelButton, GuiStandards.BUTTON_OFFSET.getValue(), SpringLayout.EAST, activateGameButton);
 		springLayout.putConstraint(SpringLayout.NORTH, cancelButton, 0, SpringLayout.NORTH, saveGameButton);
 
 		setLayout(springLayout);

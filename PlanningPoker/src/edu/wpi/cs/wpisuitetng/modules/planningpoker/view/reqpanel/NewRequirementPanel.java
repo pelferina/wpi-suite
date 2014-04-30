@@ -10,6 +10,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.reqpanel;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -19,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.SpringLayout;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.GuiStandards;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -32,6 +34,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -92,61 +95,72 @@ public class NewRequirementPanel extends JPanel {
 	 * 		places and sizes everything
 	 */
 	public void panelSetup() {
-	
+		//Add padding
+		descriptionField.setBorder(BorderFactory.createCompoundBorder(
+				descriptionField.getBorder(), 
+		        BorderFactory.createEmptyBorder(GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+		        		GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+		        		GuiStandards.TEXT_AREA_MARGINS.getValue(),
+		        		GuiStandards.TEXT_AREA_MARGINS.getValue())));
+		descriptionField.setWrapStyleWord(true);
+		
+		nameField.setMargin(new Insets(0, GuiStandards.TEXT_BOX_MARGIN.getValue(), 0, 0));
+		
 		final JLabel lblPriority = new JLabel("Priority:");
 		final JLabel lblType = new JLabel("Type:");
 		descriptionField.setLineWrap(true);
 		final SpringLayout springLayout = new SpringLayout();
 		
 		//Spring layout constraints for cancelButton
-		springLayout.putConstraint(SpringLayout.WEST, cancelButton, 29, SpringLayout.EAST, CreateRequirementButton);
-		springLayout.putConstraint(SpringLayout.SOUTH, cancelButton, -38, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, cancelButton, -149, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, cancelButton, -GuiStandards.BOTTOM_MARGIN.getValue(), SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, cancelButton, 0, SpringLayout.EAST, descriptionScrollPane);
 		
 		//Spring layout constraints for CreateRequirementButton
-		springLayout.putConstraint(SpringLayout.EAST, CreateRequirementButton, -286, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, CreateRequirementButton, -62, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, CreateRequirementButton, -39, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, CreateRequirementButton, -GuiStandards.BUTTON_OFFSET.getValue(), SpringLayout.WEST, cancelButton);
+		springLayout.putConstraint(SpringLayout.NORTH, CreateRequirementButton, 0, SpringLayout.NORTH, cancelButton);
 		
 		//Spring layout constraints for priorityComboBox
 		springLayout.putConstraint(SpringLayout.NORTH, priorityComboBox, 43, SpringLayout.SOUTH, descriptionScrollPane);
 		springLayout.putConstraint(SpringLayout.WEST, priorityComboBox, 5, SpringLayout.EAST, lblPriority);
-		springLayout.putConstraint(SpringLayout.EAST, priorityComboBox, -10, SpringLayout.WEST, lblType);
+		springLayout.putConstraint(SpringLayout.EAST, priorityComboBox, 250, SpringLayout.WEST, priorityComboBox);
 		
 		//Spring layout constraints for lblType
-		springLayout.putConstraint(SpringLayout.WEST, lblType, 200, SpringLayout.EAST, lblPriority);
+		springLayout.putConstraint(SpringLayout.EAST, lblType, -10, SpringLayout.WEST, typeComboBox);
 		springLayout.putConstraint(SpringLayout.NORTH, lblType, 46, SpringLayout.SOUTH, descriptionScrollPane);
 		
 		//Spring layout constraints for typeComboBox
 		springLayout.putConstraint(SpringLayout.NORTH, typeComboBox, 284, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, typeComboBox, 6, SpringLayout.EAST, lblType);
-		springLayout.putConstraint(SpringLayout.EAST, typeComboBox, -49, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.WEST, typeComboBox, -250, SpringLayout.EAST, typeComboBox);
+		springLayout.putConstraint(SpringLayout.EAST, typeComboBox, 0, SpringLayout.EAST, descriptionScrollPane);
 		
 		//Spring layout constraints for descriptionScrollPane
-		springLayout.putConstraint(SpringLayout.NORTH, descriptionScrollPane, 116, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.NORTH, descriptionScrollPane, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, descriptionLabel);
 		springLayout.putConstraint(SpringLayout.SOUTH, descriptionScrollPane, -44, SpringLayout.NORTH, typeComboBox);
 		springLayout.putConstraint(SpringLayout.WEST, descriptionScrollPane, 0, SpringLayout.WEST, nameLabel);
-		springLayout.putConstraint(SpringLayout.EAST, descriptionScrollPane, -45, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.EAST, descriptionScrollPane, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.EAST, this);
 		
 		//Spring layout constraints for lblPriority
 		springLayout.putConstraint(SpringLayout.NORTH, lblPriority, 45, SpringLayout.SOUTH, descriptionScrollPane);
-		springLayout.putConstraint(SpringLayout.WEST, lblPriority, 53, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.WEST, lblPriority, 0, SpringLayout.WEST, descriptionScrollPane);
 		
 		//Spring layout constraints for descriptionLabel
-		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 53, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, descriptionLabel, -16, SpringLayout.NORTH, descriptionScrollPane);
+		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 0, SpringLayout.WEST, nameLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, descriptionLabel, 30, SpringLayout.NORTH, nameLabel);
 		
 		//Spring layout constraints for nameField
 		springLayout.putConstraint(SpringLayout.WEST, nameField, 6, SpringLayout.EAST, nameLabel);
-		springLayout.putConstraint(SpringLayout.EAST, nameField, -45, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, nameField, -3, SpringLayout.NORTH, nameLabel);
+		springLayout.putConstraint(SpringLayout.EAST, nameField, 0, SpringLayout.EAST, descriptionScrollPane);
+		springLayout.putConstraint(SpringLayout.NORTH, nameField, -GuiStandards.TEXT_HIEGHT_OFFSET.getValue(), SpringLayout.NORTH, nameLabel);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameField, 0, SpringLayout.VERTICAL_CENTER, nameLabel);
 		
 		//Spring layout constraints for the nameLabel
-		springLayout.putConstraint(SpringLayout.NORTH, nameLabel, 29, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, nameLabel, 53, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, nameLabel, GuiStandards.TOP_MARGIN.getValue(), SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, nameLabel, GuiStandards.DIVIDER_MARGIN.getValue(), SpringLayout.WEST, this);
 		
-		springLayout.putConstraint(SpringLayout.WEST, reqError, 5, SpringLayout.WEST, CreateRequirementButton);
-		springLayout.putConstraint(SpringLayout.NORTH, reqError, 5, SpringLayout.SOUTH, CreateRequirementButton);
+		// spring layout for req error
+		springLayout.putConstraint(SpringLayout.EAST, reqError, 0, SpringLayout.EAST, cancelButton);
+		springLayout.putConstraint(SpringLayout.NORTH, reqError, -20, SpringLayout.NORTH, cancelButton);
+		reqError.setVisible(false);
 		
 		
 		setLayout(springLayout);

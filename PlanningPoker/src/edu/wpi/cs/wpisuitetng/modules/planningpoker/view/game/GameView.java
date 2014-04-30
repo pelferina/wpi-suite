@@ -13,6 +13,9 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game;
 import java.awt.Dimension;
 
 import javax.swing.JSplitPane;
+import javax.swing.border.Border;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
@@ -73,6 +76,18 @@ public class GameView extends JSplitPane{
 		leftComponent.setMinimumSize(new Dimension(200, 200));
 		rightComponent.setMinimumSize(new Dimension(500, 200));
 		setResizeWeight(0.1);
+		
+		
+		this.setUI(new BasicSplitPaneUI() {
+            public BasicSplitPaneDivider createDefaultDivider() {
+            return new BasicSplitPaneDivider(this) {
+                public void setBorder(Border b) {
+                }
+            };
+            }
+        });
+        this.setBorder(null);
+        this.setEnabled( false );
 	}
 
 	/**

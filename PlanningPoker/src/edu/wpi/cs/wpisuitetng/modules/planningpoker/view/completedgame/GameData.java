@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -28,15 +28,16 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
-
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.GuiStandards;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 import javax.swing.SpringLayout;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.Insets;
 /**
  * The GameData class
  * @author FFF8E7
@@ -58,7 +59,7 @@ public class GameData extends JPanel{
 	private final GameSession completedGame;
 	private final CompleteView completeView;
 	private final HashMap<Integer, Integer> requirementIndexHash = new HashMap<Integer, Integer>();
-	
+
 	/**
 	 * Constructor for the GameData class
 	 * @param gs The completed game session that is going to be viewed
@@ -72,42 +73,89 @@ public class GameData extends JPanel{
 		descriptionTextArea.setText(gs.getGameDescription());
 		gameNameTextBox.setEditable(false);
 		descriptionTextArea.setEditable(false);
-		descriptionTextArea.setOpaque(false);
 		gameReqIDs = gs.getGameReqs();
 		descriptionTextArea.setLineWrap(true);
 		descriptionTextArea.setWrapStyleWord(true);
-		
+
 		for (Requirement r: allReqs){
 			if (gameReqIDs.contains(r.getId())){
 				gameReqs.add(r);
 			}
 		}
-		
+
 		gameReqsTable = new JTable() {
 			@Override
-		    public boolean isCellEditable(int row, int column) {
-		       //all -cells false
-		       return false;
-		    }
+			public boolean isCellEditable(int row, int column) {
+				//all -cells false
+				return false;
+			}
 		};
-		
-		gameReqsTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Description", "Estimate"}));
+
+		gameReqsTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Mean", "Median", "Estimate"}));
+		gameReqsTable.setFillsViewportHeight(true);
 		init();	
 	}
-	
+
 	/**
 	 * Places the GUI components for the panel, as well as filling the table with the requirements that are in the game name and descriptions
 	 */
 	private void init(){
 		final DefaultTableModel reqTableModel = (DefaultTableModel) gameReqsTable.getModel();
 		reqTableModel.setRowCount(gameReqs.size());
+		completedGame.calculateStats();
+
+		descriptionTextArea.setWrapStyleWord(true);
 		
+		// set colors
+		gameNameTextBox.setBackground(Color.WHITE);
+		gameNameTextBox.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GRAY));
+		
+		//Adds padding
+		descriptionTextArea.setBorder(BorderFactory.createCompoundBorder(
+				descriptionTextArea.getBorder(), 
+				BorderFactory.createEmptyBorder(GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+						GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+						GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+						GuiStandards.TEXT_AREA_MARGINS.getValue())));
+		
+
+		gameNameTextBox.setBorder(BorderFactory.createCompoundBorder(
+				gameNameTextBox.getBorder(), 
+				BorderFactory.createEmptyBorder(0, GuiStandards.TEXT_BOX_MARGIN.getValue(), 0, 0)));
+
 		//Adds the game requirements names and descriptions to the table
 		for (int i = 0; i < gameReqs.size(); i++){
+			float mean;
+			float median;
+
+			if(completedGame.getMean().size() != 0){
+				mean = completedGame.getMean().get(i);
+				median = completedGame.getMedian().get(i);
+			} else {
+				mean = -1;
+				median = -1;
+			}
+
 			requirementIndexHash.put(gameReqs.get(i).getId(), i);
 			reqTableModel.setValueAt(gameReqs.get(i).getName(), i, 0);
-			reqTableModel.setValueAt(gameReqs.get(i).getDescription(), i, 1);
-			reqTableModel.setValueAt("", i, 2);
+
+			if (mean != -1)
+			{
+				reqTableModel.setValueAt(mean, i, 1);
+			}
+			else
+			{
+				reqTableModel.setValueAt("", i, 1);
+			}
+			if (median != -1)
+			{
+				reqTableModel.setValueAt(median, i, 2);
+			}
+			else
+			{
+				reqTableModel.setValueAt("", i, 2);
+			}
+			reqTableModel.setValueAt("", i, 3);
 		}
 		reqPane = new JScrollPane(gameReqsTable);
 		reqPane.setViewportView(gameReqsTable);
@@ -118,47 +166,47 @@ public class GameData extends JPanel{
 			gameReqsTable.setRowSelectionInterval(0, 0);
 			gameReqsTable.getSelectionModel().addListSelectionListener(new tableListener(gameReqsTable));
 		}
-		
+
 		final SpringLayout springLayout = new SpringLayout();
-		
+
+		//Spring layout constraints for gameNameLabel
+		springLayout.putConstraint(SpringLayout.NORTH, gameNameLabel, GuiStandards.TOP_MARGIN.getValue(), SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, gameNameLabel, GuiStandards.LEFT_MARGIN.getValue(), SpringLayout.WEST, this);
+
 		//Spring layout constraints for gameNameTextBox
-		springLayout.putConstraint(SpringLayout.EAST, gameNameTextBox, 0, SpringLayout.EAST, descriptionScrollPane);
+		springLayout.putConstraint(SpringLayout.EAST, gameNameTextBox, -23, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, gameNameTextBox, -3, SpringLayout.NORTH, gameNameLabel);
-		springLayout.putConstraint(SpringLayout.WEST, gameNameTextBox, 6, SpringLayout.EAST, gameNameLabel);
-		
+		springLayout.putConstraint(SpringLayout.WEST, gameNameTextBox, 5, SpringLayout.EAST, gameNameLabel);
+
 		//Spring layout constraints for descriptionLabel
-		springLayout.putConstraint(SpringLayout.SOUTH, descriptionLabel, -6, SpringLayout.NORTH, descriptionScrollPane);
-		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 10, SpringLayout.WEST, this);
-		
-		//Spring layout constraints for reqPane
-		springLayout.putConstraint(SpringLayout.WEST, reqPane, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.EAST, reqPane, -20, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, reqPane, 233, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, reqPane, -59, SpringLayout.SOUTH, this);
-		
-		//Spring layout constraints for gameReqsLabel
-		springLayout.putConstraint(SpringLayout.WEST, gameReqsLabel, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.WEST, gameNameLabel, 0, SpringLayout.WEST, descriptionLabel);
-		springLayout.putConstraint(SpringLayout.SOUTH, gameNameLabel, -23, SpringLayout.NORTH, descriptionLabel);
-		
+		springLayout.putConstraint(SpringLayout.SOUTH, descriptionLabel, 45, SpringLayout.SOUTH, gameNameLabel);
+		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 0, SpringLayout.WEST, gameNameLabel);
+
 		//Spring layout constraints for descriptionScrollPane
-		springLayout.putConstraint(SpringLayout.NORTH, descriptionScrollPane, 94, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, descriptionScrollPane, -24, SpringLayout.NORTH, gameReqsLabel);
-		springLayout.putConstraint(SpringLayout.WEST, descriptionScrollPane, 10, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.EAST, descriptionScrollPane, 371, SpringLayout.WEST, this);
-		
+		springLayout.putConstraint(SpringLayout.NORTH, descriptionScrollPane, 15, SpringLayout.SOUTH, descriptionLabel);
+		springLayout.putConstraint(SpringLayout.SOUTH, descriptionScrollPane, 150, SpringLayout.NORTH, descriptionScrollPane);
+		springLayout.putConstraint(SpringLayout.WEST, descriptionScrollPane, 0, SpringLayout.WEST, descriptionLabel);
+		springLayout.putConstraint(SpringLayout.EAST, descriptionScrollPane, 0, SpringLayout.EAST, gameNameTextBox);
+
+		//Spring layout constraints for gameReqsLabel
+		springLayout.putConstraint(SpringLayout.SOUTH, gameReqsLabel, 45, SpringLayout.SOUTH, descriptionScrollPane);
+		springLayout.putConstraint(SpringLayout.WEST, gameReqsLabel, 0, SpringLayout.WEST, descriptionScrollPane);
+
 		//Spring layout constraints for reqPane
-		springLayout.putConstraint(SpringLayout.SOUTH, gameReqsLabel, -11, SpringLayout.NORTH, reqPane);
-		
+		springLayout.putConstraint(SpringLayout.WEST, reqPane, 0, SpringLayout.WEST, gameNameLabel);
+		springLayout.putConstraint(SpringLayout.EAST, reqPane, 0, SpringLayout.EAST, gameNameTextBox);
+		springLayout.putConstraint(SpringLayout.NORTH, reqPane, 15, SpringLayout.SOUTH, gameReqsLabel);
+		springLayout.putConstraint(SpringLayout.SOUTH, reqPane, -30, SpringLayout.SOUTH, this);
+
 		setLayout(springLayout);
-		
+
 		add(gameNameLabel);
 		add(descriptionLabel);
 		add(gameReqsLabel);
 		add(gameNameTextBox);
 		add(descriptionScrollPane);
 		add(reqPane);
-		
+
 	}
 
 	/**
@@ -168,7 +216,7 @@ public class GameData extends JPanel{
 	public List<Requirement> getGameReqs() {
 		return gameReqs;
 	}
-	
+
 	/**
 	 * Returns the index of the given requirement id
 	 * @param id The requirement id
@@ -200,7 +248,7 @@ public class GameData extends JPanel{
 	 */
 	public void nextRequirement(int estimate) {
 		final int selected = gameReqsTable.getSelectedRow();
-		gameReqsTable.setValueAt(estimate, selected, 2);
+		gameReqsTable.setValueAt(estimate, selected, 3);
 		gameReqsTable.clearSelection();
 		if (selected + 1 < gameReqs.size()){
 			gameReqsTable.addRowSelectionInterval(selected + 1, selected + 1);
@@ -223,19 +271,19 @@ public class GameData extends JPanel{
 	public void receiveFinalVotes(List<Integer> finalVote) {
 		for (int i = 0; i < gameReqsTable.getRowCount(); i++){
 			if (finalVote.get(i) != -1){
-				gameReqsTable.setValueAt(finalVote.get(i), i, 2);
+				gameReqsTable.setValueAt(finalVote.get(i), i, 3);
 			}
 		}
 	}
-/**
- * A tableListener class
- * @author Cosmic Latte
- * @version 6
- */
-public class tableListener implements ListSelectionListener{
-		
+	/**
+	 * A tableListener class
+	 * @author Cosmic Latte
+	 * @version 6
+	 */
+	public class tableListener implements ListSelectionListener{
+
 		JTable table;
-		
+
 		/**
 		 * constructor for the table listener
 		 * @param table the table to listen to
@@ -243,12 +291,12 @@ public class tableListener implements ListSelectionListener{
 		public tableListener(JTable table){
 			this.table = table;
 		}
-		
+
 
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			if (table.getSelectedRow() != -1){
-			    final int row = table.getSelectedRow();
+				final int row = table.getSelectedRow();
 				final List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
 				Requirement req = null;
 				for (Requirement r: allReqs){
@@ -260,5 +308,5 @@ public class tableListener implements ListSelectionListener{
 			}
 		}
 	}
-	
+
 }

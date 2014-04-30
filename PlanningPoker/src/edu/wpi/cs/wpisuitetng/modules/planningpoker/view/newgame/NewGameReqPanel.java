@@ -14,9 +14,11 @@ import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.GuiStandards;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+
 
 
 
@@ -167,6 +169,9 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				int[] index = unselectedTable.getSelectedRows();
+				boolean last = false;
+				if(unselectedTable.getSelectedRow() == unselectedTable.getRowCount() - 1)
+					last = true;
 				int offset = 0;
 				while(index.length > 0){
 					final Requirement selectedReq = reqs.get(index[0]-offset);
@@ -186,9 +191,13 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 				}
 				selectedTable.clearSelection();
 				unselectedTable.clearSelection();
-				if(unselectedTable.getRowCount()>0)
+				int rowIndex = unselectedTable.getRowCount() - 1;
+				if(!last && unselectedTable.getRowCount()>0)
 					unselectedTable.setRowSelectionInterval(0, 0);
-				selectedTable.setRowSelectionInterval(0, 0);
+				else if(last && unselectedTable.getRowCount()>0)
+					unselectedTable.setRowSelectionInterval(rowIndex, rowIndex);			
+				rowIndex = selectedTable.getRowCount() - 1;
+				selectedTable.setRowSelectionInterval(rowIndex, rowIndex);
 			}
 		});
 
@@ -239,9 +248,11 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 					}
 				selectedTable.clearSelection();
 				unselectedTable.clearSelection();
+				int rowIndex = selectedTable.getRowCount() - 1;
 				if(selectedTable.getRowCount()>0)
-					selectedTable.setRowSelectionInterval(0, 0);
-				unselectedTable.setRowSelectionInterval(0, 0);
+					selectedTable.setRowSelectionInterval(rowIndex, rowIndex);
+				rowIndex = unselectedTable.getRowCount() - 1;				
+				unselectedTable.setRowSelectionInterval(rowIndex, rowIndex);
 			}
 		});
 
@@ -289,9 +300,9 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		springLayout.putConstraint(SpringLayout.NORTH, lblRequirementsAvailable, 10, SpringLayout.NORTH, this);
 
 		// Spring Layout of unselected_table
-		springLayout.putConstraint(SpringLayout.WEST, unselected_table, 10, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.WEST, unselected_table, GuiStandards.DIVIDER_MARGIN.getValue(), SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, unselected_table, -10, SpringLayout.NORTH, btnAddReq);
-		springLayout.putConstraint(SpringLayout.EAST, unselected_table, -10, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.EAST, unselected_table, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.NORTH, unselected_table, 10, SpringLayout.SOUTH, lblRequirementsAvailable);
 
 		// Spring Layout of Buttons
@@ -311,9 +322,9 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		springLayout.putConstraint(SpringLayout.WEST, lblRequirementsSelected, 0, SpringLayout.WEST, lblRequirementsAvailable);
 
 		// Spring Layout of selected_table
-		springLayout.putConstraint(SpringLayout.NORTH, selected_table, 10, SpringLayout.SOUTH, lblRequirementsSelected);
+		springLayout.putConstraint(SpringLayout.NORTH, selected_table, GuiStandards.DIVIDER_MARGIN.getValue(), SpringLayout.SOUTH, lblRequirementsSelected);
 		springLayout.putConstraint(SpringLayout.WEST, selected_table, 0, SpringLayout.WEST, unselected_table);
-		springLayout.putConstraint(SpringLayout.SOUTH, selected_table, -10, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, selected_table, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, selected_table, -0, SpringLayout.EAST, unselected_table);
 
 		// Adds elements to the panel
@@ -344,10 +355,6 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		for (i = 0; i < reqs.size(); i++){
 			dtm.setValueAt(reqs.get(i).getName(), i, 0);
 			dtm.setValueAt(reqs.get(i).getDescription(), i, 1);
-		}
-		if (i > 0)
-		{
-			unselectedTable.setRowSelectionInterval(0, 0);
 		}
 		
 		unselected_table.setViewportView(unselectedTable);
@@ -385,12 +392,17 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 			dtm_1.setValueAt(selected.get(j).getDescription(), j, 1);
 		}
 		
+		unselectedTable.repaint();
+		if (i > 0)
+		{
+			unselectedTable.setRowSelectionInterval(0, 0);
+		}
+		
 		if (j > 0)
 		{
 			selectedTable.setRowSelectionInterval(0, 0);
 		}
-		
-		unselectedTable.repaint();
+	
 	}
 	
 	//Getter for newGameInputDistributedPanel to get the selected requirements

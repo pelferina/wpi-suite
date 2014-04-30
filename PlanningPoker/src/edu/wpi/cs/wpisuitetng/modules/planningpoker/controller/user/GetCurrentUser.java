@@ -48,7 +48,8 @@ public class GetCurrentUser {
 				}	
 			}
 			catch(RuntimeException exception){
-				System.err.println("Exception thrown in GetCurrentUser:" +exception);
+				// Session not yet created
+				//System.err.println("Exception thrown in GetCurrentUser:" +exception);
 			}
 		}
 		else{

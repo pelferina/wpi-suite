@@ -38,6 +38,7 @@ import edu.wpi.cs.wpisuitetng.network.Network;
  */
 public class RefreshManager {
 	
+	final int refreshTime = 500;
 	GetGamesController gameController;
 	GetRequirementsController reqController;
 	GetDecksController deckController;
@@ -108,9 +109,9 @@ public class RefreshManager {
 		};
 		
 		// Timer will update RefreshManager every 2 seconds
-		refreshGamesTimer = new Timer(100, gameCheck);
-		refreshRequirementsTimer = new Timer(100, reqCheck);
-		refreshDeckTimer = new Timer(100, deckCheck);
+		refreshGamesTimer = new Timer(refreshTime, gameCheck);
+		refreshRequirementsTimer = new Timer(refreshTime, reqCheck);
+		refreshDeckTimer = new Timer(refreshTime, deckCheck);
 		pauseRefreshHandler.addRefreshManager(this);
 	}
 

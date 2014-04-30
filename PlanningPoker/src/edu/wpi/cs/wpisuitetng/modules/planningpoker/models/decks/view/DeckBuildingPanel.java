@@ -74,6 +74,9 @@ public class DeckBuildingPanel extends JPanel {
 	private JPanel cardPanel = new JPanel();
 	private JScrollPane cardArea = new JScrollPane(cardPanel);
 	private NewGameDistributedPanel newGameDistributed;
+//	private final JLabel notAnIntegerError = new JLabel ("Please enter an non-negative integer for card value!");
+//	private final JLabel duplicateNameError = new JLabel ("This deck name already exists!");
+//	private final JLabel noCardError = new JLabel ("You need to have at least one card in the deck!");
 
 	/** Constructor for a DeckPanel panel
 	 */
@@ -104,7 +107,7 @@ public class DeckBuildingPanel extends JPanel {
 		btnRmvAll.setSize(80, 20);
 		btnCancel.setFont(size);
 		btnCancel.setSize(80,20);
-		
+		errLabel.setVisible(false);
 		//cardPanel.setMinimumSize(new Dimension(200, 13));
 		cardArea.setMinimumSize(new Dimension(200, 135));
 		
@@ -235,6 +238,7 @@ public class DeckBuildingPanel extends JPanel {
 				} catch (NumberFormatException err) {
 					System.err.println("Incorrect use of gameCard constructor: param not a number");
 					errLabel.setText(numberField.getText()+ " is not a valid non-negative integer!");
+					errLabel.setVisible(true);
 				} 
 				isValidDeckName();	
 			}
@@ -263,6 +267,13 @@ public class DeckBuildingPanel extends JPanel {
 				// Outputs console messages
 				System.out.println("Removed cards from deck");
 				System.out.println("Current card list is: " + newDeckCards.toString());
+				
+				//display error message
+				if (newDeckCards.isEmpty()){
+					errLabel.setText("Need to have at least one card in a deck.");
+					errLabel.setVisible(true);
+				}
+				
 			}
 		});
 		
@@ -284,6 +295,11 @@ public class DeckBuildingPanel extends JPanel {
 				System.out.println("Cleared current deck");
 				System.out.println("Current card list is: " + newDeckCards.toString());
 
+				//display error message
+				if (newDeckCards.isEmpty()){
+					errLabel.setText("Need to have at least one card in a deck.");
+					errLabel.setVisible(true);
+				}
 			}
 		});
 		
@@ -392,6 +408,7 @@ public class DeckBuildingPanel extends JPanel {
 		add(btnRmvAll);
 		add(btnRmvSelected);
 		add(btnCancel);
+		add(errLabel);
 	}
 	private void setupButtonIcons()
 	{
@@ -440,19 +457,24 @@ public class DeckBuildingPanel extends JPanel {
 		if (nameField.getText().length() > 0 && !DeckModel.getInstance().isDuplicateDeck(nameField.getText())){
 			if (!newDeckCards.isEmpty()){
 				btnSave.setEnabled(true);
+				errLabel.setVisible(false);
 				System.out.println("newDeckName is " + newDeckName);
 			}
 			else {
 				btnSave.setEnabled(false);
+				errLabel.setText("Need to have at least one card in a deck.");
+				errLabel.setVisible(true);
 			}
 		}
 		else {
 			btnSave.setEnabled(false);
 			if (DeckModel.getInstance().isDuplicateDeck(nameField.getText())){
-				//TODO: add errMSG: Duplicate Deck Name
+				errLabel.setText("Duplicate deck name.");
+				errLabel.setVisible(true);
 			}
 			else {
-				//TODO: add errMSG: Invalid Deck Name
+				errLabel.setText("Invalid deck name.");
+				errLabel.setVisible(true);
 			}
 		}
 	}
@@ -484,8 +506,10 @@ public class DeckBuildingPanel extends JPanel {
 		//Name field checking
 		if(!nameField.getText().isEmpty()){
 			btnSave.setEnabled(true);
+			errLabel.setVisible(false);
 		}else{
 			errLabel.setText("Deck must have a name.");
+			errLabel.setVisible(true);
 			needsName = true;
 			allValid = false;
 		}
@@ -493,12 +517,15 @@ public class DeckBuildingPanel extends JPanel {
 		//Number field checking
 		if(numberField.getText().length() > 0 && isInteger(numberField.getText()) && Integer.parseInt(numberField.getText()) >= 0){
 			btnAddCard.setEnabled(true);
+			errLabel.setVisible(false);
 		}else if(needsName){
 			btnAddCard.setEnabled(false);
 			errLabel.setText("Deck must have name and card must be a non-negative integer.");
+			errLabel.setVisible(true);
 		}else{
 			btnAddCard.setEnabled(false);
 			errLabel.setText("Card must be a non-negative integer.");
+			errLabel.setVisible(true);
 		}
 		
 		//Checks that a card has been added to deck
