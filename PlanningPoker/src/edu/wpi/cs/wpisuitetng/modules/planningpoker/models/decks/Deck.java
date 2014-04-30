@@ -26,9 +26,11 @@ public class Deck extends AbstractModel {
 
 	/** the ID of the deck */
 	private int id;
+	private int UserID = -1;
 	private final String name;
-	private final List<Integer> cards;
+	private List<Integer> cards;
 	private boolean isDeleted;
+
 	private boolean isSingleSelection;
 	
 	/**
@@ -196,6 +198,21 @@ public class Deck extends AbstractModel {
 	public Deck setSingleSelection(boolean isSingleSelection) {
 		this.isSingleSelection = isSingleSelection;
 		return this;
+	}
+	/**
+	 * set the card list
+	 * @param cards the card list
+	 */
+	public void setCards(List<Integer> cards) {
+		this.cards = cards;
+	}
+
+	public int getUserID() {
+		return UserID;
+	}
+
+	public void setUserID(int userID) {
+		UserID = userID;
 	}
 
 }
