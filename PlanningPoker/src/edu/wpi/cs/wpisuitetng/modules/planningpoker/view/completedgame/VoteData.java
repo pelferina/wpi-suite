@@ -135,7 +135,7 @@ public class VoteData extends JPanel{
 			}
 		}
 		if (allVotes){
-			sendEstimatesButton.setEnabled(true);
+			submitEstimateButton.setEnabled(true);
 		}
 		currentReq = gameReqs.get(0);
 		reqIndex = 0;
