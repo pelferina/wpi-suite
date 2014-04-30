@@ -10,6 +10,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game;
 
+import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -48,9 +49,13 @@ public class GameCard extends JToggleButton{
 			System.err.println(ex.getMessage());
 		}
 		final String cardText = value.toString();
+		final int length = cardText.length();
+		final int size = 20 - length;
+		final Font buttonFont = new Font("Arial", Font.PLAIN, size);
 		cardUnselectedIcon = new ImageIcon(cardUnselectedImg);
 		cardSelectedIcon = new ImageIcon(cardSelectedImg); 
 		this.setText(cardText);
+		this.setFont(buttonFont);
 		this.setIcon(cardUnselectedIcon);
 		this.setSelected(false);
 		this.setBorder(BorderFactory.createEmptyBorder());
