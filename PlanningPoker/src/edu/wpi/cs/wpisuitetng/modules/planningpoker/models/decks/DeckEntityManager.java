@@ -9,20 +9,12 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks;
 
-import java.util.List;
-
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
-import edu.wpi.cs.wpisuitetng.exceptions.BadRequestException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotImplementedException;
-import edu.wpi.cs.wpisuitetng.exceptions.UnauthorizedException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
-import edu.wpi.cs.wpisuitetng.modules.Model;
-import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 
 /**
  * This is the entity manager for the Deck in the
@@ -66,6 +58,7 @@ public class DeckEntityManager implements EntityManager<Deck> {
 		final Deck[] decks = getAll(s);
 		final Deck newDeck =  new Deck(importedDeck.getName(), importedDeck.getCards());
 		newDeck.setId(decks.length + 1);
+		newDeck.setUserID(s.getUser().getIdNum());
 		if(!db.save(newDeck, s.getProject())) {
 			System.err.println("Deck not saved");
 			throw new WPISuiteException();
@@ -185,8 +178,9 @@ public class DeckEntityManager implements EntityManager<Deck> {
 	@Override
 	public Deck update(Session session, String content)
 			throws WPISuiteException {
-		// A deck cannot be modified once created
-		throw new WPISuiteException();
+		Deck newDeck = Deck.fromJson(content);
+		db.update(Deck.class, "Id", newDeck.getId(), "Cards", newDeck.getCards());
+		return newDeck;
 	}
 
 	/**
