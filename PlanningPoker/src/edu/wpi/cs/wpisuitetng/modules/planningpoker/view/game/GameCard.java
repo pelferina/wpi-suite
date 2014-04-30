@@ -51,7 +51,7 @@ public class GameCard extends JToggleButton{
 		final String cardText = value.toString();
 		final int length = cardText.length();
 		final int size = 20 - length;
-		final Font buttonFont = new Font("Arial", Font.PLAIN, size);
+		final Font buttonFont = new Font("Arial", Font.BOLD, size);
 		cardUnselectedIcon = new ImageIcon(cardUnselectedImg);
 		cardSelectedIcon = new ImageIcon(cardSelectedImg); 
 		this.setText(cardText);
