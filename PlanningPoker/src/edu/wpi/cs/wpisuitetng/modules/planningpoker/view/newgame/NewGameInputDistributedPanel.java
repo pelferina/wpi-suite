@@ -221,7 +221,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		descriptionTextField.setWrapStyleWord(true);
 		
 		nameTextField.setMargin(new Insets(0, GuiStandards.TEXT_BOX_MARGIN.getValue(), 0, 0));
-		
+		nameTextField.setDocument(new JTextFieldLimit(10));
 		// Set initial save/activate game visibility		
 		setSaveGameButtonVisibility(false);
 		setActivateGameButtonVisibility(false);
