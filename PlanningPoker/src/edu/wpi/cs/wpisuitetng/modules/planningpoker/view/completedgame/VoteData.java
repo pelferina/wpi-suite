@@ -435,9 +435,12 @@ public class VoteData extends JPanel{
 		
 		//Repopulate statistics table
 		final DefaultTableModel statsModel = (DefaultTableModel) statsTable.getModel();
-		statsModel.setValueAt(completedGame.getMean().get(reqIndex), 0, 1);
-		statsModel.setValueAt(completedGame.getMedian().get(reqIndex), 1, 1);
 		
+		if (completedGame.getMean().size()>0){
+		
+			statsModel.setValueAt(completedGame.getMean().get(reqIndex), 0, 1);
+			statsModel.setValueAt(completedGame.getMedian().get(reqIndex), 1, 1);
+		}
 		
 		int i = 0;
 		final DefaultTableModel estimatesModel = (DefaultTableModel) estimatesTable.getModel();
