@@ -22,7 +22,6 @@ import java.util.List;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 
 
@@ -382,6 +381,10 @@ public class GameSession extends AbstractModel {
 		}
 		stddev = Math.pow((1/(double)Estimates.size()) * estimatesSum, 0.5);
 		return stddev;
+	}
+
+	public List<Double> getStandardDeviation() {
+		return standardDeviation;
 	}
 	
 }

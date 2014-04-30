@@ -91,7 +91,7 @@ public class GameData extends JPanel{
 			}
 		};
 
-		gameReqsTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Mean", "Median", "Estimate"}));
+		gameReqsTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Mean", "Median", "Standard Deviation", "Estimate"}));
 		gameReqsTable.setFillsViewportHeight(true);
 		init();	
 	}
@@ -127,13 +127,16 @@ public class GameData extends JPanel{
 		for (int i = 0; i < gameReqs.size(); i++){
 			float mean;
 			float median;
-
+			double stddev;
+			
 			if(completedGame.getMean().size() != 0){
 				mean = completedGame.getMean().get(i);
 				median = completedGame.getMedian().get(i);
+				stddev = completedGame.getStandardDeviation().get(i);
 			} else {
 				mean = -1;
 				median = -1;
+				stddev = -1;
 			}
 
 			requirementIndexHash.put(gameReqs.get(i).getId(), i);
@@ -155,7 +158,13 @@ public class GameData extends JPanel{
 			{
 				reqTableModel.setValueAt("", i, 2);
 			}
-			reqTableModel.setValueAt("", i, 3);
+			if (stddev != -1){
+				reqTableModel.setValueAt(stddev, i, 3);
+			}
+			else{
+				reqTableModel.setValueAt("", i, 3);
+			}
+			reqTableModel.setValueAt("", i, 4);
 		}
 		reqPane = new JScrollPane(gameReqsTable);
 		reqPane.setViewportView(gameReqsTable);
@@ -250,7 +259,7 @@ public class GameData extends JPanel{
 	 */
 	public void nextRequirement(int estimate) {
 		final int selected = gameReqsTable.getSelectedRow();
-		gameReqsTable.setValueAt(estimate, selected, 3);
+		gameReqsTable.setValueAt(estimate, selected, 4);
 		gameReqsTable.clearSelection();
 		if (selected + 1 < gameReqs.size()){
 			gameReqsTable.addRowSelectionInterval(selected + 1, selected + 1);
@@ -273,7 +282,7 @@ public class GameData extends JPanel{
 	public void receiveFinalVotes(List<Integer> finalVote) {
 		for (int i = 0; i < gameReqsTable.getRowCount(); i++){
 			if (finalVote.get(i) != -1){
-				gameReqsTable.setValueAt(finalVote.get(i), i, 3);
+				gameReqsTable.setValueAt(finalVote.get(i), i, 4);
 			}
 		}
 	}
