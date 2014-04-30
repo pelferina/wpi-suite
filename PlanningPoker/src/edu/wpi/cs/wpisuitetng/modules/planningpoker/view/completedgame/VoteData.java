@@ -94,21 +94,7 @@ public class VoteData extends JPanel{
 	public VoteData(GameSession gs, CompleteView cv){
 		boolean allVotes = true;
 		completedGame = gs;
-		
-		//This timer schedules a TimerTask that will set the default text field and buttons for the panel
-		TimerTask setFocus = new TimerTask(){
-
-			@Override
-			public void run() {
-				if (completedGame.getGameStatus() != GameStatus.ARCHIVED){
-					finalEstimateText.requestFocusInWindow();
-					getRootPane().setDefaultButton(submitEstimateButton);
-				}
-			}
-			
-		};
 		setFocusTimer = new Timer();
-		setFocusTimer.schedule(setFocus, 250);
 		completeView = cv;
 		gameReqs = cv.getGameRequirements();
 		finalVote = new ArrayList<Integer>();
@@ -137,6 +123,7 @@ public class VoteData extends JPanel{
 		if (allVotes){
 			submitEstimateButton.setEnabled(true);
 		}
+		
 		currentReq = gameReqs.get(0);
 		reqIndex = 0;
 		
@@ -295,9 +282,10 @@ public class VoteData extends JPanel{
 		statsModel.setRowCount(2);
 		statsModel.setValueAt("Mean",0,0);
 		statsModel.setValueAt("Median",1,0);
-		statsModel.setValueAt(completedGame.getMean().get(reqIndex), 0, 1);
-		statsModel.setValueAt(completedGame.getMedian().get(reqIndex), 1, 1);
-		
+		if (completedGame.getVotes().size() > 0){
+			statsModel.setValueAt(completedGame.getMean().get(reqIndex), 0, 1);
+			statsModel.setValueAt(completedGame.getMedian().get(reqIndex), 1, 1);
+		}
 		statsPane = new JScrollPane(statsTable);
 		statsPane.setViewportView(statsTable);	
 		
@@ -418,6 +406,21 @@ public class VoteData extends JPanel{
 		archiveGameButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		add(archiveGameButton);
 		add(aChart);
+		
+		//Schedules a timer task that will set the default text box and button
+		
+		TimerTask setFocus = new TimerTask(){
+
+			@Override
+			public void run() {
+				if (completedGame.getGameStatus() != GameStatus.ARCHIVED){
+					finalEstimateText.requestFocusInWindow();
+					getRootPane().setDefaultButton(submitEstimateButton);
+				}
+			}
+			
+		};
+		setFocusTimer.schedule(setFocus, 200);
 	}
 	
 	/**
