@@ -150,8 +150,13 @@ public class GameSession extends AbstractModel {
 	 */
 	public String getDeadlineString()
 	{
-		final DateFormat dateFormat1 = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
-		return dateFormat1.format(endDate);
+		if (endDate != null){
+			final DateFormat dateFormat1 = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+			return dateFormat1.format(endDate);
+		}
+		else {
+			return "No deadline";
+		}
 	}
 
 	/*

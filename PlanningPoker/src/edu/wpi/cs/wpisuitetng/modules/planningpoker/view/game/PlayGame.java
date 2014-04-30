@@ -58,6 +58,8 @@ public class PlayGame extends JPanel implements Refreshable{
 	private final JLabel estimateLabel = new JLabel("Input Estimate:");
 	private final JLabel gameEnded = new JLabel("The Game Has Ended.");
 	private final JLabel notAnIntegerError = new JLabel("Estimate must be a positive integer");
+	private final JLabel voteConfirmation = new JLabel("Vote submitted!");
+	private JLabel deadlineLabel = new JLabel("Game ends on:");
 	private final JTextField estimateTextField = new JTextField();
 	private final JTextField gameNameTextField = new JTextField();
 	private final JTextField reqNameTextField = new JTextField();
@@ -73,6 +75,7 @@ public class PlayGame extends JPanel implements Refreshable{
 	private GameSession currentGame;
 	private boolean hasVoted = false;
 	private TimerTask setFocus;
+	private TimerTask voteConfirm;
 	private Timer setFocusTimer;
 
 	/**
@@ -81,6 +84,13 @@ public class PlayGame extends JPanel implements Refreshable{
 	 * @param agv the active game view
 	 */
 	public PlayGame(GameSession gameToPlay, GameView agv){
+		if (gameToPlay.getDeadlineString() != "No deadline"){
+			deadlineLabel.setText("Game ends at: " + gameToPlay.getDeadlineString());
+		}
+		else {
+			deadlineLabel.setText("This game has no deadline");
+		}
+		voteConfirmation.setVisible(false);
 		GetGamesController.getInstance().addRefreshable(this);
 		gameEnded.setVisible(false);
 
@@ -93,6 +103,7 @@ public class PlayGame extends JPanel implements Refreshable{
 			}
 
 		};
+		
 		setFocusTimer = new Timer();
 		setFocusTimer.schedule(setFocus, 100);
 
@@ -196,13 +207,14 @@ public class PlayGame extends JPanel implements Refreshable{
 				isValidEstimate();
 			}
 		});
-
+		
 		//Observer for the vote button. It will save the vote client side, the submit button will handle sending it to the database.
 
 		voteButton.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e){
+				
 				final int estimate = Integer.parseInt(estimateTextField.getText());
 				if (estimate < 0){
 					//TODO error message
@@ -223,6 +235,7 @@ public class PlayGame extends JPanel implements Refreshable{
 				}
 				estimateTextField.requestFocusInWindow();
 				gv.isNew = false;
+				notAnIntegerError.setVisible(false);
 			}
 
 		});
@@ -315,8 +328,17 @@ public class PlayGame extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.NORTH, gameEnded, 0, SpringLayout.SOUTH, notAnIntegerError);
 		springLayout.putConstraint(SpringLayout.EAST, gameEnded, 0, SpringLayout.EAST, notAnIntegerError);
 
+		//Spring layout for voteConfirmation label
+		springLayout.putConstraint(SpringLayout.SOUTH, voteConfirmation, 10, SpringLayout.NORTH, voteButton);
+		springLayout.putConstraint(SpringLayout.WEST, voteConfirmation, 0, SpringLayout.WEST, voteButton);
+		
+		//Spring layout for deadlineLabel
+		springLayout.putConstraint(SpringLayout.NORTH, deadlineLabel, -30, SpringLayout.NORTH, estimateLabel);
+		springLayout.putConstraint(SpringLayout.WEST, deadlineLabel, 0, SpringLayout.WEST, estimateLabel);
+		
 		setLayout(springLayout);
 
+		add(voteConfirmation);
 		add(voteButton);
 		add(submit);
 		add(gameName);
@@ -331,6 +353,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		add(gameEnded);
 		add(gameDescScroll);
 		add(reqDescScroll);
+		add(deadlineLabel);
 	}
 
 	/**

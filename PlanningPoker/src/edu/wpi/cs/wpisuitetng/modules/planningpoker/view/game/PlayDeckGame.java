@@ -17,6 +17,8 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -55,6 +57,7 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 	private final JLabel gameDesc = new JLabel("Game Description:");
 	private final JLabel reqName = new JLabel("Requirement Name:");
 	private final JLabel reqDesc = new JLabel("Requirement Description:");
+	private JLabel deadlineLabel = new JLabel("Game ends at: ");
 	private final JTextField gameNameTextField = new JTextField();
 	private final JTextField reqNameTextField = new JTextField();
 	private final JTextArea gameDescTextArea = new JTextArea();
@@ -74,8 +77,11 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 	private int votesSoFarInt = 0;
 	private final JLabel votesSoFarNameLabel = new JLabel("Estimate: ");
 	private final JLabel votesSoFarLabel = new JLabel("0");
+	private TimerTask setFocus;
+	private Timer setFocusTimer;
 	//List of buttons associated with the cards. First element -> lowest card val
 	private final List<GameCard> cardButtons = new ArrayList<GameCard>();
+	
 	/**
 	 * @wbp.nonvisual location=41,359
 	 */
@@ -87,8 +93,25 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 	 * @param agv the active game view
 	 */
 	public PlayDeckGame(GameSession gameToPlay, GameView agv){
+		if (gameToPlay.getDeadlineString() != "No deadline"){
+			deadlineLabel.setText(gameToPlay.getDeadlineString());
+		}
+		else{
+			deadlineLabel.setText("This game has no deadline");
+		}
 		GetGamesController.getInstance().addRefreshable(this);
 
+		setFocus = new TimerTask(){
+
+			@Override
+			public void run() {
+				getRootPane().setDefaultButton(voteButton);
+			}
+
+		};
+		setFocusTimer = new Timer();
+		setFocusTimer.schedule(setFocus, 250);
+		
 		currentGame = gameToPlay;
 		gameReqs = currentGame.getGameReqs();
 		deckId = currentGame.getDeckId();
@@ -287,6 +310,10 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.WEST, gameEnded, 0, SpringLayout.WEST, votesSoFarLabel);
 		gameEnded.setVisible(false);
 
+		//Spring layout for deadline label
+		springLayout.putConstraint(SpringLayout.WEST, deadlineLabel, 20, SpringLayout.EAST, voteButton);
+		springLayout.putConstraint(SpringLayout.SOUTH, deadlineLabel, 0, SpringLayout.SOUTH, voteButton);
+		
 		setLayout(springLayout);
 
 		add(voteButton);
@@ -303,6 +330,7 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 		add(votesSoFarNameLabel);
 		add(votesSoFarLabel);
 		add(gameEnded);
+		add(deadlineLabel);
 
 	}
 
