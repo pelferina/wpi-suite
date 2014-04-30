@@ -174,29 +174,41 @@ public class GameData extends JPanel{
 		springLayout.putConstraint(SpringLayout.WEST, gameNameLabel, GuiStandards.LEFT_MARGIN.getValue(), SpringLayout.WEST, this);
 
 		//Spring layout constraints for gameNameTextBox
-		springLayout.putConstraint(SpringLayout.EAST, gameNameTextBox, -23, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, gameNameTextBox, -3, SpringLayout.NORTH, gameNameLabel);
-		springLayout.putConstraint(SpringLayout.WEST, gameNameTextBox, 5, SpringLayout.EAST, gameNameLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, gameNameTextBox, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, gameNameLabel);
+		springLayout.putConstraint(SpringLayout.WEST, gameNameTextBox, 0, SpringLayout.WEST, gameNameLabel);
+		springLayout.putConstraint(SpringLayout.EAST, gameNameTextBox, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.EAST, this);
+//		springLayout.putConstraint(SpringLayout.EAST, gameNameTextBox, -23, SpringLayout.EAST, this);
+//		springLayout.putConstraint(SpringLayout.NORTH, gameNameTextBox, -3, SpringLayout.NORTH, gameNameLabel);
+//		springLayout.putConstraint(SpringLayout.WEST, gameNameTextBox, 5, SpringLayout.EAST, gameNameLabel);
 
 		//Spring layout constraints for descriptionLabel
-		springLayout.putConstraint(SpringLayout.SOUTH, descriptionLabel, 45, SpringLayout.SOUTH, gameNameLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, descriptionLabel, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, gameNameTextBox);
 		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 0, SpringLayout.WEST, gameNameLabel);
+//		springLayout.putConstraint(SpringLayout.SOUTH, descriptionLabel, 45, SpringLayout.SOUTH, gameNameLabel);
+//		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, 0, SpringLayout.WEST, gameNameLabel);
 
 		//Spring layout constraints for descriptionScrollPane
-		springLayout.putConstraint(SpringLayout.NORTH, descriptionScrollPane, 15, SpringLayout.SOUTH, descriptionLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, descriptionScrollPane, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, descriptionLabel);
 		springLayout.putConstraint(SpringLayout.SOUTH, descriptionScrollPane, 150, SpringLayout.NORTH, descriptionScrollPane);
 		springLayout.putConstraint(SpringLayout.WEST, descriptionScrollPane, 0, SpringLayout.WEST, descriptionLabel);
 		springLayout.putConstraint(SpringLayout.EAST, descriptionScrollPane, 0, SpringLayout.EAST, gameNameTextBox);
 
 		//Spring layout constraints for gameReqsLabel
-		springLayout.putConstraint(SpringLayout.SOUTH, gameReqsLabel, 45, SpringLayout.SOUTH, descriptionScrollPane);
+		springLayout.putConstraint(SpringLayout.NORTH, gameReqsLabel, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, descriptionScrollPane);
+//		springLayout.putConstraint(SpringLayout.SOUTH, gameReqsLabel, -GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.NORTH, reqPane);
 		springLayout.putConstraint(SpringLayout.WEST, gameReqsLabel, 0, SpringLayout.WEST, descriptionScrollPane);
-
+//		springLayout.putConstraint(SpringLayout.NORTH, gameReqsLabel, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, descriptionScrollPane);
+		
+		
 		//Spring layout constraints for reqPane
 		springLayout.putConstraint(SpringLayout.WEST, reqPane, 0, SpringLayout.WEST, gameNameLabel);
 		springLayout.putConstraint(SpringLayout.EAST, reqPane, 0, SpringLayout.EAST, gameNameTextBox);
-		springLayout.putConstraint(SpringLayout.NORTH, reqPane, 15, SpringLayout.SOUTH, gameReqsLabel);
-		springLayout.putConstraint(SpringLayout.SOUTH, reqPane, -30, SpringLayout.SOUTH, this);
+//		springLayout.putConstraint(SpringLayout.NORTH, reqPane, 15, SpringLayout.SOUTH, gameReqsLabel);    <--was working before
+//		springLayout.putConstraint(SpringLayout.SOUTH, reqPane, -30, SpringLayout.SOUTH, this);            <--was working before
+//		springLayout.putConstraint(SpringLayout.NORTH, reqPane, -250, SpringLayout.SOUTH, reqPane);
+		springLayout.putConstraint(SpringLayout.SOUTH, reqPane, -GuiStandards.BOTTOM_MARGIN.getValue(), SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.NORTH, reqPane, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, gameReqsLabel);
+
 
 		setLayout(springLayout);
 
