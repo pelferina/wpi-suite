@@ -22,7 +22,6 @@ import java.util.List;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 
 
@@ -56,6 +55,7 @@ public class GameSession extends AbstractModel {
 	private final boolean emailSent = false;
 	private List<Float> median;
 	private List<Float> mean;
+	private List<Double> standardDeviation;
 	private int deckId;
 	private final List<Vote> votes;
 	private List<Integer> finalVotes;
@@ -82,6 +82,7 @@ public class GameSession extends AbstractModel {
 		deckId = -1;
 		median = null;
 		mean = null;
+		standardDeviation = null;
 		finalVotes = new ArrayList<Integer>();
 	}
 
@@ -293,6 +294,7 @@ public class GameSession extends AbstractModel {
 		final int userNum = votes.size();
 		mean = new ArrayList<Float>();
 		median = new ArrayList<Float>();
+		standardDeviation = new ArrayList<Double>();
 		final int[][] voteResult = new int[requirementNum][userNum];
 		for(int i=0; i < userNum; i++){
 			for(int j=0;j < requirementNum; j++){
@@ -318,6 +320,12 @@ public class GameSession extends AbstractModel {
 					sum += voteResult[i][j];
 				}
 				mean.add(((float)sum) / userNum);
+				//calculate standard deviation
+				List<Integer> reqEstimates = new ArrayList<Integer>();
+				for (Vote v: votes){
+					reqEstimates.add(v.getVote().get(i));
+				}
+				standardDeviation.add(calculateStdDev(mean.get(i), reqEstimates));
 			}
 		}
 	}
@@ -354,6 +362,29 @@ public class GameSession extends AbstractModel {
 
 	public List<Integer> getFinalVotes() {
 		return finalVotes;
+	}
+	
+	/**
+	 * 
+	 * @param mean, the average of estimates
+	 * @param Estimates, the data
+	 * @return Calculates the standard deviation of the given data
+	 */
+	
+	public double calculateStdDev(float mean, List<Integer> Estimates){
+		double estimatesSum = 0;
+		double estimateMinusMeanSquare;
+		double stddev;
+		for (int i: Estimates){
+			estimateMinusMeanSquare = Math.pow((double)i - mean, 2);
+			estimatesSum = estimatesSum + estimateMinusMeanSquare;
+		}
+		stddev = Math.pow((1/(double)Estimates.size()) * estimatesSum, 0.5);
+		return stddev;
+	}
+
+	public List<Double> getStandardDeviation() {
+		return standardDeviation;
 	}
 	
 }
