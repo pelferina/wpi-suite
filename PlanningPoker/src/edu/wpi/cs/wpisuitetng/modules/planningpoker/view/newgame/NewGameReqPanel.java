@@ -23,10 +23,16 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 
 
 
+
+
+
+
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +58,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	private final NewGameDistributedPanel newGamePanel;
 	// Declarations and initializations of GUI components
 	JLabel lblRequirementsAvailable = new JLabel("Requirements Available");
-	JButton btnAddReq = new JButton("Add New Requirement");
+	JButton btnAddReq = new JButton("New Requirement");
 	JButton btnRemoveOne = new JButton();
 	JLabel lblRequirementsSelected = new JLabel("Requirements Selected");
 	JButton btnAddOne = new JButton();
@@ -64,7 +70,6 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	/**
 	 * Constructor for NewGameReqPanel
 	 * @param ngdp The NewGamePanel it is a part of
-	 * @wbp.parser.constructor
 	 */
 	public NewGameReqPanel(NewGameDistributedPanel ngdp) {
 
@@ -156,7 +161,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		setupButtonIcons();
 		final SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
-		btnAddReq.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		btnAddReq.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
 		// Observers
 
@@ -284,6 +289,78 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 			}
 		});
 
+		//Allows clicking to select
+		unselectedTable.addMouseListener(new MouseAdapter() {
+			   public void mouseClicked(MouseEvent e) {
+			      if (e.getClickCount() == 2) {
+			    	  int[] index = unselectedTable.getSelectedRows();
+						boolean last = false;
+						if(unselectedTable.getSelectedRow() == unselectedTable.getRowCount() - 1)
+							last = true;
+						int offset = 0;
+						while(index.length > 0){
+							final Requirement selectedReq = reqs.get(index[0]-offset);
+							selected.add(selectedReq);
+							reqs.remove(index[0]-offset);
+							final String[] data = {selectedReq.getName(), selectedReq.getDescription()};
+							final DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
+							final DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
+							dtm.setRowCount(reqs.size());
+							for (int j = 0; j < reqs.size(); j++){
+								dtm.setValueAt(reqs.get(j).getName(), j, 0);
+								dtm.setValueAt(reqs.get(j).getDescription(), j, 1);
+							}
+							dtm_1.addRow(data);
+							index = removeFirst(index);
+							offset++;
+						}
+						selectedTable.clearSelection();
+						unselectedTable.clearSelection();
+						int rowIndex = unselectedTable.getRowCount() - 1;
+						if(!last && unselectedTable.getRowCount()>0)
+							unselectedTable.setRowSelectionInterval(0, 0);
+						else if(last && unselectedTable.getRowCount()>0)
+							unselectedTable.setRowSelectionInterval(rowIndex, rowIndex);			
+						rowIndex = selectedTable.getRowCount() - 1;
+						selectedTable.setRowSelectionInterval(rowIndex, rowIndex);
+			         }
+			   }
+			});
+		
+		//Allows double clicking to select
+		selectedTable.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					int[] index = selectedTable.getSelectedRows();
+					int offset = 0;
+					while(index.length >0){
+						final Requirement selectedReq = selected.get(index[0]-offset);
+						selected.remove(index[0]-offset);
+						reqs.add(selectedReq);
+						final String[] data = {selectedReq.getName(), selectedReq.getDescription()};
+						final DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
+						final DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
+						dtm_1.setRowCount(selected.size());
+						for (int i = 0; i < selected.size(); i++){
+							dtm_1.setValueAt(selected.get(i).getName(), i, 0);
+							dtm_1.setValueAt(selected.get(i).getDescription(), i, 1);
+						}
+						dtm.addRow(data);
+						index = removeFirst(index);
+						offset++;
+					}
+					selectedTable.clearSelection();
+					unselectedTable.clearSelection();
+					int rowIndex = selectedTable.getRowCount() - 1;
+					if(selectedTable.getRowCount()>0)
+						selectedTable.setRowSelectionInterval(rowIndex, rowIndex);
+					rowIndex = unselectedTable.getRowCount() - 1;				
+					unselectedTable.setRowSelectionInterval(rowIndex, rowIndex);
+				}
+			}
+		});
+		
+		
 		//Initializes the unselected requirements table
 		unselectedTable.setModel(new DefaultTableModel(
 				new Object[][] {
@@ -300,7 +377,11 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 
 
 		// Layout configuration
-
+		btnRemoveOne.setPreferredSize(new Dimension(50,20));
+		btnRemoveAll.setPreferredSize(new Dimension(50,20));
+		btnAddOne.setPreferredSize(new Dimension(50,20));
+		btnAddAll.setPreferredSize(new Dimension(50,20));
+		
 		// Spring Layout of lblRequirementsAvailable
 		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, lblRequirementsAvailable, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		springLayout.putConstraint(SpringLayout.NORTH, lblRequirementsAvailable, 10, SpringLayout.NORTH, this);
@@ -314,18 +395,18 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		// Spring Layout of Buttons
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnAddReq, 0, SpringLayout.VERTICAL_CENTER, this);
 		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, btnAddReq, 0, SpringLayout.HORIZONTAL_CENTER, unselected_table);
-		springLayout.putConstraint(SpringLayout.NORTH, btnRemoveAll, 0, SpringLayout.NORTH, btnAddReq);
-		springLayout.putConstraint(SpringLayout.EAST, btnRemoveAll, 0, SpringLayout.WEST, btnRemoveOne); 
-		springLayout.putConstraint(SpringLayout.SOUTH, btnRemoveAll, 0, SpringLayout.SOUTH, btnAddReq); 
-		springLayout.putConstraint(SpringLayout.NORTH, btnRemoveOne, 0, SpringLayout.NORTH, btnRemoveAll);
-		springLayout.putConstraint(SpringLayout.EAST, btnRemoveOne, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, btnRemoveOne, 0, SpringLayout.SOUTH, btnAddReq);
-		springLayout.putConstraint(SpringLayout.NORTH, btnAddAll, 0, SpringLayout.NORTH, btnAddReq);
-		springLayout.putConstraint(SpringLayout.WEST, btnAddAll, 0, SpringLayout.EAST, btnAddOne);
-		springLayout.putConstraint(SpringLayout.SOUTH, btnAddAll, 0, SpringLayout.SOUTH, btnAddReq);
+		springLayout.putConstraint(SpringLayout.NORTH, btnRemoveOne, 0, SpringLayout.NORTH, btnAddReq);
+		springLayout.putConstraint(SpringLayout.WEST, btnRemoveOne, 0, SpringLayout.EAST, btnAddReq); 
+		springLayout.putConstraint(SpringLayout.SOUTH, btnRemoveOne, 0, SpringLayout.SOUTH, btnAddReq); 
+		springLayout.putConstraint(SpringLayout.NORTH, btnRemoveAll, 0, SpringLayout.NORTH, btnRemoveOne);
+		springLayout.putConstraint(SpringLayout.WEST, btnRemoveAll, 0, SpringLayout.EAST, btnRemoveOne);
+		springLayout.putConstraint(SpringLayout.SOUTH, btnRemoveAll, 0, SpringLayout.SOUTH, btnAddReq);
 		springLayout.putConstraint(SpringLayout.NORTH, btnAddOne, 0, SpringLayout.NORTH, btnAddReq);
-		springLayout.putConstraint(SpringLayout.WEST, btnAddOne, 0, SpringLayout.WEST, unselected_table);
+		springLayout.putConstraint(SpringLayout.EAST, btnAddOne, 0, SpringLayout.WEST, btnAddReq);
 		springLayout.putConstraint(SpringLayout.SOUTH, btnAddOne, 0, SpringLayout.SOUTH, btnAddReq);
+		springLayout.putConstraint(SpringLayout.NORTH, btnAddAll, 0, SpringLayout.NORTH, btnAddReq);
+		springLayout.putConstraint(SpringLayout.EAST, btnAddAll, 0, SpringLayout.WEST, btnAddOne);
+		springLayout.putConstraint(SpringLayout.SOUTH, btnAddAll, 0, SpringLayout.SOUTH, btnAddReq);
 
 		// Spring Layout of lblRequirementsSelected
 		springLayout.putConstraint(SpringLayout.NORTH, lblRequirementsSelected, 10, SpringLayout.SOUTH, btnRemoveOne);
@@ -515,6 +596,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	public void refreshDecks() {
 		//intentionally left blank
 	}
+
 }
 
 

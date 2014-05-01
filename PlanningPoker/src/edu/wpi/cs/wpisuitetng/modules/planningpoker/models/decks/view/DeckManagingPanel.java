@@ -47,19 +47,20 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistribu
  * @version 6
  */
 @SuppressWarnings({"serial"})
-public class DeckBuildingPanel extends JPanel {
+public class DeckManagingPanel extends JPanel {
 
-	private boolean isSingleSelection = true;
+	private boolean isSingleSelection = true; // TODO fix this later
 	private JButton btnAddCard = new JButton("Add Card");
 	private JButton btnRmvSelected = new JButton("Remove Selected");
 	private JButton btnRmvAll = new JButton("Remove all");
 	private JButton btnSave = new JButton("Save deck");
 	private JButton btnDelete = new JButton("Delete deck");
 	private JButton btnCancel = new JButton("Cancel");
+	private JButton btnClose = new JButton("Close");
 	private JRadioButton btnSingleSelection = new JRadioButton("Single Selection");
 	private JRadioButton btnMultipleSelection = new JRadioButton("Multiple Selection");
 	private ButtonGroup selectionGroup = new ButtonGroup();
-	private JComboBox<String> comboBoxDeckList = new JComboBox<String>();
+	private JComboBox<String> decksComboBox = new JComboBox<String>();
 	private JLabel lblDeckName = new JLabel("Deck Name:");
 	private JLabel lblDecks = new JLabel("Decks:");
 	private JLabel errLabel = new JLabel("");
@@ -78,11 +79,9 @@ public class DeckBuildingPanel extends JPanel {
 //	private final JLabel duplicateNameError = new JLabel ("This deck name already exists!");
 //	private final JLabel noCardError = new JLabel ("You need to have at least one card in the deck!");
 
-	/** 
-	 * Constructor for a DeckPanel panel
-	 * @param ngdp The NewGameDistributedPanel to be based off of
+	/** Constructor for a DeckPanel panel
 	 */
-	public DeckBuildingPanel(NewGameDistributedPanel ngdp){
+	public DeckManagingPanel(){
 		setupButtonIcons();
 		
 		// Set up for Radio buttons that will determine deck selection mode
@@ -90,7 +89,6 @@ public class DeckBuildingPanel extends JPanel {
 		selectionGroup.add(btnMultipleSelection);
 		btnSingleSelection.setSelected(true);
 		btnMultipleSelection.setSelected(false);
-		this.newGameDistributed = ngdp;
 		
 		// Sets a consistent font for all buttons
 		final Font size = new Font(btnSave.getFont().getName(), btnSave.getFont().getStyle(), 10);
@@ -153,12 +151,11 @@ public class DeckBuildingPanel extends JPanel {
 			public void actionPerformed(ActionEvent e){
 				newDeckName = nameField.getText();
 				Deck newDeck = new Deck (newDeckName, newDeckCards);
-				newDeck.setSingleSelection(isSingleSelection);
+				//newDeck.setSingleSelection(isSingleSelection);
 				AddDeckController.getInstance().addDeck(newDeck);
 				System.out.println("added Deck " + newDeckName + 
 						"; Id = " + newDeck.getId() + 
-						"; with cards: " + newDeckCards.toString() + 
-						"; with singleSelection set to:" + newDeck.isSingleSelection());
+						"; with cards: " + newDeckCards.toString());
 				System.out.println("Current DeckModel size is " + DeckModel.getInstance().getSize());
 				nameField.setText("");
 				
@@ -329,14 +326,14 @@ public class DeckBuildingPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.NORTH, lblDecks, 20, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, lblDecks, 20, SpringLayout.WEST, this);
 		
-		//Spring layout for comboBoxDeckList
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, comboBoxDeckList, 0, SpringLayout.VERTICAL_CENTER, lblDecks);
-		springLayout.putConstraint(SpringLayout.WEST, comboBoxDeckList, 10, SpringLayout.EAST, lblDecks);
-		springLayout.putConstraint(SpringLayout.EAST, comboBoxDeckList, 100, SpringLayout.WEST, comboBoxDeckList);
-
+		//Spring layout for decksComboBox
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, decksComboBox, 0, SpringLayout.VERTICAL_CENTER, lblDecks);
+		springLayout.putConstraint(SpringLayout.WEST, decksComboBox, 10, SpringLayout.EAST, lblDecks);
+		springLayout.putConstraint(SpringLayout.EAST, decksComboBox, 150, SpringLayout.WEST, decksComboBox);
+		
 		//Spring layout for lblDeckName
-		springLayout.putConstraint(SpringLayout.NORTH, lblDeckName, 20, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, lblDeckName, 20, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, lblDeckName, 30, SpringLayout.NORTH, lblDecks);
+		springLayout.putConstraint(SpringLayout.WEST, lblDeckName, 0, SpringLayout.WEST, lblDecks);
 	
 		//Spring layout for textField
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameField, 0, SpringLayout.VERTICAL_CENTER, lblDeckName);
@@ -344,12 +341,8 @@ public class DeckBuildingPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.EAST, nameField, 100, SpringLayout.WEST, nameField);
 		
 		//Spring layout for btnSave
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnSave, 0, SpringLayout.VERTICAL_CENTER, lblDeckName);
+		springLayout.putConstraint(SpringLayout.NORTH, btnSave, 20, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, btnSave, -20, SpringLayout.EAST, this);
-	
-		//Spring layout for btnDelete
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnDelete, 0, SpringLayout.VERTICAL_CENTER, lblDeckName);
-		springLayout.putConstraint(SpringLayout.WEST, btnDelete, 10, SpringLayout.EAST, btnSave);
 	
 		//Spring layout for cardArea
 		springLayout.putConstraint(SpringLayout.NORTH, cardArea, 10, SpringLayout.SOUTH, nameField);
@@ -370,33 +363,28 @@ public class DeckBuildingPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.NORTH, btnAddCard, 10, SpringLayout.SOUTH, lblAdd);
 		springLayout.putConstraint(SpringLayout.WEST, btnAddCard, 0, SpringLayout.WEST, lblAdd);
 		springLayout.putConstraint(SpringLayout.EAST, btnAddCard, 0, SpringLayout.EAST, numberField);
-
-		//SpringLayout for lblSelection
-		springLayout.putConstraint(SpringLayout.NORTH, lblSelection, 0, SpringLayout.NORTH, numberField);
-		springLayout.putConstraint(SpringLayout.WEST, lblSelection, 10, SpringLayout.EAST, numberField);
-		
-		//SpringLayout for selectionGroup
-		springLayout.putConstraint(SpringLayout.NORTH, btnSingleSelection, 10, SpringLayout.SOUTH, lblSelection);
-		springLayout.putConstraint(SpringLayout.WEST, btnSingleSelection, 0, SpringLayout.WEST, lblSelection);
-		springLayout.putConstraint(SpringLayout.NORTH, btnMultipleSelection, 5, SpringLayout.SOUTH, btnSingleSelection);
-		springLayout.putConstraint(SpringLayout.WEST, btnMultipleSelection, 0, SpringLayout.WEST, btnSingleSelection);
 		
 		//Spring layout for btnRmvSelected
-		springLayout.putConstraint(SpringLayout.NORTH, btnRmvSelected, 10, SpringLayout.SOUTH, cardArea);
+		springLayout.putConstraint(SpringLayout.NORTH, btnRmvSelected, 0, SpringLayout.NORTH, numberField);
 		springLayout.putConstraint(SpringLayout.EAST, btnRmvSelected, 0, SpringLayout.EAST, cardArea);
 		
 		//Spring layout for btnRmvAll
-		springLayout.putConstraint(SpringLayout.NORTH, btnRmvAll, 10, SpringLayout.SOUTH, btnRmvSelected);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnRmvAll, 0, SpringLayout.VERTICAL_CENTER, btnAddCard);
 		springLayout.putConstraint(SpringLayout.WEST, btnRmvAll, 0, SpringLayout.WEST, btnRmvSelected);
 		springLayout.putConstraint(SpringLayout.EAST, btnRmvAll, 0, SpringLayout.EAST, btnRmvSelected);
 		
-		//Spring layout for btnCancel
-		springLayout.putConstraint(SpringLayout.NORTH, btnCancel, 10, SpringLayout.SOUTH, btnAddCard);
-		springLayout.putConstraint(SpringLayout.WEST, btnCancel, 0, SpringLayout.WEST, btnAddCard);
-		springLayout.putConstraint(SpringLayout.EAST, btnCancel, 0, SpringLayout.EAST, btnAddCard);
+		//Spring layout for btnDelete
+		springLayout.putConstraint(SpringLayout.SOUTH, btnDelete, -20, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, btnDelete, 20, SpringLayout.WEST, this);
 		
+		//Spring layout for btnClose
+		springLayout.putConstraint(SpringLayout.SOUTH, btnClose, -20, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, btnClose, -20, SpringLayout.EAST, this);
+	
 		setLayout(springLayout);
 		
+		add(lblDecks);
+		add(decksComboBox);
 		add(lblDeckName);
 		add(nameField);
 		add(btnSave);
@@ -404,13 +392,10 @@ public class DeckBuildingPanel extends JPanel {
 		add(lblAdd);
 		add(numberField);
 		add(btnAddCard);
-		add(lblSelection);
-		add(btnSingleSelection);
-		add(btnMultipleSelection);
-		add(btnRmvAll);
 		add(btnRmvSelected);
-		add(btnCancel);
-		add(errLabel);
+		add(btnRmvAll);
+		add(btnDelete);
+		add(btnClose);
 	}
 	private void setupButtonIcons()
 	{
@@ -553,9 +538,6 @@ public class DeckBuildingPanel extends JPanel {
 	    return true;
 	}
 
-	/**
-	 * This function sets the focus on the name field.
-	 */
 	public void setFocusOnName() {
 		nameField.requestFocusInWindow();
 		getRootPane().setDefaultButton(btnAddCard);

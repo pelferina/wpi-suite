@@ -37,7 +37,7 @@ import javax.swing.SpringLayout;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Insets;
+
 /**
  * The GameData class
  * @author FFF8E7

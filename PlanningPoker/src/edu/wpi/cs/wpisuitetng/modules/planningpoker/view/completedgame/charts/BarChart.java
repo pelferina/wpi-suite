@@ -62,7 +62,8 @@ private static int theReq;
 
 		/**
 		 * Constructor for NewBarChartPanel.
-		 * @param title String
+		 * @param gs The game session to create a chart of
+		 * @param aReq the requirement iq to chart
 		 */
 		public BarChart(GameSession gs, int aReq){
 			theGame = gs;
@@ -160,6 +161,11 @@ private static int theReq;
 //			super.paintComponent(g);
 //		}
 		
+		/**
+		 * This function updates the chart information
+		 * @param aGame the game session of the chart
+		 * @param aReq the requirement id to display
+		 */
 		public void updateChart(GameSession aGame, int aReq)
 		{
 			theGame = aGame;

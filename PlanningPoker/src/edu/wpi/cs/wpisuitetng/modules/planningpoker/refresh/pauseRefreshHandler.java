@@ -29,7 +29,7 @@ public class pauseRefreshHandler implements AncestorListener {
 	 * private constructor for singleton class
 	 */
 	private pauseRefreshHandler(){
-		this.RefMan = new ArrayList<RefreshManager>();
+		RefMan = new ArrayList<RefreshManager>();
 	}
 	
 	/** 
@@ -72,6 +72,10 @@ public class pauseRefreshHandler implements AncestorListener {
 		return instance;
 	}
 	
+	/**
+	 * This function adds a manager to the handler
+	 * @param NewRefManager the refresh manager to add, as NewRefManager
+	 */
 	public static void addRefreshManager(RefreshManager NewRefManager){
 		pauseRefreshHandler.getInstance(); // ensure that refmanager gets created
 		RefMan.add(NewRefManager);

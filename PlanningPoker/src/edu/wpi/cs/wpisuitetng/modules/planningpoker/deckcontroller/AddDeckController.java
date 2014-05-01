@@ -75,7 +75,7 @@ public class AddDeckController implements ActionListener {
 	}
 	/**
 	 * When the new Deck is received back from the server, add it to the local model.
-	 * @param Deck
+	 * @param deck The deck to add
 	 */
 	public void addDeckToModel(Deck deck) {
 		DeckModel.getInstance().addDeck(deck);

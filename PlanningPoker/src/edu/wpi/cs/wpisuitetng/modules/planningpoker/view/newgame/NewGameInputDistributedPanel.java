@@ -40,7 +40,7 @@ import javax.swing.SpringLayout;
 import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.DefaultTableModel;
+
 
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
@@ -56,7 +56,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.GuiStandards;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+
 
 /**
  * This is the window for the user to create a planning poker session
@@ -731,6 +731,10 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			}
 		}
 	}
+	
+	/**
+	 * This sets up the deck combobox
+	 */
 	public void initializeDeckComboBox()
 	{	
 		deckBox.removeAllItems();
@@ -1087,6 +1091,9 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		add(reqError);
 	}
 	
+	/**
+	 * This sets the focus to the name field
+	 */
 	public void setFocusNameText(){
 		nameTextField.requestFocusInWindow();
 	}

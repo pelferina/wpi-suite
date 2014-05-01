@@ -7,14 +7,9 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.DefaultToolbarView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.ButtonPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.GreetingPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.OwnerButtonPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerButtonsPanel;
@@ -35,15 +30,18 @@ public class ToolbarView  extends DefaultToolbarView {
 	public OwnerButtonPanel ownerButton = new OwnerButtonPanel();
 	public UserButtonPanel userButton = new UserButtonPanel();
 	public GreetingPanel greetingPanel = new GreetingPanel();
+	public ButtonPanel buttonPanel = new ButtonPanel();
 	/**
 	 * Creates and positions option buttons in upper toolbar
 	 * @param visible boolean
 	 */
 	public ToolbarView(boolean visible) {
 		this.insertGroupAt(greetingPanel, 0);
+		
 		this.addGroup(gameButton);
-		this.addGroup(userButton);
-		this.addGroup(ownerButton);
+		this.addGroup(buttonPanel);
+		//this.addGroup(userButton);
+		//this.addGroup(ownerButton);
 	}
 	
 	/**
@@ -54,6 +52,15 @@ public class ToolbarView  extends DefaultToolbarView {
 		return gameButton;
 	}
 	
+	public void changeButtons(GameSession gameSelected){
+		buttonPanel.showButton(gameSelected);
+		//this.updateUI();
+		//this.repaint();
+	}
+	
+	public void removeButtons(){
+		buttonPanel.removeButtons();
+	}
 	
 	//---------------Owner button ----------------------
 	/**
@@ -97,10 +104,10 @@ public class ToolbarView  extends DefaultToolbarView {
 	 *
 	 * Enables the end game button, and add a action listener
 	 * to this game
-	 * @param gameID 
+	 * @param game
 	 */
-	public void makeEditGameButtonVisible(int gameID){
-		ownerButton.makeEditGameButtonVisible(gameID);
+	public void makeEditGameButtonVisible(GameSession gameSelected){
+		ownerButton.makeEditGameButtonVisible(gameSelected);
 	}
 	
 	/**

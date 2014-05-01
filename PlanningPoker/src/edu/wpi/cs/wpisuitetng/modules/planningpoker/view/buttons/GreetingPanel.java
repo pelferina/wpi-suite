@@ -9,29 +9,29 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
 
-import java.awt.Dimension;
+
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
+
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.Box;
+
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+
+
+
 
 import javax.swing.SwingConstants;
 
 import java.awt.Component;
-import java.awt.FlowLayout;
+
 import java.awt.Font;
 
 /**
