@@ -212,6 +212,11 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 							votesSoFarInt = card.getValue();
 							votesSoFarLabel.setText (Integer.toString(votesSoFarInt)) ;
 							unselectOtherCards(card);
+							voteButton.setEnabled(true);
+						} else {
+							votesSoFarInt = 0;
+							votesSoFarLabel.setText("none");
+							voteButton.setEnabled(false);
 						}
 					}
 				});
