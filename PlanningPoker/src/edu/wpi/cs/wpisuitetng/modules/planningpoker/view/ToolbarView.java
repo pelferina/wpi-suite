@@ -37,8 +37,9 @@ public class ToolbarView  extends DefaultToolbarView {
 	 */
 	public ToolbarView(boolean visible) {
 		this.insertGroupAt(greetingPanel, 0);
+		
+		this.addGroup(gameButton);
 		this.addGroup(buttonPanel);
-		//this.addGroup(gameButton);
 		//this.addGroup(userButton);
 		//this.addGroup(ownerButton);
 	}
@@ -103,10 +104,10 @@ public class ToolbarView  extends DefaultToolbarView {
 	 *
 	 * Enables the end game button, and add a action listener
 	 * to this game
-	 * @param gameID 
+	 * @param game
 	 */
-	public void makeEditGameButtonVisible(int gameID){
-		ownerButton.makeEditGameButtonVisible(gameID);
+	public void makeEditGameButtonVisible(GameSession gameSelected){
+		ownerButton.makeEditGameButtonVisible(gameSelected);
 	}
 	
 	/**
