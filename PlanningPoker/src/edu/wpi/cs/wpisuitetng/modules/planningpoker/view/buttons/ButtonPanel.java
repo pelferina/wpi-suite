@@ -148,7 +148,6 @@ public class ButtonPanel extends ToolbarGroupView{
 		buttonQueue.clear();
 	}
 	public void showButton(final GameSession gameSelected){
-		System.err.println("showButton function called");
     	final User currentUser = GetCurrentUser.getInstance().getCurrentUser();
     	final GameStatus status = gameSelected.getGameStatus();
     	final boolean hasCategory = false;
@@ -221,12 +220,11 @@ public class ButtonPanel extends ToolbarGroupView{
     			contentPanel.add(editButton);
     			contentPanel.add(Box.createRigidArea(new Dimension(15,0)));
     			contentPanel.updateUI();
-    		}
-    		
-    		int buttonNum = buttonQueue.size();
-    		this.setPreferredWidth(165*buttonNum);
-    		this.updateUI();
+    		}	
     	}
+    	int buttonNum = buttonQueue.size();
+		this.setPreferredWidth(165*buttonNum);
+		this.updateUI();
 	}
 
 	/**
