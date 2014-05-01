@@ -221,5 +221,11 @@ public class ViewEventController {
 	public void makeEditGameButtonInVisible() {
 		toolbar.makeEditGameButtonInvisible();		
 	}
-
+	
+	public void changeButton(GameSession gameSelected){
+		toolbar.changeButtons(gameSelected);
+	}
+	public void removeButtons(){
+		toolbar.removeButtons();
+	}
 }
