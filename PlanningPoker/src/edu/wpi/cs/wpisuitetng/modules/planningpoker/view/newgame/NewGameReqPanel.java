@@ -25,10 +25,14 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 
 
 
+
+
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -279,6 +283,78 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 			}
 		});
 
+		//Allows clicking to select
+		unselectedTable.addMouseListener(new MouseAdapter() {
+			   public void mouseClicked(MouseEvent e) {
+			      if (e.getClickCount() == 2) {
+			    	  int[] index = unselectedTable.getSelectedRows();
+						boolean last = false;
+						if(unselectedTable.getSelectedRow() == unselectedTable.getRowCount() - 1)
+							last = true;
+						int offset = 0;
+						while(index.length > 0){
+							final Requirement selectedReq = reqs.get(index[0]-offset);
+							selected.add(selectedReq);
+							reqs.remove(index[0]-offset);
+							final String[] data = {selectedReq.getName(), selectedReq.getDescription()};
+							final DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
+							final DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
+							dtm.setRowCount(reqs.size());
+							for (int j = 0; j < reqs.size(); j++){
+								dtm.setValueAt(reqs.get(j).getName(), j, 0);
+								dtm.setValueAt(reqs.get(j).getDescription(), j, 1);
+							}
+							dtm_1.addRow(data);
+							index = removeFirst(index);
+							offset++;
+						}
+						selectedTable.clearSelection();
+						unselectedTable.clearSelection();
+						int rowIndex = unselectedTable.getRowCount() - 1;
+						if(!last && unselectedTable.getRowCount()>0)
+							unselectedTable.setRowSelectionInterval(0, 0);
+						else if(last && unselectedTable.getRowCount()>0)
+							unselectedTable.setRowSelectionInterval(rowIndex, rowIndex);			
+						rowIndex = selectedTable.getRowCount() - 1;
+						selectedTable.setRowSelectionInterval(rowIndex, rowIndex);
+			         }
+			   }
+			});
+		
+		//Allows double clicking to select
+		selectedTable.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					int[] index = selectedTable.getSelectedRows();
+					int offset = 0;
+					while(index.length >0){
+						final Requirement selectedReq = selected.get(index[0]-offset);
+						selected.remove(index[0]-offset);
+						reqs.add(selectedReq);
+						final String[] data = {selectedReq.getName(), selectedReq.getDescription()};
+						final DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
+						final DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
+						dtm_1.setRowCount(selected.size());
+						for (int i = 0; i < selected.size(); i++){
+							dtm_1.setValueAt(selected.get(i).getName(), i, 0);
+							dtm_1.setValueAt(selected.get(i).getDescription(), i, 1);
+						}
+						dtm.addRow(data);
+						index = removeFirst(index);
+						offset++;
+					}
+					selectedTable.clearSelection();
+					unselectedTable.clearSelection();
+					int rowIndex = selectedTable.getRowCount() - 1;
+					if(selectedTable.getRowCount()>0)
+						selectedTable.setRowSelectionInterval(rowIndex, rowIndex);
+					rowIndex = unselectedTable.getRowCount() - 1;				
+					unselectedTable.setRowSelectionInterval(rowIndex, rowIndex);
+				}
+			}
+		});
+		
+		
 		//Initializes the unselected requirements table
 		unselectedTable.setModel(new DefaultTableModel(
 				new Object[][] {
@@ -514,6 +590,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	public void refreshDecks() {
 		//intentionally left blank
 	}
+
 }
 
 
