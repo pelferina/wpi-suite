@@ -84,4 +84,42 @@ public class InputPanelTest {
 		assertEquals(false, testNew.getActivateGameButton().isEnabled());
 		assertEquals(false, testNew.getSaveGameButton().isEnabled());		
 	}
+	
+	/**
+	 * check for enability when required fields are not filled in
+	 */
+	@Test
+	public void errorRequiredFieldTest() {
+		// Create new game panel
+		NewGameDistributedPanel ngdp = new NewGameDistributedPanel(reqs, null);
+		NewGameInputDistributedPanel testNew = new NewGameInputDistributedPanel(ngdp);
+				
+		
+		// a field is added correctly but both name and description are filled with blanks
+		ngdp.getNewGameReqPanel().getAddOneButton().doClick();
+		testNew.getNameTextField().setText("");
+//		testNew.getDescriptionTextField().setText("");
+		
+//		// release pressed key
+//		testNew.getInfoPanel().keyReleased(null);
+//		
+		// can't create because no name/description, but a field has been changed
+		assertFalse(testNew.getSaveGameButton().isEnabled());
+		assertTrue(testNew.getActivateGameButton().isEnabled());
+//		assertEquals(true, testNew.getButtonPanel().getButtonCancel().isEnabled());
+//		
+//		// blank description
+//		testNew.getInfoPanel().getBoxName().setText("Name");
+//		testNew.getInfoPanel().getBoxDescription().setText(" ");
+//		
+//		// release pressed key
+//		testNew.getInfoPanel().keyReleased(null);
+//		
+//		// can't create because no name/description, but a field has been changed
+//		assertEquals(false, testNew.getButtonPanel().getButtonOK().isEnabled());
+//		assertEquals(true, testNew.getButtonPanel().getButtonClear().isEnabled());
+//		assertEquals(true, testNew.getButtonPanel().getButtonCancel().isEnabled());
+		
+
+	}
 }

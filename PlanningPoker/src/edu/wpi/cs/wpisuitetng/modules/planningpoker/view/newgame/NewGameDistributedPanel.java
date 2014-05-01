@@ -195,4 +195,16 @@ public class NewGameDistributedPanel extends JSplitPane {
 	public void refreshRequirements() {
 		newGameReqPanel.refreshRequirements();
 	}
+	public NewGameReqPanel getNewGameReqPanel() {
+		return newGameReqPanel;
+	}
+	public void setNewGameReqPanel(NewGameReqPanel newGameReqPanel) {
+		this.newGameReqPanel = newGameReqPanel;
+	}
+	public DeckBuildingPanel getDeckPanel() {
+		return deckPanel;
+	}
+	public void setDeckPanel(DeckBuildingPanel deckPanel) {
+		this.deckPanel = deckPanel;
+	}
 }

@@ -1145,6 +1145,10 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		return descriptionScrollPane;
 	}
 
+	public JTextArea getDescriptionTextField() {
+		return descriptionTextField;
+	}
+
 	public JDatePickerImpl getDatePicker() {
 		return datePicker;
 	}
