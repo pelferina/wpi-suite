@@ -104,7 +104,7 @@ public class GameRequirements extends JSplitPane{
 		estimatesPending.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		estimatesComplete.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		estimatesPending.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Requirements to Estimate"}));
-		estimatesComplete.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Requirements Estimated", "Your Estimates"}));
+		estimatesComplete.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Requirements Estimated", "Estimates"}));
 		estimatesPending.setFillsViewportHeight(true);
 		estimatesComplete.setFillsViewportHeight(true);
 		init(gameToPlay);
@@ -160,6 +160,10 @@ public class GameRequirements extends JSplitPane{
 		completePane.setViewportView(estimatesComplete);
 		estimatesPending.getSelectionModel().addListSelectionListener(new tableListener(estimatesPending));
 		estimatesComplete.getSelectionModel().addListSelectionListener(new tableListener(estimatesComplete));
+		
+		estimatesComplete.getColumnModel().getColumn(2).setMinWidth(40);
+		estimatesComplete.getColumnModel().getColumn(2).setMaxWidth(100);
+		estimatesComplete.getColumnModel().getColumn(2).setPreferredWidth(80);
 		
 		final Dimension minimumSize = new Dimension(200, 200);
 		rightComponent.setMinimumSize(minimumSize);
