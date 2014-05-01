@@ -10,10 +10,10 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
  */
 public enum GuiStandards {
 	// distances between GUI elements and the edge of the screen
-	TOP_MARGIN(34),
-	BOTTOM_MARGIN(10),
-	LEFT_MARGIN(23),
-	RIGHT_MARGIN(23),
+	TOP_MARGIN(20),
+	BOTTOM_MARGIN(20),
+	LEFT_MARGIN(20),
+	RIGHT_MARGIN(20),
 	
 	// distance between GUI elements and a divider
 	DIVIDER_MARGIN(10),

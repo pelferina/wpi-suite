@@ -307,19 +307,19 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 
 		// Spring Layout of Buttons
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnAddReq, 0, SpringLayout.VERTICAL_CENTER, this);
-		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, btnAddReq, 0, SpringLayout.HORIZONTAL_CENTER, this);
+		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, btnAddReq, 0, SpringLayout.HORIZONTAL_CENTER, unselected_table);
 		springLayout.putConstraint(SpringLayout.NORTH, btnRemoveAll, 0, SpringLayout.NORTH, btnAddReq);
-		springLayout.putConstraint(SpringLayout.SOUTH, btnRemoveAll, 0, SpringLayout.SOUTH, btnAddReq);
-		springLayout.putConstraint(SpringLayout.WEST, btnRemoveAll, 20, SpringLayout.EAST, btnAddReq); 
+		springLayout.putConstraint(SpringLayout.EAST, btnRemoveAll, 0, SpringLayout.WEST, btnRemoveOne); 
+		springLayout.putConstraint(SpringLayout.SOUTH, btnRemoveAll, 0, SpringLayout.SOUTH, btnAddReq); 
 		springLayout.putConstraint(SpringLayout.NORTH, btnRemoveOne, 0, SpringLayout.NORTH, btnRemoveAll);
+		springLayout.putConstraint(SpringLayout.EAST, btnRemoveOne, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, btnRemoveOne, 0, SpringLayout.SOUTH, btnAddReq);
-		springLayout.putConstraint(SpringLayout.WEST, btnRemoveOne, 0, SpringLayout.EAST, btnRemoveAll);
 		springLayout.putConstraint(SpringLayout.NORTH, btnAddAll, 0, SpringLayout.NORTH, btnAddReq);
+		springLayout.putConstraint(SpringLayout.WEST, btnAddAll, 0, SpringLayout.EAST, btnAddOne);
 		springLayout.putConstraint(SpringLayout.SOUTH, btnAddAll, 0, SpringLayout.SOUTH, btnAddReq);
-		springLayout.putConstraint(SpringLayout.EAST, btnAddAll, -20, SpringLayout.WEST, btnAddReq);
 		springLayout.putConstraint(SpringLayout.NORTH, btnAddOne, 0, SpringLayout.NORTH, btnAddReq);
+		springLayout.putConstraint(SpringLayout.WEST, btnAddOne, 0, SpringLayout.WEST, unselected_table);
 		springLayout.putConstraint(SpringLayout.SOUTH, btnAddOne, 0, SpringLayout.SOUTH, btnAddReq);
-		springLayout.putConstraint(SpringLayout.EAST, btnAddOne, 0, SpringLayout.WEST, btnAddAll);
 
 		// Spring Layout of lblRequirementsSelected
 		springLayout.putConstraint(SpringLayout.NORTH, lblRequirementsSelected, 10, SpringLayout.SOUTH, btnRemoveOne);
@@ -328,7 +328,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		// Spring Layout of selected_table
 		springLayout.putConstraint(SpringLayout.NORTH, selected_table, GuiStandards.DIVIDER_MARGIN.getValue(), SpringLayout.SOUTH, lblRequirementsSelected);
 		springLayout.putConstraint(SpringLayout.WEST, selected_table, 0, SpringLayout.WEST, unselected_table);
-		springLayout.putConstraint(SpringLayout.SOUTH, selected_table, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, selected_table, -GuiStandards.BOTTOM_MARGIN.getValue(), SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, selected_table, -0, SpringLayout.EAST, unselected_table);
 
 		// Adds elements to the panel
