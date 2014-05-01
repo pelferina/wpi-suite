@@ -141,7 +141,6 @@ public class VoteData extends JPanel{
 		//Sets the name and description text fields to the first requirements
 		reqNameText.setText(currentReq.getName());
 		reqNameText.setEditable(false);
-		descriptionTextArea.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		descriptionTextArea.setText(currentReq.getDescription());
 		descriptionTextArea.setWrapStyleWord(true);
 		descriptionTextArea.setEditable(false);
@@ -431,8 +430,6 @@ public class VoteData extends JPanel{
 	public void receiveNewReq(Requirement req) {
 		currentReq = req;
 		reqIndex = completeView.getIndex(currentReq.getId());
-		
-		
 		//Repopulate statistics table
 		final DefaultTableModel statsModel = (DefaultTableModel) statsTable.getModel();
 		

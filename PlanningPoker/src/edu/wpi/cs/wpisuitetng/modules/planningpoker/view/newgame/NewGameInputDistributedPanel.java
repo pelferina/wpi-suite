@@ -130,7 +130,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	private final JLabel hourError = new JLabel("Select an hour for deadline");
 	private final JLabel minuteError = new JLabel("Select a minute for deadline");
 	private final JLabel deadlineError = new JLabel("Can not have a deadline in the past");
-	private final JLabel nameError = new JLabel("Enter a name for the game");
+	private final JLabel nameError = new JLabel("Enter a valid name for the game");
 	private final JLabel reqError = new JLabel("Can not have a game with no requirements");
 
 	/*
@@ -221,7 +221,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		descriptionTextField.setWrapStyleWord(true);
 		
 		nameTextField.setMargin(new Insets(0, GuiStandards.TEXT_BOX_MARGIN.getValue(), 0, 0));
-		
+		nameTextField.setDocument(new JTextFieldLimit(10));
 		// Set initial save/activate game visibility		
 		setSaveGameButtonVisibility(false);
 		setActivateGameButtonVisibility(false);
@@ -309,8 +309,13 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			private void updateSave(DocumentEvent e) {
 				newGameP.isNew = false;
 				if (nameTextField.getText().length() != 0){
-					nameError.setVisible(false);		
-					setSaveGameButtonVisibility(true);
+					if (nameTextField.getText().length() <= 50){
+						nameError.setEnabled(true);
+						setSaveGameButtonVisibility(false);
+					}else{
+						nameError.setVisible(false);		
+						setSaveGameButtonVisibility(true);
+					}
 				}
 				else
 				{
