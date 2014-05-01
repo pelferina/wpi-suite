@@ -218,13 +218,13 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	 * to this game
 	 * @param gameID 
 	 */
-	public void makeEditGameButtonVisible(int gameID){
+	public void makeEditGameButtonVisible(GameSession game){
 		editButton.setVisible(true);
 		editButton.setEnabled(true);
 		if(listener != null){
 			editButton.removeActionListener(listener);
 		}
-		listener = new EditGameActionListener(gameID);
+		//listener = new EditGameActionListener(gameID);
 		editButton.addActionListener(listener);
 		determineButtonSize();
 	}
