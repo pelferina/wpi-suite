@@ -45,7 +45,7 @@ public class VotingCompleteListener implements ActionListener {
 		VoteModel.getInstance().addVotes(db.retrieveAll(new Vote(null,0)).toArray(new Vote[0]));
 
 		gameArray = db.retrieveAll(
-				new GameSession(new String(), new String(), 0, 0, new Date(),
+				new GameSession(new String(), new String(), new String(), 0, new Date(),
 						null)).toArray(new GameSession[0]);
 
 		numOfUser = db.retrieveAll(new User(null, null, null, 0)).size();

@@ -69,7 +69,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	GameTree gameTreeModel;
 	JTree gameTree;
 	TableRowSorter<JTableModel> sorter;
-	int currentUser;
+	String currentUser;
 	private boolean hasPulled = false;
 
 	public OverviewPanel(){
@@ -107,7 +107,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 						if (clickedGame != null && clickedGame.getGameStatus() == GameStatus.DRAFT){
 							final User currentUser = GetCurrentUser.getInstance().getCurrentUser();
 							//End game button
-							if(currentUser.getIdNum() == clickedGame.getOwnerID()){
+							if(currentUser.getUsername().equals(clickedGame.getOwnerName())){
 								ViewEventController.getInstance().editGameTab(clickedGame); // Make this edit insteadS
 							}
 						}
@@ -136,7 +136,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		//table.setToolTipText("Double Click to Edit");
 		table.getSelectionModel().addListSelectionListener(new TableSelectListener(table));
 
-
+		
 		tableView = new JScrollPane(table);
 		table.setFillsViewportHeight(true);
 		setLayout(new BorderLayout(0, 0));
@@ -186,7 +186,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	 */
 	public void updateTable(String s){
 		/** TODO this should be in the constructor, but this panel gets loaded before a user logs in*/
-		currentUser = GetCurrentUser.getInstance().getCurrentUser().getIdNum();
+		currentUser = GetCurrentUser.getInstance().getCurrentUser().getUsername();
 
 		List<GameSession> sessions = new ArrayList<GameSession>();
 

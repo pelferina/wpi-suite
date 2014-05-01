@@ -73,7 +73,7 @@ public class PlanningPokerEntityManagerTest {
 		Date deadline = new Date();
 		deadline.setSeconds(deadline.getSeconds()+5);
 		
-		GameSession testGame = new GameSession("test game", null, 1, 1, deadline , null);
+		GameSession testGame = new GameSession("test game", null, "", 1, deadline , null);
 		db.save(testGame, testProject);
 		assertTrue(testGame.getGameStatus().compareTo(GameStatus.DRAFT)==0);
 		try {
@@ -94,13 +94,13 @@ public class PlanningPokerEntityManagerTest {
 		vote11.add(32);
 		vote22.add(21);
 		vote22.add(17);
-		Vote vote1 = new Vote(vote11,1,1);
-		Vote vote2 = new Vote(vote22,2,1);
+		Vote vote1 = new Vote(vote11,"Bob",1);
+		Vote vote2 = new Vote(vote22,"Admin",1);
 		
 		
 		reqList.add(1);
 		reqList.add(2);
-		GameSession testGame = new GameSession("test game", null, 1, 1, null , reqList);
+		GameSession testGame = new GameSession("test game", null, "Bob", 1, null , reqList);
 		System.out.println(testGame.getMean());
 		System.out.println(testGame.getMedian());
 		

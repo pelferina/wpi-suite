@@ -90,7 +90,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 		final GameSession[] games = getAll(s);
 
 		final GameSession newGame = new GameSession(importedGame.getGameName(),
-				importedGame.getGameDescription(), s.getUser().getIdNum(),
+				importedGame.getGameDescription(), s.getUser().getUsername(),
 				games.length + 1, importedGame.getEndDate(),
 				importedGame.getGameReqs());
 		newGame.setGameStatus(importedGame.getGameStatus());
@@ -131,7 +131,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 		// retrieving specific PostBoardMessages.
 		try {
 			final int ID = Integer.parseInt(id);
-			final GameSession aSample = new GameSession(null, null, 0, 0, null, null);
+			final GameSession aSample = new GameSession(null, null, null, 0, null, null);
 
 			return (GameSession[]) db.retrieveAll(aSample).toArray();
 		} catch (NumberFormatException e) {
@@ -155,7 +155,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 		// Passing the project makes it only get messages from that project
 
 		final GameSession[] messages = db.retrieveAll(
-				new GameSession(new String(), new String(), 0, 0, new Date(),
+				new GameSession(new String(), new String(),  new String(), 0, new Date(),
 						new ArrayList<Integer>()), s.getProject()).toArray(
 				new GameSession[0]);
 		// GameSession(String game, int OwnerID, int GameID, Date date, List<>
@@ -375,7 +375,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	@Override
 	public int Count(){
 		// Return the number of PostBoardMessages currently in the database
-		return db.retrieveAll(new GameSession(null, null, 0, 0, null, null))
+		return db.retrieveAll(new GameSession(null, null, null, 0, null, null))
 				.size();
 	}
 

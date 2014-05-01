@@ -70,7 +70,7 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 
 		final User currentUser = GetCurrentUser.getInstance().getCurrentUser();
 		
-		if (((String) node.getUserObject()).equals("Needs Vote") && GameModel.getInstance().getGamesNeedingVote(currentUser.getIdNum()).size() > 0 ) {
+		if (((String) node.getUserObject()).equals("Needs Vote") && GameModel.getInstance().getGamesNeedingVote(currentUser.getUsername()).size() > 0 ) {
 			setIcon(voteIcon);
 		} else {
 			setIcon(normalIcon);

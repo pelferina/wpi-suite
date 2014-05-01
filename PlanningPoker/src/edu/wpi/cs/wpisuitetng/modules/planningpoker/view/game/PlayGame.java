@@ -116,7 +116,7 @@ public class PlayGame extends JPanel implements Refreshable{
 			estimates.add(-1);
 		}
 		for (Vote v: gameToPlay.getVotes()){
-			if (v.getUID() == GetCurrentUser.getInstance().getCurrentUser().getIdNum()){
+			if (v.getUserName().equals(GetCurrentUser.getInstance().getCurrentUser().getUsername())){
 				userEstimates = v;
 				hasVoted = true;
 			}

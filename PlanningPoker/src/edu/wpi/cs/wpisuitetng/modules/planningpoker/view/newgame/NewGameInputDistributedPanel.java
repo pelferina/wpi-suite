@@ -47,6 +47,7 @@ import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateGameController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.deckcontroller.GetDecksController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
@@ -422,7 +423,8 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		//If activating: Set game status to active and Send an activation email 
 		if(!editMode)
 		{
-			final GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
+			
+			final GameSession newGame = new GameSession(name, description, GetCurrentUser.getInstance().getCurrentUser().getUsername() , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
 			if(activate)
 			{
 				newGame.setGameStatus(GameStatus.ACTIVE);
