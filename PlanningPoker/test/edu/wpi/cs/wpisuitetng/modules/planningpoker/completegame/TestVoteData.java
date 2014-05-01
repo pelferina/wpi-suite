@@ -27,7 +27,7 @@ public class TestVoteData {
 		int req1 = 0;
 		List<Integer> reqs = new ArrayList<Integer>();
 		reqs.add(req1);
-		GameSession testGame = new GameSession("Test Game", "Test Description", 0, 0, new Date(), reqs);
+		GameSession testGame = new GameSession("Test Game", "Test Description", "", 0, new Date(), reqs);
 //		CompleteView cv = new CompleteView(testGame);
 //		VoteData testVote = new VoteData(testGame,cv);
 //		boolean result = testVote.isEnabled();

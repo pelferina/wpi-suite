@@ -28,7 +28,7 @@ public class LoadGameTest {
 	public void testLoadCompleteGame(){
 		ArrayList<Integer> reqArray = new ArrayList<Integer>();
 		reqArray.add(0);
-		GameSession testGame = new GameSession("Test Game", "Test Description", 0, 0, new Date(), reqArray);
+		GameSession testGame = new GameSession("Test Game", "Test Description", "", 0, new Date(), reqArray);
 		CompleteView cv = new CompleteView(testGame);
 		VoteData vd = cv.getVoteData();
 		GameData gd = cv.getGameData();

@@ -81,7 +81,7 @@ public class MainView extends JTabbedPane {
 	 */
 		public void addNewGameTab()
 		{
-			addTab("New Game", new GameSession(new String(), new String(), 0, 0, new Date(), new ArrayList<Integer>()));
+			addTab("New Game", new GameSession(new String(), new String(), new String(), 0, new Date(), new ArrayList<Integer>()));
 		}
 		
 		/**
@@ -431,7 +431,7 @@ public class MainView extends JTabbedPane {
 	 */
 	public void addPreferencesPanel() {
 		if (!hasPreferencePane){
-			addTab("User Preferences", new GameSession(null, null, 0, 0, null, null));
+			addTab("User Preferences", new GameSession(null, null, null, 0, null, null));
 		}
 	}
 

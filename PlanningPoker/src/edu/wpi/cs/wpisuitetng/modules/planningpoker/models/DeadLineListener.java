@@ -51,7 +51,7 @@ public class DeadLineListener implements ActionListener{
 		//System.err.println("Refresh");
 		GameSession[] gameArray = {};
 		
-		gameArray = db.retrieveAll(new GameSession(new String(), new String(), 0 , 0, new Date(), null)).toArray(new GameSession[0]);
+		gameArray = db.retrieveAll(new GameSession(new String(), new String(),  new String(), 0, new Date(), null)).toArray(new GameSession[0]);
 
 		final Date today = new Date();
 		

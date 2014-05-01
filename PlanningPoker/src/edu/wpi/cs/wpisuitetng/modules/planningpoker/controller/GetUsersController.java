@@ -61,9 +61,9 @@ public class GetUsersController {
 		return userList;
 	}
 
-	public String getUserFromID(int userID){
+	public String getUserFromName(String userName){
 		for (User u : userList){
-			if (u.getIdNum() == userID){
+			if (u.getUsername().equals(userName)){
 				return u.getName();
 			}
 		}

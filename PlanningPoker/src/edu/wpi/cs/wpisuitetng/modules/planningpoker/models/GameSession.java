@@ -37,7 +37,7 @@ public class GameSession extends AbstractModel {
 	private String gameDescription;
 
 
-	private final int ownerID;
+	private final String ownerName;
 	private final int gameID;
 	/** game status indicator 
 	 * 0  = game is in draft mode
@@ -69,10 +69,10 @@ public class GameSession extends AbstractModel {
 	 * @param deadline the time of the deadline as a date
 	 * @param gameReqs the requirements of the game, as a List<Integers>
 	 */
-	public GameSession(String game, String description, int ownerID, int gameID, Date deadline, List<Integer> gameReqs){
+	public GameSession(String game, String description, String ownerName, int gameID, Date deadline, List<Integer> gameReqs){
 		gameName = game;
 		gameDescription = description;
-		this.ownerID = ownerID;
+		this.ownerName = ownerName;
 		this.gameID = gameID;
 		endDate = deadline;
 		this.gameReqs = gameReqs;
@@ -176,8 +176,8 @@ public class GameSession extends AbstractModel {
 		return null;
 	}
 
-	public int getOwnerID() {
-		return ownerID;
+	public String getOwnerName() {
+		return ownerName;
 	}
 
 	public int getGameID() {
@@ -260,7 +260,7 @@ public class GameSession extends AbstractModel {
 
 		if (gameName.equals(o.getGameName())){
 			if (gameDescription.equals(o.getGameDescription())){
-				if (ownerID == o.getOwnerID()){
+				if (ownerName.equals(o.getOwnerName())){
 					if (gameID == o.getGameID()){
 						if ((endDate == null && o.getEndDate()==null) || endDate.equals(o.getEndDate())){ // if both are null or they are equal
 							if (gameReqs.equals(o.getGameReqs())){

@@ -35,10 +35,10 @@ public class testDifferentList {
 	@Test
 	public void testGameSessionCreate(){
 		List<GameSession> gs = new ArrayList<GameSession>();
-		gs.add(new GameSession("Name", "", 0, 0, Calendar.getInstance().getTime(), new ArrayList<Integer>()));
+		gs.add(new GameSession("Name", "", "", 0, Calendar.getInstance().getTime(), new ArrayList<Integer>()));
 		
 		List<GameSession> gs2 = new ArrayList<GameSession>();
-		gs2.add(new GameSession("Name1", "", 0, 0, Calendar.getInstance().getTime(), new ArrayList<Integer>()));
+		gs2.add(new GameSession("Name1", "", "", 0, Calendar.getInstance().getTime(), new ArrayList<Integer>()));
 		
 		RefreshManager r = new RefreshManager();
 		assertTrue(r.differentList(gs, gs2));

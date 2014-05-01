@@ -128,7 +128,7 @@ public class VoteData extends JPanel{
 		reqIndex = 0;
 		
 		//Enables the submit button and text box for final estimate if the user is the owner of the game
-		if (completedGame.getOwnerID() == GetCurrentUser.getInstance().getCurrentUser().getIdNum() && completedGame.getGameStatus() != GameStatus.ARCHIVED){
+		if (completedGame.getOwnerName().equals(GetCurrentUser.getInstance().getCurrentUser().getUsername()) && completedGame.getGameStatus() != GameStatus.ARCHIVED){
 			finalEstimateText.setEnabled(true);
 		}
 		else {
@@ -256,7 +256,7 @@ public class VoteData extends JPanel{
 		int i = 0;
 		for (Vote v: completedGame.getVotes()){
 			for (User u: GetAllUsers.getInstance().getAllUsers()){
-				if (u.getIdNum() == v.getUID()){
+				if (u.getUsername().equals(v.getUserName())){
 					estimatesModel.setValueAt(u.getName(), i, 0);
 				}
 			}
@@ -443,7 +443,7 @@ public class VoteData extends JPanel{
 		final DefaultTableModel estimatesModel = (DefaultTableModel) estimatesTable.getModel();
 		for (Vote v: completedGame.getVotes()){
 			for (User u: GetAllUsers.getInstance().getAllUsers()){
-				if (u.getIdNum() == v.getUID()){
+				if (u.getUsername().equals(v.getUserName())){
 					estimatesModel.setValueAt(u.getName(), i, 0);
 				}
 			}

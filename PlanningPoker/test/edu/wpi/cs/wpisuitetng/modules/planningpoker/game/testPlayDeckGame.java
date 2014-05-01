@@ -39,7 +39,7 @@ public class testPlayDeckGame {
 	}	
 	@Test
 	public void testDeadlineCheck() throws Exception{
-		GameSession gs = new GameSession("G","D", 0, 0, Calendar.getInstance().getTime(), new ArrayList());
+		GameSession gs = new GameSession("G","D", "", 0, Calendar.getInstance().getTime(), new ArrayList());
 		GameView gv = new GameView(gs);
 		PlayDeckGame pdg = new PlayDeckGame(gs, gv);
 		pdg.clear();

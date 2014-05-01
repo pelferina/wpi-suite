@@ -51,7 +51,7 @@ public class TableSelectListener implements ListSelectionListener{
 	    }
 	    row = table.convertRowIndexToModel(row);
 	    final JTableModel model = (JTableModel)table.getModel();
-		final int ownerID = model.getOwnerID(row);
+		final String ownerName = model.getOwnerName(row);
     	final int gameID = model.getGameID(row);
     	final GameSession gameSelected = model.getGame(row);
     	final GameStatus status = gameSelected.getGameStatus();
@@ -61,7 +61,7 @@ public class TableSelectListener implements ListSelectionListener{
     	ViewEventController.getInstance().changeButton(gameSelected);
     	
     	final boolean hasCategory = false;
-    	if(currentUser.getIdNum() == ownerID){
+    	if(currentUser.getUsername().equals(ownerName)){
     		if(status.equals(GameStatus.ACTIVE) || status.equals(GameStatus.INPROGRESS)){
     			ViewEventController.getInstance().makeEndGameButtonVisible(gameSelected);
     			//hasCategory = true;

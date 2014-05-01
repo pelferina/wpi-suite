@@ -45,6 +45,7 @@ import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateGameController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.deckcontroller.GetDecksController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
@@ -427,7 +428,8 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		//If activating: Set game status to active and Send an activation email 
 		if(!editMode)
 		{
-			final GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
+			
+			final GameSession newGame = new GameSession(name, description, GetCurrentUser.getInstance().getCurrentUser().getUsername() , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
 			if(activate)
 			{
 				newGame.setGameStatus(GameStatus.ACTIVE);
@@ -1120,4 +1122,102 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			initializeDeckComboBox();
 		}
 	}
+
+	public JComboBox<String> getDeckBox() {
+		return deckBox;
+	}
+
+	public void setDeckBox(JComboBox<String> deckBox) {
+		this.deckBox = deckBox;
+	}
+
+	public JCheckBox getDeadlineCheckBox() {
+		return deadlineCheckBox;
+	}
+
+	public JLabel getDeadlineLabel() {
+		return deadlineLabel;
+	}
+
+	public JLabel getNameLabel() {
+		return nameLabel;
+	}
+
+	public JLabel getDescriptionLabel() {
+		return descriptionLabel;
+	}
+
+	public JLabel getDeckLabel() {
+		return deckLabel;
+	}
+
+	public JTextField getNameTextField() {
+		return nameTextField;
+	}
+
+	public JScrollPane getDescriptionScrollPane() {
+		return descriptionScrollPane;
+	}
+
+	public JDatePickerImpl getDatePicker() {
+		return datePicker;
+	}
+
+	public JComboBox<String> getDeadlineHourComboBox() {
+		return deadlineHourComboBox;
+	}
+
+	public JComboBox<String> getDeadlineMinuteComboBox() {
+		return deadlineMinuteComboBox;
+	}
+
+	public JRadioButton getAMButton() {
+		return AMButton;
+	}
+
+	public JRadioButton getPMButton() {
+		return PMButton;
+	}
+
+	public JCheckBox getDeckCheckBox() {
+		return deckCheckBox;
+	}
+
+//	public JLabel getMinuteError() {
+//		return minuteError;
+//	}
+//
+//	public JLabel getDeadlineError() {
+//		return deadlineError;
+//	}
+//
+//	public JLabel getNameError() {
+//		return nameError;
+//	}
+//
+//	public JLabel getReqError() {
+//		return reqError;
+//	}
+//
+//	public JLabel getHourError() {
+//		return hourError;
+//	}
+
+	public JButton getCreateDeckButton() {
+		return createDeckButton;
+	}
+
+	public JButton getSaveGameButton() {
+		return saveGameButton;
+	}
+
+	public JButton getActivateGameButton() {
+		return activateGameButton;
+	}
+
+	public JButton getCancelButton() {
+		return cancelButton;
+	}
+	
+	
 }

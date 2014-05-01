@@ -57,11 +57,11 @@ public class GameModel extends AbstractListModel {
 	}
 	
 	/**
-	 * @param userID the user to get games for
+	 * @param userName the user to get games for
 	 * @return the games for a current user
 	 */
-	public List<GameSession> getGames(int userID) {
-		return filterUsersGames(games, userID);
+	public List<GameSession> getGames(String userName) {
+		return filterUsersGames(games, userName);
 	}
 
 	/**
@@ -208,60 +208,60 @@ public class GameModel extends AbstractListModel {
 	
 	/**
 	 * 
-	 * Return a list of all draft game sessions in this game model filtered by userID
-	 * @param userID the userID to filter games by
+	 * Return a list of all draft game sessions in this game model filtered by userName
+	 * @param userName the userName to filter games by
 	 * @return List<GameSession> List of draft games
 	 */
-	public List<GameSession> getDraftGameSessions(int userID){
-		return filterUsersGames(getDraftGameSessions(), userID);
+	public List<GameSession> getDraftGameSessions(String userName){
+		return filterUsersGames(getDraftGameSessions(), userName);
 	}
 	
 	/**
 	 * 
-	 * Return a list of all active game sessions in this game model filtered by userID
-	 * @param userID the userID to filter games by
+	 * Return a list of all active game sessions in this game model filtered by userName
+	 * @param userName the userName to filter games by
 	 * @return List<GameSession> List of active games
 	 */
-	public List<GameSession> getActiveGameSessions(int userID){
-		return filterUsersGames(getActiveGameSessions(), userID);
+	public List<GameSession> getActiveGameSessions(String userName){
+		return filterUsersGames(getActiveGameSessions(), userName);
 	}
 	
 	/**
 	 * 
-	 * Return a list of all past game sessions in this game model filtered by userID
-	 * @param userID the userID to filter games by
+	 * Return a list of all past game sessions in this game model filtered by userName
+	 * @param userName the userName to filter games by
 	 * @return List<GameSession> List of past games
 	 */
-	public List<GameSession> getInProgressGameSessions(int userID){
-		return filterUsersGames(getInProgressGameSessions(), userID);
+	public List<GameSession> getInProgressGameSessions(String userName){
+		return filterUsersGames(getInProgressGameSessions(), userName);
 	}
 	
 	/**
 	 * 
-	 * Return a list of all past game sessions in this game model filtered by userID
-	 * @param userID the userID to filter games by
+	 * Return a list of all past game sessions in this game model filtered by userName
+	 * @param userName the userName to filter games by
 	 * @return List<GameSession> List of past games
 	 */
-	public List<GameSession> getCompletedGameSessions(int userID){
-		return filterUsersGames(getCompletedGameSessions(), userID);
+	public List<GameSession> getCompletedGameSessions(String userName){
+		return filterUsersGames(getCompletedGameSessions(), userName);
 	}
 	
 	/**
 	 * 
-	 * Return a list of all past game sessions in this game model filtered by userID
-	 * @param userID the userID to filter games by
+	 * Return a list of all past game sessions in this game model filtered by userName
+	 * @param userName the userName to filter games by
 	 * @return List<GameSession> List of past games
 	 */
-	public List<GameSession> getArchivedGameSessions(int userID){
-		return filterUsersGames(getArchivedGameSessions(), userID);
+	public List<GameSession> getArchivedGameSessions(String userName){
+		return filterUsersGames(getArchivedGameSessions(), userName);
 	}
 
-	private List<GameSession> filterUsersGames(List<GameSession> games, int userID)
+	private List<GameSession> filterUsersGames(List<GameSession> games, String userName)
 	{
 		final List<GameSession> usersGames = new ArrayList<GameSession>();
 		
 		for (GameSession game : games)
-			if (game.getOwnerID() == userID){
+			if (game.getOwnerName().equals(userName)){
 				usersGames.add(game);
 			}
 		
@@ -270,10 +270,10 @@ public class GameModel extends AbstractListModel {
 	
 	/**
 	 * This returns the game sessions needing a vote from the user
-	 * @param userID the user's ID number, as integer
+	 * @param userName the user's name, as String
 	 * @return a List<GameSessions> needing votes
 	 */
-	public List<GameSession> getGamesNeedingVote(int userID)
+	public List<GameSession> getGamesNeedingVote(String userName)
 	{
 		final List<GameSession> votedGames = new ArrayList<GameSession>();
 		final List<GameSession> unVotedGames = new ArrayList<GameSession>(this.getActiveGameSessions());
@@ -282,7 +282,7 @@ public class GameModel extends AbstractListModel {
 		for (GameSession game : games){
 			if (game.getGameStatus() == GameStatus.ACTIVE || game.getGameStatus() == GameStatus.INPROGRESS ){
 				for (Vote aVote : game.getVotes()){
-					if (aVote.getUID() == userID){
+					if (aVote.getUserName().equals(userName)){
 						votedGames.add(game);
 					}
 				}
@@ -296,17 +296,17 @@ public class GameModel extends AbstractListModel {
 	
 	/**
 	 * This function determines which games the user has voted on
-	 * @param userID the user's ID, as integer
+	 * @param userName the user's ID, as integer
 	 * @return a List<GameSession> of games the user has voted on
 	 */
-	public List<GameSession> getGamesVoted(int userID)
+	public List<GameSession> getGamesVoted(String userName)
 	{
 		final List<GameSession> votedGames = new ArrayList<GameSession>();
 		
 		for (GameSession game : games){
 			if (game.getGameStatus() == GameStatus.INPROGRESS ){
 				for (Vote aVote : game.getVotes()){
-					if (aVote.getUID() == userID){
+					if (aVote.getUserName().equals(userName)){
 						votedGames.add(game);
 					}
 				}

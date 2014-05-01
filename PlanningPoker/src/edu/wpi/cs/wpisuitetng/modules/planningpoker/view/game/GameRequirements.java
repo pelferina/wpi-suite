@@ -117,7 +117,7 @@ public class GameRequirements extends JSplitPane{
 		Vote userVote = null;
 		boolean hasVoted = false;
 		for (Vote v: gameToPlay.getVotes()){
-			if (v.getUID() == GetCurrentUser.getInstance().getCurrentUser().getIdNum()){
+			if (v.getUserName().equals(GetCurrentUser.getInstance().getCurrentUser().getUsername())){
 				userVote = v;
 				hasVoted = true;
 			}

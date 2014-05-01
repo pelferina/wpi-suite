@@ -68,7 +68,7 @@ public class JTableModel extends AbstractTableModel {
     	for (int i=0; i<sessions.length; i++){
     		Object[] curRow = {sessions[i].getGameName(),
 								sessions[i].getEndDate()!=null ? sessions[i].getDeadlineString() : "No Deadline", 
-    							getUserFromID(sessions[i].getOwnerID()), 
+    							getUserFromName(sessions[i].getOwnerName()), 
     							sessions[i].getVotes().size()+ " out of "+ getUsers.getAllUsers().length, // Progress
     							gameStatus(sessions[i])
     							};
@@ -112,10 +112,10 @@ public class JTableModel extends AbstractTableModel {
 	 * @param userID the user ID number as an int
 	 * @return the String of the user's name
 	 */
-	private String getUserFromID(int userID){
+	private String getUserFromName(String userName){
 		users = getUsers.getAllUsers();
 		for (User u : users){
-			if (u.getIdNum() == userID){
+			if (u.getUsername().equals(userName)){
 				return u.getName();
 			}
 		}
@@ -185,8 +185,8 @@ public class JTableModel extends AbstractTableModel {
 	 * @param i the row number
 	 * @return the game owner id of the ith row
 	 */
-	public int getOwnerID(int i){
-		return games[i].getOwnerID();
+	public String getOwnerName(int i){
+		return games[i].getOwnerName();
 	}
 	/**
 	 * 

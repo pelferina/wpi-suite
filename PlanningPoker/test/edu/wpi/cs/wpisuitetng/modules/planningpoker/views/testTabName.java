@@ -13,7 +13,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 
 	
 	public class testTabName {
-		GameSession game = new GameSession(null, null, 0, 0, null, null);
+		GameSession game = new GameSession(null, null, null, 0, null, null);
 		@Test
 		public void testNewGameName(){	
 			MainView testTabName = new MainView();	

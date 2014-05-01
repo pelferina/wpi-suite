@@ -17,32 +17,32 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 public class Vote extends AbstractModel implements Comparable<Vote>{
 
 	private int gameID;
-	private int UID;
+	private String UserName;
 	private int VoteID;
 	private List<Integer> vote;
 
 	/** Constructs a vote submission object.
 	 * @param vote 		A list of voted on requirements, must match the 
 	 * 						list of requirements in the associated game in order
-	 * @param UID		the user who voted
+	 * @param userName		the user who voted
 	 * @param gameID	the game the user was voting on 
 	 */
-	public Vote(List<Integer> vote, int UID, int gameID) {
+	public Vote(List<Integer> vote, String userName, int gameID) {
 		this.setVote(vote);
-		this.setUID(UID);
+		this.setUserName(userName);
 		this.setGameID(gameID);
 		this.setVoteID();
 		
 	}
 	
-	/** Constructs a vote submission object, the UID must be set if this is on the server.
+	/** Constructs a vote submission object, the userName must be set if this is on the server.
 	 * @param vote 		A list of voted on requirements, must match the 
 	 * 						list of requirements in the associated game in order
 	 * @param gameID	the game the user was voting on 
 	 */
 	public Vote(List<Integer> vote, int gameID) {
 		this.setVote(vote);
-		this.setUID(-1);
+		this.setUserName("");
 		this.setGameID(gameID);
 		this.setVoteID();
 		
@@ -65,15 +65,15 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	/**
 	 * @return THE USERID
 	 */
-	public int getUID() {
-		return UID;
+	public String getUserName() {
+		return UserName;
 	}
 
 	/**
-	 * @param uID The new USERID
+	 * @param userName The new USERID
 	 */
-	public void setUID(int uID) {
-		UID = uID;
+	public void setUserName(String userName) {
+		UserName = userName;
 		this.setVoteID();
 	}
 
@@ -125,7 +125,7 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	public Boolean identify(Object o) {
 		if(o == null || o.getClass() != this.getClass()) return false;
 		final Vote other = (Vote) o;
-		return (gameID == other.gameID && UID == other.UID);
+		return (gameID == other.gameID && UserName.equals(other.UserName));
 	}
 
 	/**
@@ -170,7 +170,7 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	 * @return the hashed vote as an integer
 	 */
 	public static int toHash(Vote v){
-		return v.gameID* 100000 + v.UID;
+		return v.gameID* 100000;
 	}
 
 	/**
