@@ -61,6 +61,14 @@ public class GetUsersController {
 		return userList;
 	}
 
+	public String getUserFromID(int userID){
+		for (User u : userList){
+			if (u.getIdNum() == userID){
+				return u.getName();
+			}
+		}
+		return "";
+	}
 
 	/**
 	 * This method is called to send a request to the GetUsersRequestObserver

@@ -25,15 +25,16 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.icons.NeedsVot
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.icons.NormalIcon;
 
 /**
- * @author justinhess
- * @version $Revision: 1.0 $
+ * CustomTreeCellRenderer class
+ * @author FFF8E7
+ * @version 6
  */
+
 public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 	Icon normalIcon;
 	Icon voteIcon;
 
 	public CustomTreeCellRenderer() {
-		super();
 		normalIcon = new NormalIcon();
 		voteIcon = new NeedsVoteIcon();
 	}
