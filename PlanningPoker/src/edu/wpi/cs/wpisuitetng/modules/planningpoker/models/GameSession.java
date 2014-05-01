@@ -307,7 +307,7 @@ public class GameSession extends AbstractModel {
 				
 				// determine number of zeros in current operation
 				int shift = 0;
-				while(shift < voteResult[i].length && voteResult[i][shift] == 0){
+				while(shift < voteResult[i].length && voteResult[i][shift] == -2){
 					shift++;
 				}
 				
@@ -334,7 +334,7 @@ public class GameSession extends AbstractModel {
 				//calculate standard deviation
 				List<Integer> reqEstimates = new ArrayList<Integer>();
 				for (Vote v: votes){
-					if (v.getVote().get(i) != 0){
+					if (v.getVote().get(i) != -2){
 						reqEstimates.add(v.getVote().get(i));
 					}
 				}
