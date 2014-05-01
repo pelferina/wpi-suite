@@ -78,28 +78,28 @@ public class PreferencesPanel extends JPanel {
 		userName.setFont (userName.getFont ().deriveFont (35.0f));
 
 		// Swing layout for user greetings
-		springLayout.putConstraint(SpringLayout.NORTH, userName, 100, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, userName, 500, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, userName, GuiStandards.TOP_MARGIN.getValue(), SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, userName, GuiStandards.LEFT_MARGIN.getValue(), SpringLayout.WEST, this);
 		
 		// Swing layout for currentEmailNameLabel
-		springLayout.putConstraint(SpringLayout.NORTH, currentEmailNameLabel, 30, SpringLayout.SOUTH, userName);
-		springLayout.putConstraint(SpringLayout.WEST, currentEmailNameLabel, 480, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, currentEmailNameLabel, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, userName);
+		springLayout.putConstraint(SpringLayout.WEST, currentEmailNameLabel, GuiStandards.LEFT_MARGIN.getValue(), SpringLayout.WEST, this);
 		// Swing layout for currentEmailLabel
 		springLayout.putConstraint(SpringLayout.NORTH, currentEmailLabel, 0, SpringLayout.NORTH, currentEmailNameLabel);
-		springLayout.putConstraint(SpringLayout.WEST, currentEmailLabel, 10, SpringLayout.EAST, currentEmailNameLabel);
+		springLayout.putConstraint(SpringLayout.WEST, currentEmailLabel, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.EAST, currentEmailNameLabel);
 		// Swing layout for email label
-		springLayout.putConstraint(SpringLayout.NORTH, emailLabel, 30, SpringLayout.SOUTH, currentEmailNameLabel);
-		springLayout.putConstraint(SpringLayout.WEST, emailLabel, 0, SpringLayout.WEST, currentEmailNameLabel);			
+		springLayout.putConstraint(SpringLayout.NORTH, emailLabel, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, currentEmailNameLabel);
+		springLayout.putConstraint(SpringLayout.WEST, emailLabel, GuiStandards.LEFT_MARGIN.getValue(), SpringLayout.WEST, this);			
 		// Swing layout for email Field
 		springLayout.putConstraint(SpringLayout.NORTH, emailField, 0, SpringLayout.NORTH, emailLabel);
-		springLayout.putConstraint(SpringLayout.WEST, emailField, 10, SpringLayout.EAST, emailLabel);
-		springLayout.putConstraint(SpringLayout.EAST, emailField, 125, SpringLayout.WEST, emailField);
+		springLayout.putConstraint(SpringLayout.WEST, emailField, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.EAST, emailLabel);
+		springLayout.putConstraint(SpringLayout.EAST, emailField, 150, SpringLayout.WEST, emailField);
 		// Swing layout for submit Button
-		springLayout.putConstraint(SpringLayout.NORTH, submitButton, 30, SpringLayout.SOUTH, emailLabel);
-		springLayout.putConstraint(SpringLayout.WEST, submitButton, -10, SpringLayout.WEST, emailLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, submitButton, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, emailLabel);
+		springLayout.putConstraint(SpringLayout.WEST, submitButton, GuiStandards.LEFT_MARGIN.getValue(), SpringLayout.WEST, this);
 		// Swing layout for enableCheckBox
 		springLayout.putConstraint(SpringLayout.NORTH, enableCheckBox, 0, SpringLayout.NORTH, submitButton);
-		springLayout.putConstraint(springLayout.WEST, enableCheckBox, 10, SpringLayout.EAST, submitButton);
+		springLayout.putConstraint(springLayout.WEST, enableCheckBox, GuiStandards.LEFT_MARGIN.getValue(), SpringLayout.EAST, submitButton);
 		
 		setLayout(springLayout);
 		

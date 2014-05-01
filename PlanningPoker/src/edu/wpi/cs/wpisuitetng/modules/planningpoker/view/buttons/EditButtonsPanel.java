@@ -11,10 +11,8 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
 
 import java.awt.Dimension;
-
 import java.awt.event.ActionListener;
 import java.io.IOException;
-
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
@@ -23,6 +21,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 
 
 
@@ -58,9 +57,8 @@ public class EditButtonsPanel extends ToolbarGroupView{
 		editButton.setEnabled(true);
 	}
 
-	public EditButtonsPanel(){
+	public EditButtonsPanel(){	
 		super("");
-		
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
 		this.setPreferredWidth(300);
 		
@@ -78,6 +76,7 @@ public class EditButtonsPanel extends ToolbarGroupView{
 		contentPanel.setOpaque(false);
 		
 		this.add(contentPanel);
+		super.setContent(contentPanel);
 	}
 	
 	/**
@@ -94,15 +93,15 @@ public class EditButtonsPanel extends ToolbarGroupView{
 	 *
 	 * Enables the end game button, and add a action listener
 	 * to this game
-	 * @param gameID 
+	 * @param game
 	 */
-	public void setEditGameButtonVisible(int gameID){
+	public void setEditGameButtonVisible(GameSession gameSelected){
 		editButton.setVisible(true);
 		editButton.setEnabled(true);
 		if(listener != null){
 			editButton.removeActionListener(listener);
 		}
-		listener = new EditGameActionListener(gameID);
+		listener = new EditGameActionListener(gameSelected);
 		editButton.addActionListener(listener);
 	}
 	

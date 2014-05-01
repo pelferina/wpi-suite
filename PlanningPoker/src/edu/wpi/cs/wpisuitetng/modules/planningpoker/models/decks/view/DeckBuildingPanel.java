@@ -22,11 +22,13 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
@@ -47,17 +49,22 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistribu
 @SuppressWarnings({"serial"})
 public class DeckBuildingPanel extends JPanel {
 
+	private boolean isSingleSelection = true;
 	private JButton btnAddCard = new JButton("Add Card");
 	private JButton btnRmvSelected = new JButton("Remove Selected");
 	private JButton btnRmvAll = new JButton("Remove all");
 	private JButton btnSave = new JButton("Save deck");
 	private JButton btnDelete = new JButton("Delete deck");
 	private JButton btnCancel = new JButton("Cancel");
+	private JRadioButton btnSingleSelection = new JRadioButton("Single Selection");
+	private JRadioButton btnMultipleSelection = new JRadioButton("Multiple Selection");
+	private ButtonGroup selectionGroup = new ButtonGroup();
 	private JComboBox<String> comboBoxDeckList = new JComboBox<String>();
 	private JLabel lblDeckName = new JLabel("Deck Name:");
 	private JLabel lblDecks = new JLabel("Decks:");
 	private JLabel errLabel = new JLabel("");
 	private JLabel lblAdd = new JLabel("Card Value:");
+	private JLabel lblSelection = new JLabel("Selection Mode:");
 	private JTextField nameField = new JTextField();
 	private JTextField numberField = new JTextField();
 	private SpringLayout springLayout = new SpringLayout();
@@ -78,7 +85,12 @@ public class DeckBuildingPanel extends JPanel {
 	public DeckBuildingPanel(NewGameDistributedPanel ngdp){
 		setupButtonIcons();
 		
-		newGameDistributed = ngdp;
+		// Set up for Radio buttons that will determine deck selection mode
+		selectionGroup.add(btnSingleSelection);
+		selectionGroup.add(btnMultipleSelection);
+		btnSingleSelection.setSelected(true);
+		btnMultipleSelection.setSelected(false);
+		this.newGameDistributed = ngdp;
 		
 		// Sets a consistent font for all buttons
 		final Font size = new Font(btnSave.getFont().getName(), btnSave.getFont().getStyle(), 10);
@@ -141,8 +153,12 @@ public class DeckBuildingPanel extends JPanel {
 			public void actionPerformed(ActionEvent e){
 				newDeckName = nameField.getText();
 				Deck newDeck = new Deck (newDeckName, newDeckCards);
+				newDeck.setSingleSelection(isSingleSelection);
 				AddDeckController.getInstance().addDeck(newDeck);
-				System.out.println("added Deck " + newDeckName + "; Id = " + newDeck.getId() + "; with cards: " + newDeckCards.toString());
+				System.out.println("added Deck " + newDeckName + 
+						"; Id = " + newDeck.getId() + 
+						"; with cards: " + newDeckCards.toString() + 
+						"; with singleSelection set to:" + newDeck.isSingleSelection());
 				System.out.println("Current DeckModel size is " + DeckModel.getInstance().getSize());
 				nameField.setText("");
 				
@@ -154,6 +170,11 @@ public class DeckBuildingPanel extends JPanel {
 				cardPanel.removeAll();
 				cardPanel.revalidate();
 				cardPanel.repaint();
+				
+				// Resets Selection Modes
+				isSingleSelection = true;
+				btnSingleSelection.setSelected(true);
+				btnMultipleSelection.setSelected(false);
 				
 				newGameDistributed.closeDeck();
 			}
@@ -171,6 +192,11 @@ public class DeckBuildingPanel extends JPanel {
 				cardPanel.removeAll();
 				cardPanel.revalidate();
 				cardPanel.repaint();
+				
+				// Resets Selection Modes
+				isSingleSelection = true;
+				btnSingleSelection.setSelected(true);
+				btnMultipleSelection.setSelected(false);
 				
 				newGameDistributed.closeDeck();
 			}
@@ -279,9 +305,23 @@ public class DeckBuildingPanel extends JPanel {
 			}
 		});
 		
-		comboBoxDeckList.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				// TODO: Action corresponding to this
+		btnSingleSelection.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				btnSingleSelection.setSelected(true);
+				btnMultipleSelection.setSelected(false);
+				isSingleSelection = true;
+				
+			}
+		});
+		
+		btnMultipleSelection.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				btnMultipleSelection.setSelected(true);
+				btnSingleSelection.setSelected(false);
+				isSingleSelection = false;
+				
 			}
 		});
 		
@@ -330,6 +370,16 @@ public class DeckBuildingPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.NORTH, btnAddCard, 10, SpringLayout.SOUTH, lblAdd);
 		springLayout.putConstraint(SpringLayout.WEST, btnAddCard, 0, SpringLayout.WEST, lblAdd);
 		springLayout.putConstraint(SpringLayout.EAST, btnAddCard, 0, SpringLayout.EAST, numberField);
+
+		//SpringLayout for lblSelection
+		springLayout.putConstraint(SpringLayout.NORTH, lblSelection, 0, SpringLayout.NORTH, numberField);
+		springLayout.putConstraint(SpringLayout.WEST, lblSelection, 10, SpringLayout.EAST, numberField);
+		
+		//SpringLayout for selectionGroup
+		springLayout.putConstraint(SpringLayout.NORTH, btnSingleSelection, 10, SpringLayout.SOUTH, lblSelection);
+		springLayout.putConstraint(SpringLayout.WEST, btnSingleSelection, 0, SpringLayout.WEST, lblSelection);
+		springLayout.putConstraint(SpringLayout.NORTH, btnMultipleSelection, 5, SpringLayout.SOUTH, btnSingleSelection);
+		springLayout.putConstraint(SpringLayout.WEST, btnMultipleSelection, 0, SpringLayout.WEST, btnSingleSelection);
 		
 		//Spring layout for btnRmvSelected
 		springLayout.putConstraint(SpringLayout.NORTH, btnRmvSelected, 10, SpringLayout.SOUTH, cardArea);
@@ -354,6 +404,9 @@ public class DeckBuildingPanel extends JPanel {
 		add(lblAdd);
 		add(numberField);
 		add(btnAddCard);
+		add(lblSelection);
+		add(btnSingleSelection);
+		add(btnMultipleSelection);
 		add(btnRmvAll);
 		add(btnRmvSelected);
 		add(btnCancel);

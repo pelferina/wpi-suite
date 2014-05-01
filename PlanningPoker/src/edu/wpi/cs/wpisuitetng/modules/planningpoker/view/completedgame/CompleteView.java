@@ -42,10 +42,11 @@ public class CompleteView extends JSplitPane {
 		voteData = new VoteData(completedGame, this);
 		
 		addImpl(gameData, JSplitPane.LEFT, 1);
-		final Dimension minimumSize = new Dimension(600, 200);
+		final Dimension minimumSize = new Dimension(400, 200);
 		leftComponent.setMinimumSize(minimumSize);
+		rightComponent.setMinimumSize(minimumSize);
 		addImpl(voteData, JSplitPane.RIGHT, 2);
-		setDividerLocation(400);
+		setDividerLocation(0.5);
 		setEnabled(false);
 		
 		//Flatten the divider

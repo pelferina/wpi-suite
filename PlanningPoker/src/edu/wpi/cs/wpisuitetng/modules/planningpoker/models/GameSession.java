@@ -22,7 +22,6 @@ import java.util.List;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 
 
@@ -56,6 +55,7 @@ public class GameSession extends AbstractModel {
 	private final boolean emailSent = false;
 	private List<Float> median;
 	private List<Float> mean;
+	private List<Double> standardDeviation;
 	private int deckId;
 	private final List<Vote> votes;
 	private List<Integer> finalVotes;
@@ -82,6 +82,7 @@ public class GameSession extends AbstractModel {
 		deckId = -1;
 		median = null;
 		mean = null;
+		standardDeviation = null;
 		finalVotes = new ArrayList<Integer>();
 	}
 
@@ -150,8 +151,13 @@ public class GameSession extends AbstractModel {
 	 */
 	public String getDeadlineString()
 	{
-		final DateFormat dateFormat1 = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
-		return dateFormat1.format(endDate);
+		if (endDate != null){
+			final DateFormat dateFormat1 = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+			return dateFormat1.format(endDate);
+		}
+		else {
+			return "No deadline";
+		}
 	}
 
 	/*
@@ -288,6 +294,7 @@ public class GameSession extends AbstractModel {
 		final int userNum = votes.size();
 		mean = new ArrayList<Float>();
 		median = new ArrayList<Float>();
+		standardDeviation = new ArrayList<Double>();
 		final int[][] voteResult = new int[requirementNum][userNum];
 		for(int i=0; i < userNum; i++){
 			for(int j=0;j < requirementNum; j++){
@@ -297,22 +304,41 @@ public class GameSession extends AbstractModel {
 		if(votes.size() != 0){
 			for(int i=0; i < requirementNum; i++){
 				Arrays.sort(voteResult[i]);
-				// calculate median
-				if(userNum%2 == 0){
-					median.add(((float)voteResult[i][(userNum-1)/2] + voteResult[i][(userNum-1)/2+1])/2);
+				
+				// determine number of zeros in current operation
+				int shift = 0;
+				while(shift < voteResult[i].length && voteResult[i][shift] == -2){
+					shift++;
 				}
-				else if (userNum > 1){
-					median.add((float)voteResult[i][(userNum-1)/2]);
+				
+				// if there are only zero votes, let the zero fall thru
+				if(shift == userNum){
+					shift = 0;
+				}
+				// calculate median
+				if((userNum+shift)%2 == 0){
+					median.add(((float)voteResult[i][(userNum+shift-1)/2] + voteResult[i][(userNum+shift-1)/2+1])/2);
+				}
+				else if ((userNum+shift) > 1){
+					median.add((float)voteResult[i][(userNum+shift-1)/2]);
 				}
 				else {
-					median.add((float)voteResult[i][userNum-1]);
+					median.add((float)voteResult[i][(userNum+shift)-1]);
 				}
 				// calculate mean
 				int sum = 0;
 				for(int j=0; j < userNum; j++){
 					sum += voteResult[i][j];
 				}
-				mean.add(((float)sum) / userNum);
+				mean.add(((float)sum) / (userNum-shift));
+				//calculate standard deviation
+				List<Integer> reqEstimates = new ArrayList<Integer>();
+				for (Vote v: votes){
+					if (v.getVote().get(i) != -2){
+						reqEstimates.add(v.getVote().get(i));
+					}
+				}
+				standardDeviation.add(calculateStdDev(mean.get(i), reqEstimates));
 			}
 		}
 	}
@@ -349,6 +375,35 @@ public class GameSession extends AbstractModel {
 
 	public List<Integer> getFinalVotes() {
 		return finalVotes;
+	}
+	
+	/**
+	 * 
+	 * @param mean, the average of estimates
+	 * @param Estimates, the data
+	 * @return Calculates the standard deviation of the given data
+	 */
+	
+	public double calculateStdDev(float mean, List<Integer> Estimates){
+		double estimatesSum = 0;
+		double estimateMinusMeanSquare;
+		double stddev;
+		
+		if(Estimates.size() == 0)
+		{
+			return 0; // No non-zero estimates
+		}
+		for (int i: Estimates){
+			estimateMinusMeanSquare = Math.pow((double)i - mean, 2);
+			estimatesSum = estimatesSum + estimateMinusMeanSquare;
+		}
+		stddev = Math.pow((1/(double)Estimates.size()) * estimatesSum, 0.5);
+
+		return stddev;
+	}
+
+	public List<Double> getStandardDeviation() {
+		return standardDeviation;
 	}
 	
 }

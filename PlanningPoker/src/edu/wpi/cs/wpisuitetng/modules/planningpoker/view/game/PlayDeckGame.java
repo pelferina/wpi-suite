@@ -17,6 +17,8 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -55,6 +57,7 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 	private final JLabel gameDesc = new JLabel("Game Description:");
 	private final JLabel reqName = new JLabel("Requirement Name:");
 	private final JLabel reqDesc = new JLabel("Requirement Description:");
+	private JLabel deadlineLabel = new JLabel("Game ends at: ");
 	private final JTextField gameNameTextField = new JTextField();
 	private final JTextField reqNameTextField = new JTextField();
 	private final JTextArea gameDescTextArea = new JTextArea();
@@ -74,12 +77,16 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 	private int votesSoFarInt = 0;
 	private final JLabel votesSoFarNameLabel = new JLabel("Estimate: ");
 	private final JLabel votesSoFarLabel = new JLabel("0");
+	private TimerTask setFocus;
+	private Timer setFocusTimer;
 	//List of buttons associated with the cards. First element -> lowest card val
 	private final List<GameCard> cardButtons = new ArrayList<GameCard>();
+	
 	/**
 	 * @wbp.nonvisual location=41,359
 	 */
 	private final JLabel gameEnded = new JLabel("Game Has Ended");
+	private boolean isDeckSingleSelection;
 
 	/**
 	 * Constructor for a PlayGame panel
@@ -87,12 +94,30 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 	 * @param agv the active game view
 	 */
 	public PlayDeckGame(GameSession gameToPlay, GameView agv){
+		if (gameToPlay.getDeadlineString() != "No deadline"){
+			deadlineLabel.setText(gameToPlay.getDeadlineString());
+		}
+		else{
+			deadlineLabel.setText("This game has no deadline");
+		}
 		GetGamesController.getInstance().addRefreshable(this);
 
+		setFocus = new TimerTask(){
+
+			@Override
+			public void run() {
+				getRootPane().setDefaultButton(voteButton);
+			}
+
+		};
+		setFocusTimer = new Timer();
+		setFocusTimer.schedule(setFocus, 250);
+		
 		currentGame = gameToPlay;
 		gameReqs = currentGame.getGameReqs();
 		deckId = currentGame.getDeckId();
 		gameCardList = DeckModel.getInstance().getDeck(deckId).getCards();
+		isDeckSingleSelection = DeckModel.getInstance().getDeck(deckId).isSingleSelection();
 		generateButtons();
 		final ArrayList<Integer> estimates = new ArrayList<Integer>();
 		System.out.println(gameReqs.size());
@@ -167,17 +192,30 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 		deckArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 
 		for (final GameCard card: cardButtons){
-			card.addItemListener (new ItemListener() {
-				public void itemStateChanged ( ItemEvent ie ) {
-					if (card.isSelected()) {
-						votesSoFarInt += card.getValue();
-						votesSoFarLabel.setText (Integer.toString(votesSoFarInt)) ;
-					} else {
-						votesSoFarInt -= card.getValue();
-						votesSoFarLabel.setText (Integer.toString(votesSoFarInt)) ;
+			if(!isDeckSingleSelection){ // MULTIPLE SELECTION 
+				card.addItemListener (new ItemListener() {
+					public void itemStateChanged ( ItemEvent ie ) {
+						if (card.isSelected()) {
+							votesSoFarInt += card.getValue();
+							votesSoFarLabel.setText (Integer.toString(votesSoFarInt)) ;
+						} else {
+							votesSoFarInt -= card.getValue();
+							votesSoFarLabel.setText (Integer.toString(votesSoFarInt)) ;
+						}
 					}
-				}
-			});
+				});
+			}
+			else { // SINGLE SELECTION
+				card.addItemListener (new ItemListener() {
+					public void itemStateChanged ( ItemEvent ie ) {
+						if (card.isSelected()) {
+							votesSoFarInt = card.getValue();
+							votesSoFarLabel.setText (Integer.toString(votesSoFarInt)) ;
+							unselectOtherCards(card);
+						}
+					}
+				});
+			}
 		}
 
 		//Observer for the vote button. It will save the vote client side, the submit button will handle sending it to the database.
@@ -287,6 +325,10 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.WEST, gameEnded, 0, SpringLayout.WEST, votesSoFarLabel);
 		gameEnded.setVisible(false);
 
+		//Spring layout for deadline label
+		springLayout.putConstraint(SpringLayout.WEST, deadlineLabel, 20, SpringLayout.EAST, voteButton);
+		springLayout.putConstraint(SpringLayout.SOUTH, deadlineLabel, 0, SpringLayout.SOUTH, voteButton);
+		
 		setLayout(springLayout);
 
 		add(voteButton);
@@ -303,7 +345,17 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 		add(votesSoFarNameLabel);
 		add(votesSoFarLabel);
 		add(gameEnded);
+		add(deadlineLabel);
 
+	}
+	
+	protected void unselectOtherCards(GameCard selectedCard) {
+		boolean selectedFlag = false; // If loop keeps a card selected, this flag will prevent selecting other cards with the same value
+		for(GameCard card: cardButtons){
+			if(card == selectedCard && !selectedFlag) selectedFlag = true; // if current card is the same as the given card, skip the unselection
+			else card.setSelected(false); // else, unselect it
+		}
+		
 	}
 
 	/**

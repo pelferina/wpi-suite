@@ -15,10 +15,12 @@ package edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -95,12 +97,29 @@ public class ToolbarGroupView extends JPanel implements Hoverable {
 
 	/**
 	 * Called when the mouse enters this toolbar group
+	 * Only highlights the toolbar group if its content was set to the actual content of the panel
+	 * and there is at least one visible button in that content panel
 	 */
 	@Override
 	public void mouseEntered() {
-		this.setOpaque(true);
-		this.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 1, Color.gray));
-		this.repaint();
+		int totalNumberOfComponents = 0, numberOfInvisibleButtons = 0, totalNumberOfButtons = 0;
+		Component[] allComponents = content.getComponents();
+		for (Component component: allComponents)
+		{
+			if(component instanceof JButton)
+			{
+				if(!component.isVisible())
+					numberOfInvisibleButtons++;
+				totalNumberOfButtons++;
+			}
+			totalNumberOfComponents++;
+		}
+		if(totalNumberOfComponents==0 || (totalNumberOfButtons!=0 && numberOfInvisibleButtons!=totalNumberOfComponents))
+		{
+			this.setOpaque(true);
+			this.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 1, Color.gray));
+			this.repaint();
+		}
 	}
 
 	/**
@@ -113,4 +132,7 @@ public class ToolbarGroupView extends JPanel implements Hoverable {
 		this.repaint();
 	}
 	
+	public void setContent(JPanel content) {
+		this.content = content;
+	}
 }

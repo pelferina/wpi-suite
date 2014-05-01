@@ -45,6 +45,8 @@ public class TableSelectListener implements ListSelectionListener{
 	    	ViewEventController.getInstance().makeOwnerButtonInvisible();
 	    	ViewEventController.getInstance().makeUserButtonInvisible();
 	    	ViewEventController.getInstance().makeEditGameButtonInVisible();
+	    	
+	    	ViewEventController.getInstance().removeButtons();
 	    	return;
 	    }
 	    row = table.convertRowIndexToModel(row);
@@ -54,6 +56,9 @@ public class TableSelectListener implements ListSelectionListener{
     	final GameSession gameSelected = model.getGame(row);
     	final GameStatus status = gameSelected.getGameStatus();
     	final User currentUser = GetCurrentUser.getInstance().getCurrentUser();
+    	
+    	ViewEventController.getInstance().removeButtons();
+    	ViewEventController.getInstance().changeButton(gameSelected);
     	
     	final boolean hasCategory = false;
     	if(currentUser.getIdNum() == ownerID){
@@ -74,7 +79,7 @@ public class TableSelectListener implements ListSelectionListener{
     		}
     		
     		if(status.equals(GameStatus.ACTIVE)||status.equals(GameStatus.DRAFT)){
-    			ViewEventController.getInstance().makeEditGameButtonVisible(gameID);
+    			ViewEventController.getInstance().makeEditGameButtonVisible(gameSelected);
     		}else{
     			ViewEventController.getInstance().makeEditGameButtonInVisible();
     		}
@@ -85,18 +90,11 @@ public class TableSelectListener implements ListSelectionListener{
     	
     	if(status.equals(GameStatus.ACTIVE) || status.equals(GameStatus.INPROGRESS)){
 			ViewEventController.getInstance().makeVoteGameButtonVisible(gameSelected);
-		}else if(status.equals(GameStatus.ARCHIVED) || status.equals(GameStatus.COMPLETED) || status.equals(GameStatus.DRAFT)){
+		}else if(status.equals(GameStatus.ARCHIVED) || status.equals(GameStatus.COMPLETED)){
 			ViewEventController.getInstance().makeViewGameButtonVisible(gameSelected);
 		}else {
 			ViewEventController.getInstance().makeUserButtonInvisible();
 		}
-    	
-    	/*
-    	if (!hasCategory){
-    		ViewEventController.getInstance().makeOwnerButtonInvisible();
-    		//ViewEventController.getInstance().setEditGameButtonInVisible();
-    	}
-*/
 	}
 	/**
 	 * Checks if the GameSession is valid

@@ -1,10 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2013 WPI-Suite
+ * Copyright (c) 2014 -- WPI Suite
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors: Team Cosmic Latte
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.completedgame.charts;
@@ -87,7 +88,7 @@ private static int theReq;
 			
 			//Get each vote
 			for(int i=0; i < numUsers; i++){
-				dataSet.addValue(votes.get(i).getVote().get(theReq), "Estimate", Integer.toString(votes.get(i).getUID()));
+				dataSet.addValue(votes.get(i).getVote().get(theReq), "Estimate", GetUsersController.getInstance().getUserFromID(votes.get(i).getUID()));
 			}
 			return dataSet;
 
