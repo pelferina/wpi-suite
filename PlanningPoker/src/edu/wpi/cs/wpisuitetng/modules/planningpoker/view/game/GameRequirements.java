@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.SpringLayout;
 import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
@@ -27,6 +28,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 import javax.swing.table.DefaultTableModel;
+
 
 
 
@@ -91,6 +93,7 @@ public class GameRequirements extends JSplitPane{
 		       return false;
 		    }
 		};
+		
 		estimatesComplete = new JTable() {
 			@Override
 		    public boolean isCellEditable(int row, int column) {
@@ -98,6 +101,8 @@ public class GameRequirements extends JSplitPane{
 		       return false;
 		    }
 		};
+		estimatesPending.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		estimatesComplete.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		estimatesPending.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Requirements to Estimate"}));
 		estimatesComplete.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Requirements Estimated", "Your Estimates"}));
 		estimatesPending.setFillsViewportHeight(true);
@@ -125,11 +130,15 @@ public class GameRequirements extends JSplitPane{
 		
 		if (hasVoted){
 			pendingModel.setNumRows(0);
-			completedModel.setNumRows(gameReqs.size());
 			for (int i = 0; i < userVote.getVote().size(); i++){
-				completedModel.setValueAt(gameReqs.get(i).getId(), i, 0);
-				completedModel.setValueAt(gameReqs.get(i).getName(), i, 1);
-				completedModel.setValueAt(userVote.getVote().get(i), i, 2);
+				if (userVote.getVote().get(i) != -1){
+					Object[] rowData = {gameReqs.get(i).getId(), gameReqs.get(i).getName(), userVote.getVote().get(i)};
+					completedModel.addRow(rowData);
+				}
+				else{
+					Object[] rowData = {gameReqs.get(i).getId(), gameReqs.get(i).getName()};
+					pendingModel.addRow(rowData);
+				}
 			}
 		}
 		

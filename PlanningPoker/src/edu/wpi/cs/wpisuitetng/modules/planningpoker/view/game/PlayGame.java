@@ -443,10 +443,11 @@ public class PlayGame extends JPanel implements Refreshable{
 	 * changes whether or not the user can submit vote
 	 */
 	public void checkCanSubmit(){
-		boolean canSubmit = true;
+		boolean canSubmit = false;
+		//TODO Change to hasChanged
 		for (int estimate: userEstimates.getVote()){
-			if (estimate < 0){
-				canSubmit = false;
+			if (estimate > 0){
+				canSubmit = true;
 				break;
 			}
 		}
