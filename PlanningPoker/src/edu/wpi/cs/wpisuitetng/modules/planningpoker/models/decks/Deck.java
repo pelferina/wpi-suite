@@ -188,8 +188,9 @@ public class Deck extends AbstractModel {
 	 * set the card list
 	 * @param cards the card list
 	 */
-	public void setCards(List<Integer> cards) {
+	public Deck setCards(List<Integer> cards) {
 		this.cards = cards;
+		return this;
 	}
 
 	public int getUserID() {
