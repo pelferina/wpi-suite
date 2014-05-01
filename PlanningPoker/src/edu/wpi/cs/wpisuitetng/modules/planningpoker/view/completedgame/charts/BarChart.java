@@ -87,7 +87,7 @@ private static int theReq;
 			
 			//Get each vote
 			for(int i=0; i < numUsers; i++){
-				dataSet.addValue(votes.get(i).getVote().get(theReq), "Estimate", Integer.toString(votes.get(i).getUID()));
+				dataSet.addValue(votes.get(i).getVote().get(theReq), "Estimate", GetUsersController.getInstance().getUserFromID(votes.get(i).getUID()));
 			}
 			return dataSet;
 
