@@ -24,6 +24,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 
 
 
+
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -52,7 +54,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	private final NewGameDistributedPanel newGamePanel;
 	// Declarations and initializations of GUI components
 	JLabel lblRequirementsAvailable = new JLabel("Requirements Available");
-	JButton btnAddReq = new JButton("Add New Requirement");
+	JButton btnAddReq = new JButton("New Requirement");
 	JButton btnRemoveOne = new JButton();
 	JLabel lblRequirementsSelected = new JLabel("Requirements Selected");
 	JButton btnAddOne = new JButton();
@@ -149,7 +151,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		setupButtonIcons();
 		final SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
-		btnAddReq.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		btnAddReq.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
 		// Observers
 
@@ -293,7 +295,11 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 
 
 		// Layout configuration
-
+		btnRemoveOne.setPreferredSize(new Dimension(50,20));
+		btnRemoveAll.setPreferredSize(new Dimension(50,20));
+		btnAddOne.setPreferredSize(new Dimension(50,20));
+		btnAddAll.setPreferredSize(new Dimension(50,20));
+		
 		// Spring Layout of lblRequirementsAvailable
 		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, lblRequirementsAvailable, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		springLayout.putConstraint(SpringLayout.NORTH, lblRequirementsAvailable, 10, SpringLayout.NORTH, this);
@@ -307,18 +313,18 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		// Spring Layout of Buttons
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnAddReq, 0, SpringLayout.VERTICAL_CENTER, this);
 		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, btnAddReq, 0, SpringLayout.HORIZONTAL_CENTER, unselected_table);
-		springLayout.putConstraint(SpringLayout.NORTH, btnRemoveAll, 0, SpringLayout.NORTH, btnAddReq);
-		springLayout.putConstraint(SpringLayout.EAST, btnRemoveAll, 0, SpringLayout.WEST, btnRemoveOne); 
-		springLayout.putConstraint(SpringLayout.SOUTH, btnRemoveAll, 0, SpringLayout.SOUTH, btnAddReq); 
-		springLayout.putConstraint(SpringLayout.NORTH, btnRemoveOne, 0, SpringLayout.NORTH, btnRemoveAll);
-		springLayout.putConstraint(SpringLayout.EAST, btnRemoveOne, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, btnRemoveOne, 0, SpringLayout.SOUTH, btnAddReq);
-		springLayout.putConstraint(SpringLayout.NORTH, btnAddAll, 0, SpringLayout.NORTH, btnAddReq);
-		springLayout.putConstraint(SpringLayout.WEST, btnAddAll, 0, SpringLayout.EAST, btnAddOne);
-		springLayout.putConstraint(SpringLayout.SOUTH, btnAddAll, 0, SpringLayout.SOUTH, btnAddReq);
+		springLayout.putConstraint(SpringLayout.NORTH, btnRemoveOne, 0, SpringLayout.NORTH, btnAddReq);
+		springLayout.putConstraint(SpringLayout.WEST, btnRemoveOne, 0, SpringLayout.EAST, btnAddReq); 
+		springLayout.putConstraint(SpringLayout.SOUTH, btnRemoveOne, 0, SpringLayout.SOUTH, btnAddReq); 
+		springLayout.putConstraint(SpringLayout.NORTH, btnRemoveAll, 0, SpringLayout.NORTH, btnRemoveOne);
+		springLayout.putConstraint(SpringLayout.WEST, btnRemoveAll, 0, SpringLayout.EAST, btnRemoveOne);
+		springLayout.putConstraint(SpringLayout.SOUTH, btnRemoveAll, 0, SpringLayout.SOUTH, btnAddReq);
 		springLayout.putConstraint(SpringLayout.NORTH, btnAddOne, 0, SpringLayout.NORTH, btnAddReq);
-		springLayout.putConstraint(SpringLayout.WEST, btnAddOne, 0, SpringLayout.WEST, unselected_table);
+		springLayout.putConstraint(SpringLayout.EAST, btnAddOne, 0, SpringLayout.WEST, btnAddReq);
 		springLayout.putConstraint(SpringLayout.SOUTH, btnAddOne, 0, SpringLayout.SOUTH, btnAddReq);
+		springLayout.putConstraint(SpringLayout.NORTH, btnAddAll, 0, SpringLayout.NORTH, btnAddReq);
+		springLayout.putConstraint(SpringLayout.EAST, btnAddAll, 0, SpringLayout.WEST, btnAddOne);
+		springLayout.putConstraint(SpringLayout.SOUTH, btnAddAll, 0, SpringLayout.SOUTH, btnAddReq);
 
 		// Spring Layout of lblRequirementsSelected
 		springLayout.putConstraint(SpringLayout.NORTH, lblRequirementsSelected, 10, SpringLayout.SOUTH, btnRemoveOne);
