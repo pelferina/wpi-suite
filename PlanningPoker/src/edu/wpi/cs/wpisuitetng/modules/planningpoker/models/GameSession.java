@@ -304,26 +304,39 @@ public class GameSession extends AbstractModel {
 		if(votes.size() != 0){
 			for(int i=0; i < requirementNum; i++){
 				Arrays.sort(voteResult[i]);
-				// calculate median
-				if(userNum%2 == 0){
-					median.add(((float)voteResult[i][(userNum-1)/2] + voteResult[i][(userNum-1)/2+1])/2);
+				
+				// determine number of zeros in current operation
+				int shift = 0;
+				while(shift < voteResult[i].length && voteResult[i][shift] == -2){
+					shift++;
 				}
-				else if (userNum > 1){
-					median.add((float)voteResult[i][(userNum-1)/2]);
+				
+				// if there are only zero votes, let the zero fall thru
+				if(shift == userNum){
+					shift = 0;
+				}
+				// calculate median
+				if((userNum+shift)%2 == 0){
+					median.add(((float)voteResult[i][(userNum+shift-1)/2] + voteResult[i][(userNum+shift-1)/2+1])/2);
+				}
+				else if ((userNum+shift) > 1){
+					median.add((float)voteResult[i][(userNum+shift-1)/2]);
 				}
 				else {
-					median.add((float)voteResult[i][userNum-1]);
+					median.add((float)voteResult[i][(userNum+shift)-1]);
 				}
 				// calculate mean
 				int sum = 0;
 				for(int j=0; j < userNum; j++){
 					sum += voteResult[i][j];
 				}
-				mean.add(((float)sum) / userNum);
+				mean.add(((float)sum) / (userNum-shift));
 				//calculate standard deviation
 				List<Integer> reqEstimates = new ArrayList<Integer>();
 				for (Vote v: votes){
-					reqEstimates.add(v.getVote().get(i));
+					if (v.getVote().get(i) != -2){
+						reqEstimates.add(v.getVote().get(i));
+					}
 				}
 				standardDeviation.add(calculateStdDev(mean.get(i), reqEstimates));
 			}
@@ -375,11 +388,17 @@ public class GameSession extends AbstractModel {
 		double estimatesSum = 0;
 		double estimateMinusMeanSquare;
 		double stddev;
+		
+		if(Estimates.size() == 0)
+		{
+			return 0; // No non-zero estimates
+		}
 		for (int i: Estimates){
 			estimateMinusMeanSquare = Math.pow((double)i - mean, 2);
 			estimatesSum = estimatesSum + estimateMinusMeanSquare;
 		}
 		stddev = Math.pow((1/(double)Estimates.size()) * estimatesSum, 0.5);
+
 		return stddev;
 	}
 

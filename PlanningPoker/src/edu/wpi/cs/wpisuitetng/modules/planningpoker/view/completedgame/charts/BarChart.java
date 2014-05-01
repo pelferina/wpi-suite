@@ -62,7 +62,8 @@ private static int theReq;
 
 		/**
 		 * Constructor for NewBarChartPanel.
-		 * @param title String
+		 * @param gs The game session to create a chart of
+		 * @param aReq the requirement iq to chart
 		 */
 		public BarChart(GameSession gs, int aReq){
 			theGame = gs;
@@ -87,7 +88,7 @@ private static int theReq;
 			
 			//Get each vote
 			for(int i=0; i < numUsers; i++){
-				dataSet.addValue(votes.get(i).getVote().get(theReq), "Estimate", Integer.toString(votes.get(i).getUID()));
+				dataSet.addValue(votes.get(i).getVote().get(theReq), "Estimate", GetUsersController.getInstance().getUserFromID(votes.get(i).getUID()));
 			}
 			return dataSet;
 
@@ -160,6 +161,11 @@ private static int theReq;
 //			super.paintComponent(g);
 //		}
 		
+		/**
+		 * This function updates the chart information
+		 * @param aGame the game session of the chart
+		 * @param aReq the requirement id to display
+		 */
 		public void updateChart(GameSession aGame, int aReq)
 		{
 			theGame = aGame;

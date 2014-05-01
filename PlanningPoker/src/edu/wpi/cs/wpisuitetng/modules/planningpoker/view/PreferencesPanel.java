@@ -197,9 +197,13 @@ public class PreferencesPanel extends JPanel {
 	public String getEmailAddress(){
 		return emailField.getText();
 	}
+	
+	/**
+	 * This updates the emailFields
+	 */
 	public void updateDisplay(){
-		this.emailField.setText("");
-		this.currentEmailLabel.setText(eModel.getAddress());
+		emailField.setText("");
+		currentEmailLabel.setText(eModel.getAddress());
 	}
 }
 

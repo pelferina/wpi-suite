@@ -13,12 +13,15 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.Timer;
 
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetVoteController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.deckcontroller.GetDecksController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
@@ -43,22 +46,26 @@ public class RefreshManager {
 	GetRequirementsController reqController;
 	GetDecksController deckController;
 	GetVoteController voteController;
+	GetUsersController userController;
 	List<Vote> voteCache;
 	List<Requirement> reqCache;
 	List<GameSession> gameCache;
 	List<Deck> deckCache;
-	private final Timer refreshRequirementsTimer,refreshGamesTimer,refreshDeckTimer;
+	List<User> userCache;
+	private final Timer refreshRequirementsTimer,refreshGamesTimer,refreshDeckTimer,refreshUserTimer;
 	public RefreshManager() {
 	
 		gameController = GetGamesController.getInstance();
 		reqController = GetRequirementsController.getInstance();
 		voteController = GetVoteController.getInstance();
 		deckController = GetDecksController.getInstance();
+		userController = GetUsersController.getInstance();
 		
 		reqCache = new ArrayList<Requirement>();
 		gameCache =  new ArrayList<GameSession>();
 		deckCache = new ArrayList<Deck>();
 		voteCache = new ArrayList<Vote>();
+		userCache = new ArrayList<User>();
 		
 		//Create action listener for Games
 		final ActionListener gameCheck = new ActionListener() {
@@ -92,6 +99,21 @@ public class RefreshManager {
 			}
 		};
 		
+		final ActionListener userCheck = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try{
+					if(Network.getInstance().getDefaultNetworkConfiguration() != null){
+						updateUsers();
+					}
+				}
+
+				catch(RuntimeException exception){
+					System.err.println(exception.getMessage());
+				}
+			}
+		};
+		
 		//Create action listener for timer
 		final ActionListener deckCheck = new ActionListener() {
 			@Override
@@ -112,7 +134,19 @@ public class RefreshManager {
 		refreshGamesTimer = new Timer(refreshTime, gameCheck);
 		refreshRequirementsTimer = new Timer(refreshTime, reqCheck);
 		refreshDeckTimer = new Timer(refreshTime, deckCheck);
+		refreshUserTimer = new Timer(refreshTime, userCheck);
 		pauseRefreshHandler.addRefreshManager(this);
+	}
+
+	protected void updateUsers() {
+
+		userController.actionPerformed();
+		
+		//Make a request to the database
+		if (differentList(userCache, new ArrayList<User>(Arrays.asList(userController.getUsers())) )){
+			userCache = new ArrayList<User>(Arrays.asList(userController.getUsers()));
+		}	
+		
 	}
 
 	/**
@@ -179,17 +213,24 @@ public class RefreshManager {
 	    return false;
 	}
 
+	/**
+	 * This stops refreshing timers
+	 */
 	public void stopRefresh() {
-		this.refreshRequirementsTimer.stop();
-		this.refreshGamesTimer.stop();
-		this.refreshDeckTimer.stop();
+		refreshRequirementsTimer.stop();
+		refreshGamesTimer.stop();
+		refreshDeckTimer.stop();
 		
 	}
 
+	/**
+	 * This restarts the refreshing timers
+	 */
 	public void startRefresh() {
 		this.refreshRequirementsTimer.start();
 		this.refreshGamesTimer.start();
 		this.refreshDeckTimer.start();
+		this.refreshUserTimer.start();
 	}
 
 }

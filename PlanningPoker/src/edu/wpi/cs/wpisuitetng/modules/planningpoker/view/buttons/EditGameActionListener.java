@@ -22,23 +22,17 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
  * @version $Revision: 1.0 $
  */
 public class EditGameActionListener implements ActionListener{
-	int gameID;
+	GameSession game;
 	/**
 	 * This listener watches for game edit requests
-	 * @param gameID the integer game id to edit
+	 * @param game the game selected
 	 */
-	public EditGameActionListener(int gameID){
-		this.gameID = gameID;
+	public EditGameActionListener(GameSession gameSelected){
+		this.game = gameSelected;
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		final List<GameSession> games = GameModel.getInstance().getGames();
-		for(GameSession g: games){
-			if(g.getGameID() == gameID){
-				ViewEventController.getInstance().editGameTab(g);
-			}
-		}
-		
+		ViewEventController.getInstance().editGameTab(game);	
 	}
 	
 }

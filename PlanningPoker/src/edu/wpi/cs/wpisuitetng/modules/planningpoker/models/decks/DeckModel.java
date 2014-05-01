@@ -172,6 +172,11 @@ public class DeckModel extends AbstractListModel {
 		return null;
 	}
 	
+	/**
+	 * This function determines if the deck is a duplicate
+	 * @param s The deck name as a string
+	 * @return true if the name is a duplicate, false otherwise
+	 */
 	public boolean isDuplicateDeck(String s){
 		for (Deck deck: listOfDecks)
 		{

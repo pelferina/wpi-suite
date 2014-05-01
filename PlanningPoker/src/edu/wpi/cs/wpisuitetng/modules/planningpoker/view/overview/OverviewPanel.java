@@ -11,14 +11,14 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Graphics;
+
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+
+
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -45,7 +45,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.TableSelectListener;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.CustomTreeCellRenderer;
+
 
 
 

@@ -9,18 +9,17 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
 
+import java.awt.Component;
 import java.awt.Dimension;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-
 import javax.imageio.ImageIO;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -42,6 +41,7 @@ public class UserButtonPanel extends ToolbarGroupView{
 	private ImageIcon viewImg;
 	private ImageIcon voteImg;
 	private final Timer expireTimer = null;
+	Component spacer = Box.createRigidArea(new Dimension(15,0));
 	
 	public UserButtonPanel(){
 		super("");
