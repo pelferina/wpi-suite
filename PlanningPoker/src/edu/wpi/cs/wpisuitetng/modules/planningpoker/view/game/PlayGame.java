@@ -310,7 +310,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.NORTH, reqDescScroll, 10, SpringLayout.SOUTH, reqDesc);
 		springLayout.putConstraint(SpringLayout.WEST, reqDescScroll, 0, SpringLayout.WEST, reqDesc);
 		springLayout.putConstraint(SpringLayout.EAST, reqDescScroll, -30, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, reqDescScroll, 125, SpringLayout.NORTH, reqDescScroll);
+		springLayout.putConstraint(SpringLayout.SOUTH, reqDescScroll, -GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.NORTH, notAnIntegerError);
 
 		//Spring layout for reqDesc label
 		springLayout.putConstraint(SpringLayout.NORTH, reqDesc, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, reqNameTextField);
@@ -333,8 +333,8 @@ public class PlayGame extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.WEST, voteConfirmation, 0, SpringLayout.WEST, voteButton);
 		
 		//Spring layout for deadlineLabel
-		springLayout.putConstraint(SpringLayout.NORTH, deadlineLabel, -30, SpringLayout.NORTH, estimateLabel);
-		springLayout.putConstraint(SpringLayout.WEST, deadlineLabel, 0, SpringLayout.WEST, estimateLabel);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, deadlineLabel, 0, SpringLayout.VERTICAL_CENTER, estimateLabel);
+		springLayout.putConstraint(SpringLayout.EAST, deadlineLabel, -20, SpringLayout.WEST, estimateLabel);
 		
 		setLayout(springLayout);
 
@@ -402,6 +402,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		} else {
 			estimateTextField.setText("");
 		}
+		estimateTextField.requestFocusInWindow();
 	}
 
 
@@ -443,10 +444,11 @@ public class PlayGame extends JPanel implements Refreshable{
 	 * changes whether or not the user can submit vote
 	 */
 	public void checkCanSubmit(){
-		boolean canSubmit = true;
+		boolean canSubmit = false;
+		//TODO Change to hasChanged
 		for (int estimate: userEstimates.getVote()){
-			if (estimate < 0){
-				canSubmit = false;
+			if (estimate > 0){
+				canSubmit = true;
 				break;
 			}
 		}
