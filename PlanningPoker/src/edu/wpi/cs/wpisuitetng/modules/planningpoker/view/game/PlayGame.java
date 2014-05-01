@@ -402,6 +402,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		} else {
 			estimateTextField.setText("");
 		}
+		estimateTextField.requestFocusInWindow();
 	}
 
 

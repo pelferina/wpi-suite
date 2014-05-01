@@ -224,6 +224,7 @@ public class GameRequirements extends JSplitPane{
 					complete.setValueAt(estimate, j, 2);
 				}
 			}
+			estimatesComplete.clearSelection();
 		}
 		while (i >= 0) {
   			if (estimatesPending.getRowCount() > i) {
