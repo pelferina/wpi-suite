@@ -15,8 +15,6 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
-import org.apache.catalina.tribes.util.Arrays;
-
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetAllUsers;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
