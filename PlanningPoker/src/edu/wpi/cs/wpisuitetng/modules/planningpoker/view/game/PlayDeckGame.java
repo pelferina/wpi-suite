@@ -227,6 +227,7 @@ public class PlayDeckGame extends PlayGame implements Refreshable{
 			GameCard c = cardButtons.get(i);
 			c.setSelected(false);
 		}
+		voteButton.setEnabled(false);
 	}
 
 	/**

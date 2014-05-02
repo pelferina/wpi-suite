@@ -363,27 +363,27 @@ public class PlayGame extends JPanel implements Refreshable{
 	 * @param reqToEstimate the requirement that is being estimated
 	 */
 	protected void checkValidEstimate(){
-		if (isInteger(estimateTextField.getText())) {
-			if (estimateTextField.getText().isEmpty()) {
-				notAnIntegerError.setVisible(false);
-				voteButton.setEnabled(false);
-			}
+		if (!estimateTextField.getText().isEmpty()) {
+			if (isInteger(estimateTextField.getText())) {
+				if (Integer.parseInt(estimateTextField.getText()) >= 0){
+					voteButton.setEnabled(true);
+					notAnIntegerError.setVisible(false);
+				}
+				else{
+					voteButton.setEnabled(false);
+					notAnIntegerError.setVisible(true);
+				}
 
-			else if (Integer.parseInt(estimateTextField.getText()) >= 0){
-				voteButton.setEnabled(true);
-				notAnIntegerError.setVisible(false);
 			}
-			else{
+			else {
 				voteButton.setEnabled(false);
 				notAnIntegerError.setVisible(true);
 			}
-
 		}
-		else{
+		else {
 			voteButton.setEnabled(false);
 			notAnIntegerError.setVisible(false);
 		}
-
 	}
 
 	//This function is used when a requirement is double clicked in one of the two requirement tables, and it sets the name and description fields to the 
@@ -410,6 +410,7 @@ public class PlayGame extends JPanel implements Refreshable{
 			estimateTextField.setText("");
 		}
 		estimateTextField.requestFocusInWindow();
+		voteButton.setEnabled(false);
 	}
 
 
