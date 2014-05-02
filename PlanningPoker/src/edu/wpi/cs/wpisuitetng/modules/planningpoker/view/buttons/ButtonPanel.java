@@ -199,7 +199,6 @@ public class ButtonPanel extends ToolbarGroupView{
     				contentPanel.add(Box.createRigidArea(new Dimension(15,0)));
     				contentPanel.updateUI();
     			}else{
-    				System.out.println("disable the button");
     				//ViewEventController.getInstance().makeActivateGameButtonDisable(gameSelected);
     			}
     		}else if(gameSelected.getGameStatus().equals(GameStatus.COMPLETED)){
