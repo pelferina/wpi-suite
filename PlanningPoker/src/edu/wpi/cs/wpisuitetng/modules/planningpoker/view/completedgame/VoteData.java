@@ -134,6 +134,7 @@ public class VoteData extends JPanel{
 		else {
 			finalEstimateText.setEditable(false);
 			submitEstimateButton.setVisible(false);
+			archiveGameButton.setVisible(false);
 		}
 		reqNameText.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
@@ -381,6 +382,7 @@ public class VoteData extends JPanel{
 			
 		};
 		setFocusTimer.schedule(setFocus, 200);
+		submitEstimateButton.setEnabled(false);
 	}
 	
 	/**
