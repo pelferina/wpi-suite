@@ -7,6 +7,8 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
+import javax.swing.SpringLayout;
+
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.DefaultToolbarView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.ButtonPanel;
@@ -36,9 +38,10 @@ public class ToolbarView  extends DefaultToolbarView {
 	 * @param visible boolean
 	 */
 	public ToolbarView(boolean visible) {
-		this.insertGroupAt(greetingPanel, 0);
 		
-		this.addGroup(gameButton);
+		this.insertGroupAt(greetingPanel, 0);
+		//this.addGroup(gameButton);
+		
 		this.addGroup(buttonPanel);
 		//this.addGroup(userButton);
 		//this.addGroup(ownerButton);
