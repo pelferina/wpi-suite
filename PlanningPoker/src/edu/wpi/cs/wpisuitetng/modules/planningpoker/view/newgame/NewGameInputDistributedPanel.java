@@ -40,8 +40,6 @@ import javax.swing.SpringLayout;
 import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
-
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
@@ -58,6 +56,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.GuiStandards;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 
+
+
 /**
  * This is the window for the user to create a planning poker session
  * @author fff8e7
@@ -65,6 +65,11 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  */
 @SuppressWarnings("serial")
 public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
+
+	/**
+	 * Constant limit for game name size
+	 */
+	private static final int GAME_NAME_LIMIT = 50;
 
 	private Calendar currentDate; 
 
@@ -221,7 +226,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		descriptionTextField.setWrapStyleWord(true);
 		
 		nameTextField.setMargin(new Insets(0, GuiStandards.TEXT_BOX_MARGIN.getValue(), 0, 0));
-		nameTextField.setDocument(new JTextFieldLimit(10));
+		nameTextField.setDocument(new JTextFieldLimit(GAME_NAME_LIMIT));
 		// Set initial save/activate game visibility		
 		setSaveGameButtonVisibility(false);
 		setActivateGameButtonVisibility(false);

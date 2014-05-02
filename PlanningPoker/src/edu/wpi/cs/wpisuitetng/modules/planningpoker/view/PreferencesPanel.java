@@ -51,6 +51,7 @@ public class PreferencesPanel extends JPanel {
 	private final JLabel currentEmailLabel = new JLabel("");
 	private final JLabel currentEmailNameLabel = new JLabel("Current Email:");
 	private final JButton submitButton = new JButton ("Save");
+	private final JButton deckButton = new JButton ("Manage Decks");
 	private final JCheckBox enableCheckBox = new JCheckBox("Enable E-mail Notification");
 	private final JButton close;
 	private EmailAddressModel eModel;
@@ -61,7 +62,10 @@ public class PreferencesPanel extends JPanel {
 	 */
 	public PreferencesPanel(JButton btnClose){
 		setupPanel();
-		currentEmailLabel.setText(emailField.getText());
+		if(emailField.getText().length() == 0){
+			currentEmailLabel.setText("none");
+		}
+		else currentEmailLabel.setText(emailField.getText());
 		emailField.setText("");
 		close = btnClose;
 	}
@@ -93,13 +97,16 @@ public class PreferencesPanel extends JPanel {
 		// Swing layout for email Field
 		springLayout.putConstraint(SpringLayout.NORTH, emailField, 0, SpringLayout.NORTH, emailLabel);
 		springLayout.putConstraint(SpringLayout.WEST, emailField, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.EAST, emailLabel);
-		springLayout.putConstraint(SpringLayout.EAST, emailField, 150, SpringLayout.WEST, emailField);
+		springLayout.putConstraint(SpringLayout.EAST, emailField, 0, SpringLayout.EAST, enableCheckBox);
 		// Swing layout for submit Button
 		springLayout.putConstraint(SpringLayout.NORTH, submitButton, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, emailLabel);
 		springLayout.putConstraint(SpringLayout.WEST, submitButton, GuiStandards.LEFT_MARGIN.getValue(), SpringLayout.WEST, this);
 		// Swing layout for enableCheckBox
 		springLayout.putConstraint(SpringLayout.NORTH, enableCheckBox, 0, SpringLayout.NORTH, submitButton);
 		springLayout.putConstraint(springLayout.WEST, enableCheckBox, GuiStandards.LEFT_MARGIN.getValue(), SpringLayout.EAST, submitButton);
+		// Swing layout for deckButton
+		springLayout.putConstraint(SpringLayout.NORTH, deckButton, 30, SpringLayout.SOUTH, enableCheckBox);
+		springLayout.putConstraint(SpringLayout.WEST, deckButton, 0, SpringLayout.WEST, enableCheckBox);
 		
 		setLayout(springLayout);
 		
@@ -107,6 +114,8 @@ public class PreferencesPanel extends JPanel {
 		add(currentEmailNameLabel);
 		add(userName);
 		add(emailLabel);
+		add(deckButton);
+		
 		emailField.getDocument().addDocumentListener(new DocumentListener(){
 
 			@Override
