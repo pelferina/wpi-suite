@@ -49,7 +49,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistribu
 @SuppressWarnings({"serial"})
 public class DeckManagingPanel extends JPanel {
 
-	private boolean isSingleSelection = true; // TODO fix this later
+	private boolean isSingleSelection = true; 
+	private boolean newDeckFlag = false;
 	private JButton btnAddCard = new JButton("Add Card");
 	private JButton btnRmvSelected = new JButton("Remove Selected");
 	private JButton btnRmvAll = new JButton("Remove all");
@@ -72,17 +73,21 @@ public class DeckManagingPanel extends JPanel {
 	private String newDeckName;
 	private List<Integer> newDeckCards = new ArrayList<Integer>();
 	private List<Integer> cardsToBeRemoved = new ArrayList<Integer>();
+	private List<Integer> currentDeck = new ArrayList<Integer>();
 	private JPanel cardPanel = new JPanel();
 	private JScrollPane cardArea = new JScrollPane(cardPanel);
 	private NewGameDistributedPanel newGameDistributed;
 //	private final JLabel notAnIntegerError = new JLabel ("Please enter an non-negative integer for card value!");
 //	private final JLabel duplicateNameError = new JLabel ("This deck name already exists!");
 //	private final JLabel noCardError = new JLabel ("You need to have at least one card in the deck!");
+	private int selectedDeckIndex;
 
 	/** Constructor for a DeckPanel panel
 	 */
 	public DeckManagingPanel(){
+		// Sets up elements
 		setupButtonIcons();
+		setupDecks();
 		
 		// Set up for Radio buttons that will determine deck selection mode
 		selectionGroup.add(btnSingleSelection);
@@ -147,6 +152,51 @@ public class DeckManagingPanel extends JPanel {
 		});
 		
 		// All listeners and their functions
+		decksComboBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				selectedDeckIndex = decksComboBox.getSelectedIndex();
+				if(selectedDeckIndex == 0){
+					newDeckFlag = true;
+				} else {
+					newDeckFlag = false;
+					
+					// Gets deck cards
+					currentDeck = DeckModel.getInstance().getDeck(selectedDeckIndex).getCards();
+					
+					// Populate pane with cards of the corresponding deck
+					for(int value: currentDeck){
+						final GameCard card = new GameCard(value);
+						card.setCancelCard(true);
+						
+						// Sets listener for the  new card
+						card.addItemListener (new ItemListener(){
+							public void itemStateChanged ( ItemEvent ie) {
+								if (card.isSelected()){
+									cardsToBeRemoved.add(card.getValue()); // If card is selected, adds its value to the list of cards to be removed
+									Collections.sort(cardsToBeRemoved);
+								} else {
+									cardsToBeRemoved.remove(card.getValue()); // If unselected, remove from list
+								}
+							}
+						});
+						
+						// Adds card to panel
+						cardPanel.add(card);
+						cardPanel.revalidate();
+			
+						// Stores new card value to the list
+						newDeckCards.add(value);
+					}
+					
+					// GUI calls
+					btnSave.setEnabled(true);
+					numberField.setText("");
+					resetPanel();
+				}
+			}
+		});
+		
 		btnSave.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				newDeckName = nameField.getText();
@@ -397,6 +447,26 @@ public class DeckManagingPanel extends JPanel {
 		add(btnDelete);
 		add(btnClose);
 	}
+	
+	private void setupDecks(){
+		decksComboBox.removeAllItems();
+		decksComboBox.addItem("Create New Deck ...");
+		addDecksToDeckComboBox();
+	}
+	
+	/**
+	 * Add all available deck selections to the combo box
+	 *
+	 */
+	private void addDecksToDeckComboBox()
+	{
+		List<Deck> decks = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
+		for (Deck d: decks){
+			if(!(d.getName() == "Default Deck")) 
+				decksComboBox.addItem(d.getName());
+		}
+	}
+	
 	private void setupButtonIcons()
 	{
 		try{
@@ -408,6 +478,7 @@ public class DeckManagingPanel extends JPanel {
 			System.err.println(ex.getMessage());
 		}
 	}
+	
 	private void resetPanel(){
 		// Sorts list
 		Collections.sort(newDeckCards);
