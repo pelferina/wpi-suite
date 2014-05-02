@@ -58,7 +58,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.TableSelectList
 @SuppressWarnings("serial")
 public class OverviewPanel extends JPanel implements Refreshable {
 
-
+	public static OverviewPanel instance;
 	GetGamesController ggc; 
 	GameSession[] curSessions = {}; // store gameSessions here
 	GameModel gameModel;
@@ -73,6 +73,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	private boolean hasPulled = false;
 
 	public OverviewPanel(){
+		instance = this;
 		gameModel = GameModel.getInstance();
 		ggc = GetGamesController.getInstance();
 		
@@ -283,6 +284,18 @@ public class OverviewPanel extends JPanel implements Refreshable {
 	@Override
 	public void refreshDecks() {
 		//intentionally left blank
+	}
+
+
+	public static OverviewPanel getInstance() {
+		return instance;
+	}
+
+
+	public void removeGameFromTable(int gameID) {
+		JTableModel model = (JTableModel) table.getModel();
+		model.removeGameFromList(gameID);
+
 	}
 	
 }

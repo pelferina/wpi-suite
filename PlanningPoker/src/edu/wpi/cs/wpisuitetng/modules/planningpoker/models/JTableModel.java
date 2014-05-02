@@ -15,9 +15,12 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
+import org.apache.catalina.tribes.util.Arrays;
+
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetAllUsers;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
+
 
 /**
  * This is a model for the JTabel
@@ -214,4 +217,54 @@ public class JTableModel extends AbstractTableModel {
 		return games[i];
 	}
 	
+	
+	public void removeGameFromList(int gameID) {
+		
+		GameSession game = null;
+		for (GameSession gam : games){
+			if (gam.getGameID()==gameID){
+				game = gam;
+				break;
+			}
+		}
+		if (game==null){
+			return; // if we want to remove a nonexistant game
+		}
+		GameSession[] newGames = new GameSession[games.length-1];
+		boolean hasFound = false;
+		for (int i=0; i<games.length; i++){
+			if (!hasFound){
+				if (games[i].equals(game)){
+					hasFound=true;
+				} else{
+					newGames[i] = games[i];
+				}
+				
+			} else{
+				newGames[i-1] = games[i];
+			}
+		}
+		games = newGames;
+		size = newGames.length;
+		
+		
+		Object[][] newData = new Object[Data.length-1][Data[0].length];
+		hasFound = false;
+		for (int i=0; i<Data.length; i++){
+			if (!hasFound){
+				if (Data[i][0].equals(game.getGameName())){
+					hasFound=true;
+				} else{
+					newData[i] = Data[i];
+				}
+				
+			} else{
+				newData[i-1] = Data[i];
+			}
+		}
+		Data = newData;
+
+		fireTableDataChanged();
+		fireTableStructureChanged();
+	}
 }
