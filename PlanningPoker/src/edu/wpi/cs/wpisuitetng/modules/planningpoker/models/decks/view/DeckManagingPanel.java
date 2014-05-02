@@ -36,8 +36,10 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.deckcontroller.AddDeckController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.deckcontroller.GetDecksController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameCard;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 
@@ -47,7 +49,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistribu
  * @version 6
  */
 @SuppressWarnings({"serial"})
-public class DeckManagingPanel extends JPanel {
+public class DeckManagingPanel extends JPanel implements Refreshable{
 
 	private boolean isSingleSelection = true; 
 	private boolean newDeckFlag = false;
@@ -74,6 +76,7 @@ public class DeckManagingPanel extends JPanel {
 	private List<Integer> newDeckCards = new ArrayList<Integer>();
 	private List<Integer> cardsToBeRemoved = new ArrayList<Integer>();
 	private List<Integer> currentDeck = new ArrayList<Integer>();
+	private List<Deck> decks = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
 	private JPanel cardPanel = new JPanel();
 	private JScrollPane cardArea = new JScrollPane(cardPanel);
 	private NewGameDistributedPanel newGameDistributed;
@@ -85,6 +88,7 @@ public class DeckManagingPanel extends JPanel {
 	/** Constructor for a DeckPanel panel
 	 */
 	public DeckManagingPanel(){
+		GetDecksController.getInstance().addRefreshable(this);
 		// Sets up elements
 		setupButtonIcons();
 		setupDecks();
@@ -158,8 +162,27 @@ public class DeckManagingPanel extends JPanel {
 				selectedDeckIndex = decksComboBox.getSelectedIndex();
 				if(selectedDeckIndex == 0){
 					newDeckFlag = true;
+					
+					//Clear lists
+					newDeckCards.clear();
+					cardsToBeRemoved.clear();
+					currentDeck.clear();
+					
+					//GUI calls
+					btnSave.setEnabled(false);
+					btnAddCard.setEnabled(true);
+					btnRmvSelected.setEnabled(false);
+					btnRmvAll.setEnabled(false);
+					cardPanel.revalidate();
+					resetPanel();
+					
 				} else {
 					newDeckFlag = false;
+					
+					//Clear lists
+					newDeckCards.clear();
+					cardsToBeRemoved.clear();
+					currentDeck.clear();
 					
 					// Gets deck cards
 					currentDeck = DeckModel.getInstance().getDeck(selectedDeckIndex).getCards();
@@ -190,7 +213,7 @@ public class DeckManagingPanel extends JPanel {
 					}
 					
 					// GUI calls
-					btnSave.setEnabled(true);
+					btnSave.setEnabled(false);
 					numberField.setText("");
 					resetPanel();
 				}
@@ -460,9 +483,9 @@ public class DeckManagingPanel extends JPanel {
 	 */
 	private void addDecksToDeckComboBox()
 	{
-		List<Deck> decks = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
+		decks = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
 		for (Deck d: decks){
-			if(!(d.getName() == "Default Deck")) 
+			if(!d.getName().equals("Default Deck"))
 				decksComboBox.addItem(d.getName());
 		}
 	}
@@ -612,5 +635,24 @@ public class DeckManagingPanel extends JPanel {
 	public void setFocusOnName() {
 		nameField.requestFocusInWindow();
 		getRootPane().setDefaultButton(btnAddCard);
+	}
+
+	@Override
+	public void refreshRequirements() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void refreshGames() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void refreshDecks() {
+		if (decks.size() != DeckModel.getInstance().getDecks().size()){
+			setupDecks();
+		}
 	}
 }

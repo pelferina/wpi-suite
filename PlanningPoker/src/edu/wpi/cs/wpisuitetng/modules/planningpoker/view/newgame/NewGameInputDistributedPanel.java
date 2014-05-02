@@ -41,7 +41,6 @@ import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
@@ -757,6 +756,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	private void initializeEditMode()
 	{
 
