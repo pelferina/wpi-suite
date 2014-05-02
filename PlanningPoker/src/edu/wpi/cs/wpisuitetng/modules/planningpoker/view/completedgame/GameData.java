@@ -24,6 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -94,6 +95,7 @@ public class GameData extends JPanel{
 
 		gameReqsTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Mean", "Median", "Std Dev", "Estimate"}));
 		gameReqsTable.setFillsViewportHeight(true);
+		gameReqsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		init();	
 	}
 
