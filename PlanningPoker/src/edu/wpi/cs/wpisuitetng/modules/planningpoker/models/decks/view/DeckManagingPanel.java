@@ -156,66 +156,70 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		});
 		
 		// All listeners and their functions
-		decksComboBox.addActionListener(new ActionListener() {
+		decksComboBox.addItemListener(new ItemListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				selectedDeckIndex = decksComboBox.getSelectedIndex();
-				if(selectedDeckIndex == 0){
-					newDeckFlag = true;
-					
-					//Clear lists
-					newDeckCards.clear();
-					cardsToBeRemoved.clear();
-					currentDeck.clear();
-					
-					//GUI calls
-					btnSave.setEnabled(false);
-					btnAddCard.setEnabled(true);
-					btnRmvSelected.setEnabled(false);
-					btnRmvAll.setEnabled(false);
-					cardPanel.revalidate();
-					resetPanel();
-					
-				} else {
-					newDeckFlag = false;
-					
-					//Clear lists
-					newDeckCards.clear();
-					cardsToBeRemoved.clear();
-					currentDeck.clear();
-					
-					// Gets deck cards
-					currentDeck = DeckModel.getInstance().getDeck(selectedDeckIndex).getCards();
-					
-					// Populate pane with cards of the corresponding deck
-					for(int value: currentDeck){
-						final GameCard card = new GameCard(value);
-						card.setCancelCard(true);
+			public void itemStateChanged(ItemEvent e) {
+				if(e.getStateChange() == ItemEvent.SELECTED){
+					selectedDeckIndex = decksComboBox.getSelectedIndex();
+					if(selectedDeckIndex == 0){
+						newDeckFlag = true;
 						
-						// Sets listener for the  new card
-						card.addItemListener (new ItemListener(){
-							public void itemStateChanged ( ItemEvent ie) {
-								if (card.isSelected()){
-									cardsToBeRemoved.add(card.getValue()); // If card is selected, adds its value to the list of cards to be removed
-									Collections.sort(cardsToBeRemoved);
-								} else {
-									cardsToBeRemoved.remove(card.getValue()); // If unselected, remove from list
-								}
-							}
-						});
+						//Clear lists
+						newDeckCards.clear();
+						cardsToBeRemoved.clear();
+						currentDeck.clear();
 						
-						// Adds card to panel
-						cardPanel.add(card);
+						//GUI calls
+						nameField.setText("");
+						btnSave.setEnabled(false);
+						btnAddCard.setEnabled(true);
+						btnRmvSelected.setEnabled(false);
+						btnRmvAll.setEnabled(false);
 						cardPanel.revalidate();
-			
-						// Stores new card value to the list
-						newDeckCards.add(value);
+						resetPanel();
+						
+					} else {
+						newDeckFlag = false;
+						
+						//Clear lists
+						newDeckCards.clear();
+						cardsToBeRemoved.clear();
+						currentDeck.clear();
+						
+						// Gets deck cards
+						currentDeck = DeckModel.getInstance().getDeck(selectedDeckIndex).getCards();
+						
+						// Populate pane with cards of the corresponding deck
+						for(int value: currentDeck){
+							final GameCard card = new GameCard(value);
+							card.setCancelCard(true);
+							
+							// Sets listener for the  new card
+							card.addItemListener (new ItemListener(){
+								public void itemStateChanged ( ItemEvent ie) {
+									if (card.isSelected()){
+										cardsToBeRemoved.add(card.getValue()); // If card is selected, adds its value to the list of cards to be removed
+										Collections.sort(cardsToBeRemoved);
+									} else {
+										cardsToBeRemoved.remove(card.getValue()); // If unselected, remove from list
+									}
+								}
+							});
+							
+							// Adds card to panel
+							cardPanel.add(card);
+							cardPanel.revalidate();
+				
+							// Stores new card value to the list
+							newDeckCards.add(value);
+						}
+						
+						// GUI calls
+						btnSave.setEnabled(false);
+						nameField.setText(decksComboBox.getItemAt(selectedDeckIndex));
+						numberField.setText("");
+						resetPanel();
 					}
-					
-					// GUI calls
-					btnSave.setEnabled(false);
-					numberField.setText("");
-					resetPanel();
 				}
 			}
 		});
