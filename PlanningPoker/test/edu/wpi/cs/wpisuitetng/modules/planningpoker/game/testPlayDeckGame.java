@@ -40,11 +40,9 @@ public class testPlayDeckGame {
 	@Test
 	public void testDeadlineCheck() throws Exception{
 		GameSession gs = new GameSession("G","D", 0, 0, Calendar.getInstance().getTime(), new ArrayList());
+		gs.setDeckId(0);
 		GameView gv = new GameView(gs);
 		PlayDeckGame pdg = new PlayDeckGame(gs, gv);
-		pdg.clear();
-		pdg.checkCanSubmit();
-		
 		assertNotNull(pdg);
 		
 	}

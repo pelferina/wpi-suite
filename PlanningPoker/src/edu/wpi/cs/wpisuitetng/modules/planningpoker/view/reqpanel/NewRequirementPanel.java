@@ -150,7 +150,7 @@ public class NewRequirementPanel extends JPanel {
 		//Spring layout constraints for nameField
 		springLayout.putConstraint(SpringLayout.WEST, nameField, 6, SpringLayout.EAST, nameLabel);
 		springLayout.putConstraint(SpringLayout.EAST, nameField, 0, SpringLayout.EAST, descriptionScrollPane);
-		springLayout.putConstraint(SpringLayout.NORTH, nameField, -GuiStandards.TEXT_HIEGHT_OFFSET.getValue(), SpringLayout.NORTH, nameLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, nameField, -GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.NORTH, nameLabel);
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameField, 0, SpringLayout.VERTICAL_CENTER, nameLabel);
 		
 		//Spring layout constraints for the nameLabel

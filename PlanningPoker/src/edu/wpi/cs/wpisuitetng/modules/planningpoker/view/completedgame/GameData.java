@@ -24,6 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -71,6 +72,7 @@ public class GameData extends JPanel{
 		gameNameTextBox.setText(gs.getGameName());
 		descriptionTextArea.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		descriptionTextArea.setText(gs.getGameDescription());
+		gameNameTextBox.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		gameNameTextBox.setEditable(false);
 		descriptionTextArea.setEditable(false);
 		gameReqIDs = gs.getGameReqs();
@@ -91,8 +93,9 @@ public class GameData extends JPanel{
 			}
 		};
 
-		gameReqsTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Mean", "Median", "Standard Deviation", "Estimate"}));
+		gameReqsTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Mean", "Median", "Std Dev", "Estimate"}));
 		gameReqsTable.setFillsViewportHeight(true);
+		gameReqsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		init();	
 	}
 
@@ -193,7 +196,7 @@ public class GameData extends JPanel{
 
 		//Spring layout constraints for descriptionScrollPane
 		springLayout.putConstraint(SpringLayout.NORTH, descriptionScrollPane, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, descriptionLabel);
-		springLayout.putConstraint(SpringLayout.SOUTH, descriptionScrollPane, 150, SpringLayout.NORTH, descriptionScrollPane);
+		springLayout.putConstraint(SpringLayout.SOUTH, descriptionScrollPane, 100, SpringLayout.NORTH, descriptionScrollPane);
 		springLayout.putConstraint(SpringLayout.WEST, descriptionScrollPane, 0, SpringLayout.WEST, descriptionLabel);
 		springLayout.putConstraint(SpringLayout.EAST, descriptionScrollPane, 0, SpringLayout.EAST, gameNameTextBox);
 

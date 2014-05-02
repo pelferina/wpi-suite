@@ -11,8 +11,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.util.Date;
+import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.database.Data;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
@@ -49,11 +49,7 @@ public class VotingCompleteListener implements ActionListener {
 						null)).toArray(new GameSession[0]);
 
 		numOfUser = db.retrieveAll(new User(null, null, null, 0)).size();
-		//System.out.println(numOfUser);
 		for (int i = 0; i < gameArray.length; i++) {
-//			System.out.println("GameID being processed" + gameArray[i].getGameID());
-//			System.out.println("GameVoteList being is of size" + 
-//					VoteModel.getInstance().getVotes(gameArray[i].getGameID()).size());
 			if(VoteModel.getInstance().getVotes(gameArray[i].getGameID()) != null
 					&& VoteModel.getInstance().getVotes(gameArray[i].getGameID()).size() > 0
 					&& gameArray[i].getGameStatus().equals(GameStatus.ACTIVE) ){
@@ -65,8 +61,16 @@ public class VotingCompleteListener implements ActionListener {
 				}
 			}
 			
-			if (VoteModel.getInstance().getVotes(gameArray[i].getGameID()) != null 
-					&& VoteModel.getInstance().getVotes(gameArray[i].getGameID()).size() == numOfUser
+			boolean hasAllVotes = true;
+			List<Vote> gameVotes = VoteModel.getInstance().getVotes(gameArray[i].getGameID());
+			if (gameVotes != null){
+				for (Vote v: gameVotes){
+					if (v.getVote().contains(-1)){
+						hasAllVotes = false;
+					}
+				}
+			}
+			if (gameVotes != null && hasAllVotes && VoteModel.getInstance().getVotes(gameArray[i].getGameID()).size() == numOfUser
 					&& (gameArray[i].getGameStatus().equals(GameStatus.ACTIVE) || 
 							gameArray[i].getGameStatus().equals(GameStatus.INPROGRESS))) {
 				// change the status of gameSession
