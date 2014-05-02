@@ -56,6 +56,8 @@ public class PlayDeckGame extends PlayGame implements Refreshable{
 	private final JScrollPane deckArea = new JScrollPane(deckAreaPanel);
 	private int deckId;
 	private List<Integer> gameCardList = new ArrayList<Integer>();
+
+
 	private int votesSoFarInt = -1;
 	private final JLabel votesSoFarNameLabel = new JLabel("Estimate: ");
 	private final JLabel votesSoFarLabel = new JLabel("0");
@@ -251,4 +253,18 @@ public class PlayDeckGame extends PlayGame implements Refreshable{
 		// TODO Auto-generated method stub
 
 	}
+	
+	public int getDeckId() {
+		return deckId;
+	}
+
+	public JLabel getVotesSoFarLabel() {
+		return votesSoFarLabel;
+	}
+
+	public List<GameCard> getCardButtons() {
+		return cardButtons;
+	}
+
+	
 }
