@@ -50,38 +50,19 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
  * @version 6
  */
 @SuppressWarnings("serial")
-public class PlayDeckGame extends JPanel implements Refreshable{
+public class PlayDeckGame extends PlayGame implements Refreshable{
 
-	private final List<Integer> gameReqs;
-	private final JLabel gameName = new JLabel("Game Name:");
-	private final JLabel gameDesc = new JLabel("Game Description:");
-	private final JLabel reqName = new JLabel("Requirement Name:");
-	private final JLabel reqDesc = new JLabel("Requirement Description:");
-	private JLabel deadlineLabel = new JLabel("Game ends at: ");
-	private final JTextField gameNameTextField = new JTextField();
-	private final JTextField reqNameTextField = new JTextField();
-	private final JTextArea gameDescTextArea = new JTextArea();
-	private final JTextArea reqDescTextArea = new JTextArea();
 	private final JPanel deckAreaPanel = new JPanel();
 	private final JScrollPane deckArea = new JScrollPane(deckAreaPanel);
-	private final JScrollPane nd = new JScrollPane(gameDescTextArea);
-	private final JScrollPane rd = new JScrollPane(reqDescTextArea);
-	private final JButton submit = new JButton("Submit All Estimates");
-	private final JButton voteButton = new JButton("Vote");
-	private Vote userEstimates;
-	private Requirement currentReq;
-	private final GameView gv;
-	private GameSession currentGame;
 	private int deckId;
 	private List<Integer> gameCardList = new ArrayList<Integer>();
-	private int votesSoFarInt = 0;
+	private int votesSoFarInt = -1;
 	private final JLabel votesSoFarNameLabel = new JLabel("Estimate: ");
 	private final JLabel votesSoFarLabel = new JLabel("0");
-	private TimerTask setFocus;
-	private Timer setFocusTimer;
+
 	//List of buttons associated with the cards. First element -> lowest card val
 	private final List<GameCard> cardButtons = new ArrayList<GameCard>();
-	
+
 	/**
 	 * @wbp.nonvisual location=41,359
 	 */
@@ -94,107 +75,30 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 	 * @param agv the active game view
 	 */
 	public PlayDeckGame(GameSession gameToPlay, GameView agv){
-		if (gameToPlay.getDeadlineString() != "No deadline"){
-			deadlineLabel.setText(gameToPlay.getDeadlineString());
-		}
-		else{
-			deadlineLabel.setText("This game has no deadline");
-		}
-		GetGamesController.getInstance().addRefreshable(this);
+		super(gameToPlay, agv);
 
-		setFocus = new TimerTask(){
-
-			@Override
-			public void run() {
-				getRootPane().setDefaultButton(voteButton);
-			}
-
-		};
-		setFocusTimer = new Timer();
-		setFocusTimer.schedule(setFocus, 250);
-		
-		currentGame = gameToPlay;
-		gameReqs = currentGame.getGameReqs();
 		deckId = currentGame.getDeckId();
 		gameCardList = DeckModel.getInstance().getDeck(deckId).getCards();
 		isDeckSingleSelection = DeckModel.getInstance().getDeck(deckId).isSingleSelection();
 		generateButtons();
-		final ArrayList<Integer> estimates = new ArrayList<Integer>();
-		System.out.println(gameReqs.size());
-		for (int i = 0; i < gameReqs.size(); i++){
-			estimates.add(-1);
-		}
-		userEstimates = new Vote(estimates, currentGame.getGameID());
-		for (Vote v: gameToPlay.getVotes()){
-			if (v.getUID() == GetCurrentUser.getInstance().getCurrentUser().getIdNum()){
-				userEstimates = v;
-			}
-		}
-		submit.setEnabled(false);
-		gv = agv;
-		final List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
-
-		//Finds the requirement that is first in the to estimate table. The play game screen will default to displaying the first requirement
-		//in the estimates pending table
-		for (Requirement r: allReqs){
-			if (r.getId() == gameReqs.get(0)){
-				currentReq = r;
-				break;
-			}
-		}
-
-		//Sets the description and name text fields to the first requirement in the to estimate table
-		gameNameTextField.setText(currentGame.getGameName());
-		if (currentReq != null){
-			reqNameTextField.setText(currentReq.getName());
-		}
-		gameDescTextArea.setText(currentGame.getGameDescription());
-		if (currentReq != null){
-			reqDescTextArea.setText(currentReq.getDescription());
-		}
-		gameNameTextField.setEditable(false);
-		reqNameTextField.setEditable(false);
-		gameDescTextArea.setEditable(false);
-		reqDescTextArea.setEditable(false);
-		gameDescTextArea.setLineWrap(true);
-		gameDescTextArea.setWrapStyleWord(true);
-		reqDescTextArea.setLineWrap(true);
-		reqDescTextArea.setWrapStyleWord(true);
-
-		gameNameTextField.setBackground(Color.WHITE);
-		gameNameTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GRAY));
-		reqNameTextField.setBackground(Color.WHITE);
-		reqNameTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GRAY));
-
-		//Add padding
-		gameDescTextArea.setBorder(BorderFactory.createCompoundBorder(
-				gameDescTextArea.getBorder(), 
-				BorderFactory.createEmptyBorder(GuiStandards.TEXT_AREA_MARGINS.getValue(), 
-						GuiStandards.TEXT_AREA_MARGINS.getValue(), 
-						GuiStandards.TEXT_AREA_MARGINS.getValue(), 
-						GuiStandards.TEXT_AREA_MARGINS.getValue())));
-
-		reqDescTextArea.setBorder(BorderFactory.createCompoundBorder(
-				reqDescTextArea.getBorder(), 
-				BorderFactory.createEmptyBorder(GuiStandards.TEXT_AREA_MARGINS.getValue(), 
-						GuiStandards.TEXT_AREA_MARGINS.getValue(), 
-						GuiStandards.TEXT_AREA_MARGINS.getValue(), 
-						GuiStandards.TEXT_AREA_MARGINS.getValue())));
-
-		gameNameTextField.setBorder(BorderFactory.createCompoundBorder(
-				gameNameTextField.getBorder(), 
-				BorderFactory.createEmptyBorder(0, GuiStandards.TEXT_BOX_MARGIN.getValue(), 0, 0)));	
-
-		reqNameTextField.setBorder(BorderFactory.createCompoundBorder(
-				reqNameTextField.getBorder(), 
-				BorderFactory.createEmptyBorder(0, GuiStandards.TEXT_BOX_MARGIN.getValue(), 0, 0)));
 
 		deckArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 
 		for (final GameCard card: cardButtons){
-			if(!isDeckSingleSelection){ // MULTIPLE SELECTION 
-				card.addItemListener (new ItemListener() {
-					public void itemStateChanged ( ItemEvent ie ) {
+
+
+			card.addItemListener (new ItemListener() {
+				public void itemStateChanged ( ItemEvent ie ) {
+					if (!isAnyCardSelected()) {
+						votesSoFarInt = -1;
+						voteButton.setEnabled(false);
+						votesSoFarLabel.setVisible(false);
+					}
+					else if(!isDeckSingleSelection){ // MULTIPLE SELECTION
+						if (votesSoFarInt == -1) {
+							votesSoFarInt = 0;
+							votesSoFarLabel.setVisible(true);
+						}
 						if (card.isSelected()) {
 							votesSoFarInt += card.getValue();
 							votesSoFarLabel.setText (Integer.toString(votesSoFarInt)) ;
@@ -202,24 +106,26 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 							votesSoFarInt -= card.getValue();
 							votesSoFarLabel.setText (Integer.toString(votesSoFarInt)) ;
 						}
-					}
-				});
-			}
-			else { // SINGLE SELECTION
-				card.addItemListener (new ItemListener() {
-					public void itemStateChanged ( ItemEvent ie ) {
+						voteButton.setEnabled(true);
+					} else { // SINGLE SELECTION
 						if (card.isSelected()) {
 							votesSoFarInt = card.getValue();
 							votesSoFarLabel.setText (Integer.toString(votesSoFarInt)) ;
+							votesSoFarLabel.setVisible(true);
 							unselectOtherCards(card);
+							voteButton.setEnabled(true);
+						} else {
+							votesSoFarLabel.setVisible(false);
 						}
 					}
-				});
-			}
+				} 
+			});
+
 		}
 
 		//Observer for the vote button. It will save the vote client side, the submit button will handle sending it to the database.
 
+		voteButton.removeActionListener(voteActionListener);
 		voteButton.addActionListener(new ActionListener(){
 
 			@Override
@@ -243,119 +149,46 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 					sendEstimatetoGameView(currentReq, votesSoFarInt);
 				}
 				gv.isNew = false;
+				unselectAll();
 			}
 
 		});
 
-		//adds the action listener for controlling the submit button
-		submit.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e){
-				gv.isNew = true;
-				final AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
-				msgr.sendVote(userEstimates);
-				ViewEventController.getInstance().getMain().remove(gv);
-			}
-		});
-		//set layout
-		final SpringLayout springLayout = new SpringLayout();
-
-		//Spring layout placement for gameName label
-		springLayout.putConstraint(SpringLayout.NORTH, gameName, 15, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, voteButton, 280, SpringLayout.WEST, this);
-
-		//Spring layout placement for gameDesc label
-		springLayout.putConstraint(SpringLayout.NORTH, gameDesc, 15, SpringLayout.SOUTH, gameName);
-		springLayout.putConstraint(SpringLayout.WEST, gameDesc, 0, SpringLayout.WEST, gameName);
-
-		//Spring layout placement for vote button
-		springLayout.putConstraint(SpringLayout.NORTH, voteButton, 0, SpringLayout.NORTH, votesSoFarLabel);
-		springLayout.putConstraint(SpringLayout.WEST, voteButton, 30, SpringLayout.EAST, votesSoFarLabel);
-
-		//Spring layout placement for submit button
-		springLayout.putConstraint(SpringLayout.SOUTH, submit, -10, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, submit, -10, SpringLayout.EAST, this);
-
-		//Spring layout for placement of gameNameTextField
-		springLayout.putConstraint(SpringLayout.WEST, gameNameTextField, 0, SpringLayout.WEST, rd);
-		springLayout.putConstraint(SpringLayout.EAST, gameNameTextField, 600, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, gameNameTextField, 0, SpringLayout.NORTH, gameName);
-
-		//Spring layout for placement of reqNameTextField
-		springLayout.putConstraint(SpringLayout.WEST, reqNameTextField, 0, SpringLayout.WEST, rd);
-		springLayout.putConstraint(SpringLayout.EAST, reqNameTextField, 600, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, reqNameTextField, 0, SpringLayout.NORTH, reqName);
-
-		//Spring layout for nd
-		springLayout.putConstraint(SpringLayout.NORTH, nd, 0, SpringLayout.NORTH, gameDesc);
-		springLayout.putConstraint(SpringLayout.WEST, nd, 0, SpringLayout.WEST, rd);
-		springLayout.putConstraint(SpringLayout.EAST, nd, -30, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, nd, 75, SpringLayout.NORTH, nd);
-
-		//Spring layout for rd
-		springLayout.putConstraint(SpringLayout.NORTH, rd, 0, SpringLayout.NORTH, reqDesc);
-		springLayout.putConstraint(SpringLayout.WEST, rd, 10, SpringLayout.EAST, reqDesc);
-		springLayout.putConstraint(SpringLayout.EAST, rd, -30, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, rd, 75, SpringLayout.NORTH, rd);
-
-		//Spring layout for reqDesc label
-		springLayout.putConstraint(SpringLayout.NORTH, reqDesc, 15, SpringLayout.SOUTH, reqName);
-		springLayout.putConstraint(SpringLayout.WEST, reqDesc, 0, SpringLayout.WEST, reqName);
-
-		//Spring layout for reqName label
-		springLayout.putConstraint(SpringLayout.NORTH, reqName, 90, SpringLayout.SOUTH, gameDesc);
-		springLayout.putConstraint(SpringLayout.WEST, reqName, 0, SpringLayout.WEST, gameDesc);
+		springLayout.putConstraint(SpringLayout.SOUTH, reqDescScroll, -GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.NORTH, deckArea);
 
 		//Spring layout for deckArea
-		springLayout.putConstraint(SpringLayout.NORTH, deckArea, 15, SpringLayout.SOUTH, rd);
-		springLayout.putConstraint(SpringLayout.WEST, deckArea, 15, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.EAST, deckArea, -15, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, deckArea, 135, SpringLayout.NORTH, deckArea);
+		springLayout.putConstraint(SpringLayout.WEST, deckArea, GuiStandards.DIVIDER_MARGIN.getValue(), SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.EAST, deckArea, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, deckArea, -GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.NORTH, notAnIntegerError);
 
 		//Spring layout for votesSoFarNameLabel
 		springLayout.putConstraint(SpringLayout.NORTH, votesSoFarNameLabel, 15, SpringLayout.SOUTH, deckArea);
-		springLayout.putConstraint(SpringLayout.WEST, votesSoFarNameLabel, 0, SpringLayout.WEST, reqDesc);
+		springLayout.putConstraint(SpringLayout.WEST, votesSoFarNameLabel, 0, SpringLayout.WEST, deckArea);
 
 		//Spring layout for votesSoFarLabel
 		springLayout.putConstraint(SpringLayout.NORTH, votesSoFarLabel, 0, SpringLayout.NORTH, votesSoFarNameLabel);
 		springLayout.putConstraint(SpringLayout.WEST, votesSoFarLabel, 5, SpringLayout.EAST, votesSoFarNameLabel);
 
-		//Spring layout for gameEnded
-		springLayout.putConstraint(SpringLayout.NORTH, gameEnded, 0, SpringLayout.SOUTH, votesSoFarLabel);
-		springLayout.putConstraint(SpringLayout.WEST, gameEnded, 0, SpringLayout.WEST, votesSoFarLabel);
-		gameEnded.setVisible(false);
-
-		//Spring layout for deadline label
-		springLayout.putConstraint(SpringLayout.WEST, deadlineLabel, 20, SpringLayout.EAST, voteButton);
-		springLayout.putConstraint(SpringLayout.SOUTH, deadlineLabel, 0, SpringLayout.SOUTH, voteButton);
-		
 		setLayout(springLayout);
 
-		add(voteButton);
-		add(submit);
-		add(gameName);
-		add(gameDesc);
-		add(reqName);
-		add(reqDesc);
-		add(gameNameTextField);
-		add(reqNameTextField);
-		add(nd);
-		add(rd);
+		votesSoFarLabel.setVisible(false);
+
 		add(deckArea);
 		add(votesSoFarNameLabel);
 		add(votesSoFarLabel);
-		add(gameEnded);
-		add(deadlineLabel);
+
+		super.estimateLabel.setVisible(false);
+		super.estimateTextField.setVisible(false);
 
 	}
-	
+
 	protected void unselectOtherCards(GameCard selectedCard) {
 		boolean selectedFlag = false; // If loop keeps a card selected, this flag will prevent selecting other cards with the same value
 		for(GameCard card: cardButtons){
 			if(card == selectedCard && !selectedFlag) selectedFlag = true; // if current card is the same as the given card, skip the unselection
 			else card.setSelected(false); // else, unselect it
 		}
-		
+
 	}
 
 	/**
@@ -388,125 +221,26 @@ public class PlayDeckGame extends JPanel implements Refreshable{
 	/**
 	 * This function cycles through available cards and unselect all of them
 	 */
-	private void uncheckButtons(){
+	private void unselectAll(){
 		for(int i=0; i < cardButtons.size(); i++)
 		{
 			GameCard c = cardButtons.get(i);
 			c.setSelected(false);
 		}
+		voteButton.setEnabled(false);
 	}
 
-	//This function is used when a requirement is double clicked in one of the two requirement tables, and it sets the name and description fields to the 
-	//selected requirement
 	/**
-	 * This function is used when a requirement is double clicked in one of the two requirement tables, and it sets the name and description fields to the
-	 * selected requirement
-	 * @param reqToEstimate the requirement to estimate
+	 * Check if any cards are selected
+	 * @return true if at least one card is selected
 	 */
-	public void chooseReq(Requirement reqToEstimate){
-		currentReq = reqToEstimate;
-		reqNameTextField.setText(currentReq.getName());
-		reqDescTextArea.setText(currentReq.getDescription());
-		int i = 0;
-		for(i = 0; i < gameReqs.size(); i++){
-			if (gameReqs.get(i) == currentReq.getId()){
-				break;
+	private boolean isAnyCardSelected() {
+		for (GameCard aCard: cardButtons) {
+			if (aCard.isSelected()) {
+				return true;
 			}
 		}
-		final int estimate = userEstimates.getVote().get(i);
-		if (estimate > -1) {
-			votesSoFarLabel.setText(Integer.toString(estimate));
-		} else {
-			votesSoFarLabel.setText("0");
-			uncheckButtons();
-		}
-	}
-
-
-	/**
-	 * This function will be used when the user submits an estimate for a requirement and it will notify GameRequirements to move the requirement from 
-	 * to estimate table to the completed estimates table
-	 * @param r the requirement to send
-	 * @param estimate The estimate to be updated
-	 */
-	public void sendEstimatetoGameView(Requirement r, int estimate){
-		gv.updateReqTables(r, estimate);
-	}
-
-	/**
-	 * Helper function for checking if the estimate text box contains an integer
-	 * @param s the string to be checking
-	 * @return boolean true if integer, false if otherwise
-	 */
-	public static boolean isInteger(String s) {
-		try { 
-			Integer.parseInt(s); 
-		} catch(NumberFormatException e) { 
-			return false; 
-		}
-		// only got here if we didn't return false
-		return true;
-	}
-
-	/**
-	 * This function is called when the user estimates all of the requirements, it clears the name and description boxes
-	 */
-	public void clear() {
-		reqNameTextField.setText("");
-		reqDescTextArea.setText("");
-		votesSoFarLabel.setText("0");
-		uncheckButtons();
-	}
-
-	/**
-	 * changes whether or not the user can submit vote
-	 */
-	public void checkCanSubmit(){
-		boolean canSubmit = true;
-		for (int estimate: userEstimates.getVote()){
-			if (estimate < 0){
-				canSubmit = false;
-				break;
-			}
-		}
-
-		currentGame = GameModel.getInstance().getGame(currentGame.getGameID());
-		if (currentGame.getGameStatus() == GameStatus.COMPLETED || currentGame.getGameStatus() == GameStatus.ARCHIVED)
-		{
-			clear();
-			submit.setText("Game Ended");
-			submit.setVisible(false);
-			voteButton.setVisible(false);
-			deckArea.setVisible(false);
-			gameEnded.setVisible(true);
-			votesSoFarLabel.setVisible(false);
-			votesSoFarNameLabel.setVisible(false);
-
-		}
-		else
-			submit.setEnabled(canSubmit);
-	}
-
-	@Override
-	public void refreshRequirements(){
-	}
-
-	@Override
-	public void refreshGames() {
-		currentGame = GameModel.getInstance().getGame(currentGame.getGameID());
-		if (currentGame.getGameStatus() == GameStatus.COMPLETED || currentGame.getGameStatus() == GameStatus.ARCHIVED)
-		{
-			clear();
-			submit.setText("Game Ended");
-			submit.setVisible(false);
-			voteButton.setVisible(false);
-			deckArea.setVisible(false);
-			gameEnded.setVisible(true);
-			votesSoFarLabel.setVisible(false);
-			votesSoFarNameLabel.setVisible(false);
-
-
-		}
+		return false;
 	}
 
 	@Override

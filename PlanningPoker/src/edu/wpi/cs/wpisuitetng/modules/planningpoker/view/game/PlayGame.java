@@ -50,33 +50,35 @@ import javax.swing.event.DocumentListener;
  */
 public class PlayGame extends JPanel implements Refreshable{
 
-	private final List<Integer> gameReqs;
-	private final JLabel gameName = new JLabel("Game Name:");
-	private final JLabel gameDesc = new JLabel("Game Description:");
-	private final JLabel reqName = new JLabel("Requirement Name:");
-	private final JLabel reqDesc = new JLabel("Requirement Description:");
-	private final JLabel estimateLabel = new JLabel("Input Estimate:");
-	private final JLabel gameEnded = new JLabel("The Game Has Ended.");
-	private final JLabel notAnIntegerError = new JLabel("Estimate must be a positive integer");
-	private final JLabel voteConfirmation = new JLabel("Vote submitted!");
-	private JLabel deadlineLabel = new JLabel("Game ends on:");
-	private final JTextField estimateTextField = new JTextField();
-	private final JTextField gameNameTextField = new JTextField();
-	private final JTextField reqNameTextField = new JTextField();
-	private final JTextArea gameDescTextArea = new JTextArea();
-	private final JTextArea reqDescTextArea = new JTextArea();
-	private final JScrollPane gameDescScroll = new JScrollPane(gameDescTextArea);
-	private final JScrollPane reqDescScroll = new JScrollPane(reqDescTextArea);
-	private final JButton submit = new JButton("Submit");
-	private final JButton voteButton = new JButton("Vote");
-	private Vote userEstimates;
-	private Requirement currentReq;
-	private final GameView gv;
-	private GameSession currentGame;
-	private boolean hasVoted = false;
-	private TimerTask setFocus;
-	private TimerTask voteConfirm;
-	private Timer setFocusTimer;
+	protected final List<Integer> gameReqs;
+	protected final JLabel gameName = new JLabel("Game Name:");
+	protected final JLabel gameDesc = new JLabel("Game Description:");
+	protected final JLabel reqName = new JLabel("Requirement Name:");
+	protected final JLabel reqDesc = new JLabel("Requirement Description:");
+	protected final JLabel estimateLabel = new JLabel("Input Estimate:");
+	protected final JLabel gameEnded = new JLabel("The Game Has Ended.");
+	protected final JLabel notAnIntegerError = new JLabel("Estimate must be a positive integer");
+	protected final JLabel voteConfirmation = new JLabel("Vote submitted!");
+	protected JLabel deadlineLabel = new JLabel("Game ends on:");
+	protected final JTextField estimateTextField = new JTextField();
+	protected final JTextField gameNameTextField = new JTextField();
+	protected final JTextField reqNameTextField = new JTextField();
+	protected final JTextArea gameDescTextArea = new JTextArea();
+	protected final JTextArea reqDescTextArea = new JTextArea();
+	protected final JScrollPane gameDescScroll = new JScrollPane(gameDescTextArea);
+	protected final JScrollPane reqDescScroll = new JScrollPane(reqDescTextArea);
+	protected final JButton submit = new JButton("Submit");
+	protected final JButton voteButton = new JButton("Vote");
+	protected Vote userEstimates;
+	protected Requirement currentReq;
+	protected final GameView gv;
+	protected GameSession currentGame;
+	protected boolean hasVoted = false;
+	protected TimerTask setFocus;
+	protected TimerTask voteConfirm;
+	protected Timer setFocusTimer;
+	protected final SpringLayout springLayout = new SpringLayout();
+	protected ActionListener voteActionListener;
 
 	/**
 	 * Constructor for a PlayGame panel
@@ -103,9 +105,9 @@ public class PlayGame extends JPanel implements Refreshable{
 			}
 
 		};
-		
+
 		setFocusTimer = new Timer();
-		setFocusTimer.schedule(setFocus, 100);
+		setFocusTimer.schedule(setFocus, 250);
 
 		currentGame = gameToPlay;
 		gameReqs = currentGame.getGameReqs();
@@ -187,7 +189,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		gameNameTextField.setBorder(BorderFactory.createCompoundBorder(
 				gameNameTextField.getBorder(), 
 				BorderFactory.createEmptyBorder(0, GuiStandards.TEXT_BOX_MARGIN.getValue(), 0, 0)));	
-		
+
 		reqNameTextField.setBorder(BorderFactory.createCompoundBorder(
 				reqNameTextField.getBorder(), 
 				BorderFactory.createEmptyBorder(0, GuiStandards.TEXT_BOX_MARGIN.getValue(), 0, 0)));
@@ -196,25 +198,25 @@ public class PlayGame extends JPanel implements Refreshable{
 		estimateTextField.getDocument().addDocumentListener(new DocumentListener(){
 			@Override
 			public void changedUpdate(DocumentEvent e){
-				isValidEstimate();
+				checkValidEstimate();
 			}
 			@Override
 			public void removeUpdate(DocumentEvent e){
-				isValidEstimate();
+				checkValidEstimate();
 			}
 			@Override 
 			public void insertUpdate(DocumentEvent e){
-				isValidEstimate();
+				checkValidEstimate();
 			}
 		});
-		
+
 		//Observer for the vote button. It will save the vote client side, the submit button will handle sending it to the database.
 
-		voteButton.addActionListener(new ActionListener(){
+		voteActionListener = new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e){
-				
+
 				final int estimate = Integer.parseInt(estimateTextField.getText());
 				if (estimate < 0){
 					//TODO error message
@@ -238,7 +240,8 @@ public class PlayGame extends JPanel implements Refreshable{
 				notAnIntegerError.setVisible(false);
 			}
 
-		});
+		};
+		voteButton.addActionListener(voteActionListener);
 
 		//adds the action listener for controlling the submit button
 		submit.addActionListener(new ActionListener(){
@@ -260,12 +263,10 @@ public class PlayGame extends JPanel implements Refreshable{
 			}
 		});
 
-		final SpringLayout springLayout = new SpringLayout();
-
 
 		//Spring layout placement for gameName label
-		springLayout.putConstraint(SpringLayout.NORTH, gameName, 15, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, gameName, 30, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, gameName, GuiStandards.TOP_MARGIN.getValue(), SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, gameName, GuiStandards.DIVIDER_MARGIN.getValue(), SpringLayout.WEST, this);
 
 		//Spring layout placement for gameDesc label
 		springLayout.putConstraint(SpringLayout.NORTH, gameDesc, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, gameNameTextField);
@@ -303,8 +304,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		//Spring layout for gameDescScroll
 		springLayout.putConstraint(SpringLayout.NORTH, gameDescScroll, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, gameDesc);
 		springLayout.putConstraint(SpringLayout.WEST, gameDescScroll, 0, SpringLayout.WEST, gameDesc);
-		springLayout.putConstraint(SpringLayout.EAST, gameDescScroll, -30, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, gameDescScroll, 125, SpringLayout.NORTH, gameDescScroll);
+		springLayout.putConstraint(SpringLayout.EAST, gameDescScroll, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.EAST, this);
 
 		//Spring layout for reqDescScroll
 		springLayout.putConstraint(SpringLayout.NORTH, reqDescScroll, 10, SpringLayout.SOUTH, reqDesc);
@@ -331,11 +331,11 @@ public class PlayGame extends JPanel implements Refreshable{
 		//Spring layout for voteConfirmation label
 		springLayout.putConstraint(SpringLayout.SOUTH, voteConfirmation, 10, SpringLayout.NORTH, voteButton);
 		springLayout.putConstraint(SpringLayout.WEST, voteConfirmation, 0, SpringLayout.WEST, voteButton);
-		
+
 		//Spring layout for deadlineLabel
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, deadlineLabel, 0, SpringLayout.VERTICAL_CENTER, estimateLabel);
 		springLayout.putConstraint(SpringLayout.EAST, deadlineLabel, -20, SpringLayout.WEST, estimateLabel);
-		
+
 		setLayout(springLayout);
 
 		add(voteConfirmation);
@@ -362,20 +362,27 @@ public class PlayGame extends JPanel implements Refreshable{
 	 * 
 	 * @param reqToEstimate the requirement that is being estimated
 	 */
-	private void isValidEstimate(){
-		if (estimateTextField.getText().length() > 0 && isInteger(estimateTextField.getText()) && !reqNameTextField.getText().isEmpty()){
-			if (Integer.parseInt(estimateTextField.getText()) >= 0){
-				voteButton.setEnabled(true);
-				notAnIntegerError.setVisible(false);
+	protected void checkValidEstimate(){
+		if (!estimateTextField.getText().isEmpty()) {
+			if (isInteger(estimateTextField.getText())) {
+				if (Integer.parseInt(estimateTextField.getText()) >= 0){
+					voteButton.setEnabled(true);
+					notAnIntegerError.setVisible(false);
+				}
+				else{
+					voteButton.setEnabled(false);
+					notAnIntegerError.setVisible(true);
+				}
+
 			}
-			else{
+			else {
 				voteButton.setEnabled(false);
 				notAnIntegerError.setVisible(true);
 			}
 		}
-		else{
+		else {
 			voteButton.setEnabled(false);
-			notAnIntegerError.setVisible(true);
+			notAnIntegerError.setVisible(false);
 		}
 	}
 
@@ -403,6 +410,7 @@ public class PlayGame extends JPanel implements Refreshable{
 			estimateTextField.setText("");
 		}
 		estimateTextField.requestFocusInWindow();
+		voteButton.setEnabled(false);
 	}
 
 
