@@ -46,8 +46,8 @@ public class CompleteView extends JSplitPane {
 		leftComponent.setMinimumSize(minimumSize);
 		rightComponent.setMinimumSize(minimumSize);
 		addImpl(voteData, JSplitPane.RIGHT, 2);
-		setDividerLocation(0.5);
 		setEnabled(false);
+		this.setDividerLocation(420);
 		
 		//Flatten the divider
 		this.setUI(new BasicSplitPaneUI() {
