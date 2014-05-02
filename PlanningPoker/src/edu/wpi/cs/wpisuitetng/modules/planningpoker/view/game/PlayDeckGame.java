@@ -125,6 +125,7 @@ public class PlayDeckGame extends PlayGame implements Refreshable{
 
 		//Observer for the vote button. It will save the vote client side, the submit button will handle sending it to the database.
 
+		voteButton.removeActionListener(voteActionListener);
 		voteButton.addActionListener(new ActionListener(){
 
 			@Override

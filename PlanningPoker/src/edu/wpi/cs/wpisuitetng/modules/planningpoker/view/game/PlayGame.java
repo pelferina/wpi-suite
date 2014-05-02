@@ -78,6 +78,7 @@ public class PlayGame extends JPanel implements Refreshable{
 	protected TimerTask voteConfirm;
 	protected Timer setFocusTimer;
 	protected final SpringLayout springLayout = new SpringLayout();
+	protected ActionListener voteActionListener;
 
 	/**
 	 * Constructor for a PlayGame panel
@@ -211,7 +212,7 @@ public class PlayGame extends JPanel implements Refreshable{
 
 		//Observer for the vote button. It will save the vote client side, the submit button will handle sending it to the database.
 
-		voteButton.addActionListener(new ActionListener(){
+		voteActionListener = new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e){
@@ -239,7 +240,8 @@ public class PlayGame extends JPanel implements Refreshable{
 				notAnIntegerError.setVisible(false);
 			}
 
-		});
+		};
+		voteButton.addActionListener(voteActionListener);
 
 		//adds the action listener for controlling the submit button
 		submit.addActionListener(new ActionListener(){
@@ -362,7 +364,7 @@ public class PlayGame extends JPanel implements Refreshable{
 	 */
 	protected void checkValidEstimate(){
 		if (isInteger(estimateTextField.getText())) {
-			if (estimateTextField.getText().isEmpty() || (Integer.parseInt(estimateTextField.getText()) == -1)) {
+			if (estimateTextField.getText().isEmpty()) {
 				notAnIntegerError.setVisible(false);
 				voteButton.setEnabled(false);
 			}
@@ -379,7 +381,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		}
 		else{
 			voteButton.setEnabled(false);
-			notAnIntegerError.setVisible(true);
+			notAnIntegerError.setVisible(false);
 		}
 
 	}
