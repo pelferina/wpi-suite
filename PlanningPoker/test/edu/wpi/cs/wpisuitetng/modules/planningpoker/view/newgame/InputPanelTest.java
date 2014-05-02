@@ -21,6 +21,9 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.configuration.NetworkConfiguration;
 
 public class InputPanelTest {
+	private Requirement req1;
+	private Requirement req2;
+	private Requirement req3;
 	
 	private List<Requirement> reqs;
 	private final JButton btnClose = new JButton("x");
@@ -36,6 +39,12 @@ public class InputPanelTest {
 		Network.getInstance().setDefaultNetworkConfiguration(
 				new NetworkConfiguration("http://wpisuitetng"));
 		reqs = null;
+		req1 = new Requirement(1,"one","Desc");
+		req2 = new Requirement(2,"two","Desc");
+		req3 = new Requirement(3,"three","Desc");
+		RequirementModel.getInstance().addRequirement(req1);
+		RequirementModel.getInstance().addRequirement(req2);
+		RequirementModel.getInstance().addRequirement(req3);
 	}
 
 //	// Mock Iteration
@@ -98,27 +107,11 @@ public class InputPanelTest {
 		// a field is added correctly but both name and description are filled with blanks
 		ngdp.getNewGameReqPanel().getAddOneButton().doClick();
 		testNew.getNameTextField().setText("");
-//		testNew.getDescriptionTextField().setText("");
-		
-//		// release pressed key
-//		testNew.getInfoPanel().keyReleased(null);
 //		
 		// can't create because no name/description, but a field has been changed
 		assertFalse(testNew.getSaveGameButton().isEnabled());
-		assertTrue(testNew.getActivateGameButton().isEnabled());
-//		assertEquals(true, testNew.getButtonPanel().getButtonCancel().isEnabled());
-//		
-//		// blank description
-//		testNew.getInfoPanel().getBoxName().setText("Name");
-//		testNew.getInfoPanel().getBoxDescription().setText(" ");
-//		
-//		// release pressed key
-//		testNew.getInfoPanel().keyReleased(null);
-//		
-//		// can't create because no name/description, but a field has been changed
-//		assertEquals(false, testNew.getButtonPanel().getButtonOK().isEnabled());
-//		assertEquals(true, testNew.getButtonPanel().getButtonClear().isEnabled());
-//		assertEquals(true, testNew.getButtonPanel().getButtonCancel().isEnabled());
+		assertFalse(testNew.getActivateGameButton().isEnabled());
+
 		
 
 	}

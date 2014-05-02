@@ -50,7 +50,6 @@ public class ReqPanelTest {
 	
 	@Test
 	public void testAddRemoveButtons(){
-		setUp();
 		NewGameReqPanel reqPanel = new NewGameReqPanel(null);
 		JTable unselected = reqPanel.getReqsTable();
 		JTable selected = reqPanel.getSelectedTabel();
@@ -78,7 +77,7 @@ public class ReqPanelTest {
 		assertTrue(selectedReqs.size() == 0);
 		addAll.doClick();
 		selectedReqs = reqPanel.getSelected();
-//		assertEquals(6, selectedReqs.size());
+		assertEquals(3, selectedReqs.size());
 		System.out.println(selectedReqs.toString());
 		removeAll.doClick();
 		selectedReqs = reqPanel.getSelected();
