@@ -120,7 +120,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	private final JLabel deckLabel = new JLabel("Choose a deck:");
 	private final JTextField nameTextField = new JTextField();
 	private final JTextArea descriptionTextField = new JTextArea();
-	
+
 	private final JScrollPane descriptionScrollPane = new JScrollPane(descriptionTextField);
 
 	/*
@@ -188,10 +188,10 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 
 			img = ImageIO.read(getClass().getResource("activate.png"));
 			activateGameButton.setIcon(new ImageIcon(img));
-			
+
 			img = ImageIO.read(getClass().getResource("cancel.png"));
 			cancelButton.setIcon(new ImageIcon(img));
-			
+
 			img = ImageIO.read(getClass().getResource("deck.png"));
 			createDeckButton.setIcon(new ImageIcon(img));
 		} catch (IOException ex) {
@@ -206,25 +206,25 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	private void init(NewGameDistributedPanel ngdp)
 	{
 		newGameP = ngdp;
-		
+
 		currentDate = Calendar.getInstance();
-		
+
 		setupButtonIcons();	
 
 		saveGameButton.setEnabled(false);
 		activateGameButton.setEnabled(false);
 
 		setPanel();
-		
+
 		//Add padding
 		descriptionTextField.setBorder(BorderFactory.createCompoundBorder(
 				descriptionTextField.getBorder(), 
-		        BorderFactory.createEmptyBorder(GuiStandards.TEXT_AREA_MARGINS.getValue(), 
-		        		GuiStandards.TEXT_AREA_MARGINS.getValue(), 
-		        		GuiStandards.TEXT_AREA_MARGINS.getValue(), 
-		        		GuiStandards.TEXT_AREA_MARGINS.getValue())));
+				BorderFactory.createEmptyBorder(GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+						GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+						GuiStandards.TEXT_AREA_MARGINS.getValue(), 
+						GuiStandards.TEXT_AREA_MARGINS.getValue())));
 		descriptionTextField.setWrapStyleWord(true);
-		
+
 		nameTextField.setMargin(new Insets(0, GuiStandards.TEXT_BOX_MARGIN.getValue(), 0, 0));
 		nameTextField.setDocument(new JTextFieldLimit(GAME_NAME_LIMIT));
 		// Set initial save/activate game visibility		
@@ -285,10 +285,10 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 				}
 			}	
 		});
-		
+
 		//This will call a function in new game distributed panel that will open the deck creation panel
 		createDeckButton.addActionListener(new ActionListener(){
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e){
 				newGameP.newDeck();
@@ -313,14 +313,10 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			}
 			private void updateSave(DocumentEvent e) {
 				newGameP.isNew = false;
-				if (nameTextField.getText().length() != 0){
-					if (nameTextField.getText().length() <= 50){
-						nameError.setEnabled(true);
-						setSaveGameButtonVisibility(false);
-					}else{
-						nameError.setVisible(false);		
-						setSaveGameButtonVisibility(true);
-					}
+
+				if (nameInputted()){
+					nameError.setVisible(false);		
+					setSaveGameButtonVisibility(true);
 				}
 				else
 				{
@@ -451,13 +447,13 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			{
 				currentGameSession.setGameStatus(GameStatus.ACTIVE);
 			}
-			
+
 			if (deckCheckBox.isSelected()){
 				currentGameSession.setDeckId(deckBox.getSelectedIndex());
 			} else {
 				currentGameSession.setDeckId(-1);
 			}
-			
+
 			final UpdateGameController msgr = new UpdateGameController();
 			msgr.sendGame(currentGameSession);
 		}		
@@ -736,7 +732,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			}
 		}
 	}
-	
+
 	/**
 	 * This sets up the deck combobox
 	 */
@@ -858,7 +854,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		// Check if the user has changed the name
 		if (!(nameTextField.getText().equals(currentGameSession.getGameName()))){
 			return true;}
-		
+
 		// Check if the user has changed the description
 		if (!(descriptionTextField.getText().equals(currentGameSession.getGameDescription()))){
 			return true;}
@@ -889,7 +885,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		if ((currentGameSession.getDeckId() != deckBox.getSelectedIndex())){
 			return true;
 		}
-		
+
 		return false;
 	}
 	//TODO: Test midnight deadline -- this should be working, but we haven't been able to go past midnight or noon	
@@ -926,7 +922,9 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 
 	//Returns true if the name text field has text
 	private boolean nameInputted(){
-		return (nameTextField.getText().length() > 0);
+		String name = nameTextField.getText();
+		name = trim(name);
+		return (name.length() > 0);
 	}
 
 	/**
@@ -1049,7 +1047,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		//Spring layout for the saveGameButton
 		springLayout.putConstraint(SpringLayout.SOUTH, saveGameButton, -GuiStandards.BOTTOM_MARGIN.getValue(), SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, saveGameButton, 0, SpringLayout.WEST, descriptionLabel);
-		
+
 		//Spring layout for activateGameButton
 		springLayout.putConstraint(SpringLayout.WEST, activateGameButton, GuiStandards.BUTTON_OFFSET.getValue(), SpringLayout.EAST, saveGameButton);
 		springLayout.putConstraint(SpringLayout.NORTH, activateGameButton, 0, SpringLayout.NORTH, saveGameButton);
@@ -1095,12 +1093,25 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		add(nameError);
 		add(reqError);
 	}
-	
+
 	/**
 	 * This sets the focus to the name field
 	 */
 	public void setFocusNameText(){
 		nameTextField.requestFocusInWindow();
+	}
+
+	public String trim(String aString) {
+		int len = aString.length();
+		int st = 0;
+
+		while ((st < len) && Character.isWhitespace(aString.charAt(st))) {
+			st++;
+		}
+		while ((st < len) && Character.isWhitespace(aString.charAt(len - 1))) {
+			len--;
+		}
+		return ((st > 0) || (len < aString.length())) ? aString.substring(st, len) : aString;
 	}
 
 	@Override
