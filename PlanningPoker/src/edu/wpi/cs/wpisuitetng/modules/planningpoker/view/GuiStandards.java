@@ -24,13 +24,6 @@ public enum GuiStandards {
 	// left margin for single line text boxes
 	TEXT_BOX_MARGIN(5),
 	
-	/* 
-	 * height offset for single line text boxes. This is applied to both
-	 * the top and bottom of the box, so the change in height is 
-	 * actually double this value
-	 */
-	TEXT_HIEGHT_OFFSET(2),
-	
 	// distance between a label and its text box/area bellow it
 	LABEL_TEXT_OFFSET(7),
 	

@@ -40,6 +40,7 @@ import javax.swing.SpringLayout;
 import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
@@ -85,7 +86,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	private final JDatePanelImpl datePanel = new JDatePanelImpl(model);
 	private final JDatePickerImpl datePicker = new JDatePickerImpl(datePanel);
 
-	private final JLabel deadlineTime = new JLabel ("Deadline Time:");
+	private final JLabel deadlineTimeLabel = new JLabel ("Deadline Time:");
 	private int hourTime;
 	private int minuteTime; 
 	private int deadlineDay;
@@ -132,8 +133,6 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	/*
 	 * Initializing error handling
 	 */
-	private final JLabel hourError = new JLabel("Select an hour for deadline");
-	private final JLabel minuteError = new JLabel("Select a minute for deadline");
 	private final JLabel deadlineError = new JLabel("Can not have a deadline in the past");
 	private final JLabel nameError = new JLabel("Enter a valid name for the game");
 	private final JLabel reqError = new JLabel("Can not have a game with no requirements");
@@ -561,7 +560,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	 */
 	private void setDeadlineVisibility(boolean isVisible)
 	{
-		deadlineTime.setVisible(isVisible);
+		deadlineTimeLabel.setVisible(isVisible);
 		deadlineLabel.setVisible(isVisible);
 		datePicker.setVisible(isVisible);
 		deadlineHourComboBox.setVisible(isVisible);
@@ -603,10 +602,6 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	 */
 	private void initializeErrorMessages()
 	{
-		hourError.setVisible(false);
-		hourError.setForeground(Color.red);
-		minuteError.setVisible(false);
-		minuteError.setForeground(Color.red);
 		deadlineError.setVisible(false);
 		deadlineError.setForeground(Color.red);
 		nameError.setVisible(false);
@@ -626,7 +621,6 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			public void actionPerformed(ActionEvent e){
 				minuteTime = deadlineMinuteComboBox.getSelectedIndex();
 				newGameP.isNew = false;
-				minuteError.setVisible(false);
 			}
 
 		});
@@ -642,7 +636,6 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 				else{
 					hourTime = 0;
 				}
-				hourError.setVisible(false);
 				newGameP.isNew = false;
 			}
 		});
@@ -931,8 +924,6 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	 * removes all error labels
 	 */
 	private void removeErrorLabels(){
-		hourError.setVisible(false);
-		minuteError.setVisible(false);
 		deadlineError.setVisible(false);
 		nameError.setVisible(false);
 		reqError.setVisible(false);
@@ -954,13 +945,12 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.WEST, nameLabel, GuiStandards.LEFT_MARGIN.getValue(), SpringLayout.WEST, this);
 
 		//Spring layout for the nameTextField
-		springLayout.putConstraint(SpringLayout.WEST, nameTextField, 100, SpringLayout.WEST, nameLabel);
+		springLayout.putConstraint(SpringLayout.WEST, nameTextField, 0, SpringLayout.WEST, nameLabel);
 		springLayout.putConstraint(SpringLayout.EAST, nameTextField, 0, SpringLayout.EAST, descriptionScrollPane);
-		springLayout.putConstraint(SpringLayout.NORTH, nameTextField, -GuiStandards.TEXT_HIEGHT_OFFSET.getValue(), SpringLayout.NORTH, nameLabel);
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameTextField, 0, SpringLayout.VERTICAL_CENTER, nameLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, nameTextField, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, nameLabel);
 
 		//Spring layout for the descriptionLabel
-		springLayout.putConstraint(SpringLayout.NORTH, descriptionLabel, 30, SpringLayout.NORTH, nameLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, descriptionLabel, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, nameTextField);
 		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, GuiStandards.LEFT_MARGIN.getValue(), SpringLayout.WEST, this);
 
 		//Spring layout for the descTextArea
@@ -972,50 +962,40 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.SOUTH, descriptionScrollPane, -20, SpringLayout.NORTH, deadlineCheckBox);
 
 		//Spring layout for the deadlineCheckBox
-		springLayout.putConstraint(SpringLayout.SOUTH, deadlineCheckBox, -230, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, deadlineCheckBox, -215, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, deadlineCheckBox, 0, SpringLayout.WEST, nameLabel);
 
 		//Spring layout for the deckCheckBox
-		springLayout.putConstraint(SpringLayout.SOUTH, deckCheckBox, -230, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, deckCheckBox, 200, SpringLayout.EAST, deadlineCheckBox);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, deckCheckBox, 0, SpringLayout.VERTICAL_CENTER, deadlineCheckBox);
+		springLayout.putConstraint(SpringLayout.WEST, deckCheckBox, 40, SpringLayout.EAST, datePicker);
 
 		//Spring layout for the deckLabel
-		springLayout.putConstraint(SpringLayout.NORTH, deckLabel, 5, SpringLayout.SOUTH, deckCheckBox);
+		springLayout.putConstraint(SpringLayout.NORTH, deckLabel, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, deckCheckBox);
 		springLayout.putConstraint(SpringLayout.WEST, deckLabel, 0, SpringLayout.WEST, deckCheckBox);		
 
 		//Spring layout for the deckBox
-		springLayout.putConstraint(SpringLayout.WEST, deckBox, 5, SpringLayout.EAST, deckLabel);
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, deckBox, 0, SpringLayout.VERTICAL_CENTER, deckLabel);
+		springLayout.putConstraint(SpringLayout.WEST, deckBox, 0, SpringLayout.WEST, deckLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, deckBox, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, deckLabel);
 
 		//Spring layout for the createDeckButton
 		springLayout.putConstraint(SpringLayout.WEST, createDeckButton, 0, SpringLayout.WEST, deckBox);
-		springLayout.putConstraint(SpringLayout.NORTH, createDeckButton, 10, SpringLayout.SOUTH, deckBox);
+		springLayout.putConstraint(SpringLayout.EAST, createDeckButton, 0, SpringLayout.EAST, deckBox);
+		springLayout.putConstraint(SpringLayout.NORTH, createDeckButton, GuiStandards.BUTTON_OFFSET.getValue(), SpringLayout.SOUTH, deckBox);
 
 		//Spring layout for the deadlineLabel
-		springLayout.putConstraint(SpringLayout.SOUTH, deadlineLabel, -200, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.NORTH, deadlineLabel, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, deadlineCheckBox);
 		springLayout.putConstraint(SpringLayout.WEST, deadlineLabel, 0, SpringLayout.WEST, nameLabel);
 
 		//Spring layout for the datePicker
-		springLayout.putConstraint(SpringLayout.WEST, datePicker, 75, SpringLayout.WEST, deadlineLabel);
-		springLayout.putConstraint(SpringLayout.NORTH, datePicker, 0, SpringLayout.NORTH, deadlineLabel);
+		springLayout.putConstraint(SpringLayout.WEST, datePicker, 0, SpringLayout.WEST, deadlineCheckBox);
+		springLayout.putConstraint(SpringLayout.NORTH, datePicker, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, deadlineLabel);
 
 
 
 		//Spring layout for the deadlineError
 		springLayout.putConstraint(SpringLayout.WEST, deadlineError, 0, SpringLayout.WEST, saveGameButton);
 		springLayout.putConstraint(SpringLayout.NORTH, deadlineError, -20, SpringLayout.NORTH, saveGameButton);
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameTextField, 0, SpringLayout.VERTICAL_CENTER, nameLabel);
 		deadlineError.setVisible(false);
-
-		//Spring layout for the minuteError
-		springLayout.putConstraint(SpringLayout.WEST, minuteError, 0, SpringLayout.WEST, deadlineError);
-		springLayout.putConstraint(SpringLayout.NORTH, minuteError, 0, SpringLayout.NORTH, deadlineError);
-		minuteError.setVisible(false);
-
-		//Spring layout for the hourError
-		springLayout.putConstraint(SpringLayout.WEST, hourError, 0, SpringLayout.WEST, deadlineError);
-		springLayout.putConstraint(SpringLayout.NORTH, hourError, 0, SpringLayout.NORTH, deadlineError);
-		hourError.setVisible(false);
 
 		//Spring layout for the nameError
 		springLayout.putConstraint(SpringLayout.WEST, nameError, 0, SpringLayout.WEST, deadlineError);
@@ -1027,22 +1007,22 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.NORTH, reqError, 0, SpringLayout.NORTH, deadlineError);
 
 		//Spring layout for timeLabel
-		springLayout.putConstraint(SpringLayout.NORTH, deadlineTime, 45, SpringLayout.SOUTH, deadlineLabel);
-		springLayout.putConstraint(SpringLayout.WEST, deadlineTime, 0, SpringLayout.WEST, nameLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, deadlineTimeLabel, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, datePicker);
+		springLayout.putConstraint(SpringLayout.WEST, deadlineTimeLabel, 0, SpringLayout.WEST, nameLabel);
 
 		//Spring layout for deadlineHourComboBox
-		springLayout.putConstraint(SpringLayout.NORTH, deadlineHourComboBox, 0, SpringLayout.NORTH, deadlineTime);
-		springLayout.putConstraint(SpringLayout.WEST, deadlineHourComboBox, 5, SpringLayout.EAST, deadlineTime);
+		springLayout.putConstraint(SpringLayout.NORTH, deadlineHourComboBox, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, deadlineTimeLabel);
+		springLayout.putConstraint(SpringLayout.WEST, deadlineHourComboBox, 0, SpringLayout.WEST, deadlineTimeLabel);
 
 		//Spring layout for minuteComboBox
 		springLayout.putConstraint(SpringLayout.NORTH, deadlineMinuteComboBox, 0, SpringLayout.NORTH, deadlineHourComboBox);
-		springLayout.putConstraint(SpringLayout.WEST, deadlineMinuteComboBox, 40, SpringLayout.EAST, deadlineHourComboBox);
+		springLayout.putConstraint(SpringLayout.WEST, deadlineMinuteComboBox, GuiStandards.BUTTON_OFFSET.getValue(), SpringLayout.EAST, deadlineHourComboBox);
 
 		//Spring layout for ampmButton
-		springLayout.putConstraint(SpringLayout.NORTH, AMButton, 10, SpringLayout.SOUTH, deadlineHourComboBox);
-		springLayout.putConstraint(SpringLayout.WEST, AMButton, 0, SpringLayout.WEST, deadlineHourComboBox);
-		springLayout.putConstraint(SpringLayout.NORTH, PMButton, 10, SpringLayout.SOUTH, deadlineMinuteComboBox);
-		springLayout.putConstraint(SpringLayout.WEST, PMButton, 0, SpringLayout.WEST, deadlineMinuteComboBox);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, AMButton, 0, SpringLayout.VERTICAL_CENTER, deadlineHourComboBox);
+		springLayout.putConstraint(SpringLayout.WEST, AMButton, GuiStandards.BUTTON_OFFSET.getValue(), SpringLayout.EAST, deadlineMinuteComboBox);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, PMButton, 0, SpringLayout.VERTICAL_CENTER, AMButton);
+		springLayout.putConstraint(SpringLayout.WEST, PMButton, GuiStandards.BUTTON_OFFSET.getValue(), SpringLayout.EAST, AMButton);
 
 		//Spring layout for the saveGameButton
 		springLayout.putConstraint(SpringLayout.SOUTH, saveGameButton, -GuiStandards.BOTTOM_MARGIN.getValue(), SpringLayout.SOUTH, this);
@@ -1065,7 +1045,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		add(descriptionScrollPane);
 
 		//Adds time related components
-		add(deadlineTime);
+		add(deadlineTimeLabel);
 		add(deadlineHourComboBox);
 		add(deadlineMinuteComboBox);
 		add(AMButton);
@@ -1088,8 +1068,6 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		add(cancelButton);
 
 		add(deadlineError);
-		add(hourError);
-		add(minuteError);
 		add(nameError);
 		add(reqError);
 	}
