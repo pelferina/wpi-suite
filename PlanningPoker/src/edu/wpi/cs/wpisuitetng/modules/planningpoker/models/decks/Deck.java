@@ -67,7 +67,7 @@ public class Deck extends AbstractModel {
 	public boolean equals(Object that) {
 		if (that instanceof Deck){
 			Deck o = (Deck) that;
-			return (id == o.getId() && cards.equals(o.getCards()));
+			return (id == o.getId() && cards.equals(o.getCards()) && name.equals(o.getName()) && isSingleSelection == o.isSingleSelection() );
 		}
 		else return false; // if it's not a deck, it's not equal.
 	}
