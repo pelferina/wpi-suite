@@ -61,6 +61,11 @@ public class GetUsersController {
 		return userList;
 	}
 
+	/**
+	 * Gets the username from the ID
+	 * @param userID The id to extract from
+	 * @return The username as a string
+	 */
 	public String getUserFromID(int userID){
 		for (User u : userList){
 			if (u.getIdNum() == userID){

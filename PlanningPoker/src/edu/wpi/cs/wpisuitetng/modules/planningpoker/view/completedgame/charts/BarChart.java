@@ -57,7 +57,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
  */
 public class BarChart extends JScrollPane {
 private static GameSession theGame;
-private ChartPanel barChart;
+private final ChartPanel barChart;
 private static int theReq;
 
 		/**
@@ -68,7 +68,7 @@ private static int theReq;
 		public BarChart(GameSession gs, int aReq){
 			theGame = gs;
 			theReq = aReq;
-			JPanel panel = new JPanel(new BorderLayout());
+			final JPanel panel = new JPanel(new BorderLayout());
 			barChart = createPanel();
 			barChart.setPreferredSize(super.getSize());
 			panel.add(barChart, BorderLayout.CENTER);
@@ -80,11 +80,11 @@ private static int theReq;
 		
 		 * @return the data set depending on the type of data called for either status or iteration */
 		private static DefaultCategoryDataset setData() {
-			List<Vote> votes = theGame.getVotes();
-			DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
-			int numUsers = votes.size();
-			double[] data = new double[numUsers];
-			double max = 0;
+			final List<Vote> votes = theGame.getVotes();
+			final DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
+			final int numUsers = votes.size();
+			final double[] data = new double[numUsers];
+			final double max = 0;
 			
 			//Get each vote
 			for(int i=0; i < numUsers; i++){
@@ -101,11 +101,11 @@ private static int theReq;
 		 * @return the created bar graph */
 		private static JFreeChart createChart(CategoryDataset dataset){
 		    
-		    JFreeChart chart = ChartFactory.createBarChart("Estimates for "+RequirementModel.getInstance().getRequirement(theReq).getName(), "User", "Estimate", dataset, PlotOrientation.VERTICAL, false, true, false);
+		    final JFreeChart chart = ChartFactory.createBarChart("Estimates for "+RequirementModel.getInstance().getRequirement(theReq).getName(), "User", "Estimate", dataset, PlotOrientation.VERTICAL, false, true, false);
 
-		    String fontName = "Lucida Sans";
+		    final String fontName = "Lucida Sans";
 
-		    StandardChartTheme theme = (StandardChartTheme)org.jfree.chart.StandardChartTheme.createJFreeTheme();
+		    final StandardChartTheme theme = (StandardChartTheme)org.jfree.chart.StandardChartTheme.createJFreeTheme();
 
 		    theme.setTitlePaint( Color.decode( "#4572a7" ) );
 		    theme.setExtraLargeFont( new Font(fontName,Font.PLAIN, 16) ); //title
@@ -128,7 +128,7 @@ private static int theReq;
 		    chart.setTextAntiAlias( true );
 		    chart.setAntiAlias( true );
 		    chart.getCategoryPlot().getRenderer().setSeriesPaint( 0, Color.decode( "#4572a7" ));
-		    BarRenderer rend = (BarRenderer) chart.getCategoryPlot().getRenderer();
+		    final BarRenderer rend = (BarRenderer) chart.getCategoryPlot().getRenderer();
 		    rend.setShadowVisible( true );
 		    rend.setShadowXOffset( 2 );
 		    rend.setShadowYOffset( 0 );
@@ -142,8 +142,8 @@ private static int theReq;
 		
 		 * @return the created bar graph **/
 		public static ChartPanel createPanel() {
-			JFreeChart chart = createChart(setData());
-			ChartPanel aPanel = new ChartPanel(chart);
+			final JFreeChart chart = createChart(setData());
+			final ChartPanel aPanel = new ChartPanel(chart);
 			aPanel.setDomainZoomable(false);
 			aPanel.setRangeZoomable(false);
 			

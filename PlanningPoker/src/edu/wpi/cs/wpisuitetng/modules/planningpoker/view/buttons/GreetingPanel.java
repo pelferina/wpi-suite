@@ -69,7 +69,7 @@ public class GreetingPanel extends ToolbarGroupView{
 		
 		this.add(contentPanel);
 		
-		JLabel lblWelcomeToPlanning = new JLabel("<html>Welcome to<br/> Planning Poker!</html>");
+		final JLabel lblWelcomeToPlanning = new JLabel("<html>Welcome to<br/> Planning Poker!</html>");
 		lblWelcomeToPlanning.setFont(new Font("SWRomnt", Font.PLAIN, 15));
 		contentPanel.add(lblWelcomeToPlanning);
 		super.setContent(contentPanel);

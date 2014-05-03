@@ -86,7 +86,7 @@ public class PlayGame extends JPanel implements Refreshable{
 	 * @param agv the active game view
 	 */
 	public PlayGame(GameSession gameToPlay, GameView agv){
-		if (gameToPlay.getDeadlineString() != "No deadline"){
+		if (!gameToPlay.getDeadlineString().equals("No deadline")){
 			deadlineLabel.setText("Game ends at: " + gameToPlay.getDeadlineString());
 		}
 		else {
@@ -256,7 +256,7 @@ public class PlayGame extends JPanel implements Refreshable{
 				}
 				else
 				{
-					AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
+					final AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
 					msgr.sendVote(userEstimates);
 					gv.isNew = true;
 					ViewEventController.getInstance().getMain().remove(gv);					
@@ -360,8 +360,6 @@ public class PlayGame extends JPanel implements Refreshable{
 	/**
 	 * This function is used when a requirement is double clicked in one of the two requirement tables 
 	 * and it sets the name and description fields to the selected requirement
-	 * 
-	 * @param reqToEstimate the requirement that is being estimated
 	 */
 	protected void checkValidEstimate(){
 		if (!estimateTextField.getText().isEmpty()) {

@@ -66,7 +66,7 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 
 		super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf,
 				row, hasFocus);
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+		final DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
 
 		final User currentUser = GetCurrentUser.getInstance().getCurrentUser();
 		

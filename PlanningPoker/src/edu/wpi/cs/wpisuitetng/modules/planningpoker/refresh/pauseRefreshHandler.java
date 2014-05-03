@@ -23,13 +23,12 @@ import javax.swing.event.AncestorListener;
 public class pauseRefreshHandler implements AncestorListener {
 
 	private static AncestorListener instance;
-	private static ArrayList<RefreshManager> RefMan;
+	private static final ArrayList<RefreshManager> RefMan = new ArrayList<RefreshManager>();;
 
 	/**
 	 * private constructor for singleton class
 	 */
 	private pauseRefreshHandler(){
-		RefMan = new ArrayList<RefreshManager>();
 	}
 	
 	/** 

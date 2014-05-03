@@ -10,25 +10,22 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
-
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
- * 
+ * The EditGameActionListener that implements ActionListener
  * @author fff8e7
- * @version $Revision: 1.0 $
+ * @version 6
  */
 public class EditGameActionListener implements ActionListener{
 	GameSession game;
 	/**
 	 * This listener watches for game edit requests
-	 * @param game the game selected
+	 * @param gameSelected The selected GameSession
 	 */
 	public EditGameActionListener(GameSession gameSelected){
-		this.game = gameSelected;
+		game = gameSelected;
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {

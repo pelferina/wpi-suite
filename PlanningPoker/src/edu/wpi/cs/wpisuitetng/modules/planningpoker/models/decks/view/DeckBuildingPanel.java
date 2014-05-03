@@ -52,30 +52,30 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistribu
 public class DeckBuildingPanel extends JPanel {
 
 	private boolean isSingleSelection = true;
-	private JButton btnAddCard = new JButton("Add Card");
-	private JButton btnRmvSelected = new JButton("Remove Selected");
-	private JButton btnRmvAll = new JButton("Remove all");
-	private JButton btnSave = new JButton("Save deck");
-	private JButton btnDelete = new JButton("Delete deck");
-	private JButton btnCancel = new JButton("Cancel");
-	private JRadioButton btnSingleSelection = new JRadioButton("Single Selection");
-	private JRadioButton btnMultipleSelection = new JRadioButton("Multiple Selection");
-	private ButtonGroup selectionGroup = new ButtonGroup();
-	private JComboBox<String> comboBoxDeckList = new JComboBox<String>();
-	private JLabel lblDeckName = new JLabel("Deck Name:");
-	private JLabel lblDecks = new JLabel("Decks:");
-	private JLabel errLabel = new JLabel("");
-	private JLabel lblAdd = new JLabel("Card Value:");
-	private JLabel lblSelection = new JLabel("Selection Mode:");
-	private JTextField nameField = new JTextField();
-	private JTextField numberField = new JTextField();
-	private SpringLayout springLayout = new SpringLayout();
+	private final JButton btnAddCard = new JButton("Add Card");
+	private final JButton btnRmvSelected = new JButton("Remove Selected");
+	private final JButton btnRmvAll = new JButton("Remove all");
+	private final JButton btnSave = new JButton("Save deck");
+	private final JButton btnDelete = new JButton("Delete deck");
+	private final JButton btnCancel = new JButton("Cancel");
+	private final JRadioButton btnSingleSelection = new JRadioButton("Single Selection");
+	private final JRadioButton btnMultipleSelection = new JRadioButton("Multiple Selection");
+	private final ButtonGroup selectionGroup = new ButtonGroup();
+	private final JComboBox<String> comboBoxDeckList = new JComboBox<String>();
+	private final JLabel lblDeckName = new JLabel("Deck Name:");
+	private final JLabel lblDecks = new JLabel("Decks:");
+	private final JLabel errLabel = new JLabel("");
+	private final JLabel lblAdd = new JLabel("Card Value:");
+	private final JLabel lblSelection = new JLabel("Selection Mode:");
+	private final JTextField nameField = new JTextField();
+	private final JTextField numberField = new JTextField();
+	private final SpringLayout springLayout = new SpringLayout();
 	private String newDeckName;
-	private List<Integer> newDeckCards = new ArrayList<Integer>();
-	private List<Integer> cardsToBeRemoved = new ArrayList<Integer>();
-	private JPanel cardPanel = new JPanel();
-	private JScrollPane cardArea = new JScrollPane(cardPanel);
-	private NewGameDistributedPanel newGameDistributed;
+	private final List<Integer> newDeckCards = new ArrayList<Integer>();
+	private final List<Integer> cardsToBeRemoved = new ArrayList<Integer>();
+	private final JPanel cardPanel = new JPanel();
+	private final JScrollPane cardArea = new JScrollPane(cardPanel);
+	private final NewGameDistributedPanel newGameDistributed;
 //	private final JLabel notAnIntegerError = new JLabel ("Please enter an non-negative integer for card value!");
 //	private final JLabel duplicateNameError = new JLabel ("This deck name already exists!");
 //	private final JLabel noCardError = new JLabel ("You need to have at least one card in the deck!");
@@ -92,7 +92,7 @@ public class DeckBuildingPanel extends JPanel {
 		selectionGroup.add(btnMultipleSelection);
 		btnSingleSelection.setSelected(true);
 		btnMultipleSelection.setSelected(false);
-		this.newGameDistributed = ngdp;
+		newGameDistributed = ngdp;
 		
 		// Sets a consistent font for all buttons
 		final Font size = new Font(btnSave.getFont().getName(), btnSave.getFont().getStyle(), 10);
@@ -155,7 +155,7 @@ public class DeckBuildingPanel extends JPanel {
 		btnSave.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				newDeckName = nameField.getText();
-				Deck newDeck = new Deck (newDeckName, newDeckCards);
+				final Deck newDeck = new Deck (newDeckName, newDeckCards);
 				newDeck.setSingleSelection(isSingleSelection);
 				AddDeckController.getInstance().addDeck(newDeck);
 				System.out.println("added Deck " + newDeckName + 
@@ -208,7 +208,7 @@ public class DeckBuildingPanel extends JPanel {
 		btnAddCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final GameCard card;
-				int cardNumber;
+				final int cardNumber;
 				try {
 					cardNumber = Integer.parseInt(numberField.getText());
 					card = new GameCard(cardNumber);
@@ -251,7 +251,7 @@ public class DeckBuildingPanel extends JPanel {
 		
 		btnRmvSelected.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				List<Integer> tempDeckCards = new ArrayList<Integer>(newDeckCards);
+				final List<Integer> tempDeckCards = new ArrayList<Integer>(newDeckCards);
 				
 				for(int valueToRemove: cardsToBeRemoved){
 					for(int cardValue: tempDeckCards){
