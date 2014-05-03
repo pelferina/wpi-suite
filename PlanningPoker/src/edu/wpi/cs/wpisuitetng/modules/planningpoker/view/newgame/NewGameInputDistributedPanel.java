@@ -364,14 +364,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		saveGameButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				saveOrActivateGame();
-				if(editMode) // TODO: do we really need an if statement here?
-				{
-					newGameP.close.doClick();
-				}
-				else
-				{
-					newGameP.close.doClick();
-				}
+				newGameP.close.doClick();
 			}
 		});
 
@@ -428,7 +421,6 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 				newGame.setGameStatus(GameStatus.ACTIVE);
 			}
 			if (deckCheckBox.isSelected()){
-				//TODO set correct deck
 				newGame.setDeckId(deckBox.getSelectedIndex());
 			}
 
@@ -747,7 +739,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	{
 		decks = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
 		for (Deck d: decks){
-			deckBox.addItem(d.getName());
+			if(!d.isDeleted()) deckBox.addItem(d.getName());
 		}
 	}
 
@@ -803,9 +795,9 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		//set the selected deck
 		if (currentGameSession.getDeckId() != -1){
 			deckCheckBox.setSelected(true);
+			deckBox.setSelectedIndex(currentGameSession.getDeckId());
 			initializeDeckComboBox();
 			setDeckVisibility(true);
-			//TODO set actual deck in combo box
 		}
 		//Puts the name of the game into the name text field, it can not be edited
 		if(currentGameSession.getGameStatus() != GameStatus.DRAFT)

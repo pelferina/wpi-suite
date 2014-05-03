@@ -262,6 +262,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 				} else { // Update selected deck
 					DeckModel.getInstance().getDeck(selectedDeckIndex).delete(); // delete old version
 					AddDeckController.getInstance().addDeck(newDeck); // add new version to the list
+					setupDecks();
 				}
 				
 				// Clears nameField
