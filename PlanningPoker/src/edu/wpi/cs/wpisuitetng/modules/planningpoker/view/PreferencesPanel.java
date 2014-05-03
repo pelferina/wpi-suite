@@ -99,14 +99,14 @@ public class PreferencesPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, emailField, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.EAST, emailLabel);
 		springLayout.putConstraint(SpringLayout.EAST, emailField, 0, SpringLayout.EAST, enableCheckBox);
 		// Swing layout for submit Button
-		springLayout.putConstraint(SpringLayout.NORTH, submitButton, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, emailLabel);
-		springLayout.putConstraint(SpringLayout.WEST, submitButton, GuiStandards.LEFT_MARGIN.getValue(), SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, submitButton, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, enableCheckBox);
+		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, submitButton, 0, SpringLayout.HORIZONTAL_CENTER, enableCheckBox);
 		// Swing layout for enableCheckBox
-		springLayout.putConstraint(SpringLayout.NORTH, enableCheckBox, 0, SpringLayout.NORTH, submitButton);
-		springLayout.putConstraint(SpringLayout.WEST, enableCheckBox, GuiStandards.LEFT_MARGIN.getValue(), SpringLayout.EAST, submitButton);
+		springLayout.putConstraint(SpringLayout.NORTH, enableCheckBox, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, emailLabel);
+		springLayout.putConstraint(springLayout.WEST, enableCheckBox, 0, SpringLayout.EAST, emailLabel);
 		// Swing layout for deckButton
-		springLayout.putConstraint(SpringLayout.NORTH, deckButton, 30, SpringLayout.SOUTH, enableCheckBox);
-		springLayout.putConstraint(SpringLayout.WEST, deckButton, 0, SpringLayout.WEST, enableCheckBox);
+		springLayout.putConstraint(SpringLayout.NORTH, deckButton, 30, SpringLayout.SOUTH, submitButton);
+		springLayout.putConstraint(SpringLayout.WEST, deckButton, 0, SpringLayout.WEST, submitButton);
 		
 		setLayout(springLayout);
 		
