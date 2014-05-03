@@ -54,6 +54,7 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 	 */
 	public EmailAddressEntityManager(Data db) {
 		this.db = db;
+		System.out.println("email entity maanger has been created");
 	}
 
 	/*
@@ -131,7 +132,8 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 			// Passing a dummy PostBoardMessage lets the db know what type of object
 			// to retrieve
 			// Passing the project makes it only get messages from that project
-
+		System.out.println("get one email address request");
+		
 			final EmailAddressModel[] emails = db.retrieveAll(new EmailAddressModel(null, null, false)).toArray(new EmailAddressModel[0]);
 			final EmailAddressModel[] returnEmail = new EmailAddressModel[1];
 			for(EmailAddressModel e: emails){

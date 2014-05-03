@@ -64,7 +64,7 @@ public class PreferencesPanelTest {
 		GetCurrentUser gcu =  GetCurrentUser.getInstance();
 		assertNotNull(gcu);
 		gcu.enableTesting();
-//		PreferencesPanel pp = new PreferencesPanel(new JButton());
+		PreferencesPanel pp = new PreferencesPanel(new JButton());
 //		assertNotNull(pp);
 	}
 }

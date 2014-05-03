@@ -163,6 +163,7 @@ public class PreferencesPanel extends JPanel {
 		final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.GET); // GET == read
 		request.addObserver(new GetEmailRequestObserver(this));
 		request.send(); // send the request
+		System.out.println("send request");
 		while(eModel == null){
 			try {
 				Thread.sleep(100);
@@ -226,6 +227,7 @@ class GetEmailRequestObserver implements RequestObserver {
 
 	@Override
 	public void responseSuccess(IRequest iReq) {
+		System.out.println("response success");
 		final EmailAddressModel[] emails = EmailAddressModel.fromJsonArray(iReq.getResponse().getBody());
 		panel.setEmailModel(emails[0]);
 	}
@@ -235,6 +237,7 @@ class GetEmailRequestObserver implements RequestObserver {
 	 */
 	@Override
 	public void responseError(IRequest iReq) {
+		System.out.println("response fail");
 		fail(iReq, null);
 	}
 
