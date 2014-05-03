@@ -25,6 +25,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class GetAllUsers {
 	private static GetAllUsers instance = null;
 	private static User[] users = null;
+	private static int testFlag = 0;
 	
 	/**
 	 * This constructor creates an instance if one does not already exist
@@ -36,11 +37,23 @@ public class GetAllUsers {
 		}
 		return instance;
 	}
+	
+	/**
+	 * This function enables testing mode
+	 * It is only called for JUnit tests
+	 */
+	public void enableTesting(){
+		testFlag = 1;
+	}
 	/**
 	 * This method returns the current user
 	 * @return the current user as User
 	 */
 	public User[] getAllUsers(){
+		if (testFlag == 1){
+			User[] testUsers = {new User("admin", "admin", "1234", 27)};
+			return testUsers;
+		}
 		if(users == null){
 			try{
 				if(Network.getInstance().getDefaultNetworkConfiguration() != null){
