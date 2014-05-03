@@ -53,7 +53,6 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 
 	private boolean isSingleSelection = true; 
 	private boolean newDeckFlag = false;
-	private boolean changeFlag = false;
 	
 	private JButton btnAddCard = new JButton("Add Card");
 	private JButton btnRmvSelected = new JButton("Remove Selected");
@@ -183,7 +182,6 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 					public void itemStateChanged(ItemEvent e) {
 						if(e.getStateChange() == ItemEvent.SELECTED){
 							selectedDeckIndex = decksComboBox.getSelectedIndex();
-							changeFlag = false;
 							if(selectedDeckIndex == 0){
 								newDeckFlag = true;
 								
@@ -194,6 +192,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 								
 								//GUI calls
 								nameField.setText("");
+								nameField.setEnabled(true);
 								btnSave.setEnabled(false);
 								btnAddCard.setEnabled(true);
 								btnRmvSelected.setEnabled(false);
@@ -239,12 +238,13 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 								}
 								
 								// GUI calls
+								nameField.setEnabled(true);
+								nameField.setText(decksComboBox.getItemAt(selectedDeckIndex));
 								btnAddCard.setEnabled(true);
 								btnRmvSelected.setEnabled(true);
 								btnRmvAll.setEnabled(true);
 								btnSave.setEnabled(true);
 								btnDelete.setEnabled(true);
-								nameField.setText(decksComboBox.getItemAt(selectedDeckIndex));
 								numberField.setText("");
 								resetPanel();
 							}
@@ -260,7 +260,8 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 				if(newDeckFlag){ // Store new deck
 					AddDeckController.getInstance().addDeck(newDeck); 
 				} else { // Update selected deck
-					AddDeckController.getInstance().addDeck(newDeck);//TODO MODIFY THIS TO UPDATE A DECKK INSTANCE
+					DeckModel.getInstance().getDeck(selectedDeckIndex).delete(); // delete old version
+					AddDeckController.getInstance().addDeck(newDeck); // add new version to the list
 				}
 				
 				// Clears nameField
@@ -309,10 +310,6 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		
 		btnAddCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				changeFlag = true;
-				btnSave.setEnabled(true);
-				btnRmvSelected.setEnabled(true);
-				btnRmvAll.setEnabled(true);
 				final GameCard card;
 				int cardNumber;
 				try {
@@ -340,12 +337,11 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 					
 					// GUI calls
 					btnSave.setEnabled(true);
+					btnRmvSelected.setEnabled(true);
+					btnRmvAll.setEnabled(true);
 					numberField.setText("");
 					resetPanel();
 					
-					// Outputs console msgs
-					System.out.println("Added card " + cardNumber);
-					System.out.println("Current card list is: " + newDeckCards.toString());
 				} catch (NumberFormatException err) {
 					System.err.println("Incorrect use of gameCard constructor: param not a number");
 					errLabel.setText(numberField.getText()+ " is not a valid non-negative integer!");
@@ -357,8 +353,6 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		
 		btnRmvSelected.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				changeFlag = true;
-				btnSave.setEnabled(true);
 				List<Integer> tempDeckCards = new ArrayList<Integer>(newDeckCards);
 				
 				for(int valueToRemove: cardsToBeRemoved){
@@ -373,6 +367,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 				// Resets panel and list
 				resetPanel();
 				cardsToBeRemoved.clear();
+				btnSave.setEnabled(true);
 				
 				// Checks the amount of cards left and sets the save button to false if none is found
 				if(newDeckCards.isEmpty()){
@@ -380,10 +375,6 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 					btnRmvAll.setEnabled(false);
 					btnRmvSelected.setEnabled(false);
 				}
-				
-				// Outputs console messages
-				System.out.println("Removed cards from deck");
-				System.out.println("Current card list is: " + newDeckCards.toString());
 				
 				//display error message
 				if (newDeckCards.isEmpty()){
@@ -425,7 +416,6 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		btnSingleSelection.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				changeFlag = true;
 				btnSave.setEnabled(true);
 				btnSingleSelection.setSelected(true);
 				btnMultipleSelection.setSelected(false);
@@ -437,7 +427,6 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		btnMultipleSelection.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				changeFlag = true;
 				btnSave.setEnabled(true);
 				btnMultipleSelection.setSelected(true);
 				btnSingleSelection.setSelected(false);
@@ -449,8 +438,32 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		btnDelete.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Pop up message asking to confirm deletion of a deck
-				// TODO deletion of a deck from database
+				// TODO popup message
+				DeckModel.getInstance().getDecks().get(selectedDeckIndex).delete();
+				
+				// Clears lists
+				newDeckCards.clear();
+				cardsToBeRemoved.clear();
+				
+				// Clears panel
+				cardPanel.removeAll();
+				cardPanel.revalidate();
+				cardPanel.repaint();
+				validateAll();
+
+				// Sets button status to false because there are no more cards on the new deck
+				btnSave.setEnabled(false);
+				btnAddCard.setEnabled(false);
+				btnRmvSelected.setEnabled(false);
+				btnRmvAll.setEnabled(false);
+				btnDelete.setEnabled(false);
+				nameField.setEnabled(false);
+				
+				// Changes combo box selection to the first deck of the list (new deck)
+				decksComboBox.setSelectedIndex(0);
+				setupDecks();
+				
+				// TODO temp msg that prints out the deck was deleted
 			}
 		});
 		
@@ -552,7 +565,9 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 	}
 	
 	
-	
+	/**
+	 * Sets up the deck list by first clearing, adding a new deck instance and by populating the list with another function
+	 */
 	private void setupDecks(){
 		decksComboBox.removeAllItems();
 		decksComboBox.addItem("Create New Deck ...");
@@ -561,13 +576,13 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 	
 	/**
 	 * Add all available deck selections to the combo box
-	 *
 	 */
 	private void addDecksToDeckComboBox()
 	{
 		decks = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
 		for (Deck d: decks){
-			if(!d.getName().equals("Default Deck"))
+			// Ignores default deck and deleted decks
+			if(!d.getName().equals("Default Deck") && !d.isDeleted())
 				decksComboBox.addItem(d.getName());
 		}
 	}
@@ -677,17 +692,15 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 	}
 
 	@Override
-	public void refreshRequirements() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void refreshRequirements() {}
 
 	@Override
-	public void refreshGames() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void refreshGames() {}
 
+	/**
+	 * Function called by Refreshable periodically
+	 * refreshDecks will update the deck list in decksComboBox whenever changes are observed
+	 */
 	@Override
 	public void refreshDecks() {
 		if (decks.size() != DeckModel.getInstance().getDecks().size()){
