@@ -72,7 +72,7 @@ public class DeckBuildingPanel extends JPanel {
 	private final SpringLayout springLayout = new SpringLayout();
 	private String newDeckName;
 	private final List<Integer> newDeckCards = new ArrayList<Integer>();
-	private final List<Integer> cardsToBeRemoved = new ArrayList<Integer>();
+	private List<Integer> cardsToBeRemoved = new ArrayList<Integer>();
 	private final JPanel cardPanel = new JPanel();
 	private final JScrollPane cardArea = new JScrollPane(cardPanel);
 	private final NewGameDistributedPanel newGameDistributed;

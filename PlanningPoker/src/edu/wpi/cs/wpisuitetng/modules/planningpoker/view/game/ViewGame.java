@@ -272,7 +272,8 @@ public class ViewGame extends JPanel{
 		reqDescTextArea.setText("");
 		estimateTextField.setText("");
 	}
-	
+
+
 	/**
 	 * checks to see if the user has voted on all the requirements in a game, then enables the submit button
 	 */
@@ -285,5 +286,54 @@ public class ViewGame extends JPanel{
 			}
 		}
 		submit.setEnabled(canSubmit);
+	}
+	
+	
+	public List<Integer> getGameReqs() {
+		return gameReqs;
+	}
+
+	public JLabel getReqName() {
+		return reqName;
+	}
+
+	public JLabel getReqDesc() {
+		return reqDesc;
+	}
+
+	public JTextField getEstimateTextField() {
+		return estimateTextField;
+	}
+
+	public JTextField getReqNameTextField() {
+		return reqNameTextField;
+	}
+
+	public JTextArea getReqDescTextArea() {
+		return reqDescTextArea;
+	}
+
+	public JButton getSubmit() {
+		return submit;
+	}
+
+	public JButton getVoteButton() {
+		return voteButton;
+	}
+
+	public Vote getUserEstimates() {
+		return userEstimates;
+	}
+
+	public Requirement getCurrentReq() {
+		return currentReq;
+	}
+
+	public GameView getGv() {
+		return gv;
+	}
+
+	public GameSession getCurrentGame() {
+		return currentGame;
 	}
 }

@@ -1120,9 +1120,9 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		return deckBox;
 	}
 
-	public void setDeckBox(JComboBox<String> deckBox) {
-		this.deckBox = deckBox;
-	}
+//	public void setDeckBox(JComboBox<String> deckBox) {
+//		this.deckBox = deckBox;
+//	}
 
 	public JCheckBox getDeadlineCheckBox() {
 		return deadlineCheckBox;
