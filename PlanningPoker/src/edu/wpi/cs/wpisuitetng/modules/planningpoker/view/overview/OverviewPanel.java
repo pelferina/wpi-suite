@@ -296,9 +296,12 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		return instance;
 	}
 
-
+	/**
+	 * Removes a game from the table
+	 * @param gameID The ID of the game to be removed
+	 */
 	public void removeGameFromTable(int gameID) {
-		JTableModel model = (JTableModel) table.getModel();
+		final JTableModel model = (JTableModel) table.getModel();
 		model.removeGameFromList(gameID);
 
 	}

@@ -216,7 +216,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	 *
 	 * Enables the end game button, and add a action listener
 	 * to this game
-	 * @param gameID 
+	 * @param game The selected GameSession
 	 */
 	public void makeEditGameButtonVisible(GameSession game){
 		editButton.setVisible(true);

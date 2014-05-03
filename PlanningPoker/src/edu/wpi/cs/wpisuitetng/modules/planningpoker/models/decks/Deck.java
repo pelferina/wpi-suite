@@ -54,7 +54,7 @@ public class Deck extends AbstractModel {
 		id = -1;
 		this.name = name;
 		this.cards = cards;
-		this.isSingleSelection = true;
+		isSingleSelection = true;
 	}
 	/**
 	 * compares two decks for equality based on name
@@ -66,7 +66,7 @@ public class Deck extends AbstractModel {
 	@Override
 	public boolean equals(Object that) {
 		if (that instanceof Deck){
-			Deck o = (Deck) that;
+			final Deck o = (Deck) that;
 			return (id == o.getId() && cards.equals(o.getCards()) && name.equals(o.getName()) && isSingleSelection == o.isSingleSelection() );
 		}
 		else return false; // if it's not a deck, it's not equal.
@@ -187,6 +187,7 @@ public class Deck extends AbstractModel {
 	/**
 	 * set the card list
 	 * @param cards the card list
+	 * @return The deck that is being changed
 	 */
 	public Deck setCards(List<Integer> cards) {
 		this.cards = cards;

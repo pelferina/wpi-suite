@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2012-2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * Contributors: Team Cosmic Latte
+ *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
 
 import java.awt.Component;
@@ -20,10 +29,14 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUs
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-
+/**
+ * The ButtonPanel class
+ * @author FFF8E7
+ * @version 6
+ */
 public class ButtonPanel extends ToolbarGroupView{
 	private final JPanel contentPanel = new JPanel();
-	private LinkedList<JButton> buttonQueue = new LinkedList<JButton>();
+	private final LinkedList<JButton> buttonQueue = new LinkedList<JButton>();
 	Component spacer = Box.createRigidArea(new Dimension(15,0));
 	
 	JButton newButton = new JButton("<html>New<br />Game</html>");
@@ -139,6 +152,9 @@ public class ButtonPanel extends ToolbarGroupView{
 			System.out.println("IOException thrown in ButtonsPanel.");
 		}
 	}
+	/**
+	 * Removes all the buttons from the buttonPanel
+	 */
 	public void removeButtons(){
 		for(JButton button:buttonQueue){
 			contentPanel.remove(button);
@@ -147,6 +163,10 @@ public class ButtonPanel extends ToolbarGroupView{
 		contentPanel.updateUI();
 		buttonQueue.clear();
 	}
+	/**
+	 * Shows all buttons for a selected game
+	 * @param gameSelected The selected game
+	 */
 	public void showButton(final GameSession gameSelected){
     	final User currentUser = GetCurrentUser.getInstance().getCurrentUser();
     	final GameStatus status = gameSelected.getGameStatus();
@@ -160,7 +180,7 @@ public class ButtonPanel extends ToolbarGroupView{
 				}
     			
     		});
-    		playButton.setPreferredSize(new Dimension(150,50));;
+    		playButton.setPreferredSize(new Dimension(150,50));
     		buttonQueue.add(playButton);
     		contentPanel.add(playButton);
     		contentPanel.add(Box.createRigidArea(new Dimension(15,0)));
@@ -221,7 +241,7 @@ public class ButtonPanel extends ToolbarGroupView{
     			contentPanel.updateUI();
     		}	
     	}
-    	int buttonNum = buttonQueue.size();
+    	final int buttonNum = buttonQueue.size();
 		this.setPreferredWidth(165*buttonNum);
 		this.updateUI();
 	}

@@ -25,8 +25,8 @@ import javax.swing.Icon;
 
 public class NeedsVoteIcon implements Icon {
 	
-	private int width;
-	private int height;
+	private final int width;
+	private final int height;
 	
 	public NeedsVoteIcon(){
 		width = 5;

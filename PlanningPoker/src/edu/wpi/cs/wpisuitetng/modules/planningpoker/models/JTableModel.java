@@ -215,9 +215,11 @@ public class JTableModel extends AbstractTableModel {
 		return games[i];
 	}
 	
-	
+	/**
+	 * Removes a game from the GameSession
+	 * @param gameID The game to be removed
+	 */
 	public void removeGameFromList(int gameID) {
-		
 		GameSession game = null;
 		for (GameSession gam : games){
 			if (gam.getGameID()==gameID){
@@ -228,7 +230,7 @@ public class JTableModel extends AbstractTableModel {
 		if (game==null){
 			return; // if we want to remove a nonexistant game
 		}
-		GameSession[] newGames = new GameSession[games.length-1];
+		final GameSession[] newGames = new GameSession[games.length-1];
 		boolean hasFound = false;
 		for (int i=0; i<games.length; i++){
 			if (!hasFound){
@@ -246,7 +248,7 @@ public class JTableModel extends AbstractTableModel {
 		size = newGames.length;
 		
 		
-		Object[][] newData = new Object[Data.length-1][Data[0].length];
+		final Object[][] newData = new Object[Data.length-1][Data[0].length];
 		hasFound = false;
 		for (int i=0; i<Data.length; i++){
 			if (!hasFound){

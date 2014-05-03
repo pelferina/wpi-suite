@@ -207,24 +207,29 @@ public class ViewEventController {
 	
 	/**
 	 * sets the edit game button to be visible
-	 * @param gameID the id of the game to change the button for
+	 * @param gameSelected The selected GameSession
 	 */
 	public void makeEditGameButtonVisible(GameSession gameSelected)
 	{
 		toolbar.makeEditGameButtonVisible(gameSelected);
-		
 	}
 
 	/**
 	 * sets the edit game button to be invisible
 	 */
 	public void makeEditGameButtonInVisible() {
-		toolbar.makeEditGameButtonInvisible();		
+		toolbar.makeEditGameButtonInvisible();
 	}
-	
+	/**
+	 * Changes the toolbar buttons for the gameSelected
+	 * @param gameSelected The selected GameSession
+	 */
 	public void changeButton(GameSession gameSelected){
 		toolbar.changeButtons(gameSelected);
 	}
+	/**
+	 * Removes all buttons in the toolbar
+	 */
 	public void removeButtons(){
 		toolbar.removeButtons();
 	}

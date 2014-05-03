@@ -9,7 +9,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game;
 
-import java.awt.Color;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -17,32 +17,32 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
+
+
+
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+
+
 import javax.swing.SpringLayout;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddVoteController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
+
+
+
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.VoteModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
+
+
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.GuiStandards;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+
+
+
 
 /**
  * A panel for playing a game session
@@ -54,7 +54,7 @@ public class PlayDeckGame extends PlayGame implements Refreshable{
 
 	private final JPanel deckAreaPanel = new JPanel();
 	private final JScrollPane deckArea = new JScrollPane(deckAreaPanel);
-	private int deckId;
+	private final int deckId;
 	private List<Integer> gameCardList = new ArrayList<Integer>();
 	private int votesSoFarInt = -1;
 	private final JLabel votesSoFarNameLabel = new JLabel("Estimate: ");
@@ -180,6 +180,10 @@ public class PlayDeckGame extends PlayGame implements Refreshable{
 
 	}
 
+	/**
+	 * Deselects all cards except for the one passed in
+	 * @param selectedCard The card to keep
+	 */
 	protected void unselectOtherCards(GameCard selectedCard) {
 		boolean selectedFlag = false; // If loop keeps a card selected, this flag will prevent selecting other cards with the same value
 		for(GameCard card: cardButtons){

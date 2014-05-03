@@ -55,7 +55,7 @@ import javax.swing.JComboBox;
  */
 public class NewRequirementPanel extends JPanel {
 	private final Requirement currentRequirement;
-	private JTextField nameField = new JTextField();
+	private final JTextField nameField = new JTextField();
 	private final JTextArea descriptionField = new JTextArea();
 	private final JScrollPane descriptionScrollPane = new JScrollPane(descriptionField);
 	private final JLabel nameLabel = new JLabel("Requirement Name*: ");

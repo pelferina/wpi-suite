@@ -178,7 +178,7 @@ public class DeckEntityManager implements EntityManager<Deck> {
 	@Override
 	public Deck update(Session session, String content)
 			throws WPISuiteException {
-		Deck newDeck = Deck.fromJson(content);
+		final Deck newDeck = Deck.fromJson(content);
 		db.update(Deck.class, "Id", newDeck.getId(), "Cards", newDeck.getCards());
 		return newDeck;
 	}
