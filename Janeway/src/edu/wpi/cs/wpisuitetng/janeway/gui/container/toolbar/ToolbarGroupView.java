@@ -116,8 +116,8 @@ public class ToolbarGroupView extends JPanel implements Hoverable {
 		}
 		if(totalNumberOfComponents==0 || (totalNumberOfButtons!=0 && numberOfInvisibleButtons!=totalNumberOfComponents))
 		{
-			this.setOpaque(true);
-			this.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 1, Color.gray));
+			//this.setOpaque(true);
+			//this.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 1, Color.gray));
 			this.repaint();
 		}
 	}
@@ -127,8 +127,8 @@ public class ToolbarGroupView extends JPanel implements Hoverable {
 	 */
 	@Override
 	public void mouseExited() {
-		this.setOpaque(false);
-		this.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 1));
+		//this.setOpaque(false);
+		//this.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 1));
 		this.repaint();
 	}
 	
