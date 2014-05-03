@@ -537,7 +537,7 @@ public class DeckBuildingPanel extends JPanel {
 		
 		btnSave.setEnabled(allValid);
 	}
-	
+
 	/**
 	 * Helper function for checking if the estimate text box contains an integer
 	 * @param s the string to be checking
@@ -559,5 +559,42 @@ public class DeckBuildingPanel extends JPanel {
 	public void setFocusOnName() {
 		nameField.requestFocusInWindow();
 		getRootPane().setDefaultButton(btnAddCard);
+	}
+	
+	public boolean isSingleSelection() {
+		return isSingleSelection;
+	}
+	public JButton getBtnAddCard() {
+		return btnAddCard;
+	}
+	public JButton getBtnRmvSelected() {
+		return btnRmvSelected;
+	}
+	public JButton getBtnRmvAll() {
+		return btnRmvAll;
+	}
+	public JButton getBtnSave() {
+		return btnSave;
+	}
+
+	public JButton getBtnCancel() {
+		return btnCancel;
+	}
+
+	public JTextField getNameField() {
+		return nameField;
+	}
+	public JTextField getNumberField() {
+		return numberField;
+	}
+	public List<Integer> getNewDeckCards() {
+		return newDeckCards;
+	}
+	
+	public List<Integer> getCardsToBeRemoved() {
+		return cardsToBeRemoved;
+	}
+	public void setCardsToBeRemoved(List<Integer> cardsToBeRemoved) {
+		this.cardsToBeRemoved = cardsToBeRemoved;
 	}
 }

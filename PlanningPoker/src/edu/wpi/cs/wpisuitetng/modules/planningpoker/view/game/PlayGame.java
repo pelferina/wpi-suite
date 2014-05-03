@@ -504,17 +504,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		// TODO Auto-generated method stub
 
 	}
-	public List<Integer> getGameReqs() {
-		return gameReqs;
-	}
 
-	public JLabel getGameName() {
-		return gameName;
-	}
-
-	public JLabel getGameEnded() {
-		return gameEnded;
-	}
 
 	public JTextField getEstimateTextField() {
 		return estimateTextField;
@@ -544,15 +534,4 @@ public class PlayGame extends JPanel implements Refreshable{
 		return voteButton;
 	}
 
-	public Vote getUserEstimates() {
-		return userEstimates;
-	}
-
-	public Requirement getCurrentReq() {
-		return currentReq;
-	}
-
-	public GameView getGv() {
-		return gv;
-	}
 }
