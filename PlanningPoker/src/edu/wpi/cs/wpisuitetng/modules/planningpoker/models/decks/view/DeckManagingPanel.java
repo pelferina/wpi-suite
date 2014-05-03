@@ -53,6 +53,8 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 
 	private boolean isSingleSelection = true; 
 	private boolean newDeckFlag = false;
+	private boolean changeFlag = false;
+	
 	private JButton btnAddCard = new JButton("Add Card");
 	private JButton btnRmvSelected = new JButton("Remove Selected");
 	private JButton btnRmvAll = new JButton("Remove all");
@@ -161,6 +163,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 			public void itemStateChanged(ItemEvent e) {
 				if(e.getStateChange() == ItemEvent.SELECTED){
 					selectedDeckIndex = decksComboBox.getSelectedIndex();
+					changeFlag = false;
 					if(selectedDeckIndex == 0){
 						newDeckFlag = true;
 						
@@ -175,6 +178,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 						btnAddCard.setEnabled(true);
 						btnRmvSelected.setEnabled(false);
 						btnRmvAll.setEnabled(false);
+						btnDelete.setEnabled(false);
 						cardPanel.revalidate();
 						resetPanel();
 						
@@ -215,7 +219,11 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 						}
 						
 						// GUI calls
+						btnAddCard.setEnabled(true);
+						btnRmvSelected.setEnabled(true);
+						btnRmvAll.setEnabled(true);
 						btnSave.setEnabled(false);
+						btnDelete.setEnabled(false);
 						nameField.setText(decksComboBox.getItemAt(selectedDeckIndex));
 						numberField.setText("");
 						resetPanel();
@@ -227,13 +235,15 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		btnSave.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				newDeckName = nameField.getText();
-				Deck newDeck = new Deck (newDeckName, newDeckCards);
-				//newDeck.setSingleSelection(isSingleSelection);
-				AddDeckController.getInstance().addDeck(newDeck);
-				System.out.println("added Deck " + newDeckName + 
-						"; Id = " + newDeck.getId() + 
-						"; with cards: " + newDeckCards.toString());
-				System.out.println("Current DeckModel size is " + DeckModel.getInstance().getSize());
+				Deck newDeck = new Deck (newDeckName, newDeckCards); //Updated deck with new name and new cards
+				newDeck.setSingleSelection(isSingleSelection); //Updates selection mode
+				if(newDeckFlag){ // Store new deck
+					AddDeckController.getInstance().addDeck(newDeck); 
+				} else { // Update selected deck
+					AddDeckController.getInstance().addDeck(newDeck);//TODO MODIFY THIS TO UPDATE A DECKK INSTANCE
+				}
+				
+				// Clears nameField
 				nameField.setText("");
 				
 				// Clears lists
@@ -250,7 +260,8 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 				btnSingleSelection.setSelected(true);
 				btnMultipleSelection.setSelected(false);
 				
-				newGameDistributed.closeDeck();
+				// Moves selection back to initial index
+				decksComboBox.setSelectedIndex(0);
 			}
 		});
 		
@@ -278,6 +289,10 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		
 		btnAddCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				changeFlag = true;
+				btnSave.setEnabled(true);
+				btnRmvSelected.setEnabled(true);
+				btnRmvAll.setEnabled(true);
 				final GameCard card;
 				int cardNumber;
 				try {
@@ -322,6 +337,8 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		
 		btnRmvSelected.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				changeFlag = true;
+				btnSave.setEnabled(true);
 				List<Integer> tempDeckCards = new ArrayList<Integer>(newDeckCards);
 				
 				for(int valueToRemove: cardsToBeRemoved){
@@ -338,7 +355,11 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 				cardsToBeRemoved.clear();
 				
 				// Checks the amount of cards left and sets the save button to false if none is found
-				if(newDeckCards.isEmpty()) btnSave.setEnabled(false);
+				if(newDeckCards.isEmpty()){
+					btnSave.setEnabled(false);
+					btnRmvAll.setEnabled(false);
+					btnRmvSelected.setEnabled(false);
+				}
 				
 				// Outputs console messages
 				System.out.println("Removed cards from deck");
@@ -366,6 +387,8 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 
 				// Sets button status to false because there are no more cards on the new deck
 				btnSave.setEnabled(false);
+				btnRmvSelected.setEnabled(false);
+				btnRmvAll.setEnabled(false);
 				
 				// Outputs console messages
 				System.out.println("Cleared current deck");
@@ -382,6 +405,8 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		btnSingleSelection.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				changeFlag = true;
+				btnSave.setEnabled(true);
 				btnSingleSelection.setSelected(true);
 				btnMultipleSelection.setSelected(false);
 				isSingleSelection = true;
@@ -392,12 +417,30 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		btnMultipleSelection.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				changeFlag = true;
+				btnSave.setEnabled(true);
 				btnMultipleSelection.setSelected(true);
 				btnSingleSelection.setSelected(false);
 				isSingleSelection = false;
 				
 			}
 		});
+		
+		btnDelete.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Pop up message asking to confirm deletion of a deck
+				// TODO deletion of a deck from database
+			}
+		});
+		
+		btnClose.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO close tab
+			}
+		});
+		
 		
 		//Spring layout for lblDecks
 		springLayout.putConstraint(SpringLayout.NORTH, lblDecks, 20, SpringLayout.NORTH, this);
@@ -441,6 +484,16 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.WEST, btnAddCard, 0, SpringLayout.WEST, lblAdd);
 		springLayout.putConstraint(SpringLayout.EAST, btnAddCard, 0, SpringLayout.EAST, numberField);
 		
+		//SpringLayout for lblSelection
+		springLayout.putConstraint(SpringLayout.NORTH, lblSelection, 0, SpringLayout.NORTH, numberField);
+		springLayout.putConstraint(SpringLayout.WEST, lblSelection, 10, SpringLayout.EAST, numberField);
+		
+		//SpringLayout for selectionGroup
+		springLayout.putConstraint(SpringLayout.NORTH, btnSingleSelection, 10, SpringLayout.SOUTH, lblSelection);
+		springLayout.putConstraint(SpringLayout.WEST, btnSingleSelection, 0, SpringLayout.WEST, lblSelection);
+		springLayout.putConstraint(SpringLayout.NORTH, btnMultipleSelection, 5, SpringLayout.SOUTH, btnSingleSelection);
+		springLayout.putConstraint(SpringLayout.WEST, btnMultipleSelection, 0, SpringLayout.WEST, btnSingleSelection);
+				
 		//Spring layout for btnRmvSelected
 		springLayout.putConstraint(SpringLayout.NORTH, btnRmvSelected, 0, SpringLayout.NORTH, numberField);
 		springLayout.putConstraint(SpringLayout.EAST, btnRmvSelected, 0, SpringLayout.EAST, cardArea);
@@ -469,6 +522,9 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		add(lblAdd);
 		add(numberField);
 		add(btnAddCard);
+		add(lblSelection);
+		add(btnSingleSelection);
+		add(btnMultipleSelection);
 		add(btnRmvSelected);
 		add(btnRmvAll);
 		add(btnDelete);
