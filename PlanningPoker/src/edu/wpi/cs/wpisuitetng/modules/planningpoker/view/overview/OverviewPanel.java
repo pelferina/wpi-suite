@@ -150,6 +150,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 
 		gameTreeModel = new GameTree(new DefaultMutableTreeNode("All Games"));
 		gameTree = new JTree(gameTreeModel.getTop());
+		gameTree.setSelectionRow(0);
 		gameTree.setCellRenderer(new CustomTreeCellRenderer());
 		gameTree.addTreeSelectionListener(    new TreeSelectionListener(){
 			public void valueChanged(TreeSelectionEvent e) {
