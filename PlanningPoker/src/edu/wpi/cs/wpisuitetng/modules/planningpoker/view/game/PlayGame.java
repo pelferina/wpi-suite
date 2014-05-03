@@ -310,6 +310,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.NORTH, gameDescScroll, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, gameDesc);
 		springLayout.putConstraint(SpringLayout.WEST, gameDescScroll, 0, SpringLayout.WEST, gameDesc);
 		springLayout.putConstraint(SpringLayout.EAST, gameDescScroll, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, gameDescScroll, -GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.NORTH, reqName);
 		
 		//Spring layout for reqDescScroll
 		springLayout.putConstraint(SpringLayout.NORTH, reqDescScroll, 10, SpringLayout.SOUTH, reqDesc);
@@ -322,7 +323,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.WEST, reqDesc, 0, SpringLayout.WEST, reqName);
 
 		//Spring layout for reqName label
-		springLayout.putConstraint(SpringLayout.NORTH, reqName, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, gameDescScroll);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, reqName, -20, SpringLayout.VERTICAL_CENTER, this);
 		springLayout.putConstraint(SpringLayout.WEST, reqName, 0, SpringLayout.WEST, gameDesc);
 
 		//Spring layout for notAnIntegerError label
