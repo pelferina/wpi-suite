@@ -58,10 +58,6 @@ public class VoteData extends JPanel{
 
 	private final JLabel reqNameLabel = new JLabel("Requirement Name:");
 	private final JLabel reqDescriptionLabel = new JLabel("Requirement Description:");
-	private final JLabel meanLabel = new JLabel("Mean:");
-	private final JLabel medianLabel = new JLabel("Median:");
-	private final JLabel estimatesLabel = new JLabel("Estimates");
-	private final JLabel statsLabel = new JLabel("Statistics");
 	private final JLabel finalEstimateLabel = new JLabel ("Final Estimate:");
 	private final JLabel notAnIntegerError = new JLabel("Estimate must be a positive integer");
 	private final JTextField finalEstimateText = new JTextField();
@@ -134,6 +130,7 @@ public class VoteData extends JPanel{
 		else {
 			finalEstimateText.setEditable(false);
 			submitEstimateButton.setVisible(false);
+			archiveGameButton.setVisible(false);
 		}
 		reqNameText.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
@@ -248,6 +245,9 @@ public class VoteData extends JPanel{
 		    }
 		};
 		
+		estimatesTable.getTableHeader().setReorderingAllowed(false);
+		estimatesTable.setRowSelectionAllowed(false);
+		estimatesTable.setCellSelectionEnabled(false);
 		estimatesTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"User Name", "Estimate"}));
 		estimatesTable.setFillsViewportHeight(true);
 		final DefaultTableModel estimatesModel = (DefaultTableModel) estimatesTable.getModel();
@@ -314,12 +314,8 @@ public class VoteData extends JPanel{
 		springLayout.putConstraint(SpringLayout.EAST, descriptionScrollPane, 0, SpringLayout.EAST, reqNameText);
 		springLayout.putConstraint(SpringLayout.SOUTH, descriptionScrollPane, 100, SpringLayout.NORTH, descriptionScrollPane);
 		
-		//Spring layout constraints for estimatesLabel
-		springLayout.putConstraint(SpringLayout.NORTH, estimatesLabel, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, descriptionScrollPane);
-		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimatesLabel, 0, SpringLayout.HORIZONTAL_CENTER, this);
-		
 		//Spring layout constraints for estimatesPane
-		springLayout.putConstraint(SpringLayout.NORTH, estimatesPane, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, estimatesLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, estimatesPane, GuiStandards.LABEL_TEXT_OFFSET.getValue() * 2, SpringLayout.SOUTH, descriptionScrollPane);
 		springLayout.putConstraint(SpringLayout.WEST, estimatesPane, -200, SpringLayout.EAST, estimatesPane);
 		springLayout.putConstraint(SpringLayout.EAST, estimatesPane, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, estimatesPane, -GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.NORTH, notAnIntegerError);
@@ -355,7 +351,6 @@ public class VoteData extends JPanel{
 		add(estimatesPane);
 		add(descriptionScrollPane);
 		add(reqNameText);
-		add(estimatesLabel);
 		add(reqDescriptionLabel);
 		add(reqNameLabel);
 		finalEstimateLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -381,6 +376,7 @@ public class VoteData extends JPanel{
 			
 		};
 		setFocusTimer.schedule(setFocus, 200);
+		submitEstimateButton.setEnabled(false);
 	}
 	
 	/**

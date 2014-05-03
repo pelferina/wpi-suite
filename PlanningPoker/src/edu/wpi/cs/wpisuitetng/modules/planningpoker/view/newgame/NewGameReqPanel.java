@@ -89,6 +89,8 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		       return false;
 		    }
 		};
+		unselectedTable.getTableHeader().setReorderingAllowed(false);
+		selectedTable.getTableHeader().setReorderingAllowed(false);
 		init();
 	}
 

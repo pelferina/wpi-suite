@@ -413,7 +413,6 @@ public class PlayGame extends JPanel implements Refreshable{
 		voteButton.setEnabled(false);
 	}
 
-
 	/**
 	 * This function will be used when the user submits an estimate for a requirement and it will notify GameRequirements to move the requirement from 
 	 * to estimate table to the completed estimates table
