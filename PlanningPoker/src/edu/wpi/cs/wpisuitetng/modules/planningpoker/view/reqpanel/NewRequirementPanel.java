@@ -222,31 +222,6 @@ public class NewRequirementPanel extends JPanel {
 			}
 		});
 		
-		descriptionField.addKeyListener(new KeyListener(){
-
-			@Override
-			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (e.VK_ENTER == e.getKeyCode()){
-					if (CreateRequirementButton.isEnabled()){
-						CreateRequirementButton.doClick();
-					}
-				}
-				
-			}
-			
-		});
 		
 		/**
 		 * Document listener for the discriptionField
@@ -336,6 +311,7 @@ public class NewRequirementPanel extends JPanel {
 	 */
 	public void setFocusOnName() {
 		nameField.requestFocusInWindow();
+		getRootPane().setDefaultButton(CreateRequirementButton);
 	}
 }
 	
