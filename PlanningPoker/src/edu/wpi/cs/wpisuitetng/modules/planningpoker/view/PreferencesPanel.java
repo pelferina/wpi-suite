@@ -13,6 +13,9 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -157,6 +160,17 @@ public class PreferencesPanel extends JPanel {
 			makeEmailDisable();
 		}
 		submitButton.addActionListener(new AddEmailAddressController(this));
+		
+
+		//Adds a new deck management tab when clicked
+		deckButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//Opens a new deck management tab
+				ViewEventController.getInstance().deckManagementTab();
+			}
+			//	}
+		});
 	}
 	
 	private void retrieveEmail(){
