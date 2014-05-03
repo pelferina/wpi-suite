@@ -58,7 +58,7 @@ public class DeckBuildingPanel extends JPanel {
 	private final JButton btnRmvAll = new JButton("Remove all");
 	private final JButton btnSave = new JButton("Save deck");
 	private final JButton btnDelete = new JButton("Delete deck");
-	private final JButton btnCancel = new JButton("Cancel");
+	private final JButton btnCancel = new JButton("Cancel deck");
 	private final JRadioButton btnSingleSelection = new JRadioButton("Single Selection");
 	private final JRadioButton btnMultipleSelection = new JRadioButton("Multiple Selection");
 	private final ButtonGroup selectionGroup = new ButtonGroup();
