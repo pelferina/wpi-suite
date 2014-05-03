@@ -79,7 +79,7 @@ private static int theReq;
 		/**
 		
 		 * @return the data set depending on the type of data called for either status or iteration */
-		private static DefaultCategoryDataset setData() {
+		private static DefaultCategoryDataset dataSetup() {
 			final List<Vote> votes = theGame.getVotes();
 			final DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
 			final int numUsers = votes.size();
@@ -142,7 +142,7 @@ private static int theReq;
 		
 		 * @return the created bar graph **/
 		public static ChartPanel createPanel() {
-			final JFreeChart chart = createChart(setData());
+			final JFreeChart chart = createChart(dataSetup());
 			final ChartPanel aPanel = new ChartPanel(chart);
 			aPanel.setDomainZoomable(false);
 			aPanel.setRangeZoomable(false);
@@ -170,7 +170,7 @@ private static int theReq;
 		{
 			theGame = aGame;
 			theReq = aReq;
-			barChart.setChart(createChart(setData()));
+			barChart.setChart(createChart(dataSetup()));
 			barChart.setDomainZoomable(false);
 			barChart.setRangeZoomable(false);
 		}

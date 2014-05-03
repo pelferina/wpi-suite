@@ -107,7 +107,7 @@ public class EditButtonsPanel extends ToolbarGroupView{
 	/**
 	 *  disables the end game button 
 	 */
-	public void setEditGameButtonInvisible() {
+	public void makeEditGameButtonInvisible() {
 		editButton.setEnabled(false);
 		editButton.setVisible(false);
 	}

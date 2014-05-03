@@ -45,7 +45,7 @@ public class GetCurrentUser {
 				if(Network.getInstance().getDefaultNetworkConfiguration() != null){
 					sendRequest();
 					return user;
-				}	
+				}
 			}
 			catch(RuntimeException exception){
 				// Session not yet created

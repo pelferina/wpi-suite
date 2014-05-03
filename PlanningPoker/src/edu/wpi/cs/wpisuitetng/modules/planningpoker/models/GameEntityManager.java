@@ -80,7 +80,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	 */
 	@Override
 	public GameSession makeEntity(Session s, String content)
-			throws WPISuiteException {	
+			throws WPISuiteException {
 
 		// Parse the message from JSON
 		final GameSession importedGame = GameSession.fromJson(content);

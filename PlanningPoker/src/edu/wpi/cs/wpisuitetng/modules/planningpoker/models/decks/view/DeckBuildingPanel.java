@@ -245,7 +245,7 @@ public class DeckBuildingPanel extends JPanel {
 					errLabel.setText(numberField.getText()+ " is not a valid non-negative integer!");
 					errLabel.setVisible(true);
 				} 
-				isValidDeckName();	
+				isValidDeckName();
 			}
 		});
 		
@@ -558,7 +558,7 @@ public class DeckBuildingPanel extends JPanel {
 	/**
 	 * This function sets the focus on the name field.
 	 */
-	public void setFocusOnName() {
+	public void focusOnName() {
 		nameField.requestFocusInWindow();
 		getRootPane().setDefaultButton(btnAddCard);
 	}

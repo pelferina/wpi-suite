@@ -213,7 +213,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		saveGameButton.setEnabled(false);
 		activateGameButton.setEnabled(false);
 
-		setPanel();
+		panelSetup();
 
 		//Add padding
 		descriptionTextField.setBorder(BorderFactory.createCompoundBorder(
@@ -539,7 +539,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	{	
 		//Get deadline date
 		currentDate = Calendar.getInstance();
-		setDeadlineDate();
+		deadlineDateSet();
 		hourTime = getHour(deadlineHourComboBox.getSelectedIndex() + 1);
 		minuteTime = deadlineMinuteComboBox.getSelectedIndex();
 		final Calendar deadline = (Calendar) currentDate.clone();
@@ -671,7 +671,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 					currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DAY_OF_MONTH));
 			datePicker.getModel().setSelected(true);
 		}
-		setDeadlineDate();
+		deadlineDateSet();
 
 		setupDeadlineTime();
 
@@ -705,18 +705,18 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			AMButton.setSelected(true);
 		}
 	}
-	private void setDeadlineDate() {
+	private void deadlineDateSet() {
 		deadlineYear = datePicker.getModel().getYear();
 		deadlineMonth = datePicker.getModel().getMonth();
 		deadlineDay = datePicker.getModel().getDay();
 	}
 	private void setupDeadlineTime() {
 		//Initialize Deadline Hour and Minute
-		for (int j=0; j<12; j++){
+		for (int j = 0; j < 12; j++){
 			deadlineHourComboBox.addItem((j + 1) + "");
 		}
 
-		for (int i=0; i<60; i++){
+		for (int i = 0; i < 60; i++){
 			if (i < 10){
 				deadlineMinuteComboBox.addItem("0" + i);
 			}
@@ -769,7 +769,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			datePicker.getModel().setDate(year_index, month_index, day_index);
 			datePicker.getModel().setSelected(true);
 
-			setDeadlineDate();
+			deadlineDateSet();
 			setupDeadlineActionListeners();
 			setupDeadlineTime();			
 			//	Sets the hour and minute combo boxes to the hour and minute in the game's deadline
@@ -934,7 +934,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	 * for setting the NewGameInputPage
 	 */
 
-	private void setPanel(){
+	private void panelSetup(){
 		final ButtonGroup AMPMgroup = new ButtonGroup();
 		AMPMgroup.add(AMButton);
 		AMPMgroup.add(PMButton);
@@ -1076,7 +1076,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	/**
 	 * This sets the focus to the name field
 	 */
-	public void setFocusNameText(){
+	public void focusNameText(){
 		nameTextField.requestFocusInWindow();
 	}
 

@@ -88,7 +88,7 @@ public class GetDecksController extends RefreshableController implements ActionL
 	public void receivedDecks(Deck[] decks) {
 		// Make sure the response was not null
 		if (decks != null) 
-		{	
+		{
 			// add the Decks to the local model
 			DeckModel.getInstance().addDecks(decks);
 		}
