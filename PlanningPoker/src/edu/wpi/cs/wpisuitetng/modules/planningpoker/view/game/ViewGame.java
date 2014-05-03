@@ -289,17 +289,7 @@ public class ViewGame extends JPanel{
 	}
 	
 	
-	public List<Integer> getGameReqs() {
-		return gameReqs;
-	}
 
-	public JLabel getReqName() {
-		return reqName;
-	}
-
-	public JLabel getReqDesc() {
-		return reqDesc;
-	}
 
 	public JTextField getEstimateTextField() {
 		return estimateTextField;
@@ -321,19 +311,4 @@ public class ViewGame extends JPanel{
 		return voteButton;
 	}
 
-	public Vote getUserEstimates() {
-		return userEstimates;
-	}
-
-	public Requirement getCurrentReq() {
-		return currentReq;
-	}
-
-	public GameView getGv() {
-		return gv;
-	}
-
-	public GameSession getCurrentGame() {
-		return currentGame;
-	}
 }
