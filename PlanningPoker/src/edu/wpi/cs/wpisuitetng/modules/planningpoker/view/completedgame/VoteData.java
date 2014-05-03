@@ -249,6 +249,9 @@ public class VoteData extends JPanel{
 		    }
 		};
 		
+		estimatesTable.getTableHeader().setReorderingAllowed(false);
+		estimatesTable.setRowSelectionAllowed(false);
+		estimatesTable.setCellSelectionEnabled(false);
 		estimatesTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"User Name", "Estimate"}));
 		estimatesTable.setFillsViewportHeight(true);
 		final DefaultTableModel estimatesModel = (DefaultTableModel) estimatesTable.getModel();

@@ -93,6 +93,7 @@ public class GameData extends JPanel{
 			}
 		};
 
+		gameReqsTable.getTableHeader().setReorderingAllowed(false);
 		gameReqsTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Mean", "Median", "Std Dev", "Estimate"}));
 		gameReqsTable.setFillsViewportHeight(true);
 		gameReqsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

@@ -101,6 +101,8 @@ public class GameRequirements extends JSplitPane{
 		       return false;
 		    }
 		};
+		estimatesPending.getTableHeader().setReorderingAllowed(false);
+		estimatesComplete.getTableHeader().setReorderingAllowed(false);
 		estimatesPending.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		estimatesComplete.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		estimatesPending.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Requirements to Estimate"}));

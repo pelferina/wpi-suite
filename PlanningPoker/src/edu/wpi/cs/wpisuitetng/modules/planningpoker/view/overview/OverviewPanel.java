@@ -83,6 +83,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		final GameSession[] sessions = {};
 
 		table = new JTable(new JTableModel(sessions));
+		table.getTableHeader().setReorderingAllowed(false);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getColumnModel().getColumn(0).setPreferredWidth(250);
 		
