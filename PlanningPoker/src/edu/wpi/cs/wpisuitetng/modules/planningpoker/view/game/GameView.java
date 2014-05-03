@@ -52,10 +52,12 @@ public class GameView extends JSplitPane{
 			if (gameToPlay.getDeckId() == -1){
 				isDeckGame = false;
 				playGame = new PlayGame(gameToPlay, this);
+				playDeckGame = null;
 			}
 			else {
 				isDeckGame = true;
 				playDeckGame = new PlayDeckGame(gameToPlay, this);
+				playGame = null;
 			}
 		}
 		addImpl(gameReqs, JSplitPane.LEFT, 1);
@@ -134,5 +136,14 @@ public class GameView extends JSplitPane{
 		else {
 			playGame.clear();
 		}	
+	}
+	
+	/**
+	 * 
+	 */
+	public void unselectAllCards(){
+		if (playDeckGame != null){
+			playDeckGame.unselectAll();
+		}
 	}
 }
