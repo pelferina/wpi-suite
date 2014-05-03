@@ -108,7 +108,7 @@ public class GameData extends JPanel{
 	private void init(){
 		final DefaultTableModel reqTableModel = (DefaultTableModel) gameReqsTable.getModel();
 		reqTableModel.setRowCount(gameReqs.size());
-		ViewEventController.getInstance().changeButton(completedGame);
+		
 		completedGame.calculateStats();
 		
 		descriptionTextArea.setWrapStyleWord(true);
