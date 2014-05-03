@@ -46,7 +46,7 @@ public class GetAllUsers {
 				if(Network.getInstance().getDefaultNetworkConfiguration() != null){
 					sendRequest();
 					return users;
-				}	
+				}
 			}
 			catch(RuntimeException exception){
 				System.err.println("Exception thrown in GetAllUsers:" + exception);

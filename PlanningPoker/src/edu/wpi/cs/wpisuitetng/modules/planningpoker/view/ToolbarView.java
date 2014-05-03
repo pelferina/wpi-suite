@@ -55,12 +55,19 @@ public class ToolbarView  extends DefaultToolbarView {
 		return gameButton;
 	}
 	
+	/**
+	 * Changes the buttons to show appropriately for the selected game
+	 * @param gameSelected The game which the buttons are changed based on
+	 */
 	public void changeButtons(GameSession gameSelected){
 		buttonPanel.showButton(gameSelected);
 		//this.updateUI();
 		//this.repaint();
 	}
 	
+	/**
+	 * Removes all buttons from the button panel
+	 */
 	public void removeButtons(){
 		buttonPanel.removeButtons();
 	}
@@ -104,10 +111,9 @@ public class ToolbarView  extends DefaultToolbarView {
 	
 	/**
 	 * This method sets the button to read "activate"
-	 *
 	 * Enables the end game button, and add a action listener
 	 * to this game
-	 * @param game
+	 * @param gameSelected The selected GameSession
 	 */
 	public void makeEditGameButtonVisible(GameSession gameSelected){
 		ownerButton.makeEditGameButtonVisible(gameSelected);

@@ -127,7 +127,7 @@ public class GameSession extends AbstractModel {
 		}
 		if(endDate != null){
 			returnStr = returnStr + "      " + "End:" + dateFormat1.format(endDate);
-		}	
+		}
 		//if(endDate != null)
 		//	returnStr = returnStr + "	End: " + endDate.get(Calendar.MONTH) + '/'+ endDate.get(Calendar.DAY_OF_MONTH) + '/' + endDate.get(Calendar.YEAR);
 
@@ -376,16 +376,15 @@ public class GameSession extends AbstractModel {
 	}
 	
 	/**
-	 * 
-	 * @param mean, the average of estimates
-	 * @param Estimates, the data
-	 * @return Calculates the standard deviation of the given data
+	 * Calculates the stdDev using mean and list of estimates
+	 * @param mean The average of estimates
+	 * @param Estimates The data
+	 * @return Calculates The standard deviation of the given data
 	 */
-	
 	public double calculateStdDev(float mean, List<Integer> Estimates){
 		double estimatesSum = 0;
 		double estimateMinusMeanSquare;
-		double stddev;
+		final double stddev;
 		
 		if(Estimates.size() == 0)
 		{

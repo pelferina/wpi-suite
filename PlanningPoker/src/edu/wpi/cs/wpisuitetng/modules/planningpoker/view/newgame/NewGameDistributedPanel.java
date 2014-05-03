@@ -59,7 +59,7 @@ public class NewGameDistributedPanel extends JSplitPane {
 		GetRequirementsController.getInstance().addRefreshable(newGameReqPanel); /** TODO this adds a refreshable whenever a new game tab is created.  We need to clean up refreshables when the tab is closed*/
 		newGameInputPanel = new NewGameInputDistributedPanel(this, gameSession);
 		GetDecksController.getInstance().addRefreshable(newGameInputPanel);
-		setPanel();
+		panelSetup();
 	}
 	/**
 	 * Constructor for NewGameDistributedPanel that gets requirements
@@ -73,7 +73,7 @@ public class NewGameDistributedPanel extends JSplitPane {
 		this.close = close;
 		
 		setEnabled(false);
-		setPanel();
+		panelSetup();
 	}
 	/**
 	 * This sets up the panels
@@ -81,8 +81,8 @@ public class NewGameDistributedPanel extends JSplitPane {
 	 * Only to be called in the constructor
 	 * 
 	 */
-	private void setPanel(){
-		newGameInputPanel.setFocusNameText();
+	private void panelSetup(){
+		newGameInputPanel.focusNameText();
 		newRequirement = new NewRequirementPanel(this);
 		deckPanel = new DeckBuildingPanel(this);
 		addImpl(newGameInputPanel, JSplitPane.LEFT, 1);
@@ -122,7 +122,7 @@ public class NewGameDistributedPanel extends JSplitPane {
 		newRequirement.setVisible(true);
 		deckPanel.setVisible(false);
 		newGameReqPanel.setVisible(false);
-		newRequirement.setFocusOnName();
+		newRequirement.focusOnName();
 		isRequirementOpen = true;
 	}
 	
@@ -134,10 +134,10 @@ public class NewGameDistributedPanel extends JSplitPane {
 		addImpl(deckPanel, JSplitPane.RIGHT, 4);
 		setDividerLocation(DIVIDER_LOCATION);
 		deckPanel.setVisible(true);
-		deckPanel.setFocusOnName();
+		deckPanel.focusOnName();
 		newRequirement.setVisible(false);
 		newGameReqPanel.setVisible(false);
-		newRequirement.setFocusOnName();
+		newRequirement.focusOnName();
 		isDeckOpen = true;
 	}
 	

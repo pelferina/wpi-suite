@@ -21,7 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.SpringLayout;
+
 import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -42,7 +42,7 @@ import javax.swing.table.DefaultTableModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.GuiStandards;
+
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -50,9 +50,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 
 /**
  * The gameRequirements class that handles information on each game's requirements
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
- *
+ * @author FFF8E7
+ * @version 6
  */
 public class GameRequirements extends JSplitPane{
 	
@@ -101,6 +100,8 @@ public class GameRequirements extends JSplitPane{
 		       return false;
 		    }
 		};
+		estimatesPending.getTableHeader().setReorderingAllowed(false);
+		estimatesComplete.getTableHeader().setReorderingAllowed(false);
 		estimatesPending.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		estimatesComplete.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		estimatesPending.setModel(new DefaultTableModel(new Object[][][]{}, new String[]{"ID", "Requirements to Estimate"}));
@@ -277,6 +278,7 @@ public class GameRequirements extends JSplitPane{
 					}
 				}
 				gv.sendReqToPlay(req);
+				gv.unselectAllCards();
 			}
 		}
 	}

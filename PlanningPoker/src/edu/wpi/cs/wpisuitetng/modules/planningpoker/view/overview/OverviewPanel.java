@@ -83,6 +83,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		final GameSession[] sessions = {};
 
 		table = new JTable(new JTableModel(sessions));
+		table.getTableHeader().setReorderingAllowed(false);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getColumnModel().getColumn(0).setPreferredWidth(250);
 		
@@ -149,6 +150,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 
 		gameTreeModel = new GameTree(new DefaultMutableTreeNode("All Games"));
 		gameTree = new JTree(gameTreeModel.getTop());
+		gameTree.setSelectionRow(0);
 		gameTree.setCellRenderer(new CustomTreeCellRenderer());
 		gameTree.addTreeSelectionListener(    new TreeSelectionListener(){
 			public void valueChanged(TreeSelectionEvent e) {
@@ -294,9 +296,12 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		return instance;
 	}
 
-
+	/**
+	 * Removes a game from the table
+	 * @param gameID The ID of the game to be removed
+	 */
 	public void removeGameFromTable(int gameID) {
-		JTableModel model = (JTableModel) table.getModel();
+		final JTableModel model = (JTableModel) table.getModel();
 		model.removeGameFromList(gameID);
 
 	}

@@ -31,6 +31,7 @@ import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.GuiStandards;
+
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -60,7 +61,6 @@ public class GameData extends JPanel{
 	private final GameSession completedGame;
 	private final CompleteView completeView;
 	private final HashMap<Integer, Integer> requirementIndexHash = new HashMap<Integer, Integer>();
-
 	/**
 	 * Constructor for the GameData class
 	 * @param gs The completed game session that is going to be viewed
@@ -93,20 +93,24 @@ public class GameData extends JPanel{
 			}
 		};
 
+		gameReqsTable.getTableHeader().setReorderingAllowed(false);
 		gameReqsTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Mean", "Median", "Std Dev", "Estimate"}));
 		gameReqsTable.setFillsViewportHeight(true);
 		gameReqsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		init();	
+		init();
 	}
 
 	/**
-	 * Places the GUI components for the panel, as well as filling the table with the requirements that are in the game name and descriptions
+	 * Places the GUI components for the panel,
+	 * as well as filling the table with the requirements
+	 * that are in the game name and descriptions
 	 */
 	private void init(){
 		final DefaultTableModel reqTableModel = (DefaultTableModel) gameReqsTable.getModel();
 		reqTableModel.setRowCount(gameReqs.size());
+		
 		completedGame.calculateStats();
-
+		
 		descriptionTextArea.setWrapStyleWord(true);
 		
 		// set colors
@@ -147,7 +151,7 @@ public class GameData extends JPanel{
 
 			if (mean != -1)
 			{
-				reqTableModel.setValueAt(mean, i, 1);
+				reqTableModel.setValueAt(String.format("%.2f", mean), i, 1);
 			}
 			else
 			{
@@ -155,14 +159,14 @@ public class GameData extends JPanel{
 			}
 			if (median != -1)
 			{
-				reqTableModel.setValueAt(median, i, 2);
+				reqTableModel.setValueAt(String.format("%.2f", median), i, 2);
 			}
 			else
 			{
 				reqTableModel.setValueAt("", i, 2);
 			}
 			if (stddev != -1){
-				reqTableModel.setValueAt(stddev, i, 3);
+				reqTableModel.setValueAt(String.format("%.2f", stddev), i, 3);
 			}
 			else{
 				reqTableModel.setValueAt("", i, 3);

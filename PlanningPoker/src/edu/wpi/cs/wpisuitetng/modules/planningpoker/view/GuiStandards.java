@@ -35,7 +35,7 @@ public enum GuiStandards {
 	;
 	
 	
-	private int value;
+	private final int value;
 	
 	private GuiStandards(int value) {
         this.value = value;

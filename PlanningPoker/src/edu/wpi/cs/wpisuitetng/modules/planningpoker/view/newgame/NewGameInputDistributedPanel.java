@@ -107,7 +107,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	 *  Initializing Optional Deck Selection 
 	 */
 	private final JCheckBox deckCheckBox = new JCheckBox("Use Deck");
-	private JComboBox<String> deckBox = new JComboBox<String>(); 
+	private final JComboBox<String> deckBox = new JComboBox<String>(); 
 	private List<Deck> decks = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
 	private int selectedDeckIndex = 0;
 	private final JButton createDeckButton = new JButton("Create Deck");
@@ -213,7 +213,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		saveGameButton.setEnabled(false);
 		activateGameButton.setEnabled(false);
 
-		setPanel();
+		panelSetup();
 
 		//Add padding
 		descriptionTextField.setBorder(BorderFactory.createCompoundBorder(
@@ -539,7 +539,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	{	
 		//Get deadline date
 		currentDate = Calendar.getInstance();
-		setDeadlineDate();
+		deadlineDateSet();
 		hourTime = getHour(deadlineHourComboBox.getSelectedIndex() + 1);
 		minuteTime = deadlineMinuteComboBox.getSelectedIndex();
 		final Calendar deadline = (Calendar) currentDate.clone();
@@ -671,7 +671,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 					currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DAY_OF_MONTH));
 			datePicker.getModel().setSelected(true);
 		}
-		setDeadlineDate();
+		deadlineDateSet();
 
 		setupDeadlineTime();
 
@@ -705,18 +705,18 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			AMButton.setSelected(true);
 		}
 	}
-	private void setDeadlineDate() {
+	private void deadlineDateSet() {
 		deadlineYear = datePicker.getModel().getYear();
 		deadlineMonth = datePicker.getModel().getMonth();
 		deadlineDay = datePicker.getModel().getDay();
 	}
 	private void setupDeadlineTime() {
 		//Initialize Deadline Hour and Minute
-		for (int j=0; j<12; j++){
+		for (int j = 0; j < 12; j++){
 			deadlineHourComboBox.addItem((j + 1) + "");
 		}
 
-		for (int i=0; i<60; i++){
+		for (int i = 0; i < 60; i++){
 			if (i < 10){
 				deadlineMinuteComboBox.addItem("0" + i);
 			}
@@ -769,7 +769,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			datePicker.getModel().setDate(year_index, month_index, day_index);
 			datePicker.getModel().setSelected(true);
 
-			setDeadlineDate();
+			deadlineDateSet();
 			setupDeadlineActionListeners();
 			setupDeadlineTime();			
 			//	Sets the hour and minute combo boxes to the hour and minute in the game's deadline
@@ -934,7 +934,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	 * for setting the NewGameInputPage
 	 */
 
-	private void setPanel(){
+	private void panelSetup(){
 		final ButtonGroup AMPMgroup = new ButtonGroup();
 		AMPMgroup.add(AMButton);
 		AMPMgroup.add(PMButton);
@@ -953,7 +953,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.NORTH, descriptionLabel, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, nameTextField);
 		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, GuiStandards.LEFT_MARGIN.getValue(), SpringLayout.WEST, this);
 
-		//Spring layout for the descTextArea
+		//Spring layout for the descriptionScrollPane
 		descriptionTextField.setRows(3);
 		descriptionTextField.setLineWrap(true);
 		springLayout.putConstraint(SpringLayout.NORTH, descriptionScrollPane, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, descriptionLabel);
@@ -976,7 +976,8 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		//Spring layout for the deckBox
 		springLayout.putConstraint(SpringLayout.WEST, deckBox, 0, SpringLayout.WEST, deckLabel);
 		springLayout.putConstraint(SpringLayout.NORTH, deckBox, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, deckLabel);
-
+		springLayout.putConstraint(SpringLayout.EAST, deckBox, 0, SpringLayout.EAST, descriptionScrollPane);
+		
 		//Spring layout for the createDeckButton
 		springLayout.putConstraint(SpringLayout.WEST, createDeckButton, 0, SpringLayout.WEST, deckBox);
 		springLayout.putConstraint(SpringLayout.EAST, createDeckButton, 0, SpringLayout.EAST, deckBox);
@@ -1075,10 +1076,15 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	/**
 	 * This sets the focus to the name field
 	 */
-	public void setFocusNameText(){
+	public void focusNameText(){
 		nameTextField.requestFocusInWindow();
 	}
 
+	/**
+	 * Trims a string by removing excess whitespace
+	 * @param aString The string to be trimmed
+	 * @return The newly trimmed string
+	 */
 	public String trim(String aString) {
 		int len = aString.length();
 		int st = 0;
@@ -1104,7 +1110,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 
 	@Override
 	public void refreshDecks() {
-		List<Deck> currentDecks = DeckModel.getInstance().getDecks();
+		final List<Deck> currentDecks = DeckModel.getInstance().getDecks();
 		if (decks.size() != DeckModel.getInstance().getDecks().size()){
 			initializeDeckComboBox();
 		}

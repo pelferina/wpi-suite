@@ -14,10 +14,14 @@ import javax.swing.*;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.RefreshableController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.pauseRefreshHandler;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.GuiStandards;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+
+
 
 
 
@@ -89,6 +93,8 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		       return false;
 		    }
 		};
+		unselectedTable.getTableHeader().setReorderingAllowed(false);
+		selectedTable.getTableHeader().setReorderingAllowed(false);
 		init();
 	}
 
@@ -173,10 +179,12 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		btnAddOne.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
+				disableAllButtons();
 				int[] index = unselectedTable.getSelectedRows();
 				boolean last = false;
-				if(unselectedTable.getSelectedRow() == unselectedTable.getRowCount() - 1)
+				if(unselectedTable.getSelectedRow() == unselectedTable.getRowCount() - 1){
 					last = true;
+				}
 				int offset = 0;
 				while(index.length > 0){
 					final Requirement selectedReq = reqs.get(index[0]-offset);
@@ -197,20 +205,24 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 				selectedTable.clearSelection();
 				unselectedTable.clearSelection();
 				int rowIndex = unselectedTable.getRowCount() - 1;
-				if(!last && unselectedTable.getRowCount()>0)
+				if(!last && unselectedTable.getRowCount()>0){
 					unselectedTable.setRowSelectionInterval(0, 0);
-				else if(last && unselectedTable.getRowCount()>0)
-					unselectedTable.setRowSelectionInterval(rowIndex, rowIndex);			
+				}
+				else if(last && unselectedTable.getRowCount()>0){
+					unselectedTable.setRowSelectionInterval(rowIndex, rowIndex);
+				}
 				rowIndex = selectedTable.getRowCount() - 1;
 				selectedTable.setRowSelectionInterval(rowIndex, rowIndex);
+				enableAllButtons();
 			}
+
 		});
 
 		//Adds all of the games in the unselected table to the selected table, and adds all the requirements to the list of selected requirements
 		btnAddAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
-				refreshRequirements();
+				disableAllButtons();
 				if(reqs.size() != 0){
 					final DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
 					final DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
@@ -226,6 +238,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 				selectedTable.clearSelection();
 				unselectedTable.clearSelection();
 				selectedTable.setRowSelectionInterval(0, 0);
+				enableAllButtons();
 			}
 		});
 
@@ -233,6 +246,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		btnRemoveOne.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
+				disableAllButtons();
 				int[] index = selectedTable.getSelectedRows();
 				int offset = 0;
 					while(index.length >0){
@@ -254,10 +268,12 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 				selectedTable.clearSelection();
 				unselectedTable.clearSelection();
 				int rowIndex = selectedTable.getRowCount() - 1;
-				if(selectedTable.getRowCount()>0)
+				if(selectedTable.getRowCount()>0){
 					selectedTable.setRowSelectionInterval(rowIndex, rowIndex);
+				}
 				rowIndex = unselectedTable.getRowCount() - 1;				
 				unselectedTable.setRowSelectionInterval(rowIndex, rowIndex);
+				enableAllButtons();
 			}
 		});
 
@@ -265,6 +281,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		btnRemoveAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
+				disableAllButtons();
 				if (selected.size() != 0){
 					final DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
 					final DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
@@ -280,6 +297,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 				selectedTable.clearSelection();
 				unselectedTable.clearSelection();	
 				unselectedTable.setRowSelectionInterval(0, 0);
+				enableAllButtons();
 			}
 		});
 
@@ -289,8 +307,9 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 			      if (e.getClickCount() == 2) {
 			    	  int[] index = unselectedTable.getSelectedRows();
 						boolean last = false;
-						if(unselectedTable.getSelectedRow() == unselectedTable.getRowCount() - 1)
+						if(unselectedTable.getSelectedRow() == unselectedTable.getRowCount() - 1){
 							last = true;
+						}
 						int offset = 0;
 						while(index.length > 0){
 							final Requirement selectedReq = reqs.get(index[0]-offset);
@@ -311,10 +330,12 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 						selectedTable.clearSelection();
 						unselectedTable.clearSelection();
 						int rowIndex = unselectedTable.getRowCount() - 1;
-						if(!last && unselectedTable.getRowCount()>0)
+						if(!last && unselectedTable.getRowCount()>0){
 							unselectedTable.setRowSelectionInterval(0, 0);
-						else if(last && unselectedTable.getRowCount()>0)
-							unselectedTable.setRowSelectionInterval(rowIndex, rowIndex);			
+						}
+						else if(last && unselectedTable.getRowCount()>0){
+							unselectedTable.setRowSelectionInterval(rowIndex, rowIndex);
+						}
 						rowIndex = selectedTable.getRowCount() - 1;
 						selectedTable.setRowSelectionInterval(rowIndex, rowIndex);
 			         }
@@ -346,8 +367,9 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 					selectedTable.clearSelection();
 					unselectedTable.clearSelection();
 					int rowIndex = selectedTable.getRowCount() - 1;
-					if(selectedTable.getRowCount()>0)
+					if(selectedTable.getRowCount()>0){
 						selectedTable.setRowSelectionInterval(rowIndex, rowIndex);
+					}
 					rowIndex = unselectedTable.getRowCount() - 1;				
 					unselectedTable.setRowSelectionInterval(rowIndex, rowIndex);
 				}
@@ -498,7 +520,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	//This gets only the requirements in the "Backlog" iteration from the requirements manager
 	private void filterBacklog()
 	{
-		ArrayList<Requirement> reqsToRemove = new ArrayList<Requirement>();
+		final ArrayList<Requirement> reqsToRemove = new ArrayList<Requirement>();
 		for (Requirement req : reqs) {
 			if (!req.getIteration().equals("Backlog")) reqsToRemove.add(req);
 		}
@@ -507,9 +529,10 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 
 	@Override
 	public void refreshRequirements() {
+		int selectedSize = selected.size();
 		reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
 		filterBacklog();
-		for (int i = 0; i < selected.size(); i++){
+		for (int i = 0; i < selectedSize; i++){
 			reqs.remove(selected.get(i).getId());
 		}
 		final DefaultTableModel dtm = (DefaultTableModel) unselectedTable.getModel();
@@ -524,7 +547,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 
 	//This gets only the requirements in the "Backlog" iteration from the requirements manager
 	@SuppressWarnings("unused")
-	private void getReqs() {
+	private void updateReqs() {
 		GetRequirementsController.getInstance().retrieveRequirements();
 		reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
 		final List<Requirement> reqsCopy = new ArrayList<Requirement>(reqs);
@@ -568,10 +591,12 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	 * @param r The Requirement to be received
 	 */
 	public void receiveCreatedReq(Requirement r){
+		disableAllButtons();
 		selected.add(r);
 		final DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
 		final String[] data = {r.getName(), r.getDescription()};
 		dtm_1.addRow(data);
+		enableAllButtons();
 	}
 	/**
 	 * Function to remove the first element in the array
@@ -590,7 +615,26 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	public void refreshDecks() {
 		//intentionally left blank
 	}
-
+	
+	/**
+	 * Disables all the buttons except create new requirement button
+	 */
+	private void disableAllButtons() {
+		btnAddOne.setEnabled(false);
+		btnAddAll.setEnabled(false);
+		btnRemoveOne.setEnabled(false);
+		btnRemoveAll.setEnabled(false);
+	}
+	
+	/**
+	 * Enables all the buttons except create new requirement button
+	 */
+	private void enableAllButtons(){
+		btnAddOne.setEnabled(true);
+		btnAddAll.setEnabled(true);
+		btnRemoveOne.setEnabled(true);
+		btnRemoveAll.setEnabled(true);
+	}
 }
 
 
