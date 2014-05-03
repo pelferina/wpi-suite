@@ -309,7 +309,7 @@ public class NewRequirementPanel extends JPanel {
 	/**
 	 * This sets the cursor focus on the name box
 	 */
-	public void setFocusOnName() {
+	public void focusOnName() {
 		nameField.requestFocusInWindow();
 		getRootPane().setDefaultButton(CreateRequirementButton);
 	}

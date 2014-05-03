@@ -147,8 +147,7 @@ public class RefreshManager {
 		//Make a request to the database
 		if (differentList(userCache, new ArrayList<User>(Arrays.asList(userController.getUsers())) )){
 			userCache = new ArrayList<User>(Arrays.asList(userController.getUsers()));
-		}	
-		
+		}
 	}
 
 	/**
@@ -178,7 +177,7 @@ public class RefreshManager {
 		if (differentList(reqCache, RequirementModel.getInstance().getRequirements())){
 			reqController.refresh();
 			reqCache = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
-		}	
+		}
 	}
 	
 	private void updateDecks()

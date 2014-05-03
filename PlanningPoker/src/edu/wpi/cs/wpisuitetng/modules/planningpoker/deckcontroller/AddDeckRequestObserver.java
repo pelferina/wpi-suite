@@ -49,7 +49,7 @@ public class AddDeckRequestObserver implements RequestObserver {
 		final ResponseModel response = iReq.getResponse();
 		
 		// Parse the Deck out of the response body
-		final Deck deck = Deck.fromJson(response.getBody());		
+		final Deck deck = Deck.fromJson(response.getBody());
 	}
 
 	/**

@@ -16,6 +16,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
@@ -29,9 +30,6 @@ import javax.swing.Timer;
 
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
-import edu.wpi.cs.wpisuitetng.exceptions.BadRequestException;
-import edu.wpi.cs.wpisuitetng.exceptions.ConflictException;
-import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
@@ -50,6 +48,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	Data db;
 	Timer deadlineCheck; // Timer for checking deadline
 	Timer votingCompleteCheck;
+	LinkedList<Integer> gamesModifed = new LinkedList<Integer>();
 
 	/**
 	 * Constructs the entity manager. This constructor is called by
@@ -80,7 +79,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	 */
 	@Override
 	public GameSession makeEntity(Session s, String content)
-			throws WPISuiteException {	
+			throws WPISuiteException {
 
 		// Parse the message from JSON
 		final GameSession importedGame = GameSession.fromJson(content);

@@ -73,7 +73,7 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 		
 		final List<Model> emails = db.retrieveAll(newEmailAddress, s.getProject());
 
-		for(Model e: emails){	
+		for(Model e: emails){
 			EmailAddressModel eModel = (EmailAddressModel)e;
 			if(eModel.getUsername().equals(s.getUser().getUsername())){
 				if(!newEmailAddress.getEnable()){

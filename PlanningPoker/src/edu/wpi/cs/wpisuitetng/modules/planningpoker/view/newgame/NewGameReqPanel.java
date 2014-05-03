@@ -547,7 +547,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 
 	//This gets only the requirements in the "Backlog" iteration from the requirements manager
 	@SuppressWarnings("unused")
-	private void getReqs() {
+	private void updateReqs() {
 		GetRequirementsController.getInstance().retrieveRequirements();
 		reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
 		final List<Requirement> reqsCopy = new ArrayList<Requirement>(reqs);
