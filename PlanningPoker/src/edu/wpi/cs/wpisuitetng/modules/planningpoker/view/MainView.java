@@ -62,6 +62,7 @@ public class MainView extends JTabbedPane {
 	private final List<NewGameDistributedPanel> newGames = new ArrayList<NewGameDistributedPanel>();
 	final int PERMANANT_TABS = 1;
 	private boolean hasPreferencePane = false;
+	private boolean hasDeckManagingPane = false;
 
 	public MainView() {
 		overviewPanel = new OverviewPanel();
@@ -101,7 +102,9 @@ public class MainView extends JTabbedPane {
 		 * @param gs The GameSession to add the tab to
 		 */
 		public void addDeckManagementTab(){
-			addTab("Deck Management", new DeckManagingPanel());
+			if(!hasDeckManagingPane){
+			addTab("Deck Management", new GameSession(null, null, 0, 0, null, null));
+			}
 		}
 
 
@@ -202,6 +205,13 @@ public class MainView extends JTabbedPane {
 				add(userPreferences, open);
 				hasPreferencePane = true;
 			}
+			else if(tabType.equals("Deck Management")){
+				final DeckManagingPanel deckManaging = new DeckManagingPanel(btnClose);
+				myCloseActionHandler = new MyCloseActionHandler("Deck Management", j, this, deckManaging, 6);
+				add(deckManaging, open);
+				hasDeckManagingPane = true;
+			}
+			
 			final JPanel pnlTab = new JPanel(new GridBagLayout());
 			pnlTab.setOpaque(false);
 			final JLabel lblTitle = new JLabel(tabLabler(tabType, game));
@@ -263,6 +273,9 @@ public class MainView extends JTabbedPane {
 		else if (tabType.equals("Req Tab")){
 			return "New Requirement";
 		}
+		else if (tabType.equals("Deck Management")){
+			return "Deck Management";
+		}
 		else return "help";
 	}
 			
@@ -289,6 +302,7 @@ public class MainView extends JTabbedPane {
 	    private NewGameDistributedPanel ngdp;
 	    private PreferencesPanel userPreferences;
 	    private NewRequirementPanel newReq;
+	    private DeckManagingPanel deckManaging;
 	    
 	    /**
 	     * Close action handler for NewGameDistributedPanel
@@ -348,6 +362,21 @@ public class MainView extends JTabbedPane {
 	        this.tabName = tabName;
 	        this.index = index;
 	        completeView = cv;
+	        this.type = type;
+	        this.mv = mv;
+	    }
+	    /**
+	     * constructor for CloseActionHandler 
+	     * @param tabName name of the tab being closed
+	     * @param index index of that tab on the tab list
+	     * @param mv the MainView
+	     * @param cv the completeView panel
+	     * @param type integer for type
+	     */
+	    public MyCloseActionHandler(String tabName, int index, MainView mv, DeckManagingPanel dm, int type) {
+	        this.tabName = tabName;
+	        this.index = index;
+	        this.deckManaging = dm;
 	        this.type = type;
 	        this.mv = mv;
 	    }
@@ -425,6 +454,10 @@ public class MainView extends JTabbedPane {
 			}
 			else if (type == 5){
 				ViewEventController.getInstance().getMain().remove(newReq);
+			}
+			else if (type == 6){
+				ViewEventController.getInstance().getMain().remove(deckManaging);
+				hasDeckManagingPane = false;
 			}
 	    	 
 		}

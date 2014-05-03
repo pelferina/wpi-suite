@@ -89,11 +89,26 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 
 	/** Constructor for a DeckPanel panel
 	 */
-	public DeckManagingPanel(){
+	public DeckManagingPanel(JButton close){
+		btnClose = close;
+		setup();
+	}
+	
+	private void setup(){
 		GetDecksController.getInstance().addRefreshable(this);
 		// Sets up elements
 		setupButtonIcons();
 		setupDecks();
+		setupDetails();
+		setupListeners();
+		setupLayout();
+	}
+	
+	/**
+	 * This function sets up individual variable settings, fonts, and sizes.
+	 */
+	private void setupDetails(){
+
 		
 		// Set up for Radio buttons that will determine deck selection mode
 		selectionGroup.add(btnSingleSelection);
@@ -125,112 +140,117 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		// Sets up cardArea
 		cardArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 		
+	}
+	/**
+	 * This sets up listeners for components
+	 */
+	private void setupListeners(){
 		//This document listener will enable the submit button when something is inputed into the estimate text field
-		numberField.getDocument().addDocumentListener(new DocumentListener(){
-			@Override
-			public void changedUpdate(DocumentEvent e){
-				isValidCard();
-			}
-			@Override
-			public void removeUpdate(DocumentEvent e){
-				isValidCard();
-			}
-			@Override 
-			public void insertUpdate(DocumentEvent e){
-				isValidCard();
-			}
-		});
-		
-		//This document listener will perform actions accordingly when the test in nameField is changed
-		nameField.getDocument().addDocumentListener(new DocumentListener(){
-			@Override
-			public void changedUpdate(DocumentEvent e){
-				isValidDeckName();
-			}
-			@Override
-			public void removeUpdate(DocumentEvent e){
-				isValidDeckName();
-			}
-			@Override 
-			public void insertUpdate(DocumentEvent e){
-				isValidDeckName();
-			}
-		});
-		
-		// All listeners and their functions
-		decksComboBox.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				if(e.getStateChange() == ItemEvent.SELECTED){
-					selectedDeckIndex = decksComboBox.getSelectedIndex();
-					changeFlag = false;
-					if(selectedDeckIndex == 0){
-						newDeckFlag = true;
-						
-						//Clear lists
-						newDeckCards.clear();
-						cardsToBeRemoved.clear();
-						currentDeck.clear();
-						
-						//GUI calls
-						nameField.setText("");
-						btnSave.setEnabled(false);
-						btnAddCard.setEnabled(true);
-						btnRmvSelected.setEnabled(false);
-						btnRmvAll.setEnabled(false);
-						btnDelete.setEnabled(false);
-						cardPanel.revalidate();
-						resetPanel();
-						
-					} else {
-						newDeckFlag = false;
-						
-						//Clear lists
-						newDeckCards.clear();
-						cardsToBeRemoved.clear();
-						currentDeck.clear();
-						
-						// Gets deck cards
-						currentDeck = DeckModel.getInstance().getDeck(selectedDeckIndex).getCards();
-						
-						// Populate pane with cards of the corresponding deck
-						for(int value: currentDeck){
-							final GameCard card = new GameCard(value);
-							card.setCancelCard(true);
-							
-							// Sets listener for the  new card
-							card.addItemListener (new ItemListener(){
-								public void itemStateChanged ( ItemEvent ie) {
-									if (card.isSelected()){
-										cardsToBeRemoved.add(card.getValue()); // If card is selected, adds its value to the list of cards to be removed
-										Collections.sort(cardsToBeRemoved);
-									} else {
-										cardsToBeRemoved.remove(card.getValue()); // If unselected, remove from list
-									}
-								}
-							});
-							
-							// Adds card to panel
-							cardPanel.add(card);
-							cardPanel.revalidate();
-				
-							// Stores new card value to the list
-							newDeckCards.add(value);
-						}
-						
-						// GUI calls
-						btnAddCard.setEnabled(true);
-						btnRmvSelected.setEnabled(true);
-						btnRmvAll.setEnabled(true);
-						btnSave.setEnabled(false);
-						btnDelete.setEnabled(false);
-						nameField.setText(decksComboBox.getItemAt(selectedDeckIndex));
-						numberField.setText("");
-						resetPanel();
+				numberField.getDocument().addDocumentListener(new DocumentListener(){
+					@Override
+					public void changedUpdate(DocumentEvent e){
+						isValidCard();
 					}
-				}
-			}
-		});
+					@Override
+					public void removeUpdate(DocumentEvent e){
+						isValidCard();
+					}
+					@Override 
+					public void insertUpdate(DocumentEvent e){
+						isValidCard();
+					}
+				});
+				
+				//This document listener will perform actions accordingly when the test in nameField is changed
+				nameField.getDocument().addDocumentListener(new DocumentListener(){
+					@Override
+					public void changedUpdate(DocumentEvent e){
+						isValidDeckName();
+					}
+					@Override
+					public void removeUpdate(DocumentEvent e){
+						isValidDeckName();
+					}
+					@Override 
+					public void insertUpdate(DocumentEvent e){
+						isValidDeckName();
+					}
+				});
+				
+				// All listeners and their functions
+				decksComboBox.addItemListener(new ItemListener() {
+					@Override
+					public void itemStateChanged(ItemEvent e) {
+						if(e.getStateChange() == ItemEvent.SELECTED){
+							selectedDeckIndex = decksComboBox.getSelectedIndex();
+							changeFlag = false;
+							if(selectedDeckIndex == 0){
+								newDeckFlag = true;
+								
+								//Clear lists
+								newDeckCards.clear();
+								cardsToBeRemoved.clear();
+								currentDeck.clear();
+								
+								//GUI calls
+								nameField.setText("");
+								btnSave.setEnabled(false);
+								btnAddCard.setEnabled(true);
+								btnRmvSelected.setEnabled(false);
+								btnRmvAll.setEnabled(false);
+								btnDelete.setEnabled(false);
+								cardPanel.revalidate();
+								resetPanel();
+								
+							} else {
+								newDeckFlag = false;
+								
+								//Clear lists
+								newDeckCards.clear();
+								cardsToBeRemoved.clear();
+								currentDeck.clear();
+								
+								// Gets deck cards
+								currentDeck = DeckModel.getInstance().getDeck(selectedDeckIndex).getCards();
+								
+								// Populate pane with cards of the corresponding deck
+								for(int value: currentDeck){
+									final GameCard card = new GameCard(value);
+									card.setCancelCard(true);
+									
+									// Sets listener for the  new card
+									card.addItemListener (new ItemListener(){
+										public void itemStateChanged ( ItemEvent ie) {
+											if (card.isSelected()){
+												cardsToBeRemoved.add(card.getValue()); // If card is selected, adds its value to the list of cards to be removed
+												Collections.sort(cardsToBeRemoved);
+											} else {
+												cardsToBeRemoved.remove(card.getValue()); // If unselected, remove from list
+											}
+										}
+									});
+									
+									// Adds card to panel
+									cardPanel.add(card);
+									cardPanel.revalidate();
+						
+									// Stores new card value to the list
+									newDeckCards.add(value);
+								}
+								
+								// GUI calls
+								btnAddCard.setEnabled(true);
+								btnRmvSelected.setEnabled(true);
+								btnRmvAll.setEnabled(true);
+								btnSave.setEnabled(false);
+								btnDelete.setEnabled(false);
+								nameField.setText(decksComboBox.getItemAt(selectedDeckIndex));
+								numberField.setText("");
+								resetPanel();
+							}
+						}
+					}
+				});
 		
 		btnSave.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -440,8 +460,8 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 				// TODO close tab
 			}
 		});
-		
-		
+	}
+	private void setupLayout(){
 		//Spring layout for lblDecks
 		springLayout.putConstraint(SpringLayout.NORTH, lblDecks, 20, SpringLayout.NORTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, lblDecks, 20, SpringLayout.WEST, this);
@@ -530,6 +550,8 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		add(btnDelete);
 		add(btnClose);
 	}
+	
+	
 	
 	private void setupDecks(){
 		decksComboBox.removeAllItems();
