@@ -15,6 +15,7 @@ import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotImplementedException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
 
 /**
  * This is the entity manager for the Deck in the
@@ -57,8 +58,16 @@ public class DeckEntityManager implements EntityManager<Deck> {
 		System.out.println("Adding: " + content);
 		final Deck[] decks = getAll(s);
 		final Deck newDeck =  new Deck(importedDeck.getName(), importedDeck.getCards());
-		newDeck.setId(decks.length + 1);
-		newDeck.setUserID(s.getUser().getIdNum());
+		
+		// Delete previous deck with this ID
+		final Deck[] prevDeck = db.retrieve(Deck.class, "Id", importedDeck.getId()).toArray(new Deck[0]);
+		if(prevDeck.length != 0){
+			db.delete(prevDeck[0]);
+			newDeck.setId(importedDeck.getId());
+		} else {
+			newDeck.setId(decks.length + 1);
+		}
+		newDeck.setUserID(importedDeck.getUserID());
 		if(!db.save(newDeck, s.getProject())) {
 			System.err.println("Deck not saved");
 			throw new WPISuiteException();
