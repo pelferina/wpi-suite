@@ -149,15 +149,15 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 				numberField.getDocument().addDocumentListener(new DocumentListener(){
 					@Override
 					public void changedUpdate(DocumentEvent e){
-						isValidCard();
+						validateAll();
 					}
 					@Override
 					public void removeUpdate(DocumentEvent e){
-						isValidCard();
+						validateAll();
 					}
 					@Override 
 					public void insertUpdate(DocumentEvent e){
-						isValidCard();
+						validateAll();
 					}
 				});
 				
@@ -165,15 +165,15 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 				nameField.getDocument().addDocumentListener(new DocumentListener(){
 					@Override
 					public void changedUpdate(DocumentEvent e){
-						isValidDeckName();
+						validateAll();
 					}
 					@Override
 					public void removeUpdate(DocumentEvent e){
-						isValidDeckName();
+						validateAll();
 					}
 					@Override 
 					public void insertUpdate(DocumentEvent e){
-						isValidDeckName();
+						validateAll();
 					}
 				});
 				
@@ -242,8 +242,8 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 								btnAddCard.setEnabled(true);
 								btnRmvSelected.setEnabled(true);
 								btnRmvAll.setEnabled(true);
-								btnSave.setEnabled(false);
-								btnDelete.setEnabled(false);
+								btnSave.setEnabled(true);
+								btnDelete.setEnabled(true);
 								nameField.setText(decksComboBox.getItemAt(selectedDeckIndex));
 								numberField.setText("");
 								resetPanel();
@@ -351,7 +351,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 					errLabel.setText(numberField.getText()+ " is not a valid non-negative integer!");
 					errLabel.setVisible(true);
 				} 
-				isValidDeckName();	
+				validateAll();
 			}
 		});
 		
@@ -403,7 +403,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 				cardPanel.removeAll();
 				cardPanel.revalidate();
 				cardPanel.repaint();
-				isValidCard();
+				validateAll();
 
 				// Sets button status to false because there are no more cards on the new deck
 				btnSave.setEnabled(false);
@@ -614,89 +614,46 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 	}
 	
 	/**
-	 * Checks if the inputed deck name is valid
+	 * This function validates all of the inputs and sets buttons accordingly.
 	 */
-	private void isValidDeckName(){
-		if (nameField.getText().length() > 0 && !DeckModel.getInstance().isDuplicateDeck(nameField.getText())){
-			if (!newDeckCards.isEmpty()){
-				btnSave.setEnabled(true);
-				errLabel.setVisible(false);
-				System.out.println("newDeckName is " + newDeckName);
-			}
-			else {
-				btnSave.setEnabled(false);
-				errLabel.setText("Need to have at least one card in a deck.");
-				errLabel.setVisible(true);
-			}
-		}
-		else {
-			btnSave.setEnabled(false);
-			if (DeckModel.getInstance().isDuplicateDeck(nameField.getText())){
-				errLabel.setText("Duplicate deck name.");
-				errLabel.setVisible(true);
-			}
-			else {
-				errLabel.setText("Invalid deck name.");
-				errLabel.setVisible(true);
-			}
-		}
+	private void validateAll(){
+		btnAddCard.setEnabled(true);
+		btnSave.setEnabled(true);
+		validateDeckName();
+		validateNotEmpty();
+		validateCard();
 	}
 	
+	/**
+	 * Checks if the inputed deck name is valid
+	 */
+	private void validateDeckName(){
+		if (!(nameField.getText().length() > 0)){
+			btnSave.setEnabled(false);
+			errLabel.setText("Invalid deck name.");
+			errLabel.setVisible(true);
+		}
+	}
 	
 	/**
 	 *checks if the inputed card number is valid and perform actions accordingly
 	 */
-	private void isValidCard(){
+	private void validateCard(){
+		boolean valid = false;
+
 		if (numberField.getText().length() > 0 && isInteger(numberField.getText()) && !nameField.getText().isEmpty()){
 			if (Integer.parseInt(numberField.getText()) >= 0){
-				btnAddCard.setEnabled(true);
-				if (!DeckModel.getInstance().isDuplicateDeck(nameField.getText())){
-					btnSave.setEnabled(true);
-				}
-				else {
-					btnSave.setEnabled(false);
-				}
-				//TODO notAnIntegerError.setVisible(false);
-			}
-			else{
-				btnAddCard.setEnabled(false);
-				//TODO notAnIntegerError.setVisible(true);
+				valid = true;
 			}
 		}
-		boolean needsName = false;
-		boolean allValid = true;
-		
-		//Name field checking
-		if(!nameField.getText().isEmpty()){
-			btnSave.setEnabled(true);
-			errLabel.setVisible(false);
-		}else{
-			errLabel.setText("Deck must have a name.");
-			errLabel.setVisible(true);
-			needsName = true;
-			allValid = false;
-		}
-		
-		//Number field checking
-		if(numberField.getText().length() > 0 && isInteger(numberField.getText()) && Integer.parseInt(numberField.getText()) >= 0){
-			btnAddCard.setEnabled(true);
-			errLabel.setVisible(false);
-		}else if(needsName){
-			btnAddCard.setEnabled(false);
-			errLabel.setText("Deck must have name and card must be a non-negative integer.");
-			errLabel.setVisible(true);
-		}else{
-			btnAddCard.setEnabled(false);
-			errLabel.setText("Card must be a non-negative integer.");
-			errLabel.setVisible(true);
-		}
-		
+		btnAddCard.setEnabled(valid);
+	}
+	
+	private void validateNotEmpty(){
 		//Checks that a card has been added to deck
 		if (newDeckCards.isEmpty()){
-			allValid = false;
+			btnSave.setEnabled(false);
 		}
-		
-		btnSave.setEnabled(allValid);
 	}
 	
 	/**
