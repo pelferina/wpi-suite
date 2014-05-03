@@ -148,7 +148,7 @@ public class GameData extends JPanel{
 
 			if (mean != -1)
 			{
-				reqTableModel.setValueAt(mean, i, 1);
+				reqTableModel.setValueAt(String.format("%.2f", mean), i, 1);
 			}
 			else
 			{
@@ -156,14 +156,14 @@ public class GameData extends JPanel{
 			}
 			if (median != -1)
 			{
-				reqTableModel.setValueAt(median, i, 2);
+				reqTableModel.setValueAt(String.format("%.2f", median), i, 2);
 			}
 			else
 			{
 				reqTableModel.setValueAt("", i, 2);
 			}
 			if (stddev != -1){
-				reqTableModel.setValueAt(stddev, i, 3);
+				reqTableModel.setValueAt(String.format("%.2f", stddev), i, 3);
 			}
 			else{
 				reqTableModel.setValueAt("", i, 3);

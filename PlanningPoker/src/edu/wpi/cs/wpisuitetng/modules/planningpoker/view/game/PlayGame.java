@@ -411,14 +411,6 @@ public class PlayGame extends JPanel implements Refreshable{
 		}
 		estimateTextField.requestFocusInWindow();
 		voteButton.setEnabled(false);
-		unselectAll();
-	}
-
-	/**
-	 * This function is used by deck games, and will be overridden in PlayDeckGame with the proper function
-	 */
-	private void unselectAll() {
-		
 	}
 
 	/**
