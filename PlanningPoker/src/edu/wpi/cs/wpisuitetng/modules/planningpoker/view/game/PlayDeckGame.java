@@ -58,16 +58,12 @@ public class PlayDeckGame extends PlayGame implements Refreshable{
 	private final int deckId;
 	private List<Integer> gameCardList = new ArrayList<Integer>();
 	private int votesSoFarInt = -1;
-	private final JLabel votesSoFarNameLabel = new JLabel("Estimate: ");
+	
 	private final JLabel votesSoFarLabel = new JLabel("0");
 
 	//List of buttons associated with the cards. First element -> lowest card val
 	private final List<GameCard> cardButtons = new ArrayList<GameCard>();
 
-	/**
-	 * @wbp.nonvisual location=41,359
-	 */
-	private final JLabel gameEnded = new JLabel("Game Has Ended");
 	private boolean isDeckSingleSelection;
 
 	/**
@@ -144,7 +140,7 @@ public class PlayDeckGame extends PlayGame implements Refreshable{
 						}
 					}
 					checkCanSubmit();
-					System.out.println(userEstimates.getVote());
+					//System.out.println(userEstimates.getVote());
 					sendEstimatetoGameView(currentReq, votesSoFarInt);
 				}
 				gv.isNew = false;

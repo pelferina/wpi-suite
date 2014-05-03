@@ -66,7 +66,7 @@ public class ButtonPanel extends ToolbarGroupView{
 		readImg();
 		newButton.setIcon(newImg);
 		settingButton.setIcon(settingImg);
-		this.setPreferredWidth(1000);
+		this.setPreferredWidth(165*2);
 		newButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -79,9 +79,10 @@ public class ButtonPanel extends ToolbarGroupView{
 				ViewEventController.getInstance().options();
 			}
 		});
-		//contentPanel.add(newButton);
-		//contentPanel.add(Box.createRigidArea(new Dimension(15,0)));
-		//contentPanel.add(settingButton);
+		contentPanel.add(newButton);
+		contentPanel.add(Box.createRigidArea(new Dimension(15,0)));
+		contentPanel.add(settingButton);
+		contentPanel.add(Box.createRigidArea(new Dimension(15,0)));
 		contentPanel.setOpaque(false);
 		this.add(contentPanel);
 		super.setContent(contentPanel);
@@ -160,6 +161,11 @@ public class ButtonPanel extends ToolbarGroupView{
 			contentPanel.remove(button);
 		}
 		contentPanel.removeAll();
+		contentPanel.add(newButton);
+		contentPanel.add(Box.createRigidArea(new Dimension(15,0)));
+		contentPanel.add(settingButton);
+		contentPanel.add(Box.createRigidArea(new Dimension(15,0)));
+		this.setPreferredWidth(165*2);
 		contentPanel.updateUI();
 		buttonQueue.clear();
 	}
@@ -201,6 +207,16 @@ public class ButtonPanel extends ToolbarGroupView{
     	}
     	
     	if(currentUser.getIdNum() == gameSelected.getOwnerID()){
+    		if(gameSelected.getGameStatus().equals(GameStatus.ACTIVE)||gameSelected.getGameStatus().equals(GameStatus.DRAFT)){
+    			removeActionListeners(editButton);
+    			editButton.setPreferredSize(new Dimension(150,50));
+    			editButton.addActionListener(new EditGameActionListener(gameSelected));
+    			buttonQueue.add(editButton);
+    			contentPanel.add(editButton);
+    			contentPanel.add(Box.createRigidArea(new Dimension(15,0)));
+    			contentPanel.updateUI();
+    		}	
+    		
     		if(gameSelected.getGameStatus().equals(GameStatus.ACTIVE) || gameSelected.getGameStatus().equals(GameStatus.INPROGRESS)){
     			removeActionListeners(endButton);
     			endButton.addActionListener(new EndGameActionListener(gameSelected));
@@ -231,18 +247,10 @@ public class ButtonPanel extends ToolbarGroupView{
     			contentPanel.updateUI();
     		}
     		
-    		if(gameSelected.getGameStatus().equals(GameStatus.ACTIVE) || gameSelected.getGameStatus().equals(GameStatus.DRAFT)){
-    			removeActionListeners(editButton);
-    			editButton.setPreferredSize(new Dimension(150, 50));
-    			editButton.addActionListener(new EditGameActionListener(gameSelected));
-    			buttonQueue.add(editButton);
-    			contentPanel.add(editButton);
-    			contentPanel.add(Box.createRigidArea(new Dimension(15, 0)));
-    			contentPanel.updateUI();
-    		}	
     	}
     	final int buttonNum = buttonQueue.size();
-		this.setPreferredWidth(165 * buttonNum);
+		this.setPreferredWidth(165*(buttonNum+2));
+
 		this.updateUI();
 	}
 

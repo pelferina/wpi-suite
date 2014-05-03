@@ -39,12 +39,7 @@ public class GameSession extends AbstractModel {
 
 	private final int ownerID;
 	private final int gameID;
-	/** game status indicator 
-	 * 0  = game is in draft mode
-	 * 1  = game is in progress
-	 * 2  = game is finished.
-	 * */
-	
+
 	private GameStatus gameStatus;
 	
 	/** The date-time stamp of the creation */
@@ -262,10 +257,13 @@ public class GameSession extends AbstractModel {
 			if (gameDescription.equals(o.getGameDescription())){
 				if (ownerID == o.getOwnerID()){
 					if (gameID == o.getGameID()){
-						if ((endDate == null && o.getEndDate() == null) || endDate.equals(o.getEndDate())){ // if both are null or they are equal
+						if ((endDate == null && o.getEndDate() == null) || (endDate != null && o.getEndDate() != null && endDate.equals(o.getEndDate()))){ // if both are null or they are equal
 							if (gameReqs.equals(o.getGameReqs())){
 								if (gameStatus == o.getGameStatus()){
-										return true;
+										if(deckId == o.getDeckId()){
+											return true;
+										}
+											
 								}
 							}
 						}
