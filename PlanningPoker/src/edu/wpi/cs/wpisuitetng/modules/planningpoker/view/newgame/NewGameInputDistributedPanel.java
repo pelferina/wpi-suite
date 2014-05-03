@@ -739,7 +739,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	{
 		decks = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
 		for (Deck d: decks){
-			if(!d.isDeleted()) deckBox.addItem(d.getName());
+			if(!d.getIsDeleted()) deckBox.addItem(d.getName());
 		}
 	}
 

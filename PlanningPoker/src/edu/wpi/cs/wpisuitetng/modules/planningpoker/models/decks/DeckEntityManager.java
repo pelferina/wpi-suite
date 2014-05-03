@@ -55,24 +55,20 @@ public class DeckEntityManager implements EntityManager<Deck> {
 	@Override
 	public Deck makeEntity(Session s, String content) throws WPISuiteException {
 		final Deck importedDeck = Deck.fromJson(content);
-		System.out.println("Adding: " + content);
 		final Deck[] decks = getAll(s);
 		final Deck newDeck =  new Deck(importedDeck.getName(), importedDeck.getCards());
 		
-		// Delete previous deck with this ID
-		final Deck[] prevDeck = db.retrieve(Deck.class, "Id", importedDeck.getId()).toArray(new Deck[0]);
-		if(prevDeck.length != 0){
-			db.delete(prevDeck[0]);
-			newDeck.setId(importedDeck.getId());
-		} else {
-			newDeck.setId(decks.length + 1);
-		}
+		newDeck.setIsDeleted(importedDeck.getIsDeleted());
 		newDeck.setUserID(importedDeck.getUserID());
+		newDeck.setIsSingleSelection(importedDeck.getIsSingleSelection());
+		newDeck.setId(decks.length + 1);
+		
 		if(!db.save(newDeck, s.getProject())) {
 			System.err.println("Deck not saved");
 			throw new WPISuiteException();
 		}
 		System.err.println("Deck saved");
+		System.out.println("new deck being saved is deck " + newDeck.getId());
 		return newDeck;
 	}
 	
@@ -189,6 +185,9 @@ public class DeckEntityManager implements EntityManager<Deck> {
 			throws WPISuiteException {
 		Deck newDeck = Deck.fromJson(content);
 		db.update(Deck.class, "Id", newDeck.getId(), "Cards", newDeck.getCards());
+		db.update(Deck.class, "Id", newDeck.getId(), "Name", newDeck.getName());
+		db.update(Deck.class, "Id", newDeck.getId(), "IsDeleted", newDeck.getIsDeleted());
+		db.update(Deck.class, "Id", newDeck.getId(), "IsSingleSelection", newDeck.getIsSingleSelection());
 		return newDeck;
 	}
 
