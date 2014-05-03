@@ -181,7 +181,9 @@ public class DeckModel extends AbstractListModel {
 		for (Deck deck: listOfDecks)
 		{
 			System.out.print(deck.getId() +  ":" + deck.getName() + "	");
-			if (deck.getName().compareTo(s) == 0) {return true;}
+			if (deck.getName().compareTo(s) == 0) {
+				return true;
+			}
 		}
 		return false;
 	}

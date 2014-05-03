@@ -138,8 +138,10 @@ public class RefreshManager {
 		pauseRefreshHandler.addRefreshManager(this);
 	}
 
+	/**
+	 * Updates the list of users
+	 */
 	protected void updateUsers() {
-
 		userController.actionPerformed();
 		
 		//Make a request to the database
@@ -227,10 +229,10 @@ public class RefreshManager {
 	 * This restarts the refreshing timers
 	 */
 	public void startRefresh() {
-		this.refreshRequirementsTimer.start();
-		this.refreshGamesTimer.start();
-		this.refreshDeckTimer.start();
-		this.refreshUserTimer.start();
+		refreshRequirementsTimer.start();
+		refreshGamesTimer.start();
+		refreshDeckTimer.start();
+		refreshUserTimer.start();
 	}
 
 }

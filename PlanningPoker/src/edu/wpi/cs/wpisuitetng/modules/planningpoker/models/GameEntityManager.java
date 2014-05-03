@@ -280,6 +280,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	 * @param textToSend the message to be sent
 	 * @param subject the subject of the email
 	 * @param project the project it is being called from
+	 * @throws UnsupportedEncodingException
 	 */
 	public void sendUserEmails(String subject, String textToSend,
 			Project project) throws UnsupportedEncodingException{

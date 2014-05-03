@@ -86,7 +86,7 @@ public class PlayGame extends JPanel implements Refreshable{
 	 * @param agv the active game view
 	 */
 	public PlayGame(GameSession gameToPlay, GameView agv){
-		if (gameToPlay.getDeadlineString() != "No deadline"){
+		if (!gameToPlay.getDeadlineString().equals("No deadline")){
 			deadlineLabel.setText("Game ends at: " + gameToPlay.getDeadlineString());
 		}
 		else {
@@ -170,6 +170,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		gameNameTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GRAY));
 		reqNameTextField.setBackground(Color.WHITE);
 		reqNameTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GRAY));
+		notAnIntegerError.setForeground(Color.red);
 
 		//Add padding
 		gameDescTextArea.setBorder(BorderFactory.createCompoundBorder(
@@ -255,7 +256,7 @@ public class PlayGame extends JPanel implements Refreshable{
 				}
 				else
 				{
-					AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
+					final AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
 					msgr.sendVote(userEstimates);
 					gv.isNew = true;
 					ViewEventController.getInstance().getMain().remove(gv);					
@@ -321,7 +322,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.WEST, reqName, 0, SpringLayout.WEST, gameDesc);
 
 		//Spring layout for notAnIntegerError label
-		springLayout.putConstraint(SpringLayout.SOUTH, notAnIntegerError, -10, SpringLayout.NORTH, submit);
+		springLayout.putConstraint(SpringLayout.SOUTH, notAnIntegerError, -GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.NORTH, submit);
 		springLayout.putConstraint(SpringLayout.EAST, notAnIntegerError, 0, SpringLayout.EAST, submit);
 
 		//Spring layout for GameEnded label
@@ -333,8 +334,8 @@ public class PlayGame extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.WEST, voteConfirmation, 0, SpringLayout.WEST, voteButton);
 
 		//Spring layout for deadlineLabel
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, deadlineLabel, 0, SpringLayout.VERTICAL_CENTER, estimateLabel);
-		springLayout.putConstraint(SpringLayout.EAST, deadlineLabel, -20, SpringLayout.WEST, estimateLabel);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, deadlineLabel, 0, SpringLayout.VERTICAL_CENTER, notAnIntegerError);
+		springLayout.putConstraint(SpringLayout.WEST, deadlineLabel, GuiStandards.DIVIDER_MARGIN.getValue(), SpringLayout.WEST, this);
 
 		setLayout(springLayout);
 
@@ -359,8 +360,6 @@ public class PlayGame extends JPanel implements Refreshable{
 	/**
 	 * This function is used when a requirement is double clicked in one of the two requirement tables 
 	 * and it sets the name and description fields to the selected requirement
-	 * 
-	 * @param reqToEstimate the requirement that is being estimated
 	 */
 	protected void checkValidEstimate(){
 		if (!estimateTextField.getText().isEmpty()) {

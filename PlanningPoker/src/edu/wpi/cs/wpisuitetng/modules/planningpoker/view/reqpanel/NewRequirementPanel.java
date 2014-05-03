@@ -37,7 +37,11 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
+
+
 
 
 
@@ -51,7 +55,7 @@ import javax.swing.JComboBox;
  */
 public class NewRequirementPanel extends JPanel {
 	private final Requirement currentRequirement;
-	private JTextField nameField = new JTextField();
+	private final JTextField nameField = new JTextField();
 	private final JTextArea descriptionField = new JTextArea();
 	private final JScrollPane descriptionScrollPane = new JScrollPane(descriptionField);
 	private final JLabel nameLabel = new JLabel("Requirement Name*: ");
@@ -122,7 +126,6 @@ public class NewRequirementPanel extends JPanel {
 		//Spring layout constraints for priorityComboBox
 		springLayout.putConstraint(SpringLayout.NORTH, priorityComboBox, 43, SpringLayout.SOUTH, descriptionScrollPane);
 		springLayout.putConstraint(SpringLayout.WEST, priorityComboBox, 5, SpringLayout.EAST, lblPriority);
-		springLayout.putConstraint(SpringLayout.EAST, priorityComboBox, 200, SpringLayout.WEST, priorityComboBox);
 		
 		//Spring layout constraints for lblType
 		springLayout.putConstraint(SpringLayout.WEST, lblType, 50, SpringLayout.EAST, priorityComboBox);
@@ -131,7 +134,7 @@ public class NewRequirementPanel extends JPanel {
 		//Spring layout constraints for typeComboBox
 		springLayout.putConstraint(SpringLayout.NORTH, typeComboBox, 0, SpringLayout.NORTH, priorityComboBox);
 		springLayout.putConstraint(SpringLayout.WEST, typeComboBox, GuiStandards.BUTTON_OFFSET.getValue(), SpringLayout.EAST, lblType);
-		springLayout.putConstraint(SpringLayout.EAST, typeComboBox, 200, SpringLayout.WEST, typeComboBox);
+		typeComboBox.setSize(priorityComboBox.getWidth(), typeComboBox.getHeight());
 		
 		//Spring layout constraints for descriptionScrollPane
 		springLayout.putConstraint(SpringLayout.NORTH, descriptionScrollPane, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, descriptionLabel);
@@ -218,6 +221,33 @@ public class NewRequirementPanel extends JPanel {
 				reqError.setVisible(!isCreatable);
 			}
 		});
+		
+		descriptionField.addKeyListener(new KeyListener(){
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.VK_ENTER == e.getKeyCode()){
+					if (CreateRequirementButton.isEnabled()){
+						CreateRequirementButton.doClick();
+					}
+				}
+				
+			}
+			
+		});
+		
 		/**
 		 * Document listener for the discriptionField
 		 */

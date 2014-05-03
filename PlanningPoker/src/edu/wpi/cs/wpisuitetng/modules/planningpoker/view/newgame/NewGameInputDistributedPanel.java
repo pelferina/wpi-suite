@@ -107,7 +107,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	 *  Initializing Optional Deck Selection 
 	 */
 	private final JCheckBox deckCheckBox = new JCheckBox("Use Deck");
-	private JComboBox<String> deckBox = new JComboBox<String>(); 
+	private final JComboBox<String> deckBox = new JComboBox<String>(); 
 	private List<Deck> decks = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
 	private int selectedDeckIndex = 0;
 	private final JButton createDeckButton = new JButton("Create Deck");
@@ -1080,6 +1080,11 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		nameTextField.requestFocusInWindow();
 	}
 
+	/**
+	 * Trims a string by removing excess whitespace
+	 * @param aString The string to be trimmed
+	 * @return The newly trimmed string
+	 */
 	public String trim(String aString) {
 		int len = aString.length();
 		int st = 0;
@@ -1105,7 +1110,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 
 	@Override
 	public void refreshDecks() {
-		List<Deck> currentDecks = DeckModel.getInstance().getDecks();
+		final List<Deck> currentDecks = DeckModel.getInstance().getDecks();
 		if (decks.size() != DeckModel.getInstance().getDecks().size()){
 			initializeDeckComboBox();
 		}

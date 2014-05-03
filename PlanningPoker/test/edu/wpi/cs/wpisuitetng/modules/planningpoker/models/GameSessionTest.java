@@ -68,7 +68,7 @@ public class GameSessionTest {
 	
 	@Test
 	public void testGetDraftGameSessionList(){
-		GameModel gm = new GameModel();
+		GameModel gm = GameModel.getInstance();
 		GameSession gs1 = new GameSession("Test Game1", "Test Description", 0, 1, new Date(), new ArrayList<Integer>());
 		GameSession gs2 = new GameSession("Test Game2", "Test Description", 0, 2, new Date(), new ArrayList<Integer>());
 		GameSession gs3 = new GameSession("Test Game3", "Test Description", 0, 3, new Date(), new ArrayList<Integer>());
@@ -90,7 +90,7 @@ public class GameSessionTest {
 	
 	@Test
 	public void testGetActiveGameSessionList(){
-		GameModel gm = new GameModel();
+		GameModel gm = GameModel.getInstance();
 		GameSession gs1 = new GameSession("Test Game1", "Test Description", 0, 1, new Date(), new ArrayList<Integer>());
 		GameSession gs2 = new GameSession("Test Game2", "Test Description", 0, 2, new Date(), new ArrayList<Integer>());
 		GameSession gs3 = new GameSession("Test Game3", "Test Description", 0, 3, new Date(), new ArrayList<Integer>());
@@ -111,7 +111,7 @@ public class GameSessionTest {
 	
 	@Test
 	public void testGetPastGameSessionList(){
-		GameModel gm = new GameModel();
+		GameModel gm = GameModel.getInstance();
 		GameSession gs1 = new GameSession("Test Game1", "Test Description", 0, 1, new Date(), new ArrayList<Integer>());
 		GameSession gs2 = new GameSession("Test Game2", "Test Description", 0, 2, new Date(), new ArrayList<Integer>());
 		GameSession gs3 = new GameSession("Test Game3", "Test Description", 0, 3, new Date(), new ArrayList<Integer>());

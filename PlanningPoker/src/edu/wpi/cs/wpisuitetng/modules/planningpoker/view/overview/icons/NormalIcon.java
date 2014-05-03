@@ -25,8 +25,8 @@ import javax.swing.Icon;
 
 public class NormalIcon implements Icon {
 
-	private int height;
-	private int width;
+	private final int height;
+	private final int width;
 	
 	public NormalIcon(){
 		height = 5;

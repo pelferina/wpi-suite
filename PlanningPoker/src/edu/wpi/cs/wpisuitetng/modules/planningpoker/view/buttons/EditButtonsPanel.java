@@ -90,10 +90,9 @@ public class EditButtonsPanel extends ToolbarGroupView{
 
 	/**
 	 * This method sets the button to read "activate"
-	 *
 	 * Enables the end game button, and add a action listener
 	 * to this game
-	 * @param game
+	 * @param gameSelected The selected GameSession
 	 */
 	public void setEditGameButtonVisible(GameSession gameSelected){
 		editButton.setVisible(true);

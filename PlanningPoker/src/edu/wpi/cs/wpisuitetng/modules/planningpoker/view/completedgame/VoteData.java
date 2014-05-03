@@ -79,7 +79,7 @@ public class VoteData extends JPanel{
 	private Requirement currentReq;
 	private int	reqIndex;
 	private List<Integer> finalVote;
-	private Timer setFocusTimer;
+	private final Timer setFocusTimer;
 	private BarChart aChart;
 	
 	/**
@@ -95,7 +95,7 @@ public class VoteData extends JPanel{
 		gameReqs = cv.getGameRequirements();
 		finalVote = new ArrayList<Integer>();
 		notAnIntegerError.setVisible(false);
-		archiveGameButton.setEnabled(false);
+//		archiveGameButton.setEnabled(false);
 		submitEstimateButton.setEnabled(false);
 		descriptionTextArea.setLineWrap(true);
 		descriptionTextArea.setWrapStyleWord(true);
@@ -364,7 +364,7 @@ public class VoteData extends JPanel{
 		
 		//Schedules a timer task that will set the default text box and button
 		
-		TimerTask setFocus = new TimerTask(){
+		final TimerTask setFocus = new TimerTask(){
 
 			@Override
 			public void run() {

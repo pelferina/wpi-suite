@@ -31,6 +31,9 @@ import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.GuiStandards;
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
+
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -60,7 +63,6 @@ public class GameData extends JPanel{
 	private final GameSession completedGame;
 	private final CompleteView completeView;
 	private final HashMap<Integer, Integer> requirementIndexHash = new HashMap<Integer, Integer>();
-
 	/**
 	 * Constructor for the GameData class
 	 * @param gs The completed game session that is going to be viewed
@@ -106,8 +108,9 @@ public class GameData extends JPanel{
 	private void init(){
 		final DefaultTableModel reqTableModel = (DefaultTableModel) gameReqsTable.getModel();
 		reqTableModel.setRowCount(gameReqs.size());
+		
 		completedGame.calculateStats();
-
+		
 		descriptionTextArea.setWrapStyleWord(true);
 		
 		// set colors

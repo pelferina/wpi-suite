@@ -183,8 +183,9 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 			public void actionPerformed(ActionEvent e){
 				int[] index = unselectedTable.getSelectedRows();
 				boolean last = false;
-				if(unselectedTable.getSelectedRow() == unselectedTable.getRowCount() - 1)
+				if(unselectedTable.getSelectedRow() == unselectedTable.getRowCount() - 1){
 					last = true;
+				}
 				int offset = 0;
 				while(index.length > 0){
 					final Requirement selectedReq = reqs.get(index[0]-offset);
@@ -205,10 +206,12 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 				selectedTable.clearSelection();
 				unselectedTable.clearSelection();
 				int rowIndex = unselectedTable.getRowCount() - 1;
-				if(!last && unselectedTable.getRowCount()>0)
+				if(!last && unselectedTable.getRowCount()>0){
 					unselectedTable.setRowSelectionInterval(0, 0);
-				else if(last && unselectedTable.getRowCount()>0)
-					unselectedTable.setRowSelectionInterval(rowIndex, rowIndex);			
+				}
+				else if(last && unselectedTable.getRowCount()>0){
+					unselectedTable.setRowSelectionInterval(rowIndex, rowIndex);
+				}
 				rowIndex = selectedTable.getRowCount() - 1;
 				selectedTable.setRowSelectionInterval(rowIndex, rowIndex);
 			}
@@ -262,8 +265,9 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 				selectedTable.clearSelection();
 				unselectedTable.clearSelection();
 				int rowIndex = selectedTable.getRowCount() - 1;
-				if(selectedTable.getRowCount()>0)
+				if(selectedTable.getRowCount()>0){
 					selectedTable.setRowSelectionInterval(rowIndex, rowIndex);
+				}
 				rowIndex = unselectedTable.getRowCount() - 1;				
 				unselectedTable.setRowSelectionInterval(rowIndex, rowIndex);
 			}
@@ -297,8 +301,9 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 			      if (e.getClickCount() == 2) {
 			    	  int[] index = unselectedTable.getSelectedRows();
 						boolean last = false;
-						if(unselectedTable.getSelectedRow() == unselectedTable.getRowCount() - 1)
+						if(unselectedTable.getSelectedRow() == unselectedTable.getRowCount() - 1){
 							last = true;
+						}
 						int offset = 0;
 						while(index.length > 0){
 							final Requirement selectedReq = reqs.get(index[0]-offset);
@@ -319,10 +324,12 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 						selectedTable.clearSelection();
 						unselectedTable.clearSelection();
 						int rowIndex = unselectedTable.getRowCount() - 1;
-						if(!last && unselectedTable.getRowCount()>0)
+						if(!last && unselectedTable.getRowCount()>0){
 							unselectedTable.setRowSelectionInterval(0, 0);
-						else if(last && unselectedTable.getRowCount()>0)
-							unselectedTable.setRowSelectionInterval(rowIndex, rowIndex);			
+						}
+						else if(last && unselectedTable.getRowCount()>0){
+							unselectedTable.setRowSelectionInterval(rowIndex, rowIndex);
+						}
 						rowIndex = selectedTable.getRowCount() - 1;
 						selectedTable.setRowSelectionInterval(rowIndex, rowIndex);
 			         }
@@ -354,8 +361,9 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 					selectedTable.clearSelection();
 					unselectedTable.clearSelection();
 					int rowIndex = selectedTable.getRowCount() - 1;
-					if(selectedTable.getRowCount()>0)
+					if(selectedTable.getRowCount()>0){
 						selectedTable.setRowSelectionInterval(rowIndex, rowIndex);
+					}
 					rowIndex = unselectedTable.getRowCount() - 1;				
 					unselectedTable.setRowSelectionInterval(rowIndex, rowIndex);
 				}
@@ -506,7 +514,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	//This gets only the requirements in the "Backlog" iteration from the requirements manager
 	private void filterBacklog()
 	{
-		ArrayList<Requirement> reqsToRemove = new ArrayList<Requirement>();
+		final ArrayList<Requirement> reqsToRemove = new ArrayList<Requirement>();
 		for (Requirement req : reqs) {
 			if (!req.getIteration().equals("Backlog")) reqsToRemove.add(req);
 		}
