@@ -24,6 +24,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class GetCurrentUser {
 	private static GetCurrentUser instance = null;
 	private static User user = null;
+	private static int testFlag = 0;
 	
 	/**
 	 * This constructor creates an instance if one does not already exist
@@ -36,10 +37,20 @@ public class GetCurrentUser {
 		return instance;
 	}
 	/**
+	 * A method used to enable testing mode
+	 * only called in JUnit tests
+	 */
+	public void enableTesting(){
+		testFlag = 1;
+	}
+	/**
 	 * This method returns the current user
 	 * @return the current user as User
 	 */
 	public User getCurrentUser(){
+		if (testFlag == 1){
+			return new User("admin", "admin", "1234", 27);
+		}
 		if(user == null){
 			try{
 				if(Network.getInstance().getDefaultNetworkConfiguration() != null){
@@ -50,6 +61,7 @@ public class GetCurrentUser {
 			catch(RuntimeException exception){
 				// Session not yet created
 				System.err.println("Exception thrown in GetCurrentUser:" +exception);
+				
 			}
 		}
 		else{

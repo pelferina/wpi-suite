@@ -24,8 +24,9 @@ public class OverviewPanelTest {
 	@Test
 	public void test() {
 		OverviewPanel op = new OverviewPanel();
-		op.updateTable("Drafts");
+		//op.updateTable("Drafts");
 		assertNotNull(op);
+		
 	}
 
 }
