@@ -38,6 +38,7 @@ import javax.swing.event.DocumentListener;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.deckcontroller.AddDeckController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.GuiStandards;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameCard;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.JTextFieldLimit;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
@@ -346,8 +347,8 @@ public class DeckBuildingPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.EAST, nameField, 100, SpringLayout.WEST, nameField);
 		
 		//Spring layout for btnSave
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnSave, 0, SpringLayout.VERTICAL_CENTER, lblDeckName);
-		springLayout.putConstraint(SpringLayout.EAST, btnSave, -20, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, btnSave, -GuiStandards.BOTTOM_MARGIN.getValue(), SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, btnSave, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.EAST, this);
 	
 		//Spring layout for btnDelete
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnDelete, 0, SpringLayout.VERTICAL_CENTER, lblDeckName);
@@ -366,7 +367,7 @@ public class DeckBuildingPanel extends JPanel {
 		//Spring layout for numberField
 		springLayout.putConstraint(SpringLayout.NORTH, numberField, 0, SpringLayout.NORTH, lblAdd);
 		springLayout.putConstraint(SpringLayout.WEST, numberField, 10, SpringLayout.EAST, lblAdd);
-		springLayout.putConstraint(SpringLayout.EAST, numberField, 100, SpringLayout.WEST, numberField);
+		springLayout.putConstraint(SpringLayout.EAST, numberField, 50, SpringLayout.WEST, numberField);
 		
 		//Spring layout for btnAddCard
 		springLayout.putConstraint(SpringLayout.NORTH, btnAddCard, 10, SpringLayout.SOUTH, lblAdd);
@@ -374,13 +375,13 @@ public class DeckBuildingPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.EAST, btnAddCard, 0, SpringLayout.EAST, numberField);
 
 		//SpringLayout for lblSelection
-		springLayout.putConstraint(SpringLayout.NORTH, lblSelection, 0, SpringLayout.NORTH, numberField);
-		springLayout.putConstraint(SpringLayout.WEST, lblSelection, 10, SpringLayout.EAST, numberField);
+		springLayout.putConstraint(SpringLayout.NORTH, lblSelection, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, btnAddCard);
+		springLayout.putConstraint(SpringLayout.WEST, lblSelection, 0, SpringLayout.WEST, btnAddCard);
 		
 		//SpringLayout for selectionGroup
-		springLayout.putConstraint(SpringLayout.NORTH, btnSingleSelection, 10, SpringLayout.SOUTH, lblSelection);
+		springLayout.putConstraint(SpringLayout.NORTH, btnSingleSelection, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, lblSelection);
 		springLayout.putConstraint(SpringLayout.WEST, btnSingleSelection, 0, SpringLayout.WEST, lblSelection);
-		springLayout.putConstraint(SpringLayout.NORTH, btnMultipleSelection, 5, SpringLayout.SOUTH, btnSingleSelection);
+		springLayout.putConstraint(SpringLayout.NORTH, btnMultipleSelection, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, btnSingleSelection);
 		springLayout.putConstraint(SpringLayout.WEST, btnMultipleSelection, 0, SpringLayout.WEST, btnSingleSelection);
 		
 		//Spring layout for btnRmvSelected
@@ -393,9 +394,8 @@ public class DeckBuildingPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.EAST, btnRmvAll, 0, SpringLayout.EAST, btnRmvSelected);
 		
 		//Spring layout for btnCancel
-		springLayout.putConstraint(SpringLayout.NORTH, btnCancel, 10, SpringLayout.SOUTH, btnAddCard);
-		springLayout.putConstraint(SpringLayout.WEST, btnCancel, 0, SpringLayout.WEST, btnAddCard);
-		springLayout.putConstraint(SpringLayout.EAST, btnCancel, 0, SpringLayout.EAST, btnAddCard);
+		springLayout.putConstraint(SpringLayout.NORTH, btnCancel, 0, SpringLayout.NORTH, btnSave);
+		springLayout.putConstraint(SpringLayout.EAST, btnCancel, -GuiStandards.BUTTON_OFFSET.getValue(), SpringLayout.WEST, btnSave);
 		
 		setLayout(springLayout);
 		
