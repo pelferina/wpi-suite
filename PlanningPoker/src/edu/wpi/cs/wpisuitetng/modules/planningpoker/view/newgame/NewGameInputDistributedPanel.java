@@ -953,7 +953,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.NORTH, descriptionLabel, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, nameTextField);
 		springLayout.putConstraint(SpringLayout.WEST, descriptionLabel, GuiStandards.LEFT_MARGIN.getValue(), SpringLayout.WEST, this);
 
-		//Spring layout for the descTextArea
+		//Spring layout for the descriptionScrollPane
 		descriptionTextField.setRows(3);
 		descriptionTextField.setLineWrap(true);
 		springLayout.putConstraint(SpringLayout.NORTH, descriptionScrollPane, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, descriptionLabel);
@@ -976,7 +976,8 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		//Spring layout for the deckBox
 		springLayout.putConstraint(SpringLayout.WEST, deckBox, 0, SpringLayout.WEST, deckLabel);
 		springLayout.putConstraint(SpringLayout.NORTH, deckBox, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, deckLabel);
-
+		springLayout.putConstraint(SpringLayout.EAST, deckBox, 0, SpringLayout.EAST, descriptionScrollPane);
+		
 		//Spring layout for the createDeckButton
 		springLayout.putConstraint(SpringLayout.WEST, createDeckButton, 0, SpringLayout.WEST, deckBox);
 		springLayout.putConstraint(SpringLayout.EAST, createDeckButton, 0, SpringLayout.EAST, deckBox);

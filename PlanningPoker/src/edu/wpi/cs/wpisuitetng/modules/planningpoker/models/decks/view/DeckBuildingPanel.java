@@ -39,6 +39,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.deckcontroller.AddDeckContro
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameCard;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.JTextFieldLimit;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 
 /**
@@ -148,6 +149,7 @@ public class DeckBuildingPanel extends JPanel {
 			}
 		});
 		
+		nameField.setDocument(new JTextFieldLimit(20));
 		// All listeners and their functions
 		btnSave.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
