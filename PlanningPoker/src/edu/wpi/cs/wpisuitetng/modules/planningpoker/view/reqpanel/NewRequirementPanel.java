@@ -55,7 +55,7 @@ public class NewRequirementPanel extends JPanel {
 	private final JLabel nameLabel = new JLabel("Requirement Name*: ");
 	private final JLabel descriptionLabel = new JLabel("Requirement Description*: ");
 	private final JButton CreateRequirementButton = new JButton("Create Requirement");
-	private final JButton cancelButton = new JButton("Cancel");
+	private final JButton cancelButton = new JButton("Cancel Requirement");
 	private JComboBox<RequirementPriority> priorityComboBox = new JComboBox<RequirementPriority>();
 	private JComboBox<RequirementType> typeComboBox = new JComboBox<RequirementType>();
 	private final NewGameDistributedPanel newGamePanel;

@@ -347,9 +347,9 @@ public class DeckBuildingPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, nameField, 10, SpringLayout.EAST, lblDeckName);
 		springLayout.putConstraint(SpringLayout.EAST, nameField, 100, SpringLayout.WEST, nameField);
 		
-		//Spring layout for btnSave
-		springLayout.putConstraint(SpringLayout.SOUTH, btnSave, -GuiStandards.BOTTOM_MARGIN.getValue(), SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, btnSave, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.EAST, this);
+		//Spring layout for btnCancel
+		springLayout.putConstraint(SpringLayout.SOUTH, btnCancel, -GuiStandards.BOTTOM_MARGIN.getValue(), SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, btnCancel, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.EAST, this);
 	
 		//Spring layout for btnDelete
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnDelete, 0, SpringLayout.VERTICAL_CENTER, lblDeckName);
@@ -394,9 +394,9 @@ public class DeckBuildingPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, btnRmvAll, 0, SpringLayout.WEST, btnRmvSelected);
 		springLayout.putConstraint(SpringLayout.EAST, btnRmvAll, 0, SpringLayout.EAST, btnRmvSelected);
 		
-		//Spring layout for btnCancel
-		springLayout.putConstraint(SpringLayout.NORTH, btnCancel, 0, SpringLayout.NORTH, btnSave);
-		springLayout.putConstraint(SpringLayout.EAST, btnCancel, -GuiStandards.BUTTON_OFFSET.getValue(), SpringLayout.WEST, btnSave);
+		//Spring layout for btnSave
+		springLayout.putConstraint(SpringLayout.NORTH, btnSave, 0, SpringLayout.NORTH, btnCancel);
+		springLayout.putConstraint(SpringLayout.EAST, btnSave, -GuiStandards.BUTTON_OFFSET.getValue(), SpringLayout.WEST, btnCancel);
 		
 		setLayout(springLayout);
 		
