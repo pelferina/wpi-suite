@@ -310,7 +310,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		//Spring layout for reqDescScroll
 		springLayout.putConstraint(SpringLayout.NORTH, reqDescScroll, 10, SpringLayout.SOUTH, reqDesc);
 		springLayout.putConstraint(SpringLayout.WEST, reqDescScroll, 0, SpringLayout.WEST, reqDesc);
-		springLayout.putConstraint(SpringLayout.EAST, reqDescScroll, -30, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.EAST, reqDescScroll, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, reqDescScroll, -GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.NORTH, notAnIntegerError);
 
 		//Spring layout for reqDesc label
