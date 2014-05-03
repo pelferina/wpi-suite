@@ -70,7 +70,7 @@ public class ViewEventControllerTest {
 	}	
 	
 	@Test
-	public void testMainView(){
+	public void testViewEventController(){
 		ViewEventController vec = ViewEventController.getInstance();
 
 		MainView mv =  new MainView();
@@ -85,7 +85,17 @@ public class ViewEventControllerTest {
 		GameSession gs = new GameSession("G","D", 0, 0, Calendar.getInstance().getTime(), reqList);
 		db.save(gs);
 		gs.setDeckId(-1);
-		vec.playGameTab(gs);
+		vec.makeActivateGameButtonDisable(gs);
+		vec.makeActivateGameButtonVisible(gs);
+		vec.makeArchiveGameButtonVisible(gs);
+		vec.makeEditGameButtonInVisible();
+		vec.makeEditGameButtonVisible(gs);
+		vec.makeEndGameButtonVisible(gs);
+		vec.makeOwnerButtonInvisible();
+		vec.makeUserButtonInvisible();
+		vec.makeViewGameButtonVisible(gs);
+		vec.makeVoteGameButtonVisible(gs);
+//		vec.playGameTab(gs);
 //		vec.editGameTab(gs);
 //		mv.addTab("Edit Game", gs);
 	}

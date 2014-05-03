@@ -65,6 +65,8 @@ public class PreferencesPanelTest {
 		assertNotNull(gcu);
 		gcu.enableTesting();
 		PreferencesPanel pp = new PreferencesPanel(new JButton(), 1);
-//		assertNotNull(pp);
+		assertNotNull(pp);
+		pp.makeEmailDisable();
+		pp.makeEmailEnable();
 	}
 }
