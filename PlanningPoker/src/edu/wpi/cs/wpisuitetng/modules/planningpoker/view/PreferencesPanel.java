@@ -56,6 +56,19 @@ public class PreferencesPanel extends JPanel {
 	private final JButton close;
 	private EmailAddressModel eModel;
 	
+	
+	private int testFlag = 0;
+	public PreferencesPanel(JButton btnClose, int testFlag){
+		this.testFlag = testFlag;
+		setupPanel();
+		if(emailField.getText().length() == 0){
+			currentEmailLabel.setText("none");
+		}
+		else currentEmailLabel.setText(emailField.getText());
+		emailField.setText("");
+		close = btnClose;
+	}
+	
 	/**
 	 * Constructor to create panel with close button
 	 * @param btnClose button to close the panel
@@ -147,6 +160,10 @@ public class PreferencesPanel extends JPanel {
 		add(submitButton);
 		add(enableCheckBox);
 		enableCheckBox.addItemListener(new CheckBoxChangedListener(this));
+		
+		if(testFlag == 1)
+			return;
+		
 		retrieveEmail();
 		emailField.setText(eModel.getAddress());
 		if(eModel.getEnable()){
