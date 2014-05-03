@@ -103,7 +103,7 @@ public class PreferencesPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, submitButton, GuiStandards.LEFT_MARGIN.getValue(), SpringLayout.WEST, this);
 		// Swing layout for enableCheckBox
 		springLayout.putConstraint(SpringLayout.NORTH, enableCheckBox, 0, SpringLayout.NORTH, submitButton);
-		springLayout.putConstraint(springLayout.WEST, enableCheckBox, GuiStandards.LEFT_MARGIN.getValue(), SpringLayout.EAST, submitButton);
+		springLayout.putConstraint(SpringLayout.WEST, enableCheckBox, GuiStandards.LEFT_MARGIN.getValue(), SpringLayout.EAST, submitButton);
 		// Swing layout for deckButton
 		springLayout.putConstraint(SpringLayout.NORTH, deckButton, 30, SpringLayout.SOUTH, enableCheckBox);
 		springLayout.putConstraint(SpringLayout.WEST, deckButton, 0, SpringLayout.WEST, enableCheckBox);
@@ -220,7 +220,7 @@ class GetEmailRequestObserver implements RequestObserver {
 	 * This constructor populates the controller variable with the instance of GetEmailController
 	 * @param panel The panel to look at
 	 */
-	public GetEmailRequestObserver(PreferencesPanel panel) {
+	GetEmailRequestObserver(PreferencesPanel panel) {
 		this.panel = panel;
 	}
 

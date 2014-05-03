@@ -78,7 +78,7 @@ public class TableSelectListener implements ListSelectionListener{
     			//hasCategory = true;
     		}
     		
-    		if(status.equals(GameStatus.ACTIVE)||status.equals(GameStatus.DRAFT)){
+    		if(status.equals(GameStatus.ACTIVE) || status.equals(GameStatus.DRAFT)){
     			ViewEventController.getInstance().makeEditGameButtonVisible(gameSelected);
     		}else{
     			ViewEventController.getInstance().makeEditGameButtonInVisible();
@@ -102,8 +102,8 @@ public class TableSelectListener implements ListSelectionListener{
 	 * @return true if valid, false otherwise
 	 */
 	public boolean isValid(GameSession gs) { // if all neccessary fields are filled out, returns true
-		if (gs.getGameName().length()>0 && gs.getGameReqs().size()>0){
-			if (gs.getEndDate()==null || gs.getEndDate().getTime()>System.currentTimeMillis()){
+		if (gs.getGameName().length() > 0 && gs.getGameReqs().size() > 0){
+			if (gs.getEndDate() == null || gs.getEndDate().getTime() > System.currentTimeMillis()){
 				return true;
 			}
 		}

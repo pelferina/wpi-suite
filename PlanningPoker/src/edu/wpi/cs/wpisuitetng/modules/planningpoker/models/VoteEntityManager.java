@@ -95,7 +95,7 @@ public class VoteEntityManager implements EntityManager<Vote> {
 	@Override
 	public Vote[] getAll(Session s) {
 		// TODO Auto-generated method stub
-		return db.retrieveAll(new Vote(null,0,0), s.getProject()).toArray(new Vote[0]);
+		return db.retrieveAll(new Vote(null, 0, 0), s.getProject()).toArray(new Vote[0]);
 	}
 	//TODO Overload update in order to not parse the same game twice
 	/**Updates a vote
@@ -106,7 +106,7 @@ public class VoteEntityManager implements EntityManager<Vote> {
 	@Override
 	public Vote update(Session s, String content) throws WPISuiteException {
 		final Vote v = Vote.fromJson(content);
-		if(v.getVoteID() == -1) v.setVoteID(v.getUID() + v.getGameID()*100000);
+		if(v.getVoteID() == -1) v.setVoteID(v.getUID() + v.getGameID() * 100000);
 		db.update(Vote.class, "VoteID", v.getVoteID(), "Vote", v.getVote());
 		return v;
 	}

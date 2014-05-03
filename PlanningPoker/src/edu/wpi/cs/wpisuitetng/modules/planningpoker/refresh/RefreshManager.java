@@ -52,7 +52,7 @@ public class RefreshManager {
 	List<GameSession> gameCache;
 	List<Deck> deckCache;
 	List<User> userCache;
-	private final Timer refreshRequirementsTimer,refreshGamesTimer,refreshDeckTimer,refreshUserTimer;
+	private final Timer refreshRequirementsTimer, refreshGamesTimer, refreshDeckTimer, refreshUserTimer;
 	public RefreshManager() {
 	
 		gameController = GetGamesController.getInstance();
@@ -186,7 +186,7 @@ public class RefreshManager {
 		deckController.actionPerformed(null);
 	
 		if ( differentList(deckCache, DeckModel.getInstance().getDecks())){
-			System.out.println("Refreshin decks\n"+deckCache+"\n"+DeckModel.getInstance().getDecks());
+			System.out.println("Refreshin decks\n" + deckCache + "\n" + DeckModel.getInstance().getDecks());
 			deckController.refresh();
 			deckCache = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
 		}

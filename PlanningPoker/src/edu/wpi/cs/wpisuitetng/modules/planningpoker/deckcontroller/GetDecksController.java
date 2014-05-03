@@ -31,7 +31,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  */
 public class GetDecksController extends RefreshableController implements ActionListener {
 
-	final private GetDecksRequestObserver observer;
+	private final GetDecksRequestObserver observer;
 	private static GetDecksController instance = null;
 
 	/**

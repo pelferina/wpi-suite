@@ -37,7 +37,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 public class ButtonPanel extends ToolbarGroupView{
 	private final JPanel contentPanel = new JPanel();
 	private final LinkedList<JButton> buttonQueue = new LinkedList<JButton>();
-	Component spacer = Box.createRigidArea(new Dimension(15,0));
+	Component spacer = Box.createRigidArea(new Dimension(15, 0));
 	
 	JButton newButton = new JButton("<html>New<br />Game</html>");
 	JButton settingButton = new JButton("<html>User<br />Setting</html>");
@@ -91,7 +91,7 @@ public class ButtonPanel extends ToolbarGroupView{
 		try {
 		    newImg = new ImageIcon(ImageIO.read(getClass().getResource("newgameimage.png")));
 		    newButton.setIcon(newImg);
-		    newButton.setPreferredSize(new Dimension(150,50));
+		    newButton.setPreferredSize(new Dimension(150, 50));
 		} catch (IOException ex) {
 			System.out.println("IOException thrown in ButtonsPanel.");
 		}
@@ -99,7 +99,7 @@ public class ButtonPanel extends ToolbarGroupView{
 		try {
 		    settingImg = new ImageIcon(ImageIO.read(getClass().getResource("optionsimage.png")));
 		    settingButton.setIcon(settingImg);
-		    settingButton.setPreferredSize(new Dimension(150,50));
+		    settingButton.setPreferredSize(new Dimension(150, 50));
 		} catch (IOException ex) {
 			System.out.println("IOException thrown in ButtonsPanel.");
 		}
@@ -107,7 +107,7 @@ public class ButtonPanel extends ToolbarGroupView{
 		try {
 		    editImg = new ImageIcon(ImageIO.read(getClass().getResource("edit.png")));
 		    editButton.setIcon(editImg);
-		    editButton.setPreferredSize(new Dimension(150,50));
+		    editButton.setPreferredSize(new Dimension(150, 50));
 		} catch (IOException ex) {
 			System.out.println("IOException thrown in ButtonsPanel.");
 		}
@@ -115,7 +115,7 @@ public class ButtonPanel extends ToolbarGroupView{
 		try {
 		    activateImg = new ImageIcon(ImageIO.read(getClass().getResource("activategame.png")));
 		    activateButton.setIcon(activateImg);
-		    activateButton.setPreferredSize(new Dimension(150,50));
+		    activateButton.setPreferredSize(new Dimension(150, 50));
 		} catch (IOException ex) {
 			System.out.println("IOException thrown in ButtonsPanel.");
 		}
@@ -123,7 +123,7 @@ public class ButtonPanel extends ToolbarGroupView{
 		try {
 		    archiveImg = new ImageIcon(ImageIO.read(getClass().getResource("archive.png")));
 		    archiveButton.setIcon(archiveImg);
-		    archiveButton.setPreferredSize(new Dimension(150,50));
+		    archiveButton.setPreferredSize(new Dimension(150, 50));
 		} catch (IOException ex) {
 			System.out.println("IOException thrown in ButtonsPanel.");
 		}
@@ -131,7 +131,7 @@ public class ButtonPanel extends ToolbarGroupView{
 		try {
 		    endImg = new ImageIcon(ImageIO.read(getClass().getResource("cancel.png")));
 		    endButton.setIcon(endImg);
-		    archiveButton.setPreferredSize(new Dimension(150,50));
+		    archiveButton.setPreferredSize(new Dimension(150, 50));
 		} catch (IOException ex) {
 			System.out.println("IOException thrown in ButtonsPanel.");
 		}
@@ -139,7 +139,7 @@ public class ButtonPanel extends ToolbarGroupView{
 		try {
 		    playImg = new ImageIcon(ImageIO.read(getClass().getResource("vote.png")));
 		    playButton.setIcon(playImg);
-		    playButton.setPreferredSize(new Dimension(150,50));
+		    playButton.setPreferredSize(new Dimension(150, 50));
 		} catch (IOException ex) {
 			System.out.println("IOException thrown in ButtonsPanel.");
 		}
@@ -147,7 +147,7 @@ public class ButtonPanel extends ToolbarGroupView{
 		try {
 		    viewImg = new ImageIcon(ImageIO.read(getClass().getResource("view.png")));
 		    viewButton.setIcon(viewImg);
-		    viewButton.setPreferredSize(new Dimension(150,50));
+		    viewButton.setPreferredSize(new Dimension(150, 50));
 		} catch (IOException ex) {
 			System.out.println("IOException thrown in ButtonsPanel.");
 		}
@@ -180,10 +180,10 @@ public class ButtonPanel extends ToolbarGroupView{
 				}
     			
     		});
-    		playButton.setPreferredSize(new Dimension(150,50));
+    		playButton.setPreferredSize(new Dimension(150, 50));
     		buttonQueue.add(playButton);
     		contentPanel.add(playButton);
-    		contentPanel.add(Box.createRigidArea(new Dimension(15,0)));
+    		contentPanel.add(Box.createRigidArea(new Dimension(15, 0)));
     		contentPanel.updateUI();
     	}else if(status.equals(GameStatus.COMPLETED) || status.equals(GameStatus.ARCHIVED)){
     		removeActionListeners(viewButton);
@@ -193,10 +193,10 @@ public class ButtonPanel extends ToolbarGroupView{
 					ViewEventController.getInstance().viewGameTab(gameSelected);					
 				}
     		});
-    		viewButton.setPreferredSize(new Dimension(150,50));
+    		viewButton.setPreferredSize(new Dimension(150, 50));
     		buttonQueue.add(viewButton);
     		contentPanel.add(viewButton);
-    		contentPanel.add(Box.createRigidArea(new Dimension(15,0)));
+    		contentPanel.add(Box.createRigidArea(new Dimension(15, 0)));
     		contentPanel.updateUI();
     	}
     	
@@ -204,45 +204,45 @@ public class ButtonPanel extends ToolbarGroupView{
     		if(gameSelected.getGameStatus().equals(GameStatus.ACTIVE) || gameSelected.getGameStatus().equals(GameStatus.INPROGRESS)){
     			removeActionListeners(endButton);
     			endButton.addActionListener(new EndGameActionListener(gameSelected));
-    			endButton.setPreferredSize(new Dimension(150,50));
+    			endButton.setPreferredSize(new Dimension(150, 50));
         		buttonQueue.add(endButton);
         		contentPanel.add(endButton);
-        		contentPanel.add(Box.createRigidArea(new Dimension(15,0)));
+        		contentPanel.add(Box.createRigidArea(new Dimension(15, 0)));
         		contentPanel.updateUI();
     		}else if(gameSelected.getGameStatus().equals(GameStatus.DRAFT)){
     			if(isValid(gameSelected)){
     				removeActionListeners(activateButton);
-    				activateButton.setPreferredSize(new Dimension(150,50));
+    				activateButton.setPreferredSize(new Dimension(150, 50));
     				activateButton.addActionListener(new ActivateGameActionListener(gameSelected));
     				buttonQueue.add(activateButton);
     				contentPanel.add(activateButton);
-    				contentPanel.add(Box.createRigidArea(new Dimension(15,0)));
+    				contentPanel.add(Box.createRigidArea(new Dimension(15, 0)));
     				contentPanel.updateUI();
     			}else{
     				//ViewEventController.getInstance().makeActivateGameButtonDisable(gameSelected);
     			}
     		}else if(gameSelected.getGameStatus().equals(GameStatus.COMPLETED)){
     			removeActionListeners(archiveButton);
-    			archiveButton.setPreferredSize(new Dimension(150,50));
+    			archiveButton.setPreferredSize(new Dimension(150, 50));
     			archiveButton.addActionListener(new ArchiveGameActionListener(gameSelected));
     			buttonQueue.add(archiveButton);
     			contentPanel.add(archiveButton);
-    			contentPanel.add(Box.createRigidArea(new Dimension(15,0)));
+    			contentPanel.add(Box.createRigidArea(new Dimension(15, 0)));
     			contentPanel.updateUI();
     		}
     		
-    		if(gameSelected.getGameStatus().equals(GameStatus.ACTIVE)||gameSelected.getGameStatus().equals(GameStatus.DRAFT)){
+    		if(gameSelected.getGameStatus().equals(GameStatus.ACTIVE) || gameSelected.getGameStatus().equals(GameStatus.DRAFT)){
     			removeActionListeners(editButton);
-    			editButton.setPreferredSize(new Dimension(150,50));
+    			editButton.setPreferredSize(new Dimension(150, 50));
     			editButton.addActionListener(new EditGameActionListener(gameSelected));
     			buttonQueue.add(editButton);
     			contentPanel.add(editButton);
-    			contentPanel.add(Box.createRigidArea(new Dimension(15,0)));
+    			contentPanel.add(Box.createRigidArea(new Dimension(15, 0)));
     			contentPanel.updateUI();
     		}	
     	}
     	final int buttonNum = buttonQueue.size();
-		this.setPreferredWidth(165*buttonNum);
+		this.setPreferredWidth(165 * buttonNum);
 		this.updateUI();
 	}
 
@@ -252,8 +252,8 @@ public class ButtonPanel extends ToolbarGroupView{
 	 * @return true if valid, false otherwise
 	 */
 	private boolean isValid(GameSession gs) { // if all neccessary fields are filled out, returns true
-		if (gs.getGameName().length()>0 && gs.getGameReqs().size()>0){
-			if (gs.getEndDate()==null || gs.getEndDate().getTime()>System.currentTimeMillis()){
+		if (gs.getGameName().length() > 0 && gs.getGameReqs().size() > 0){
+			if (gs.getEndDate() == null || gs.getEndDate().getTime() > System.currentTimeMillis()){
 				return true;
 			}
 		}

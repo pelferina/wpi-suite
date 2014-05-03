@@ -279,8 +279,8 @@ public class VoteData extends JPanel{
 		statsTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Statistic", "Value"}));
 		final DefaultTableModel statsModel = (DefaultTableModel) statsTable.getModel();
 		statsModel.setRowCount(2);
-		statsModel.setValueAt("Mean",0,0);
-		statsModel.setValueAt("Median",1,0);
+		statsModel.setValueAt("Mean", 0, 0);
+		statsModel.setValueAt("Median", 1, 0);
 		if (completedGame.getVotes().size() > 0){
 			statsModel.setValueAt(completedGame.getMean().get(reqIndex), 0, 1);
 			statsModel.setValueAt(completedGame.getMedian().get(reqIndex), 1, 1);
@@ -390,7 +390,7 @@ public class VoteData extends JPanel{
 		//Repopulate statistics table
 		final DefaultTableModel statsModel = (DefaultTableModel) statsTable.getModel();
 		
-		if (completedGame.getMean().size()>0){
+		if (completedGame.getMean().size() > 0){
 		
 			statsModel.setValueAt(completedGame.getMean().get(reqIndex), 0, 1);
 			statsModel.setValueAt(completedGame.getMedian().get(reqIndex), 1, 1);

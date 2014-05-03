@@ -49,7 +49,7 @@ public class GetGamesController extends RefreshableController implements ActionL
 	 * @return the instance of GetGamesController
 	 */
 	public static GetGamesController getInstance(){
-		if (instance==null){
+		if (instance == null){
 			instance = new GetGamesController();
 		}
 		

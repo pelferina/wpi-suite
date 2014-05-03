@@ -52,7 +52,7 @@ public class GameModel extends AbstractListModel {
 				return game;
 			}
 		}
-		System.err.println("Game ID: "+ gameID +"not found in game model");
+		System.err.println("Game ID: " + gameID + "not found in game model");
 		return null;
 	}
 	

@@ -45,7 +45,7 @@ public class NewGameDistributedPanel extends JSplitPane {
 	private boolean isDeckOpen = false;
 	private boolean isRequirementOpen = false;
 	
-	final private int DIVIDER_LOCATION = 450;
+	private final int DIVIDER_LOCATION = 450;
 	
 	/**
 	 * Constructor for NewGameDistributedPanel

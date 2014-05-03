@@ -37,7 +37,7 @@ public class GetVoteController extends RefreshableController implements ActionLi
 	 * @return the GetVoteController instance
 	 */
 	public static GetVoteController getInstance(){
-		if (instance==null){
+		if (instance == null){
 			instance = new GetVoteController();
 		}
 

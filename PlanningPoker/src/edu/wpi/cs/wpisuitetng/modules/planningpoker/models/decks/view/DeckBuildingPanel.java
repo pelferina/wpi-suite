@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SpringLayout;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -110,13 +111,13 @@ public class DeckBuildingPanel extends JPanel {
 		btnRmvAll.setFont(size);
 		btnRmvAll.setSize(80, 20);
 		btnCancel.setFont(size);
-		btnCancel.setSize(80,20);
+		btnCancel.setSize(80, 20);
 		errLabel.setVisible(false);
 		//cardPanel.setMinimumSize(new Dimension(200, 13));
 		cardArea.setMinimumSize(new Dimension(200, 135));
 		
 		// Sets up cardArea
-		cardArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		cardArea.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 		
 		//This document listener will enable the submit button when something is inputed into the estimate text field
 		numberField.getDocument().addDocumentListener(new DocumentListener(){
@@ -242,7 +243,7 @@ public class DeckBuildingPanel extends JPanel {
 					System.out.println("Current card list is: " + newDeckCards.toString());
 				} catch (NumberFormatException err) {
 					System.err.println("Incorrect use of gameCard constructor: param not a number");
-					errLabel.setText(numberField.getText()+ " is not a valid non-negative integer!");
+					errLabel.setText(numberField.getText() + " is not a valid non-negative integer!");
 					errLabel.setVisible(true);
 				} 
 				isValidDeckName();

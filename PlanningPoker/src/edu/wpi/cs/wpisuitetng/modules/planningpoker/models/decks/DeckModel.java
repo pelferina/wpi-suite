@@ -167,7 +167,7 @@ public class DeckModel extends AbstractListModel {
 		if(id == 0) return defaultDeck;
 		for(Deck deck : listOfDecks)
 		{
-			if(deck.getId() ==id) return deck;
+			if(deck.getId() == id) return deck;
 		}
 		return null;
 	}

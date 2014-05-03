@@ -37,22 +37,16 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.IOException;
-
-
-
-
 
 import javax.swing.JComboBox;
 
 /**
  * This controls adding a new requirement from the new game tab.
- * 
  * @author FFF8E7
  * @version 6
  */
+@SuppressWarnings("serial")
 public class NewRequirementPanel extends JPanel {
 	private final Requirement currentRequirement;
 	private final JTextField nameField = new JTextField();
@@ -235,7 +229,7 @@ public class NewRequirementPanel extends JPanel {
 			public void removeUpdate(DocumentEvent e){
 				checkInput(e);
 			}
-			@Override 
+			@Override
 			public void insertUpdate(DocumentEvent e){
 				checkInput(e);
 			}

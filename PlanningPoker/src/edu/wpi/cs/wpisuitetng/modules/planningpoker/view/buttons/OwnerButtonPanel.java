@@ -39,12 +39,12 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	private final JButton ownerButton = new JButton();
 	private final JButton editButton = new JButton("<html>Edit<br />Game</html>");
 	private ActionListener listener = null;
-	private ImageIcon endImg;
-	private ImageIcon activateImg;
-	private ImageIcon archiveImg;
-	private ImageIcon editImg;
+	private ImageIcon endImg; // $codepro.audit.disable variableShouldBeFinal
+	private ImageIcon activateImg; // $codepro.audit.disable variableShouldBeFinal
+	private ImageIcon archiveImg; // $codepro.audit.disable variableShouldBeFinal
+	private ImageIcon editImg; // $codepro.audit.disable variableShouldBeFinal
 	private Timer expireTimer = null;
-	Component spacer = Box.createRigidArea(new Dimension(15,0));
+	Component spacer = Box.createRigidArea(new Dimension(15, 0));
 	
 	public OwnerButtonPanel(){
 		super("");
@@ -52,8 +52,8 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
 		this.setPreferredWidth(315);
 		
-		ownerButton.setPreferredSize(new Dimension(150,50));	
-		editButton.setPreferredSize(new Dimension(150,50));
+		ownerButton.setPreferredSize(new Dimension(150, 50));	
+		editButton.setPreferredSize(new Dimension(150, 50));
 		
 		try {
 		    endImg= new ImageIcon(ImageIO.read(getClass().getResource("cancel.png")));
@@ -104,8 +104,8 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		}
 		listener = new EndGameActionListener(game);
 		ownerButton.addActionListener(listener);
-		if (game.getEndDate()!=null){
-			expireThisButtonIn((int)(game.getEndDate().getTime()-Calendar.getInstance().getTime().getTime()));
+		if (game.getEndDate() != null){
+			expireThisButtonIn((int)(game.getEndDate().getTime() - Calendar.getInstance().getTime().getTime()));
 		}
 		determineButtonSize();
 
@@ -128,8 +128,8 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		listener = new ActivateGameActionListener(game);
 		ownerButton.addActionListener(listener);
 		
-		if (game.getEndDate()!=null){
-			expireThisButtonIn((int)(game.getEndDate().getTime()-Calendar.getInstance().getTime().getTime()));
+		if (game.getEndDate() != null){
+			expireThisButtonIn((int)(game.getEndDate().getTime() - Calendar.getInstance().getTime().getTime()));
 		}
 		determineButtonSize();
 	}
@@ -152,8 +152,8 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		listener = new ActivateGameActionListener(game);
 		ownerButton.addActionListener(listener);
 		
-		if (game.getEndDate()!=null){
-			expireThisButtonIn((int)(game.getEndDate().getTime()-Calendar.getInstance().getTime().getTime()));
+		if (game.getEndDate() != null){
+			expireThisButtonIn((int)(game.getEndDate().getTime() - Calendar.getInstance().getTime().getTime()));
 		}
 		determineButtonSize();
 	}
@@ -190,7 +190,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 	}
 	
 	private void expireThisButtonIn(int expireTime) {
-		if (expireTimer!=null){
+		if (expireTimer != null){
 			expireTimer.stop();
 		}
 		
@@ -208,7 +208,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		expireTimer = new Timer(expireTime, al);
 		expireTimer.setRepeats(false);
 		expireTimer.start();
-		System.out.println("Expiring in "+expireTime);
+		System.out.println("Expiring in " + expireTime);
 	}
 	
 	/**
@@ -246,7 +246,7 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		if ( ownerButton.isVisible() && editButton.isVisible() )
 		{
 			this.setPreferredWidth(315);
-			contentPanel.add(spacer,1);
+			contentPanel.add(spacer, 1);
 		}
 		else
 		{

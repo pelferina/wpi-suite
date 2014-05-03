@@ -40,7 +40,7 @@ public class Deck extends AbstractModel {
 	{
 		id = 0;
 		name = "Default Deck";
-		cards = Arrays.asList(0,1,1,2,3,5,8,13);
+		cards = Arrays.asList(0, 1, 1, 2, 3, 5, 8, 13);
 		isSingleSelection = false;
 	}
 	
@@ -90,7 +90,7 @@ public class Deck extends AbstractModel {
 	 * @param id to be set
 	 * @return this Deck object
 	 */
-	public Deck setId(int id){
+	public Deck setId(int id){ // $codepro.audit.disable accessorMethodNamingConvention
 		this.id = id;
 		return this;
 	}
@@ -189,7 +189,7 @@ public class Deck extends AbstractModel {
 	 * @param cards the card list
 	 * @return The deck that is being changed
 	 */
-	public Deck setCards(List<Integer> cards) {
+	public Deck setCards(List<Integer> cards) { // $codepro.audit.disable accessorMethodNamingConvention
 		this.cards = cards;
 		return this;
 	}

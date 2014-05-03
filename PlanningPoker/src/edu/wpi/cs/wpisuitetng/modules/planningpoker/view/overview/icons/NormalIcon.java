@@ -63,7 +63,7 @@ public class NormalIcon implements Icon {
 	 * @see javax.swing.Icon#paintIcon(Component, Graphics, int, int) */
 	@Override
 	public void paintIcon(Component c, Graphics g, int x, int y) {
-		g.setColor(new Color(142,143,145, 100));
+		g.setColor(new Color(142, 143, 145, 100));
 		g.fillOval(x, y, width, height);
 	}
 

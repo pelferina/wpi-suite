@@ -257,7 +257,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 					datePicker.repaint();
 					//Initialize the deadline to current time if the game is not in editmode or 
 					//if the current game was saved with a deadline
-					if(!editMode || currentGameSession.getEndDate()!=null)
+					if(!editMode || currentGameSession.getEndDate() != null)
 					{
 						initializeDeadline();
 					}
@@ -395,7 +395,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	private void saveSelectedReqs(){
 		selectionsMade.clear();
 		final List<Requirement> reqsSelected = newGameP.getSelected();
-		for (int i=0; i<reqsSelected.size(); i++){
+		for (int i=0; i < reqsSelected.size(); i++){
 			selectionsMade.add(reqsSelected.get(i).getId());
 		}
 	}
@@ -410,7 +410,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		final String description = descriptionTextField.getText();
 
 		@SuppressWarnings("deprecation")
-		Date deadlineDate = new Date(deadlineYear - 1900, deadlineMonth , deadlineDay, hourTime, minuteTime);
+		Date deadlineDate = new Date(deadlineYear - 1900, deadlineMonth, deadlineDay, hourTime, minuteTime);
 
 		//If just saving the game, set deadline to null
 		if(!deadlineCheckBox.isSelected())
@@ -422,7 +422,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		//If activating: Set game status to active and Send an activation email 
 		if(!editMode)
 		{
-			final GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
+			final GameSession newGame = new GameSession(name, description, 0, GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
 			if(activate)
 			{
 				newGame.setGameStatus(GameStatus.ACTIVE);
@@ -682,7 +682,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		final String minute = minuteDateFormat.format(currentDate.getTime());
 		hourTime = Integer.parseInt(hour);
 		minuteTime = Integer.parseInt(minute) + 1;
-		deadlineHourComboBox.setSelectedIndex(hourTime-1);
+		deadlineHourComboBox.setSelectedIndex(hourTime - 1);
 		if (minuteTime != 60){
 			deadlineMinuteComboBox.setSelectedIndex(minuteTime);
 		}
@@ -786,7 +786,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 				PMButton.setSelected(false);
 			}
 			else {
-				deadlineHourComboBox.setSelectedIndex(currentGameSession.getEndDate().getHours()-1);
+				deadlineHourComboBox.setSelectedIndex(currentGameSession.getEndDate().getHours() - 1);
 				AMButton.setSelected(true);
 				isAM = true;
 				PMButton.setSelected(false);
@@ -886,7 +886,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	private int getHour(int hour){
 		if (isAM){
 			if (hour == 12){
-				return hour-12;
+				return hour - 12;
 			}
 			return hour;
 		}

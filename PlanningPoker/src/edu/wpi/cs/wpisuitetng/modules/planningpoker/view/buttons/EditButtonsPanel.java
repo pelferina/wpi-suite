@@ -62,7 +62,7 @@ public class EditButtonsPanel extends ToolbarGroupView{
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
 		this.setPreferredWidth(300);
 		
-		editButton.setPreferredSize(new Dimension(150,50));	
+		editButton.setPreferredSize(new Dimension(150, 50));	
 		
 		try {
 		    editImg = new ImageIcon(ImageIO.read(getClass().getResource("edit.png")));		    

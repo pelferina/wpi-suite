@@ -47,7 +47,7 @@ public class PlanningPoker implements IJanewayModule{
 
 	private MainView mainPanel;
 	private JPanel buttonPanel;
-	final private RefreshManager refresh;
+	private final RefreshManager refresh;
 	Timer getUserTimer;
 
 	/**
@@ -72,7 +72,7 @@ public class PlanningPoker implements IJanewayModule{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(GetCurrentUser.getInstance().getCurrentUser() !=null &&
+				if(GetCurrentUser.getInstance().getCurrentUser() != null &&
 						GetAllUsers.getInstance().getAllUsers() != null){
 					getUserTimer.stop();
 				}

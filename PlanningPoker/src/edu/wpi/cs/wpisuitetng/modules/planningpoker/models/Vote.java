@@ -170,7 +170,7 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	 * @return the hashed vote as an integer
 	 */
 	public static int toHash(Vote v){
-		return v.gameID* 100000 + v.UID;
+		return v.gameID * 100000 + v.UID;
 	}
 
 	/**

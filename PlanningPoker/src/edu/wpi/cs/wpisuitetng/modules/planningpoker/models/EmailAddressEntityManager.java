@@ -53,7 +53,7 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 	 * @param db a reference to the persistent database
 	 */
 	public EmailAddressEntityManager(Data db) {
-		this.db = db;
+		EmailAddressEntityManager.db = db;
 	}
 
 	/*
@@ -84,8 +84,8 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 					System.out.println("Enable");
 					db.update(EmailAddressModel.class, "Username", s.getUser().getUsername(), "Enable", true);
 				}
-				System.out.println(eModel.getAddress() +"|||" +newEmailAddress.getAddress());
-				if((eModel.getAddress()==null && newEmailAddress.getAddress()!=null)|| (eModel.getAddress()!=null && !eModel.getAddress().equals(newEmailAddress.getAddress()))){
+				System.out.println(eModel.getAddress() + "|||" + newEmailAddress.getAddress());
+				if((eModel.getAddress() == null && newEmailAddress.getAddress() != null) || (eModel.getAddress() != null && !eModel.getAddress().equals(newEmailAddress.getAddress()))){
 					System.out.println("Update");
 					db.update(EmailAddressModel.class, "Username", s.getUser().getUsername(), "Address", newEmailAddress.getAddress());
 					sendEmail(newEmailAddress.getAddress(), "Update Email", ("Hi " + s.getUser().getUsername() + ",\r\n\tYou just updated your notification email address!\r\nsent by fff8e7"));
@@ -99,7 +99,7 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 		if (!db.save(newEmailAddress, s.getProject())) {
 			throw new WPISuiteException();
 		}
-		if(!(newEmailAddress.getAddress()==null || newEmailAddress.getAddress().length() == 0)){
+		if(!(newEmailAddress.getAddress() == null || newEmailAddress.getAddress().length() == 0)){
 			sendEmail(newEmailAddress.getAddress(), "Set Email", ("Hi " + s.getUser().getUsername() + ",\r\n\tYou just set your notification email address!\r\nsent by fff8e7"));
 		}
 
@@ -263,7 +263,7 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 		final EmailAddressModel[] emails = db.retrieveAll(new EmailAddressModel(null, null, false), project).toArray(new EmailAddressModel[0]);
 		for(EmailAddressModel e: emails){
 			if(e.getEnable()){
-				sendEmail(e.getAddress(), send_subject, "Hi "+ e.getUsername() +",\r\n\t" + send_text + "\r\nsent by fff8e7");
+				sendEmail(e.getAddress(), send_subject, "Hi " + e.getUsername() + ",\r\n\t" + send_text + "\r\nsent by fff8e7");
 			}
 		}
 	}

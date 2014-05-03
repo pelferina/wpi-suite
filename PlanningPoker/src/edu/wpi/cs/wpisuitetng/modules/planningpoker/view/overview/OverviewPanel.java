@@ -131,7 +131,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 					}
 					if(e.getClickCount() == 1){
 						// if the Y location of the mouse click is off the table rows de-select from the table.
-						if(e.getY() > target.getRowHeight() *target.getRowCount()){
+						if(e.getY() > target.getRowHeight() * target.getRowCount()){
 							target.clearSelection();
 						}
 					}

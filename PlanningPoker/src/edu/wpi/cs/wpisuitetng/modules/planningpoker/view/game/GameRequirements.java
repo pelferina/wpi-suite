@@ -55,8 +55,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
  */
 public class GameRequirements extends JSplitPane{
 	
-	private JTable estimatesPending;
-	private JTable estimatesComplete;
+	private JTable estimatesPending; // $codepro.audit.disable variableShouldBeFinal
+	private JTable estimatesComplete; // $codepro.audit.disable variableShouldBeFinal
 	private final JLabel reqstoEstimate = new JLabel("Requirements to estimate");
 	private final JLabel reqsEstimated = new JLabel("Requirements estimated");
 	private JScrollPane pendingPane;
@@ -64,7 +64,7 @@ public class GameRequirements extends JSplitPane{
 	private final List<Integer> gameReqIDs;
 	private final List<Requirement> gameReqs = new ArrayList<Requirement>();
 	private final GameView gv;
-	final private int COLUMN_NUM = 2;
+	private final int COLUMN_NUM = 2;
 	
 	/**
 	 * Constructor for GameRequirements

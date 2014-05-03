@@ -38,10 +38,10 @@ public class UserButtonPanel extends ToolbarGroupView{
 	private final JPanel contentPanel = new JPanel();
 	private final JButton userButton = new JButton();
 	private ActionListener listener = null;
-	private ImageIcon viewImg;
-	private ImageIcon voteImg;
+	private ImageIcon viewImg; // $codepro.audit.disable variableShouldBeFinal
+	private ImageIcon voteImg; // $codepro.audit.disable variableShouldBeFinal
 	private final Timer expireTimer = null;
-	Component spacer = Box.createRigidArea(new Dimension(15,0));
+	Component spacer = Box.createRigidArea(new Dimension(15, 0));
 	
 	public UserButtonPanel(){
 		super("");
@@ -49,7 +49,7 @@ public class UserButtonPanel extends ToolbarGroupView{
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
 		this.setPreferredWidth(150);
 		
-		userButton.setPreferredSize(new Dimension(150,50));	
+		userButton.setPreferredSize(new Dimension(150, 50));	
 		userButton.setVisible(false);
 		
 		try {

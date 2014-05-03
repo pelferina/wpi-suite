@@ -25,7 +25,7 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
  */
 public class GetDecksRequestObserver implements RequestObserver {
 
-	final private GetDecksController controller;
+	private final GetDecksController controller;
 	
 	/**
 	 * Constructs the observer given a GetDecksController

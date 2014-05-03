@@ -318,7 +318,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 			/** TODO find a more elegent solution can't send only bcc's */
 
 			for (EmailAddressModel email : emails) {
-				if(email.getEnable() && email.getAddress()!=null){
+				if(email.getEnable() && email.getAddress() != null){
 					message.addRecipients(Message.RecipientType.BCC,
 						InternetAddress.parse(email.getAddress()));
 				}

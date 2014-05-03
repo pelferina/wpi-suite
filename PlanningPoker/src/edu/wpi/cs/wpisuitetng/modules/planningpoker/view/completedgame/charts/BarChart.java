@@ -101,21 +101,21 @@ private static int theReq;
 		 * @return the created bar graph */
 		private static JFreeChart createChart(CategoryDataset dataset){
 		    
-		    final JFreeChart chart = ChartFactory.createBarChart("Estimates for "+RequirementModel.getInstance().getRequirement(theReq).getName(), "User", "Estimate", dataset, PlotOrientation.VERTICAL, false, true, false);
+		    final JFreeChart chart = ChartFactory.createBarChart("Estimates for " + RequirementModel.getInstance().getRequirement(theReq).getName(), "User", "Estimate", dataset, PlotOrientation.VERTICAL, false, true, false);
 
 		    final String fontName = "Lucida Sans";
 
 		    final StandardChartTheme theme = (StandardChartTheme)org.jfree.chart.StandardChartTheme.createJFreeTheme();
 
 		    theme.setTitlePaint( Color.decode( "#4572a7" ) );
-		    theme.setExtraLargeFont( new Font(fontName,Font.PLAIN, 16) ); //title
-		    theme.setLargeFont( new Font(fontName,Font.BOLD, 15)); //axis-title
-		    theme.setRegularFont( new Font(fontName,Font.PLAIN, 11));
+		    theme.setExtraLargeFont( new Font(fontName, Font.PLAIN, 16) ); //title
+		    theme.setLargeFont( new Font(fontName, Font.BOLD, 15)); //axis-title
+		    theme.setRegularFont( new Font(fontName, Font.PLAIN, 11));
 		    theme.setRangeGridlinePaint( Color.decode("#C0C0C0"));
 		    theme.setPlotBackgroundPaint( Color.white );
 		    theme.setChartBackgroundPaint( Color.white );
 		    theme.setGridBandPaint( Color.red );
-		    theme.setAxisOffset( new RectangleInsets(0,0,0,0) );
+		    theme.setAxisOffset( new RectangleInsets(0, 0, 0, 0) );
 		    theme.setBarPainter(new StandardBarPainter());
 		    theme.setAxisLabelPaint( Color.decode("#666666")  );
 		    theme.apply( chart );

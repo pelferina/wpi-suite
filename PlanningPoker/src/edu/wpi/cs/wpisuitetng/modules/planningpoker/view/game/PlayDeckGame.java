@@ -22,12 +22,13 @@ import java.util.List;
 
 
 
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SpringLayout;
+
 
 
 
@@ -82,7 +83,7 @@ public class PlayDeckGame extends PlayGame implements Refreshable{
 		isDeckSingleSelection = DeckModel.getInstance().getDeck(deckId).isSingleSelection();
 		generateButtons();
 
-		deckArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		deckArea.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
 		for (final GameCard card: cardButtons){
 
@@ -214,8 +215,8 @@ public class PlayDeckGame extends PlayGame implements Refreshable{
 			deckAreaPanel.add(i);
 		}
 
-		System.out.println("CI:"+cardButtons);
-		System.out.println("v2:"+gameCardList);
+		System.out.println("CI:" + cardButtons);
+		System.out.println("v2:" + gameCardList);
 		//This loop will cycle through all of the buttons that have been created and display them
 
 	}
