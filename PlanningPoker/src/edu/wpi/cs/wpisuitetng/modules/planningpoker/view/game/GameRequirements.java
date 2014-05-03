@@ -279,6 +279,7 @@ public class GameRequirements extends JSplitPane{
 					}
 				}
 				gv.sendReqToPlay(req);
+				gv.unselectAllCards();
 			}
 		}
 	}

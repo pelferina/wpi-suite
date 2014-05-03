@@ -110,12 +110,10 @@ public class PlayDeckGame extends PlayGame implements Refreshable{
 					} else { // SINGLE SELECTION
 						if (card.isSelected()) {
 							votesSoFarInt = card.getValue();
-							votesSoFarLabel.setText (Integer.toString(votesSoFarInt)) ;
 							votesSoFarLabel.setVisible(true);
 							unselectOtherCards(card);
 							voteButton.setEnabled(true);
-						} else {
-							votesSoFarLabel.setVisible(false);
+							votesSoFarLabel.setText (Integer.toString(votesSoFarInt)) ;
 						}
 					}
 				} 
@@ -221,7 +219,8 @@ public class PlayDeckGame extends PlayGame implements Refreshable{
 	/**
 	 * This function cycles through available cards and unselect all of them
 	 */
-	private void unselectAll(){
+	public void unselectAll(){
+		System.out.println("Unselecting All Cards");
 		for(int i=0; i < cardButtons.size(); i++)
 		{
 			GameCard c = cardButtons.get(i);
