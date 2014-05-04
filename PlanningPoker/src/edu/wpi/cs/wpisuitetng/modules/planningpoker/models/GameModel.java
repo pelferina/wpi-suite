@@ -268,6 +268,24 @@ public class GameModel extends AbstractListModel {
 	}
 	
 	/**
+	 * This returns the game sessions needing a final estimation
+	 * @param userID the user's ID number, as integer
+	 * @return a List<GameSessions> needing votes
+	 */
+	public List<GameSession> getGamesNeedingFinalEstimate(int userID)
+	{
+		final List<GameSession> needsEstimation = new ArrayList<GameSession>();
+		
+		for (GameSession game : games){
+			if (game.getGameStatus() == GameStatus.COMPLETED && game.getOwnerID() == userID && game.getFinalVotes().contains(-1)){
+				needsEstimation.add(game);
+			}
+		}
+		
+		return needsEstimation;
+	}
+	
+	/**
 	 * This returns the game sessions needing a vote from the user
 	 * @param userID the user's ID number, as integer
 	 * @return a List<GameSessions> needing votes
