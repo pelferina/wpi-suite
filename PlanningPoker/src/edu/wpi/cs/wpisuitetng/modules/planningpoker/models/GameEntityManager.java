@@ -13,7 +13,6 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -39,8 +38,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
 /**
  * This is the entity manager for the Planning Poker Module.
  * 
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 public class GameEntityManager implements EntityManager<GameSession> {
 

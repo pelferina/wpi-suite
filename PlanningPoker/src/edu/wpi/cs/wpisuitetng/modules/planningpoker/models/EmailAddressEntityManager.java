@@ -35,8 +35,8 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
  * This is the entity manager for the EmailAddressModel in the
  * PostBoard module.
  * 
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 public class EmailAddressEntityManager implements EntityManager<EmailAddressModel> {
 

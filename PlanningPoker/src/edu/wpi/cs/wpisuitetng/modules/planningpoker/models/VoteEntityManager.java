@@ -25,8 +25,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
 
 /**
  * This class manages all votes
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 public class VoteEntityManager implements EntityManager<Vote> {
 

@@ -24,8 +24,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
  * This is the action listener for entity manager to check deadline on each games.
  * It will be called every few seconds on server side
  * 
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 public class DeadLineListener implements ActionListener{
 	private final Data db;

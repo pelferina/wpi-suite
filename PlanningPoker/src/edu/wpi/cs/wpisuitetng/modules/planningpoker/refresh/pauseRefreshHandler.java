@@ -19,7 +19,6 @@ import javax.swing.event.AncestorListener;
  * Manages pausing the refresh code when we are not in the planning poker tab
  * @author FFF8E7
  * @version 6
- *
  */
 public class pauseRefreshHandler implements AncestorListener {
 

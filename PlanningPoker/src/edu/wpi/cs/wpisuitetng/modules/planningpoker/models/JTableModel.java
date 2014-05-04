@@ -22,9 +22,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
 
 /**
  * This is a model for the JTabel
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
- *
+ * @author FFF8E7
+ * @version 6
  */
 @SuppressWarnings("serial")
 public class JTableModel extends AbstractTableModel {
