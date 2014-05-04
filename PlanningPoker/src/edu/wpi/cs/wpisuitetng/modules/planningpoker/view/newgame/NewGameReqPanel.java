@@ -1,5 +1,7 @@
 /*******************************************************************************
- * Copyright (c) 2014 WPI-Suite
+ * Copyright (c)
+
+ 2014 WPI-Suite
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -223,6 +225,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				disableAllButtons();
+				System.out.println("Reqs are "+reqs);
 				if(reqs.size() != 0){
 					final DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
 					final DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
@@ -266,6 +269,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 						offset++;
 					}
 				selectedTable.clearSelection();
+				
 				unselectedTable.clearSelection();
 				int rowIndex = selectedTable.getRowCount() - 1;
 				if(selectedTable.getRowCount() > 0){
@@ -533,9 +537,10 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
 		filterBacklog();
 		for (int i = 0; i < selectedSize; i++){
-			reqs.remove(selected.get(i).getId());
+			reqs.remove(selected.get(i));
 		}
 		final DefaultTableModel dtm = (DefaultTableModel) unselectedTable.getModel();
+		dtm.setRowCount(0);
 		dtm.setRowCount(reqs.size());
 		for (int i = 0; i < reqs.size(); i++){
 				dtm.setValueAt(reqs.get(i).getName(), i, 0);
