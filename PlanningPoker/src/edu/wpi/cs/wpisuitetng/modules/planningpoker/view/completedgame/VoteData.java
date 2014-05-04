@@ -96,7 +96,6 @@ public class VoteData extends JPanel{
 		gameReqs = cv.getGameRequirements();
 		finalVote = new ArrayList<Integer>();
 		notAnIntegerError.setVisible(false);
-//		archiveGameButton.setEnabled(false);
 		submitEstimateButton.setEnabled(false);
 		descriptionTextArea.setLineWrap(true);
 		descriptionTextArea.setWrapStyleWord(true);
@@ -180,7 +179,6 @@ public class VoteData extends JPanel{
 						break;
 					}
 				}
-				archiveGameButton.setEnabled(allVotes);
 				completeView.nextRequirement(finalEstimate);
 				completeView.isNew = false;
 			}
