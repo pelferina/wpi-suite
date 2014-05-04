@@ -263,7 +263,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 						
 						
 						// GUI calls
-						nameField.setEnabled(true);
+						nameField.setEnabled(false);
 						nameField.setText(decksComboBox.getItemAt(selectedDeckIndex));
 						btnAddCard.setEnabled(true);
 						btnRmvSelected.setEnabled(true);
