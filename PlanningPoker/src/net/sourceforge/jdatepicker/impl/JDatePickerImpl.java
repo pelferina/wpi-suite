@@ -145,7 +145,7 @@ public class JDatePickerImpl extends JPanel implements JDatePicker {
 		datePanel.getModel().addChangeListener(internalEventHandler);
 	}	
 	
-	protected JFormattedTextField.AbstractFormatter createDefaultFormatter() {
+	public JFormattedTextField.AbstractFormatter createDefaultFormatter() {
 		return new DateComponentFormatter();
 	}
 

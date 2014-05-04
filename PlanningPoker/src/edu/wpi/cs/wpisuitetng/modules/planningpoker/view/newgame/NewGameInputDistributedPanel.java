@@ -206,8 +206,6 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	{
 		newGameP = ngdp;
 
-		currentDate = Calendar.getInstance();
-
 		setupButtonIcons();	
 
 		saveGameButton.setEnabled(false);
