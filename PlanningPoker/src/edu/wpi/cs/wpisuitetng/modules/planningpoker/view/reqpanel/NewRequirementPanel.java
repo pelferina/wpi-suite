@@ -206,7 +206,7 @@ public class NewRequirementPanel extends JPanel {
 				checkInput(e);
 			}
 			
-			public void checkInput(DocumentEvent e){
+			private void checkInput(DocumentEvent e){
 				isCreatable = (!nameField.getText().isEmpty() && !descriptionField.getText().isEmpty());
 				if (isCreatable){
 					CreateRequirementButton.setEnabled(isCreatable);
@@ -234,7 +234,7 @@ public class NewRequirementPanel extends JPanel {
 				checkInput(e);
 			}
 			
-			public void checkInput(DocumentEvent e){
+			private void checkInput(DocumentEvent e){
 				isCreatable = (!nameField.getText().isEmpty() && !descriptionField.getText().isEmpty());
 				CreateRequirementButton.setEnabled(isCreatable);
 				reqError.setVisible(!isCreatable);

@@ -54,63 +54,56 @@ public interface DateModel<T> {
 	/**
 	 * Removes the specified ChangeListener. ChangeListeners will be notified
 	 * when the selected date is changed.
-	 * 
-	 * @param arg
+	 * @param changeListener The ChangeListener to be removed
 	 */
 	void removeChangeListener(ChangeListener changeListener);
 
 	/**
-	 * Getters and setters which represent a gregorian date.
-	 * 
-	 * @return
+	 * Getters and setters which represent a Gregorian date.
+	 * @return the currently set year as an integer
 	 */
 	int getYear();
 	
 	/**
-	 * Getters and setters which represent a gregorian date.
-	 * 
-	 * @return
+	 * Getters and setters which represent a Gregorian date.
+	 * @param year the year to be set
 	 */
 	void setYear(int year);
 	
 	/**
-	 * Getters and setters which represent a gregorian date.
-	 * 
-	 * @return
+	 * Getters and setters which represent a Gregorian date.
+	 * @return the currently set month as an integer
 	 */
 	int getMonth();
 	
 	/**
-	 * Getters and setters which represent a gregorian date.
-	 * 
-	 * @return
+	 * Getters and setters which represent a Gregorian date.
+	 * @param month the month to be set
 	 */
 	void setMonth(int month);
 	
 	/**
-	 * Getters and setters which represent a gregorian date.
-	 * 
-	 * @return
+	 * Getters and setters which represent a Gregorian date.
+	 * @return the currently set day as an integer
 	 */
 	int getDay();
 	
 	/**
-	 * Getters and setters which represent a gregorian date.
-	 * 
-	 * @return
+	 * Getters and setters which represent a Gregorian date.
+	 * @param day the day to be set
 	 */
 	void setDay(int day);
 	
 	/**
-	 * Getters and setters which represent a gregorian date.
-	 * 
-	 * @return
+	 * sets the date
+	 * @param year The value that the year will be set to
+	 * @param month The value that the month will be set to
+	 * @param day The value that the day will be set to
 	 */
 	void setDate(int year, int month, int day);
 	
 	/**
-	 * Add or substract number of years.
-	 * 
+	 * Add or subtract number of years.
 	 * @param add
 	 */
 	void addYear(int add);
@@ -131,8 +124,7 @@ public interface DateModel<T> {
 
 	/**
 	 * Get the value this model represents.
-	 * 
-	 * @return
+	 * @return value of the T object
 	 */
 	T getValue();
 
@@ -145,8 +137,7 @@ public interface DateModel<T> {
 	
 	/**
 	 * Is the value selected or is it not.
-	 * 
-	 * @return
+	 * @return whether the DateModel is selected or not
 	 */
 	boolean isSelected();
 	

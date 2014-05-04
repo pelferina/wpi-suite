@@ -90,6 +90,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 	private int selectedDeckIndex;
 
 	/** Constructor for a DeckPanel panel
+	 * @param close Button to close this panel
 	 */
 	public DeckManagingPanel(JButton close){
 		btnClose = close;
@@ -723,7 +724,10 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		return true;
 	}
 
-	public void setFocusOnName() {
+	/**
+	 * sets the focus to the name field
+	 */
+	public void focusOnName() {
 		nameField.requestFocusInWindow();
 		getRootPane().setDefaultButton(btnAddCard);
 	}

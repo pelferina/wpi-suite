@@ -65,6 +65,9 @@ public abstract class AbstractDateModel<T> implements DateModel<T> {
 		changeListeners.remove(changeListener);
 	}
 
+	/**
+	 * changes all listeners to this ChangeEvent
+	 */
 	protected synchronized void fireChangeEvent() {
 		for (ChangeListener changeListener : changeListeners) {
 			changeListener.stateChanged(new ChangeEvent(this));
@@ -79,6 +82,12 @@ public abstract class AbstractDateModel<T> implements DateModel<T> {
         propertyChangeListeners.remove(listener);
     }
 
+    /**
+     * changes listeners to this ChangeEvent if oldValue and newValue are valid and different
+     * @param propertyName The name of the property
+     * @param oldValue The old value of the property
+     * @param newValue The new value of the property
+     */
 	protected synchronized void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
 		if (oldValue != null && newValue != null && oldValue.equals(newValue)) {
 		    return;
@@ -220,8 +229,18 @@ public abstract class AbstractDateModel<T> implements DateModel<T> {
 		calendarValue.set(Calendar.MILLISECOND, 0);
 	}
 
+	/**
+	 * converts a type T object into a Calendar
+	 * @param from The T object to be converted
+	 * @return the new Calendar
+	 */
 	protected abstract Calendar toCalendar(T from);
 	
+	/**
+	 * converts a Calendar into a type T object
+	 * @param from The Calendar to be converted
+	 * @return the new T object
+	 */
 	protected abstract T fromCalendar(Calendar from);
 
 }

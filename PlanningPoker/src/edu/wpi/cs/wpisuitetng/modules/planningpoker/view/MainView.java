@@ -100,8 +100,7 @@ public class MainView extends JTabbedPane {
 			addTab("Req Tab", gs);
 		}
 		/**
-		 * function to add a ReqTab
-		 * @param gs The GameSession to add the tab to
+		 * function to add a DeckManagementTab
 		 */
 		public void addDeckManagementTab(){
 			if(!hasDeckManagingPane){
@@ -377,7 +376,7 @@ public class MainView extends JTabbedPane {
 	     * @param tabName name of the tab being closed
 	     * @param index index of that tab on the tab list
 	     * @param mv the MainView
-	     * @param cv the completeView panel
+	     * @param dm The DeckManagingPanel
 	     * @param type integer for type
 	     */
 	    public MyCloseActionHandler(String tabName, int index, MainView mv, DeckManagingPanel dm, int type) {

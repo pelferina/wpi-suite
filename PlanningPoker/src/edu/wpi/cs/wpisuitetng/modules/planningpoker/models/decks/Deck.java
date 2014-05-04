@@ -191,6 +191,7 @@ public class Deck extends AbstractModel {
 	/**
 	 * Method delete.
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#setDelete()
+	 * @param isDeleted Boolean which sets whether the deck is deleted
 	 * @return this Deck
 	 */
 	public Deck setIsDeleted(boolean isDeleted) {
@@ -207,6 +208,11 @@ public class Deck extends AbstractModel {
 		return isSingleSelection;
 	}
 
+	/**
+	 * setter for the single selection boolean
+	 * @param isSingleSelection Boolean to set isSingleSelection boolean
+	 * @return this Deck
+	 */
 	public Deck setIsSingleSelection(boolean isSingleSelection) {
 		this.isSingleSelection = isSingleSelection;
 		return this;
@@ -216,6 +222,11 @@ public class Deck extends AbstractModel {
 		return UserID;
 	}
 
+	/**
+	 * setter for the user ID
+	 * @param userID The integer to be used as the user ID
+	 * @return this Deck
+	 */
 	public Deck setUserID(int userID) {
 		UserID = userID;
 		return this;
