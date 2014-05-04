@@ -106,7 +106,7 @@ public class PreferencesPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, submitButton, 0, SpringLayout.HORIZONTAL_CENTER, enableCheckBox);
 		// Swing layout for enableCheckBox
 		springLayout.putConstraint(SpringLayout.NORTH, enableCheckBox, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, emailLabel);
-		springLayout.putConstraint(springLayout.WEST, enableCheckBox, 0, SpringLayout.EAST, emailLabel);
+		springLayout.putConstraint(springLayout.WEST, enableCheckBox, 0, SpringLayout.WEST, emailLabel);
 		// Swing layout for deckButton
 		springLayout.putConstraint(SpringLayout.NORTH, deckButton, 30, SpringLayout.SOUTH, submitButton);
 		springLayout.putConstraint(SpringLayout.WEST, deckButton, 0, SpringLayout.WEST, submitButton);

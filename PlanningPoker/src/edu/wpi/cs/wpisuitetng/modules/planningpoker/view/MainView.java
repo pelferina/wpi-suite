@@ -59,6 +59,8 @@ public class MainView extends JTabbedPane {
 	private final List<Integer> openTabs = new ArrayList<Integer>();
 	private final List<NewGameDistributedPanel> newGames = new ArrayList<NewGameDistributedPanel>();
 	final int PERMANANT_TABS = 1;
+	private int preferencePaneIndex = -1;
+	private int manageDeckIndex = -1;
 	private boolean hasPreferencePane = false;
 	private boolean hasDeckManagingPane = false;
 
@@ -103,7 +105,10 @@ public class MainView extends JTabbedPane {
 		 */
 		public void addDeckManagementTab(){
 			if(!hasDeckManagingPane){
-			addTab("Deck Management", new GameSession(null, null, 0, 0, null, null));
+				addTab("Deck Management", new GameSession(null, null, 0, 0, null, null));
+			}
+			else{
+				setSelectedIndex(manageDeckIndex);
 			}
 		}
 
@@ -204,12 +209,14 @@ public class MainView extends JTabbedPane {
 				myCloseActionHandler = new MyCloseActionHandler("User Preferences", j, this, userPreferences, 4);
 				add(userPreferences, open);
 				hasPreferencePane = true;
+				preferencePaneIndex = open;
 			}
 			else if(tabType.equals("Deck Management")){
 				final DeckManagingPanel deckManaging = new DeckManagingPanel(btnClose);
 				myCloseActionHandler = new MyCloseActionHandler("Deck Management", j, this, deckManaging, 6);
 				add(deckManaging, open);
 				hasDeckManagingPane = true;
+				manageDeckIndex = open;
 			}
 			
 			final JPanel pnlTab = new JPanel(new GridBagLayout());
@@ -470,6 +477,9 @@ public class MainView extends JTabbedPane {
 	public void addPreferencesPanel() {
 		if (!hasPreferencePane){
 			addTab("User Preferences", new GameSession(null, null, 0, 0, null, null));
+		}
+		else {
+			setSelectedIndex(preferencePaneIndex);
 		}
 	}
 
