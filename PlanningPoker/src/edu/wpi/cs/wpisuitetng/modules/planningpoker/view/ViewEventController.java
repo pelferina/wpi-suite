@@ -102,6 +102,13 @@ public class ViewEventController {
 	}
 	
 	/**
+	 * Opens a new tab for managing decks.
+	 */
+	public void deckManagementTab(){
+		main.addDeckManagementTab();
+	}
+	
+	/**
 	 * adds a playGameTab linked to the given gameSession
 	 * @param gameSession the gameSession to add a playGameTab of
 	 */

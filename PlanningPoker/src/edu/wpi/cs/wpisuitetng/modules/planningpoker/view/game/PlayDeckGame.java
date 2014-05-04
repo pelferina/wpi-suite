@@ -76,7 +76,7 @@ public class PlayDeckGame extends PlayGame implements Refreshable{
 
 		deckId = currentGame.getDeckId();
 		gameCardList = DeckModel.getInstance().getDeck(deckId).getCards();
-		isDeckSingleSelection = DeckModel.getInstance().getDeck(deckId).isSingleSelection();
+		isDeckSingleSelection = DeckModel.getInstance().getDeck(deckId).getIsSingleSelection();
 		generateButtons();
 
 		deckArea.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
@@ -157,11 +157,12 @@ public class PlayDeckGame extends PlayGame implements Refreshable{
 		springLayout.putConstraint(SpringLayout.SOUTH, deckArea, -GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.NORTH, notAnIntegerError);
 
 		//Spring layout for votesSoFarNameLabel
-		springLayout.putConstraint(SpringLayout.NORTH, votesSoFarNameLabel, 15, SpringLayout.SOUTH, deckArea);
-		springLayout.putConstraint(SpringLayout.WEST, votesSoFarNameLabel, 0, SpringLayout.WEST, deckArea);
+		springLayout.putConstraint(SpringLayout.SOUTH, votesSoFarNameLabel, 0, SpringLayout.SOUTH, voteButton);
+		springLayout.putConstraint(SpringLayout.EAST, votesSoFarNameLabel, -50, SpringLayout.WEST, voteButton);
 
 		//Spring layout for votesSoFarLabel
 		springLayout.putConstraint(SpringLayout.NORTH, votesSoFarLabel, 0, SpringLayout.NORTH, votesSoFarNameLabel);
+		springLayout.putConstraint(SpringLayout.EAST, votesSoFarLabel, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.WEST, voteButton);
 		springLayout.putConstraint(SpringLayout.WEST, votesSoFarLabel, 5, SpringLayout.EAST, votesSoFarNameLabel);
 
 		setLayout(springLayout);
@@ -226,6 +227,17 @@ public class PlayDeckGame extends PlayGame implements Refreshable{
 		{
 			GameCard c = cardButtons.get(i);
 			c.setSelected(false);
+		}
+		voteButton.setEnabled(false);
+	}
+	
+	/**
+	 * Disables all the card buttons, used when no requirement is selected
+	 */
+	public void disableAll(){
+		for(int i=0; i < cardButtons.size(); i++){
+			GameCard c = cardButtons.get(i);
+			c.setEnabled(false);
 		}
 		voteButton.setEnabled(false);
 	}

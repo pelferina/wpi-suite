@@ -137,7 +137,7 @@ public class NewGameDistributedPanel extends JSplitPane {
 		deckPanel.focusOnName();
 		newRequirement.setVisible(false);
 		newGameReqPanel.setVisible(false);
-		newRequirement.focusOnName();
+		deckPanel.focusOnName();
 		isDeckOpen = true;
 	}
 	
@@ -157,6 +157,7 @@ public class NewGameDistributedPanel extends JSplitPane {
 			setDividerLocation(DIVIDER_LOCATION);
 			newRequirement.setVisible(true);
 		}
+		newGameInputPanel.deckBoxSetToNewDeck();
 		isDeckOpen = false;
 	}
 	/**

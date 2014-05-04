@@ -109,8 +109,11 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	private final JCheckBox deckCheckBox = new JCheckBox("Use Deck");
 	private final JComboBox<String> deckBox = new JComboBox<String>(); 
 	private List<Deck> decks = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
-	private int selectedDeckIndex = 0;
+	private int selectedDeckID = 0;
+	private boolean justAddedDeck = false;
+
 	private final JButton createDeckButton = new JButton("Create Deck");
+	private List<Integer> deckIDs = new ArrayList<Integer>();
 
 
 	/*
@@ -348,9 +351,11 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		deckBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				selectedDeckIndex = deckBox.getSelectedIndex();
+				if (deckIDs.size() > 0) {
+					selectedDeckID = deckIDs.get(deckBox.getSelectedIndex());
+				}
 				if (editMode){
-					if (deckBox.getSelectedIndex() != currentGameSession.getDeckId()){
+					if (selectedDeckID != currentGameSession.getDeckId()){
 						newGameP.isNew = false;
 					}
 				}
@@ -364,14 +369,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		saveGameButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				saveOrActivateGame();
-				if(editMode) // TODO: do we really need an if statement here?
-				{
-					newGameP.close.doClick();
-				}
-				else
-				{
-					newGameP.close.doClick();
-				}
+				newGameP.close.doClick();
 			}
 		});
 
@@ -428,8 +426,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 				newGame.setGameStatus(GameStatus.ACTIVE);
 			}
 			if (deckCheckBox.isSelected()){
-				//TODO set correct deck
-				newGame.setDeckId(deckBox.getSelectedIndex());
+				newGame.setDeckId(selectedDeckID);
 			}
 
 			final AddGameController msgr = new AddGameController(model);
@@ -448,7 +445,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			}
 
 			if (deckCheckBox.isSelected()){
-				currentGameSession.setDeckId(deckBox.getSelectedIndex());
+				currentGameSession.setDeckId(selectedDeckID);
 			} else {
 				currentGameSession.setDeckId(-1);
 			}
@@ -489,7 +486,11 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 				//Display Update button if game has been changed in edit mode
 				if(editMode && anythingChanged())
 				{
-					if (newGameP.getSelected().size() > 0) {
+					if (currentGameSession.getGameStatus() == GameStatus.DRAFT) {
+						newGameP.isNew = false;
+						saveGameButton.setEnabled(true);
+					}
+					else if (newGameP.getSelected().size() > 0){
 						newGameP.isNew = false;
 						saveGameButton.setEnabled(true);
 					}
@@ -526,9 +527,6 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		if (newGameP.getSelected().isEmpty()){
 			removeErrorLabels();
 			reqError.setVisible(true);
-			if (editMode){
-				saveGameButton.setEnabled(false);
-			}
 			return false;
 		}
 		else
@@ -739,12 +737,9 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	public void initializeDeckComboBox()
 	{	
 		deckBox.removeAllItems();
+		deckIDs.clear();
 		//Initializes the deck combo box
 		addDecksToDeckComboBox();
-		if (editMode){
-			selectedDeckIndex = currentGameSession.getDeckId();
-		}
-		deckBox.setSelectedIndex(selectedDeckIndex);
 	}
 	/**
 	 * Add all available deck selections to the combo box
@@ -753,13 +748,27 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	private void addDecksToDeckComboBox()
 	{
 		decks = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
+		int i = 0;
 		for (Deck d: decks){
-			deckBox.addItem(d.getName());
+			if(!d.getIsDeleted()) {
+				deckBox.addItem(d.getName());
+				deckIDs.add(d.getId());
+				if (selectedDeckID == d.getId()) {
+					deckBox.setSelectedIndex(i);
+				}
+				i++;
+			}
+		}
+		if (justAddedDeck){
+			deckBox.setSelectedIndex(deckBox.getItemCount() - 1);
+			selectedDeckID = deckIDs.get(deckBox.getSelectedIndex());
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	private void initializeEditMode()
 	{
+		selectedDeckID = currentGameSession.getDeckId();
 
 		//Gets the deadline from the game
 		if (currentGameSession.getEndDate() != null){
@@ -811,7 +820,6 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			deckCheckBox.setSelected(true);
 			initializeDeckComboBox();
 			setDeckVisibility(true);
-			//TODO set actual deck in combo box
 		}
 		//Puts the name of the game into the name text field, it can not be edited
 		if(currentGameSession.getGameStatus() != GameStatus.DRAFT)
@@ -882,7 +890,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			return true;
 		}
 		//returns true if user changed the selected deck
-		if ((currentGameSession.getDeckId() != deckBox.getSelectedIndex())){
+		if ((currentGameSession.getDeckId() != selectedDeckID)){
 			return true;
 		}
 
@@ -928,7 +936,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	}
 
 	/**
-	 * removes all error labels
+	 * removes all error labels	
 	 */
 	private void removeErrorLabels(){
 		deadlineError.setVisible(false);
@@ -984,7 +992,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.WEST, deckBox, 0, SpringLayout.WEST, deckLabel);
 		springLayout.putConstraint(SpringLayout.NORTH, deckBox, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, deckLabel);
 		springLayout.putConstraint(SpringLayout.EAST, deckBox, 0, SpringLayout.EAST, descriptionScrollPane);
-		
+
 		//Spring layout for the createDeckButton
 		springLayout.putConstraint(SpringLayout.WEST, createDeckButton, 0, SpringLayout.WEST, deckBox);
 		springLayout.putConstraint(SpringLayout.EAST, createDeckButton, 0, SpringLayout.EAST, deckBox);
@@ -1105,6 +1113,14 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		return ((st > 0) || (len < aString.length())) ? aString.substring(st, len) : aString;
 	}
 
+	/**
+	 * called when a new deck is created. Indicates that the selected
+	 * deck should be the last one in the list (the deck that was just created)
+	 */
+	public void deckBoxSetToNewDeck() {
+		justAddedDeck = true;
+	}
+
 	@Override
 	public void refreshRequirements() {
 		//intentionally left blank
@@ -1117,7 +1133,6 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 
 	@Override
 	public void refreshDecks() {
-		final List<Deck> currentDecks = DeckModel.getInstance().getDecks();
 		if (decks.size() != DeckModel.getInstance().getDecks().size()){
 			initializeDeckComboBox();
 		}

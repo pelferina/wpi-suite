@@ -9,12 +9,14 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
 
 
 /**
@@ -27,10 +29,10 @@ public class Deck extends AbstractModel {
 	/** the ID of the deck */
 	private int id;
 	private int UserID = -1;
-	private final String name;
+	private String name;
 	private List<Integer> cards;
 
-
+	private boolean isDeleted;
 	private boolean isSingleSelection;
 	
 	/**
@@ -40,7 +42,8 @@ public class Deck extends AbstractModel {
 	{
 		id = 0;
 		name = "Default Deck";
-		cards = Arrays.asList(0, 1, 1, 2, 3, 5, 8, 13);
+		cards = Arrays.asList(0,1,1,2,3,5,8,13);
+		isDeleted = false;
 		isSingleSelection = false;
 	}
 	
@@ -62,14 +65,10 @@ public class Deck extends AbstractModel {
 	 * @param that deck to compare to
 	 * 
 	 * @return boolean for equality */
-	
 	@Override
-	public boolean equals(Object that) {
-		if (that instanceof Deck){
-			final Deck o = (Deck) that;
-			return (id == o.getId() && cards.equals(o.getCards()) && name.equals(o.getName()) && isSingleSelection == o.isSingleSelection() );
-		}
-		else return false; // if it's not a deck, it's not equal.
+	public boolean equals(Object other){
+		if(other.getClass() != Deck.class) return false;
+		return ((Deck) other).getId() == this.id;
 	}
 
 	/**
@@ -77,6 +76,15 @@ public class Deck extends AbstractModel {
 	 */
 	public List<Integer> getCards() {
 		return cards;
+	}
+
+	/**
+	 * set the card list
+	 * @param cards the card list
+	 */
+	public Deck setCards(List<Integer> cards) {
+		this.cards = new ArrayList<Integer>(cards);
+		return this;
 	}
 
 	/**
@@ -102,6 +110,14 @@ public class Deck extends AbstractModel {
 		return name;
 	}
 	
+	/**
+	 * Sets name
+	 * @return the instance of Deck
+	 */
+	public Deck setName(String name){
+		this.name = name;
+		return this;
+	}
 	/**
 	 * return the String representation of this deck
 	 */
@@ -156,7 +172,9 @@ public class Deck extends AbstractModel {
 	 */
 	@Override
 	public Boolean identify(Object o) {
-		return null;
+		if(o == null || o.getClass() != this.getClass()) return false;
+		Deck aDeck = (Deck) o;
+		return (this.getId() == aDeck.getId());
 	}
 
 	/**
@@ -170,36 +188,39 @@ public class Deck extends AbstractModel {
 
 	/**
 	 * Method delete.
-	 * @see edu.wpi.cs.wpisuitetng.modules.Model#delete()
+	 * @see edu.wpi.cs.wpisuitetng.modules.Model#setDelete()
 	 */
-	@Override
-	public void delete() {
-
-	}
-
-	public boolean isSingleSelection() {
-		return isSingleSelection;
-	}
-
-	public void setSingleSelection(boolean isSingleSelection) {
-		this.isSingleSelection = isSingleSelection;
-	}
-	/**
-	 * set the card list
-	 * @param cards the card list
-	 * @return The deck that is being changed
-	 */
-	public Deck setCards(List<Integer> cards) { // $codepro.audit.disable accessorMethodNamingConvention
-		this.cards = cards;
+	public Deck setIsDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
 		return this;
 	}
 
+	// TODO Javadocs
+	public boolean getIsDeleted() {
+		return isDeleted;
+	}
+	
+	public boolean getIsSingleSelection() {
+		return isSingleSelection;
+	}
+
+	public Deck setIsSingleSelection(boolean isSingleSelection) {
+		this.isSingleSelection = isSingleSelection;
+		return this;
+	}
+	
 	public int getUserID() {
 		return UserID;
 	}
 
-	public void setUserID(int userID) {
+	public Deck setUserID(int userID) {
 		UserID = userID;
+		return this;
+	}
+
+	@Override
+	public void delete() {
+		
 	}
 
 }
