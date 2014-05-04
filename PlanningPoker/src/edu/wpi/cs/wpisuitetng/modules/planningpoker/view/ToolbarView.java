@@ -7,6 +7,8 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
+import java.awt.Dimension;
+
 import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.DefaultToolbarView;
@@ -28,7 +30,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.UserButtonPanel
 public class ToolbarView  extends DefaultToolbarView {
 
 //	TODO: Cancel Game
-	public PlanningPokerButtonsPanel gameButton = new PlanningPokerButtonsPanel();
+	//public PlanningPokerButtonsPanel gameButton = new PlanningPokerButtonsPanel();
 	public OwnerButtonPanel ownerButton = new OwnerButtonPanel();
 	public UserButtonPanel userButton = new UserButtonPanel();
 	public GreetingPanel greetingPanel = new GreetingPanel();
@@ -39,21 +41,17 @@ public class ToolbarView  extends DefaultToolbarView {
 	 */
 	public ToolbarView(boolean visible) {
 		
-		this.insertGroupAt(greetingPanel, 0);
-		//this.addGroup(gameButton);
-		
+		//this.insertGroupAt(greetingPanel, 0);	
 		this.addGroup(buttonPanel);
-		//this.addGroup(userButton);
-		//this.addGroup(ownerButton);
 	}
 	
 	/**
 	 * Method getReqButton.
 	
 	 * @return GameButtonsPanel */
-	public PlanningPokerButtonsPanel getReqButton() {
-		return gameButton;
-	}
+//	public PlanningPokerButtonsPanel getReqButton() {
+//		return gameButton;
+//	}
 	
 	/**
 	 * Changes the buttons to show appropriately for the selected game
