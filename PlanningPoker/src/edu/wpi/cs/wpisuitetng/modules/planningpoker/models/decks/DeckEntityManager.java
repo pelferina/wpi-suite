@@ -68,7 +68,6 @@ public class DeckEntityManager implements EntityManager<Deck> {
 			throw new WPISuiteException();
 		}
 		System.err.println("Deck saved");
-		System.out.println("new deck being saved is deck " + newDeck.getId());
 		return newDeck;
 	}
 	
