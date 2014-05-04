@@ -37,7 +37,7 @@ public class EndGameActionListener implements ActionListener{
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		GameStatus gs = game.getGameStatus();
+		final GameStatus gs = game.getGameStatus();
 		game.setGameStatus(GameStatus.COMPLETED);
 		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.POST); // POST == UPDAT
 		request.setBody(game.toJSON()); // put the new session in the body of the request

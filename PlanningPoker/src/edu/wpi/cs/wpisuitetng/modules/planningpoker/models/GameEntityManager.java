@@ -48,7 +48,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	Data db;
 	Timer deadlineCheck; // Timer for checking deadline
 	Timer votingCompleteCheck;
-	LinkedList<Integer> gamesModifed = new LinkedList<Integer>();
+	List<Integer> gamesModifed = new LinkedList<Integer>();
 
 	/**
 	 * Constructs the entity manager. This constructor is called by
@@ -146,7 +146,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	 * .Session)
 	 */
 	@Override
-	public GameSession[] getAll(Session s) throws WPISuiteException{
+	public GameSession[] getAll(Session s){
 		// Ask the database to retrieve all objects of the type
 		// PostBoardMessage.
 		// Passing a dummy PostBoardMessage lets the db know what type of object
@@ -178,16 +178,12 @@ public class GameEntityManager implements EntityManager<GameSession> {
 		
 		GameStatus oldGameStatus = null;
 		final GameSession[] games;
-		try {
-			games = getAll(s);
-			for (GameSession g : games) {
-				if (g.getGameID() == importedGame.getGameID()) {
-					oldGameStatus = g.getGameStatus();
-					break;
-				}
+		games = getAll(s);
+		for (GameSession g : games) {
+			if (g.getGameID() == importedGame.getGameID()) {
+				oldGameStatus = g.getGameStatus();
+				break;
 			}
-		} catch (WPISuiteException e2) {
-			e2.printStackTrace();
 		}
 
 		try {
@@ -237,7 +233,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	 * .Session, edu.wpi.cs.wpisuitetng.modules.Model)
 	 */
 	@Override
-	public void save(Session s, GameSession model) throws WPISuiteException{
+	public void save(Session s, GameSession model){
 
 		// Save the given defect in the database
 		db.save(model);
@@ -252,14 +248,9 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	 */
 	public void endGame(int gameID, Project project) throws WPISuiteException {
 		db.update(GameSession.class, "GameID", gameID, "Status", 3);
-		try {
-			sendUserEmails("Planning Poker Alert",
-					"Planning Poker voting has ended for game: " + gameID,
-					project);
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			throw new WPISuiteException(e.toString());
-		}
+		sendUserEmails("Planning Poker Alert",
+				"Planning Poker voting has ended for game: " + gameID,
+				project);
 
 	}
 
@@ -279,10 +270,9 @@ public class GameEntityManager implements EntityManager<GameSession> {
 	 * @param textToSend the message to be sent
 	 * @param subject the subject of the email
 	 * @param project the project it is being called from
-	 * @throws UnsupportedEncodingException
 	 */
 	public void sendUserEmails(String subject, String textToSend,
-			Project project) throws UnsupportedEncodingException{
+			Project project){
 		final String username = "fff8e7.email@gmail.com";
 		final String password = "fff8e7team5";
 

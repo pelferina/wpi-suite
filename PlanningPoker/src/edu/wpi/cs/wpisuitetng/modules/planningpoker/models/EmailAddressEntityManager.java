@@ -14,6 +14,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -125,7 +126,7 @@ public class EmailAddressEntityManager implements EntityManager<EmailAddressMode
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getAll(edu.wpi.cs.wpisuitetng.Session)
 	 */
 	@Override
-	public EmailAddressModel[] getAll(Session s) throws WPISuiteException{
+	public EmailAddressModel[] getAll(Session s){
 			// Ask the database to retrieve all objects of the type
 			// PostBoardMessage.
 			// Passing a dummy PostBoardMessage lets the db know what type of object

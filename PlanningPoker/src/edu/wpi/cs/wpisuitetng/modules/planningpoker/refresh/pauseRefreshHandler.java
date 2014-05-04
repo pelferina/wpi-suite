@@ -11,6 +11,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
@@ -22,8 +23,8 @@ import javax.swing.event.AncestorListener;
  */
 public class pauseRefreshHandler implements AncestorListener {
 
-	private static AncestorListener instance;
-	private static final ArrayList<RefreshManager> RefMan = new ArrayList<RefreshManager>();;
+	private static AncestorListener instance = null;
+	private static final List<RefreshManager> RefMan = new ArrayList<RefreshManager>();;
 
 	/**
 	 * private constructor for singleton class
