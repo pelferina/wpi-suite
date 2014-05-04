@@ -40,8 +40,8 @@ public class testPlayDeckGame {
 	
 	@Before
 	public void setUp() throws Exception {
-		User admin = new User("admin", "admin", "1234", 27);
-		User bob = new User("bob", "bob", "1234", 28);
+		final User admin = new User("admin", "admin", "1234", 27);
+		final User bob = new User("bob", "bob", "1234", 28);
 		admin.setRole(Role.ADMIN);
 		req1 = new Requirement(1,"one","Desc");
 		req2 = new Requirement(2,"two","Desc");
@@ -50,8 +50,9 @@ public class testPlayDeckGame {
 		RequirementModel.getInstance().addRequirement(req2);
 		RequirementModel.getInstance().addRequirement(req3);
 
-	}	
+	}
 	@Test
+<<<<<<< HEAD
 	public void testPlayDeckGame() throws Exception{
 		List <Integer> reqList =  new ArrayList<Integer>();
 		reqList.add(1);
@@ -61,6 +62,15 @@ public class testPlayDeckGame {
 		gs.setDeckId(0);
 		GameView gv = new GameView(gs);
 		PlayDeckGame pdg = new PlayDeckGame(gs, gv);
+=======
+	public void testDeadlineCheck() throws Exception{
+		final GameSession gs = new GameSession("G", "D", 0, 0, Calendar.getInstance().getTime(), new ArrayList());
+		final GameView gv = new GameView(gs);
+		final PlayDeckGame pdg = new PlayDeckGame(gs, gv);
+		pdg.clear();
+		pdg.checkCanSubmit();
+		
+>>>>>>> 935ab2df87bf2fd07ccd1b2e3e1ab3b712368ce2
 		assertNotNull(pdg);
 		assertEquals("G", pdg.getGameNameTextField().getText());
 		assertEquals("D", pdg.getGameDescTextArea().getText());

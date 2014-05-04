@@ -38,7 +38,6 @@ public class UtilCalendarModel extends AbstractDateModel<java.util.Calendar> {
 	}
 	
 	public UtilCalendarModel(Calendar value) {
-		super();
 		setValue(value);
 	}
 

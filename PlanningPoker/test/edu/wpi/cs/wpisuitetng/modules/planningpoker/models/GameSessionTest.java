@@ -35,24 +35,24 @@ public class GameSessionTest {
 //		Network.getInstance().setDefaultNetworkConfiguration(
 //				new NetworkConfiguration("http://wpisuitetng"));
 
-	}	
+	}
 	
 	// Tests whether a gamesession can be created successfully.
 	@Test
 	public void testGameSessionCreate(){
-		GameSession gs = new GameSession("Test Game", "Test Description", 0, 1, Calendar.getInstance().getTime(), new ArrayList<Integer>());
+		final GameSession gs = new GameSession("Test Game", "Test Description", 0, 1, Calendar.getInstance().getTime(), new ArrayList<Integer>());
 		assertNotNull(gs);
 		assertEquals("Test Game", gs.getGameName());
-		assertEquals(0,gs.getOwnerID());
-		assertEquals(1,gs.getGameID());
+		assertEquals(0, gs.getOwnerID());
+		assertEquals(1, gs.getGameID());
 		assertNotNull(gs.toString());
 		
 	}
 	
 	@Test
 	public void testSetDeadline(){
-		GameSession gs = new GameSession("Test Game", "Test Description", 0, 1, Calendar.getInstance().getTime(), new ArrayList<Integer>());
-		Date deadline = Calendar.getInstance().getTime();
+		final GameSession gs = new GameSession("Test Game", "Test Description", 0, 1, Calendar.getInstance().getTime(), new ArrayList<Integer>());
+		final Date deadline = Calendar.getInstance().getTime();
 		
 		gs.setEndDate(deadline);
 		assertTrue(gs.getEndDate().equals(deadline));
@@ -62,22 +62,22 @@ public class GameSessionTest {
 	
 	@Test
 	public void testDefaultGameStatus(){
-		GameSession gs = new GameSession("Test Game", "Test Description", 0, 1, new Date(), new ArrayList<Integer>());
+		final GameSession gs = new GameSession("Test Game", "Test Description", 0, 1, new Date(), new ArrayList<Integer>());
 		assertEquals(GameStatus.DRAFT, gs.getGameStatus());
 	}
 	
 	@Test
 	public void testGetDraftGameSessionList(){
-		GameModel gm = GameModel.getInstance();
-		GameSession gs1 = new GameSession("Test Game1", "Test Description", 0, 1, new Date(), new ArrayList<Integer>());
-		GameSession gs2 = new GameSession("Test Game2", "Test Description", 0, 2, new Date(), new ArrayList<Integer>());
-		GameSession gs3 = new GameSession("Test Game3", "Test Description", 0, 3, new Date(), new ArrayList<Integer>());
+		final GameModel gm = GameModel.getInstance();
+		final GameSession gs1 = new GameSession("Test Game1", "Test Description", 0, 1, new Date(), new ArrayList<Integer>());
+		final GameSession gs2 = new GameSession("Test Game2", "Test Description", 0, 2, new Date(), new ArrayList<Integer>());
+		final GameSession gs3 = new GameSession("Test Game3", "Test Description", 0, 3, new Date(), new ArrayList<Integer>());
 		gs2.setGameStatus(GameStatus.ACTIVE);
 		gs3.setGameStatus(GameStatus.COMPLETED);
 		gm.addGame(gs1);
 		gm.addGame(gs2);
 		gm.addGame(gs3);
-		List<GameSession> draftGameSessionList = new ArrayList<GameSession>();
+		final List<GameSession> draftGameSessionList = new ArrayList<GameSession>();
 		draftGameSessionList.add(gs1);
 		int i = 0;
 		for (GameSession expectedGameSession: draftGameSessionList){
@@ -90,16 +90,16 @@ public class GameSessionTest {
 	
 	@Test
 	public void testGetActiveGameSessionList(){
-		GameModel gm = GameModel.getInstance();
-		GameSession gs1 = new GameSession("Test Game1", "Test Description", 0, 1, new Date(), new ArrayList<Integer>());
-		GameSession gs2 = new GameSession("Test Game2", "Test Description", 0, 2, new Date(), new ArrayList<Integer>());
-		GameSession gs3 = new GameSession("Test Game3", "Test Description", 0, 3, new Date(), new ArrayList<Integer>());
+		final GameModel gm = GameModel.getInstance();
+		final GameSession gs1 = new GameSession("Test Game1", "Test Description", 0, 1, new Date(), new ArrayList<Integer>());
+		final GameSession gs2 = new GameSession("Test Game2", "Test Description", 0, 2, new Date(), new ArrayList<Integer>());
+		final GameSession gs3 = new GameSession("Test Game3", "Test Description", 0, 3, new Date(), new ArrayList<Integer>());
 		gs2.setGameStatus(GameStatus.ACTIVE);
 		gs3.setGameStatus(GameStatus.COMPLETED);
 		gm.addGame(gs1);
 		gm.addGame(gs2);
 		gm.addGame(gs3);
-		List<GameSession> activeGameSessionList = new ArrayList<GameSession>();
+		final List<GameSession> activeGameSessionList = new ArrayList<GameSession>();
 		activeGameSessionList.add(gs2);
 		int i = 0;
 		for (GameSession expectedGameSession: activeGameSessionList){
@@ -111,23 +111,29 @@ public class GameSessionTest {
 	
 	@Test
 	public void testGetPastGameSessionList(){
-		GameModel gm = GameModel.getInstance();
-		GameSession gs1 = new GameSession("Test Game1", "Test Description", 0, 1, new Date(), new ArrayList<Integer>());
-		GameSession gs2 = new GameSession("Test Game2", "Test Description", 0, 2, new Date(), new ArrayList<Integer>());
-		GameSession gs3 = new GameSession("Test Game3", "Test Description", 0, 3, new Date(), new ArrayList<Integer>());
+		final GameModel gm = GameModel.getInstance();
+		final GameSession gs1 = new GameSession("Test Game1", "Test Description", 0, 1, new Date(), new ArrayList<Integer>());
+		final GameSession gs2 = new GameSession("Test Game2", "Test Description", 0, 2, new Date(), new ArrayList<Integer>());
+		final GameSession gs3 = new GameSession("Test Game3", "Test Description", 0, 3, new Date(), new ArrayList<Integer>());
 		gs2.setGameStatus(GameStatus.ACTIVE);
 		gs3.setGameStatus(GameStatus.COMPLETED);
 		gm.addGame(gs1);
 		gm.addGame(gs2);
 		gm.addGame(gs3);
-		List<GameSession> pastGameSessionList = new ArrayList<GameSession>();
+		final List<GameSession> pastGameSessionList = new ArrayList<GameSession>();
 		pastGameSessionList.add(gs3);
 		int i = 0;
 		for (GameSession expectedGameSession: pastGameSessionList){
 			assertTrue(expectedGameSession.equals(gm.getCompletedGameSessions().get(i)));
 			i++;
 		}
+<<<<<<< HEAD
 		//System.out.println(gm.getCompletedGameSessions().toString());
 	}	
 }	
+=======
+		System.out.println(gm.getCompletedGameSessions().toString());
+	}
+}
+>>>>>>> 935ab2df87bf2fd07ccd1b2e3e1ab3b712368ce2
 

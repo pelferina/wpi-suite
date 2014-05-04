@@ -39,7 +39,6 @@ public class UtilDateModel extends AbstractDateModel<java.util.Date> {
 	}
 	
 	public UtilDateModel(Date value) {
-		super();
 		setValue(value);
 	}
 
@@ -50,7 +49,7 @@ public class UtilDateModel extends AbstractDateModel<java.util.Date> {
 
 	@Override
 	protected Calendar toCalendar(Date from) {
-		Calendar to = Calendar.getInstance();
+		final Calendar to = Calendar.getInstance();
 		to.setTime(from);
 		return to;
 	}

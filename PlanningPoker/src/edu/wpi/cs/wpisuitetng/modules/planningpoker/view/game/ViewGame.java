@@ -157,7 +157,7 @@ public class ViewGame extends JPanel{
 		
 		//Spring layout placement for vote button
 		springLayout.putConstraint(SpringLayout.NORTH, voteButton, 6, SpringLayout.SOUTH, estimateTextField);
-		springLayout.putConstraint(SpringLayout.WEST, voteButton, 132, SpringLayout.WEST, this);		
+		springLayout.putConstraint(SpringLayout.WEST, voteButton, 132, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, voteButton, 0, SpringLayout.HORIZONTAL_CENTER, estimateTextField);
 		
 		//Spring layout placement for submit button

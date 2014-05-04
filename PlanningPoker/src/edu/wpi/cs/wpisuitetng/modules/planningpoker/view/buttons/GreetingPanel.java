@@ -73,5 +73,5 @@ public class GreetingPanel extends ToolbarGroupView{
 		lblWelcomeToPlanning.setFont(new Font("SWRomnt", Font.PLAIN, 15));
 		contentPanel.add(lblWelcomeToPlanning);
 		super.setContent(contentPanel);
-	}	
+	}
 }

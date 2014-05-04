@@ -77,6 +77,7 @@ public class LoadGameTest {
 
 	@Test
 	public void testLoadCompleteGame(){
+<<<<<<< HEAD
 		ArrayList<Integer> reqArray = new ArrayList<Integer>();
 		reqArray.add(1);
 		GameSession testGame = new GameSession("Test Game", "Test Description", 0, 0, new Date(), reqArray);
@@ -88,6 +89,14 @@ public class LoadGameTest {
 		CompleteView cv = new CompleteView(testGame);
 		VoteData vd = cv.getVoteData();
 		GameData gd = cv.getGameData();
+=======
+		final ArrayList<Integer> reqArray = new ArrayList<Integer>();
+		reqArray.add(0);
+		final GameSession testGame = new GameSession("Test Game", "Test Description", 0, 0, new Date(), reqArray);
+		final CompleteView cv = new CompleteView(testGame);
+		final VoteData vd = cv.getVoteData();
+		final GameData gd = cv.getGameData();
+>>>>>>> 935ab2df87bf2fd07ccd1b2e3e1ab3b712368ce2
 		assertTrue(gd.getGameNameTextBox().getText().equals("Test Game"));
 		assertTrue(gd.getDescriptionTextArea().getText().equals("Test Description"));
 	}
