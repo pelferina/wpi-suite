@@ -44,6 +44,7 @@ public class ArchiveGameActionListener implements ActionListener{
 		request.addObserver(new UpdateGameRequestObserver()); // add an observer to process the response
 		request.send(); // send the request
 		OverviewPanel.getInstance().removeGameFromTable(game.getGameID());
+		game.setGameStatus(GameStatus.COMPLETED);
 	}
 	
 }
