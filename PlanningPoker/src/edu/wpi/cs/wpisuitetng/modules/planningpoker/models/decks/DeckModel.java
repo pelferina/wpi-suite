@@ -173,7 +173,7 @@ public class DeckModel extends AbstractListModel {
 	}
 	
 	/**
-	 * This function determines if the deck is a duplicate
+	 * This function determines if the deck is a duplicate base on the name
 	 * @param s The deck name as a string
 	 * @return true if the name is a duplicate, false otherwise
 	 */
@@ -181,7 +181,7 @@ public class DeckModel extends AbstractListModel {
 		for (Deck deck: listOfDecks)
 		{
 			System.out.print(deck.getId() +  ":" + deck.getName() + "	");
-			if (deck.getName().compareTo(s) == 0) {
+			if (deck.getName().equals(s)) {
 				return true;
 			}
 		}

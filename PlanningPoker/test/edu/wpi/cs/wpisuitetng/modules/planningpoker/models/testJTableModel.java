@@ -9,21 +9,29 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-
+import org.junit.Before;
 import org.junit.Test;
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetAllUsers;
 
 
 public class testJTableModel{
 	
+	@Before
+	public void setup(){
+		GetAllUsers gau = new GetAllUsers();
+		gau.enableTesting();
+	}
+	
 	@Test
 	public void testJTableModelCreate(){
-		GameSession gs = new GameSession("t", "Test Description", 0, 1, new Date(), new ArrayList<Integer>());
-		GameSession[] games = {gs};
+		final GameSession gs = new GameSession("t", "Test Description", 0, 1, new Date(), new ArrayList<Integer>());
+		final GameSession[] games = {gs};
 		assertNotNull(new JTableModel(games) );
 	}
 

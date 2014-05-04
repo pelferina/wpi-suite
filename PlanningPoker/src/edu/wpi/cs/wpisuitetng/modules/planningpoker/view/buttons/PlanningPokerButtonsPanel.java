@@ -46,7 +46,7 @@ public class PlanningPokerButtonsPanel extends ToolbarGroupView{
 		this.setPreferredWidth(330);
 		
 		createButton.setPreferredSize(new Dimension(150, 50));
-		optionsButton.setPreferredSize(new Dimension(150, 50));	
+		optionsButton.setPreferredSize(new Dimension(150, 50));
 
 //		createButton.setHorizontalAlignment(SwingConstants.CENTER);
 		try {
@@ -69,7 +69,7 @@ public class PlanningPokerButtonsPanel extends ToolbarGroupView{
 					ViewEventController.getInstance().createGame();
 			//	}
 			}
-		});		
+		});
 		
 		//action listener for the Create Iteration Button
 		optionsButton.addActionListener(new ActionListener() {
@@ -103,5 +103,5 @@ public class PlanningPokerButtonsPanel extends ToolbarGroupView{
 	 * @return JButton */
 	public JButton getOptionsButton() {
 		return optionsButton;
-	}	
+	}
 }

@@ -73,7 +73,7 @@ public class DeckBuildingPanel extends JPanel {
 	private final SpringLayout springLayout = new SpringLayout();
 	private String newDeckName;
 	private final List<Integer> newDeckCards = new ArrayList<Integer>();
-	private final List<Integer> cardsToBeRemoved = new ArrayList<Integer>();
+	private List<Integer> cardsToBeRemoved = new ArrayList<Integer>();
 	private final JPanel cardPanel = new JPanel();
 	private final JScrollPane cardArea = new JScrollPane(cardPanel);
 	private final NewGameDistributedPanel newGameDistributed;
@@ -115,6 +115,9 @@ public class DeckBuildingPanel extends JPanel {
 		errLabel.setVisible(false);
 		//cardPanel.setMinimumSize(new Dimension(200, 13));
 		cardArea.setMinimumSize(new Dimension(200, 135));
+
+		nameField.setDocument(new JTextFieldLimit(20));
+		numberField.setDocument(new JTextFieldLimit(3));
 		
 		// Sets up cardArea
 		cardArea.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
@@ -151,13 +154,12 @@ public class DeckBuildingPanel extends JPanel {
 			}
 		});
 		
-		nameField.setDocument(new JTextFieldLimit(20));
 		// All listeners and their functions
 		btnSave.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				newDeckName = nameField.getText();
 
-				Deck newDeck = new Deck (newDeckName, newDeckCards);
+				final Deck newDeck = new Deck (newDeckName, newDeckCards);
 				newDeck.setIsSingleSelection(isSingleSelection);
 
 				AddDeckController.getInstance().addDeck(newDeck);
@@ -347,7 +349,7 @@ public class DeckBuildingPanel extends JPanel {
 		//Spring layout for textField
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameField, 0, SpringLayout.VERTICAL_CENTER, lblDeckName);
 		springLayout.putConstraint(SpringLayout.WEST, nameField, 10, SpringLayout.EAST, lblDeckName);
-		springLayout.putConstraint(SpringLayout.EAST, nameField, 100, SpringLayout.WEST, nameField);
+		springLayout.putConstraint(SpringLayout.EAST, nameField, 175, SpringLayout.WEST, nameField);
 		
 		//Spring layout for btnCancel
 		springLayout.putConstraint(SpringLayout.SOUTH, btnCancel, -GuiStandards.BOTTOM_MARGIN.getValue(), SpringLayout.SOUTH, this);
@@ -370,7 +372,7 @@ public class DeckBuildingPanel extends JPanel {
 		//Spring layout for numberField
 		springLayout.putConstraint(SpringLayout.NORTH, numberField, 0, SpringLayout.NORTH, lblAdd);
 		springLayout.putConstraint(SpringLayout.WEST, numberField, 10, SpringLayout.EAST, lblAdd);
-		springLayout.putConstraint(SpringLayout.EAST, numberField, 50, SpringLayout.WEST, numberField);
+		springLayout.putConstraint(SpringLayout.EAST, numberField, 40, SpringLayout.WEST, numberField);
 		
 		//Spring layout for btnAddCard
 		springLayout.putConstraint(SpringLayout.NORTH, btnAddCard, 10, SpringLayout.SOUTH, lblAdd);
@@ -461,17 +463,12 @@ public class DeckBuildingPanel extends JPanel {
 	 * Checks if the inputed deck name is valid
 	 */
 	private void isValidDeckName(){
-		if (nameField.getText().length() > 0 && !DeckModel.getInstance().isDuplicateDeck(nameField.getText())){
-			if (!newDeckCards.isEmpty()){
-				btnSave.setEnabled(true);
-				errLabel.setVisible(false);
-				System.out.println("newDeckName is " + newDeckName);
-			}
-			else {
-				btnSave.setEnabled(false);
-				errLabel.setText("Need to have at least one card in a deck.");
-				errLabel.setVisible(true);
-			}
+		String name = nameField.getText();
+		name = trim(name);
+		if (name.length() != 0 && !DeckModel.getInstance().isDuplicateDeck(nameField.getText())){
+			errLabel.setVisible(false);
+			btnSave.setEnabled(true);
+			isValidDeck();
 		}
 		else {
 			btnSave.setEnabled(false);
@@ -480,12 +477,27 @@ public class DeckBuildingPanel extends JPanel {
 				errLabel.setVisible(true);
 			}
 			else {
-				errLabel.setText("Invalid deck name.");
+				errLabel.setText("Deck must have a name.");
 				errLabel.setVisible(true);
 			}
 		}
 	}
 	
+	/**
+	 * checks if deck is valid
+	 */
+	private void isValidDeck() {
+		if (!newDeckCards.isEmpty()){
+			btnSave.setEnabled(true);
+			errLabel.setVisible(false);
+			System.out.println("newDeckName is " + newDeckName);
+		}
+		else {
+			btnSave.setEnabled(false);
+			errLabel.setText("Need to have at least one card in a deck.");
+			errLabel.setVisible(true);
+		}
+	}
 	
 	/**
 	 *checks if the inputed card number is valid and perform actions accordingly
@@ -542,7 +554,7 @@ public class DeckBuildingPanel extends JPanel {
 		
 		btnSave.setEnabled(allValid);
 	}
-	
+
 	/**
 	 * Helper function for checking if the estimate text box contains an integer
 	 * @param s the string to be checking
@@ -557,6 +569,25 @@ public class DeckBuildingPanel extends JPanel {
 	    // only got here if we didn't return false
 	    return true;
 	}
+	
+	/**
+	 * Trims a string by removing excess whitespace
+	 * @param aString The string to be trimmed
+	 * @return The newly trimmed string
+	 */
+	public String trim(String aString) {
+		int len = aString.length();
+		int st = 0;
+
+		while ((st < len) && Character.isWhitespace(aString.charAt(st))) {
+			st++;
+		}
+		while ((st < len) && Character.isWhitespace(aString.charAt(len - 1))) {
+			len--;
+		}
+		return ((st > 0) || (len < aString.length())) ? aString.substring(st, len) : aString;
+	}
+
 
 	/**
 	 * This function sets the focus on the name field.
@@ -564,5 +595,42 @@ public class DeckBuildingPanel extends JPanel {
 	public void focusOnName() {
 		nameField.requestFocusInWindow();
 		getRootPane().setDefaultButton(btnAddCard);
+	}
+	
+	public boolean isSingleSelection() {
+		return isSingleSelection;
+	}
+	public JButton getBtnAddCard() {
+		return btnAddCard;
+	}
+	public JButton getBtnRmvSelected() {
+		return btnRmvSelected;
+	}
+	public JButton getBtnRmvAll() {
+		return btnRmvAll;
+	}
+	public JButton getBtnSave() {
+		return btnSave;
+	}
+
+	public JButton getBtnCancel() {
+		return btnCancel;
+	}
+
+	public JTextField getNameField() {
+		return nameField;
+	}
+	public JTextField getNumberField() {
+		return numberField;
+	}
+	public List<Integer> getNewDeckCards() {
+		return newDeckCards;
+	}
+	
+	public List<Integer> getCardsToBeRemoved() {
+		return cardsToBeRemoved;
+	}
+	public void setCardsToBeRemoved(List<Integer> cardsToBeRemoved) {
+		this.cardsToBeRemoved = cardsToBeRemoved;
 	}
 }

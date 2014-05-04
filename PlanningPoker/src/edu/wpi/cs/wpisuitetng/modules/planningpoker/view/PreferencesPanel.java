@@ -59,6 +59,19 @@ public class PreferencesPanel extends JPanel {
 	private final JButton close;
 	private EmailAddressModel eModel;
 	
+	
+	private int testFlag = 0;
+	public PreferencesPanel(JButton btnClose, int testFlag){
+		this.testFlag = testFlag;
+		setupPanel();
+		if(emailField.getText().length() == 0){
+			currentEmailLabel.setText("none");
+		}
+		else currentEmailLabel.setText(emailField.getText());
+		emailField.setText("");
+		close = btnClose;
+	}
+	
 	/**
 	 * Constructor to create panel with close button
 	 * @param btnClose button to close the panel
@@ -96,7 +109,7 @@ public class PreferencesPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, currentEmailLabel, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.EAST, currentEmailNameLabel);
 		// Swing layout for email label
 		springLayout.putConstraint(SpringLayout.NORTH, emailLabel, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, currentEmailNameLabel);
-		springLayout.putConstraint(SpringLayout.WEST, emailLabel, GuiStandards.LEFT_MARGIN.getValue(), SpringLayout.WEST, this);			
+		springLayout.putConstraint(SpringLayout.WEST, emailLabel, GuiStandards.LEFT_MARGIN.getValue(), SpringLayout.WEST, this);
 		// Swing layout for email Field
 		springLayout.putConstraint(SpringLayout.NORTH, emailField, 0, SpringLayout.NORTH, emailLabel);
 		springLayout.putConstraint(SpringLayout.WEST, emailField, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.EAST, emailLabel);
@@ -150,6 +163,10 @@ public class PreferencesPanel extends JPanel {
 		add(submitButton);
 		add(enableCheckBox);
 		enableCheckBox.addItemListener(new CheckBoxChangedListener(this));
+		
+		if(testFlag == 1)
+			return;
+		
 		retrieveEmail();
 		emailField.setText(eModel.getAddress());
 		if(eModel.getEnable()){
@@ -177,6 +194,7 @@ public class PreferencesPanel extends JPanel {
 		final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.GET); // GET == read
 		request.addObserver(new GetEmailRequestObserver(this));
 		request.send(); // send the request
+		System.out.println("send request");
 		while(eModel == null){
 			try {
 				Thread.sleep(100);
@@ -240,6 +258,7 @@ class GetEmailRequestObserver implements RequestObserver {
 
 	@Override
 	public void responseSuccess(IRequest iReq) {
+		System.out.println("response success");
 		final EmailAddressModel[] emails = EmailAddressModel.fromJsonArray(iReq.getResponse().getBody());
 		panel.setEmailModel(emails[0]);
 	}
@@ -249,6 +268,7 @@ class GetEmailRequestObserver implements RequestObserver {
 	 */
 	@Override
 	public void responseError(IRequest iReq) {
+		System.out.println("response fail");
 		fail(iReq, null);
 	}
 

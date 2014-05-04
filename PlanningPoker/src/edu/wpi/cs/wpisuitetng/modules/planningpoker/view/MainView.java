@@ -383,7 +383,7 @@ public class MainView extends JTabbedPane {
 	    public MyCloseActionHandler(String tabName, int index, MainView mv, DeckManagingPanel dm, int type) {
 	        this.tabName = tabName;
 	        this.index = index;
-	        this.deckManaging = dm;
+	        deckManaging = dm;
 	        this.type = type;
 	        this.mv = mv;
 	    }

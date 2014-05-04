@@ -157,7 +157,7 @@ public class ViewGame extends JPanel{
 		
 		//Spring layout placement for vote button
 		springLayout.putConstraint(SpringLayout.NORTH, voteButton, 6, SpringLayout.SOUTH, estimateTextField);
-		springLayout.putConstraint(SpringLayout.WEST, voteButton, 132, SpringLayout.WEST, this);		
+		springLayout.putConstraint(SpringLayout.WEST, voteButton, 132, SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, voteButton, 0, SpringLayout.HORIZONTAL_CENTER, estimateTextField);
 		
 		//Spring layout placement for submit button
@@ -272,7 +272,8 @@ public class ViewGame extends JPanel{
 		reqDescTextArea.setText("");
 		estimateTextField.setText("");
 	}
-	
+
+
 	/**
 	 * checks to see if the user has voted on all the requirements in a game, then enables the submit button
 	 */
@@ -286,4 +287,28 @@ public class ViewGame extends JPanel{
 		}
 		submit.setEnabled(canSubmit);
 	}
+	
+	
+
+
+	public JTextField getEstimateTextField() {
+		return estimateTextField;
+	}
+
+	public JTextField getReqNameTextField() {
+		return reqNameTextField;
+	}
+
+	public JTextArea getReqDescTextArea() {
+		return reqDescTextArea;
+	}
+
+	public JButton getSubmit() {
+		return submit;
+	}
+
+	public JButton getVoteButton() {
+		return voteButton;
+	}
+
 }

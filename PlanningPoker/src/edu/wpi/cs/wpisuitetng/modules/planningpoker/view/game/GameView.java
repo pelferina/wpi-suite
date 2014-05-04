@@ -78,7 +78,7 @@ public class GameView extends JSplitPane{
 			else {
 				addImpl(playGameScrollPane, JSplitPane.RIGHT, 2);
 			}
-		}	
+		}
 		leftComponent.setMinimumSize(new Dimension(200, 200));
 		rightComponent.setMinimumSize(new Dimension(1000, 3000));
 		setResizeWeight(0.1);
@@ -139,7 +139,7 @@ public class GameView extends JSplitPane{
 		}
 		else {
 			playGame.clear();
-		}	
+		}
 	}
 	
 	/**

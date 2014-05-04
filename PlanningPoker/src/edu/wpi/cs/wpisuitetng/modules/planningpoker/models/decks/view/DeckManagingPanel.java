@@ -42,6 +42,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameCard;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.JTextFieldLimit;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 
 /**
@@ -55,33 +56,33 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 	private boolean isSingleSelection = true; 
 	private boolean newDeckFlag = true;
 
-	private JButton btnAddCard = new JButton("Add Card");
-	private JButton btnRmvSelected = new JButton("Remove Selected");
-	private JButton btnRmvAll = new JButton("Remove all");
-	private JButton btnSave = new JButton("Save deck");
-	private JButton btnDelete = new JButton("Delete deck");
-	private JButton btnCancel = new JButton("Cancel");
+	private final JButton btnAddCard = new JButton("Add Card");
+	private final JButton btnRmvSelected = new JButton("Remove Selected");
+	private final JButton btnRmvAll = new JButton("Remove all");
+	private final JButton btnSave = new JButton("Save deck");
+	private final JButton btnDelete = new JButton("Delete deck");
+	private final JButton btnCancel = new JButton("Cancel");
 	private JButton btnClose = new JButton("Close");
-	private JRadioButton btnSingleSelection = new JRadioButton("Single Selection");
-	private JRadioButton btnMultipleSelection = new JRadioButton("Multiple Selection");
-	private ButtonGroup selectionGroup = new ButtonGroup();
-	private JComboBox<String> decksComboBox = new JComboBox<String>();
-	private JLabel lblDeckName = new JLabel("Deck Name:");
-	private JLabel lblDecks = new JLabel("Decks:");
-	private JLabel errLabel = new JLabel("");
-	private JLabel lblAdd = new JLabel("Card Value:");
-	private JLabel lblSelection = new JLabel("Selection Mode:");
-	private JTextField nameField = new JTextField();
-	private JTextField numberField = new JTextField();
-	private SpringLayout springLayout = new SpringLayout();
+	private final JRadioButton btnSingleSelection = new JRadioButton("Single Selection");
+	private final JRadioButton btnMultipleSelection = new JRadioButton("Multiple Selection");
+	private final ButtonGroup selectionGroup = new ButtonGroup();
+	private final JComboBox<String> decksComboBox = new JComboBox<String>();
+	private final JLabel lblDeckName = new JLabel("Deck Name:");
+	private final JLabel lblDecks = new JLabel("Decks:");
+	private final JLabel errLabel = new JLabel("");
+	private final JLabel lblAdd = new JLabel("Card Value:");
+	private final JLabel lblSelection = new JLabel("Selection Mode:");
+	private final JTextField nameField = new JTextField();
+	private final JTextField numberField = new JTextField();
+	private final SpringLayout springLayout = new SpringLayout();
 	private String newDeckName;
-	private List<Integer> newDeckCards = new ArrayList<Integer>();
-	private List<Integer> cardsToBeRemoved = new ArrayList<Integer>();
+	private final List<Integer> newDeckCards = new ArrayList<Integer>();
+	private final List<Integer> cardsToBeRemoved = new ArrayList<Integer>();
 	private List<Integer> currentDeck = new ArrayList<Integer>();
-	private List<Integer> deckIDs = new ArrayList<Integer>();
+	private final List<Integer> deckIDs = new ArrayList<Integer>();
 	private List<Deck> decks = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
-	private JPanel cardPanel = new JPanel();
-	private JScrollPane cardArea = new JScrollPane(cardPanel);
+	private final JPanel cardPanel = new JPanel();
+	private final JScrollPane cardArea = new JScrollPane(cardPanel);
 	private NewGameDistributedPanel newGameDistributed;
 	//	private final JLabel notAnIntegerError = new JLabel ("Please enter an non-negative integer for card value!");
 	//	private final JLabel duplicateNameError = new JLabel ("This deck name already exists!");
@@ -125,19 +126,25 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		btnSave.setEnabled(false);
 		btnDelete.setFont(size);
 		btnDelete.setSize(80, 20);
+		btnDelete.setEnabled(false);
 		btnAddCard.setFont(size);
 		btnAddCard.setSize(80, 20);
 		btnAddCard.setEnabled(false);
 		btnRmvSelected.setFont(size);
 		btnRmvSelected.setSize(80, 20);
+		btnRmvSelected.setEnabled(false);
 		btnRmvAll.setFont(size);
 		btnRmvAll.setSize(80, 20);
+		btnRmvAll.setEnabled(false);
 		btnCancel.setFont(size);
-		btnCancel.setSize(80,20);
+		btnCancel.setSize(80, 20);
 		errLabel.setVisible(false);
 		//cardPanel.setMinimumSize(new Dimension(200, 13));
 		cardArea.setMinimumSize(new Dimension(200, 135));
 
+		nameField.setDocument(new JTextFieldLimit(20));
+		numberField.setDocument(new JTextFieldLimit(3));
+		
 		// Sets up cardArea
 		cardArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 
@@ -268,7 +275,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		btnSave.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				newDeckName = nameField.getText();
-				Deck newDeck = new Deck (newDeckName, newDeckCards); //Updated deck with new name and new cards
+				final Deck newDeck = new Deck (newDeckName, newDeckCards); //Updated deck with new name and new cards
 				newDeck.setIsSingleSelection(isSingleSelection); //Updates selection mode
 				System.out.println("new deck cards: " + newDeckCards);
 				if(newDeckFlag){ // Store new deck
@@ -277,7 +284,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 					setupDecks();
 				} else { // Update selected deck
 					System.out.println("Editing deck");
-					Deck thisDeck = DeckModel.getInstance().getDeck(deckIDs.get(selectedDeckIndex));
+					final Deck thisDeck = DeckModel.getInstance().getDeck(deckIDs.get(selectedDeckIndex));
 					thisDeck.setIsDeleted(true); // delete old version
 					UpdateDeckController.getInstance().updateDeck(thisDeck);
 
@@ -333,7 +340,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		btnAddCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final GameCard card;
-				int cardNumber;
+				final int cardNumber;
 				try {
 					cardNumber = Integer.parseInt(numberField.getText());
 					card = new GameCard(cardNumber);
@@ -366,7 +373,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 
 				} catch (NumberFormatException err) {
 					System.err.println("Incorrect use of gameCard constructor: param not a number");
-					errLabel.setText(numberField.getText()+ " is not a valid non-negative integer!");
+					errLabel.setText(numberField.getText() + " is not a valid non-negative integer!");
 					errLabel.setVisible(true);
 				} 
 				validateAll();
@@ -375,7 +382,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 
 		btnRmvSelected.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				List<Integer> tempDeckCards = new ArrayList<Integer>(newDeckCards);
+				final List<Integer> tempDeckCards = new ArrayList<Integer>(newDeckCards);
 
 				for(int valueToRemove: cardsToBeRemoved){
 					for(int cardValue: tempDeckCards){
@@ -461,7 +468,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO popup message
-				Deck thisDeck = DeckModel.getInstance().getDecks().get(deckIDs.get(selectedDeckIndex));
+				final Deck thisDeck = DeckModel.getInstance().getDecks().get(deckIDs.get(selectedDeckIndex));
 				thisDeck.setIsDeleted(true);
 				UpdateDeckController.getInstance().updateDeck(thisDeck);
 
@@ -515,7 +522,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		//Spring layout for textField
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameField, 0, SpringLayout.VERTICAL_CENTER, lblDeckName);
 		springLayout.putConstraint(SpringLayout.WEST, nameField, 10, SpringLayout.EAST, lblDeckName);
-		springLayout.putConstraint(SpringLayout.EAST, nameField, 100, SpringLayout.WEST, nameField);
+		springLayout.putConstraint(SpringLayout.EAST, nameField, 175, SpringLayout.WEST, nameField);
 
 		//Spring layout for btnSave
 		springLayout.putConstraint(SpringLayout.NORTH, btnSave, 20, SpringLayout.NORTH, this);
@@ -534,7 +541,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		//Spring layout for numberField
 		springLayout.putConstraint(SpringLayout.NORTH, numberField, 0, SpringLayout.NORTH, lblAdd);
 		springLayout.putConstraint(SpringLayout.WEST, numberField, 10, SpringLayout.EAST, lblAdd);
-		springLayout.putConstraint(SpringLayout.EAST, numberField, 100, SpringLayout.WEST, numberField);
+		springLayout.putConstraint(SpringLayout.EAST, numberField, 40, SpringLayout.WEST, numberField);
 
 		//Spring layout for btnAddCard
 		springLayout.putConstraint(SpringLayout.NORTH, btnAddCard, 10, SpringLayout.SOUTH, lblAdd);
@@ -671,7 +678,9 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 	 * Checks if the inputed deck name is valid
 	 */
 	private void validateDeckName(){
-		if (!(nameField.getText().length() > 0)){
+		String name = nameField.getText();
+		name = trim(name);
+		if (name.length() == 0 || DeckModel.getInstance().isDuplicateDeck(nameField.getText())){
 			btnSave.setEnabled(false);
 			errLabel.setText("Invalid deck name.");
 			errLabel.setVisible(true);
@@ -718,6 +727,25 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		nameField.requestFocusInWindow();
 		getRootPane().setDefaultButton(btnAddCard);
 	}
+	
+	/**
+	 * Trims a string by removing excess whitespace
+	 * @param aString The string to be trimmed
+	 * @return The newly trimmed string
+	 */
+	public String trim(String aString) {
+		int len = aString.length();
+		int st = 0;
+
+		while ((st < len) && Character.isWhitespace(aString.charAt(st))) {
+			st++;
+		}
+		while ((st < len) && Character.isWhitespace(aString.charAt(len - 1))) {
+			len--;
+		}
+		return ((st > 0) || (len < aString.length())) ? aString.substring(st, len) : aString;
+	}
+
 
 	@Override
 	public void refreshRequirements() {}

@@ -48,7 +48,7 @@ public class DateComponentFormatter extends JFormattedTextField.AbstractFormatte
 	
 	@Override
 	public String valueToString(Object value) throws ParseException {
-		Calendar cal = (Calendar)value;
+		final Calendar cal = (Calendar)value;
 		if (cal == null) {
 			return "";
 		}
@@ -60,8 +60,8 @@ public class DateComponentFormatter extends JFormattedTextField.AbstractFormatte
 		if (text == null || text.equals("")) {
 			return null;
 		}
-		Date date = format.parse(text);
-		Calendar calendar = Calendar.getInstance();
+		final Date date = format.parse(text);
+		final Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		return calendar;
 	}

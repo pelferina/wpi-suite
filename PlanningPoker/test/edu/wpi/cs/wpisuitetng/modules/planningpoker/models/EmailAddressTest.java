@@ -45,8 +45,8 @@ public class EmailAddressTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		User admin = new User("admin", "admin", "1234", 27);
-		User bob = new User("bob", "bob", "1234", 28);
+		final User admin = new User("admin", "admin", "1234", 27);
+		final User bob = new User("bob", "bob", "1234", 28);
 		admin.setRole(Role.ADMIN);
 		testProject = new Project("test", "1");
 		mockSsid = "abc123";
@@ -63,11 +63,11 @@ public class EmailAddressTest {
 		p_manager = new GameEntityManager(db);
 		e_manager = new EmailAddressEntityManager(db);
 		eController = new AddEmailAddressController(null);
-	}	
+	}
 	
 	@Test
 	public void testSendEmail() throws UnsupportedEncodingException{
-		GameSession gs = new GameSession("Test Game", "Test Description", 0, 1, new Date(1, 1, 1), new ArrayList<Integer>());
+		final GameSession gs = new GameSession("Test Game", "Test Description", 0, 1, new Date(1, 1, 1), new ArrayList<Integer>());
 		//Fixed accordin to http://stackoverflow.com/questions/10944448/instanceof-vs-isinstance
 		
 		

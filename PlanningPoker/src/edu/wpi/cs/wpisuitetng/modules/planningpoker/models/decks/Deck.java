@@ -42,7 +42,7 @@ public class Deck extends AbstractModel {
 	{
 		id = 0;
 		name = "Default Deck";
-		cards = Arrays.asList(0,1,1,2,3,5,8,13);
+		cards = Arrays.asList(0, 1, 1, 2, 3, 5, 8, 13);
 		isDeleted = false;
 		isSingleSelection = false;
 	}
@@ -68,7 +68,7 @@ public class Deck extends AbstractModel {
 	@Override
 	public boolean equals(Object other){
 		if(other.getClass() != Deck.class) return false;
-		return ((Deck) other).getId() == this.id;
+		return ((Deck) other).getId() == id;
 	}
 
 	/**
@@ -81,6 +81,7 @@ public class Deck extends AbstractModel {
 	/**
 	 * set the card list
 	 * @param cards the card list
+	 * @return this deck
 	 */
 	public Deck setCards(List<Integer> cards) {
 		this.cards = new ArrayList<Integer>(cards);
@@ -112,6 +113,7 @@ public class Deck extends AbstractModel {
 	
 	/**
 	 * Sets name
+	 * @param name The name of the Deck to be used
 	 * @return the instance of Deck
 	 */
 	public Deck setName(String name){
@@ -173,7 +175,7 @@ public class Deck extends AbstractModel {
 	@Override
 	public Boolean identify(Object o) {
 		if(o == null || o.getClass() != this.getClass()) return false;
-		Deck aDeck = (Deck) o;
+		final Deck aDeck = (Deck) o;
 		return (this.getId() == aDeck.getId());
 	}
 
@@ -189,6 +191,7 @@ public class Deck extends AbstractModel {
 	/**
 	 * Method delete.
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#setDelete()
+	 * @return this Deck
 	 */
 	public Deck setIsDeleted(boolean isDeleted) {
 		this.isDeleted = isDeleted;

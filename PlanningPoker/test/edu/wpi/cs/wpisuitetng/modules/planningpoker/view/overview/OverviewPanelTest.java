@@ -23,9 +23,25 @@ public class OverviewPanelTest {
 
 	@Test
 	public void test() {
+<<<<<<< HEAD
 		OverviewPanel op = new OverviewPanel();
+=======
+		final OverviewPanel op = new OverviewPanel();
 		op.updateTable("Drafts");
+>>>>>>> 935ab2df87bf2fd07ccd1b2e3e1ab3b712368ce2
 		assertNotNull(op);
+		op.updateTable("Drafts");
+		op.updateTable("All Games");
+		op.updateTable("My Games");
+		op.updateTable("In Progress");
+		op.updateTable("Active");
+		op.updateTable("Needs Vote");
+		op.updateTable("Voted");
+		op.updateTable("History");
+		op.updateTable("Complete");
+		op.updateTable("Archived");
+		op.refreshGames();
+		
 	}
 
 }

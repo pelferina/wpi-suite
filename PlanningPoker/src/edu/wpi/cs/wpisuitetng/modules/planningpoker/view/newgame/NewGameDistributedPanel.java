@@ -137,7 +137,7 @@ public class NewGameDistributedPanel extends JSplitPane {
 		deckPanel.focusOnName();
 		newRequirement.setVisible(false);
 		newGameReqPanel.setVisible(false);
-		newRequirement.focusOnName();
+		deckPanel.focusOnName();
 		isDeckOpen = true;
 	}
 	
@@ -157,6 +157,7 @@ public class NewGameDistributedPanel extends JSplitPane {
 			setDividerLocation(DIVIDER_LOCATION);
 			newRequirement.setVisible(true);
 		}
+		newGameInputPanel.deckBoxSetToNewDeck();
 		isDeckOpen = false;
 	}
 	/**
@@ -197,5 +198,17 @@ public class NewGameDistributedPanel extends JSplitPane {
 	 */
 	public void refreshRequirements() {
 		newGameReqPanel.refreshRequirements();
+	}
+	public NewGameReqPanel getNewGameReqPanel() {
+		return newGameReqPanel;
+	}
+	public void setNewGameReqPanel(NewGameReqPanel newGameReqPanel) {
+		this.newGameReqPanel = newGameReqPanel;
+	}
+	public DeckBuildingPanel getDeckPanel() {
+		return deckPanel;
+	}
+	public void setDeckPanel(DeckBuildingPanel deckPanel) {
+		this.deckPanel = deckPanel;
 	}
 }

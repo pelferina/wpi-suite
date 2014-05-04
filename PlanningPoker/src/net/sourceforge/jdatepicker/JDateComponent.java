@@ -55,7 +55,7 @@ public interface JDateComponent {
 	 * 
 	 * @return
 	 */
-	public DateModel<?> getModel();
+	DateModel<?> getModel();
 
 	/**
 	 * Adds an ActionListener. The actionListener is notified when a user clicks
@@ -64,7 +64,7 @@ public interface JDateComponent {
 	 * 
 	 * @param actionListener
 	 */
-	public void addActionListener(ActionListener actionListener);
+	void addActionListener(ActionListener actionListener);
 
 	/**
 	 * Removes the ActionListener. The actionListener is notified when a user
@@ -72,20 +72,20 @@ public interface JDateComponent {
 	 * 
 	 * @param arg
 	 */
-	public void removeActionListener(ActionListener actionListener);
+	void removeActionListener(ActionListener actionListener);
 
 	/**
 	 * Gets the currently set internationalised strings of the component.
 	 * 
 	 * @return
 	 */
-	public Properties getI18nStrings();
+	Properties getI18nStrings();
 	
 	/**
 	 * Sets internationalised the strings of the component.
 	 * 
 	 * @param strings
 	 */
-	public void setI18nStrings(Properties i18nStrings);
+	void setI18nStrings(Properties i18nStrings);
 
 }
