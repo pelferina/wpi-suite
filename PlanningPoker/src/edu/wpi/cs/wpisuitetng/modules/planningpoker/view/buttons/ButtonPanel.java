@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
@@ -25,6 +26,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
+import javax.swing.Timer;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
@@ -61,6 +63,7 @@ public class ButtonPanel extends ToolbarGroupView{
 	private ImageIcon playImg = null;
 	private ImageIcon viewImg = null;
 	
+	private Timer expireTimer = null;
 	
 	public ButtonPanel() {
 		super("");
@@ -68,45 +71,12 @@ public class ButtonPanel extends ToolbarGroupView{
 		
 		//Set up image icons
 		readImg();
-		
-		//Add Create Game and User Settings buttons
-		newButton.setIcon(newImg);
-		settingButton.setIcon(settingImg);
-		newButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ViewEventController.getInstance().createGame();
-			}
-		});
-		settingButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ViewEventController.getInstance().options();
-			}
-		});
-
 		contentPanel.setOpaque(false);
 		this.add(contentPanel);
 		super.setContent(contentPanel);
 	}
 	
 	private void readImg(){
-		try {
-		    newImg = new ImageIcon(ImageIO.read(getClass().getResource("newgameimage.png")));
-		    newButton.setIcon(newImg);
-		    newButton.setPreferredSize(new Dimension(150, 50));
-		} catch (IOException ex) {
-			System.out.println("IOException thrown in ButtonsPanel.");
-		}
-		
-		try {
-		    settingImg = new ImageIcon(ImageIO.read(getClass().getResource("optionsimage.png")));
-		    settingButton.setIcon(settingImg);
-		    settingButton.setPreferredSize(new Dimension(150, 50));
-		} catch (IOException ex) {
-			System.out.println("IOException thrown in ButtonsPanel.");
-		}
-		
 		try {
 		    editImg = new ImageIcon(ImageIO.read(getClass().getResource("edit.png")));
 		    editButton.setIcon(editImg);
@@ -225,6 +195,8 @@ public class ButtonPanel extends ToolbarGroupView{
     		}else if(gameSelected.getGameStatus().equals(GameStatus.DRAFT)){
     			if(isValid(gameSelected)){
     				removeActionListeners(activateButton);
+    				if(gameSelected.getEndDate() != null)
+    					expireThisButtonIn(gameSelected);
     				activateButton.addActionListener(new ActivateGameActionListener(gameSelected));
     				buttonQueue.add(activateButton);
     				contentPanel.add(activateButton);
@@ -281,5 +253,28 @@ public class ButtonPanel extends ToolbarGroupView{
 			for(ActionListener a: button.getActionListeners())
 				button.removeActionListener(a);
 		}
+	}
+	
+	private void expireThisButtonIn(final GameSession gameSelected) {
+		int expireTime =(int) (gameSelected.getEndDate().getTime() - Calendar.getInstance().getTime().getTime());
+		if (expireTimer != null){
+			expireTimer.stop();
+		}
+		
+		final ActionListener al = new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ViewEventController.getInstance().removeButtons();
+		    	ViewEventController.getInstance().changeButton(gameSelected);
+				System.out.println("Expired");
+			}
+			
+		}; // make it expire 		
+		
+		expireTimer = new Timer(expireTime, al);
+		expireTimer.setRepeats(false);
+		expireTimer.start();
+		System.out.println("Expiring in " + expireTime);
 	}
 }

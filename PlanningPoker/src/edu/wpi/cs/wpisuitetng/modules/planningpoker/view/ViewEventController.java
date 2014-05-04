@@ -67,10 +67,7 @@ public class ViewEventController {
 		main.addChangeListener(new ChangeListener(){
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				ViewEventController.getInstance().makeEditGameButtonInVisible();
-				ViewEventController.getInstance().makeOwnerButtonInvisible();
-				ViewEventController.getInstance().makeUserButtonInvisible();
-				
+				removeButtons();
 			}
 			
 		});
@@ -147,86 +144,7 @@ public class ViewEventController {
 	public void newGameTab() {
 		main.addNewGameTab();
 	}
-	//---------------Owner button ----------------------
-	/**
-	 * Set the end game button in tool bar visible 
-	 * @param game
-	 */
-	public void makeEndGameButtonVisible(GameSession game){
-		toolbar.makeEndGameButtonVisible(game);
-	}
-	
-	/**
-	 * Set the activate game button in tool bar visible 
-	 * @param game
-	 */
-	public void makeActivateGameButtonVisible(GameSession game){
-		toolbar.makeActivateGameButtonVisible(game);
-	}
-	
-	/**
-	 * Set the activate game button in tool bar visible but disable
-	 * @param game
-	 */
-	public void makeActivateGameButtonDisable(GameSession game){
-		toolbar.makeActivateGameButtonDisable(game);
-	}
-	
-	/**
-	 * Set the archive game button in tool bar visible 
-	 * @param game
-	 */
-	public void makeArchiveGameButtonVisible(GameSession game){
-		toolbar.makeArchiveGameButtonVisible(game);
-	}
-	/**
-	 * Set the end game button in tool bar invisible 
-	 */
-	public void makeOwnerButtonInvisible(){
-		toolbar.makeOwnerButtonInvisible();
-	}
-	//---------------User button ----------------------
-	/**
-	 * Set the activate game button in tool bar visible 
-	 * @param game
-	 */
-	public void makeViewGameButtonVisible(GameSession game){
-		toolbar.makeViewGameButtonVisible(game);
-	}
-	
-	/**
-	 * Set the archive game button in tool bar visible 
-	 * @param game
-	 */
-	public void makeVoteGameButtonVisible(GameSession game){
-		toolbar.makeVoteGameButtonVisible(game);
-	}
-	/**
-	 * Set the end game button in tool bar invisible 
-	 */
-	public void makeUserButtonInvisible(){
-		toolbar.makeUserButtonInvisible();
-	}
-	
-	
-	
-	
-	
-	/**
-	 * sets the edit game button to be visible
-	 * @param gameSelected The selected GameSession
-	 */
-	public void makeEditGameButtonVisible(GameSession gameSelected)
-	{
-		toolbar.makeEditGameButtonVisible(gameSelected);
-	}
 
-	/**
-	 * sets the edit game button to be invisible
-	 */
-	public void makeEditGameButtonInVisible() {
-		toolbar.makeEditGameButtonInvisible();
-	}
 	/**
 	 * Changes the toolbar buttons for the gameSelected
 	 * @param gameSelected The selected GameSession
