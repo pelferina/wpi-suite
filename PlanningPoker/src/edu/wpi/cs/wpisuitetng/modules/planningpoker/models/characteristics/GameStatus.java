@@ -9,8 +9,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics;
 
 /**
  * Various status' that a Game can have 
- * @version $Revision: 1.0 $
- * @author Cosmic Latte
+ * @author FFF8E7
+ * @version 6
  */
 public enum GameStatus {
 	/**

@@ -61,7 +61,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * This is the window for the user to create a planning poker session
- * @author fff8e7
+ * @author FFF8E7
  * @version 6
  */
 @SuppressWarnings("serial")

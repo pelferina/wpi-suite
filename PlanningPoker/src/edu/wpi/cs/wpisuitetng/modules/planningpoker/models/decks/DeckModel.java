@@ -22,10 +22,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.deckcontroller.AddDeckContro
 
 /**
  * List of Decks being pulled from the server
- * 
- * 
- * @version $Revision: 1.0 $
- * @author Cosmic Latte
+ * @author FFF8E7
+ * @version 6
  */
 @SuppressWarnings({ "serial", "rawtypes" })
 public class DeckModel extends AbstractListModel {

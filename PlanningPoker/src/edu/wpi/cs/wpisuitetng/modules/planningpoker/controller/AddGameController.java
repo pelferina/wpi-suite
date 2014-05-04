@@ -24,9 +24,8 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * adding the contents of the Game text field to the model as a new
  * Game.
  * 
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
- *
+ * @author FFF8E7
+ * @version 6
  */
 public class AddGameController implements ActionListener {
 	

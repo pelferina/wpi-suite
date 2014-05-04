@@ -45,8 +45,8 @@ import javax.swing.event.DocumentListener;
 
 /**
  * A panel for playing a game session
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 public class PlayGame extends JPanel implements Refreshable{
 

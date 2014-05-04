@@ -45,7 +45,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
  * Main view of the PlanningPoker module
  * @author FFF8E7
  * @version 6
- *
  */
 @SuppressWarnings("serial")
 public class MainView extends JTabbedPane {

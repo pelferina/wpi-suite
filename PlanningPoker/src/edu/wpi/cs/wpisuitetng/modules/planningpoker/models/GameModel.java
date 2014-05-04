@@ -25,7 +25,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
  *
  * @author FFF8E7
  * @version 6
- * 
  */
 @SuppressWarnings({"serial"})
 public class GameModel extends AbstractListModel {

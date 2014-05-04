@@ -46,7 +46,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistribu
 
 /**
  * The DeckBuildingPanel class
- * @author Cosmic Latte
+ * @author FFF8E7
  * @version 6
  */
 @SuppressWarnings({"serial"})

@@ -23,16 +23,10 @@ import javax.swing.JPanel;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 
-
-
-
-
-
-
 /**
- *
- * @version $Revision: 1.0 $
- * @author justinhess
+ * The Edit buttons panel class, Extends ToolBarGroupView
+ * @author FFF8E7
+ * @version 6
  */
 @SuppressWarnings("serial")
 public class EditButtonsPanel extends ToolbarGroupView{
