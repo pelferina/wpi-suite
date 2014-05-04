@@ -21,7 +21,6 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  * 
  * @author FFF8E7
  * @version 6
- *
  */
 public class AddEmailAddressObserver implements RequestObserver {
 	
@@ -35,9 +34,7 @@ public class AddEmailAddressObserver implements RequestObserver {
 		
 		// Parse the message out of the response body
 		final EmailAddressModel email = EmailAddressModel.fromJson(response.getBody());
-		System.out.println(email.getAddress()+" added successfully");
-		
-		return;
+		System.out.println(email.getAddress() + " added successfully");
 	}
 
 	@Override

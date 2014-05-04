@@ -31,9 +31,6 @@ import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.GuiStandards;
-
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
-
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -47,6 +44,7 @@ import java.awt.Font;
  * @author FFF8E7
  * @version 6
  */
+@SuppressWarnings("serial")
 public class GameData extends JPanel{
 
 	private final JLabel gameNameLabel = new JLabel("Game Name:");
@@ -99,11 +97,13 @@ public class GameData extends JPanel{
 		gameReqsTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Mean", "Median", "Std Dev", "Estimate"}));
 		gameReqsTable.setFillsViewportHeight(true);
 		gameReqsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		init();	
+		init();
 	}
 
 	/**
-	 * Places the GUI components for the panel, as well as filling the table with the requirements that are in the game name and descriptions
+	 * Places the GUI components for the panel,
+	 * as well as filling the table with the requirements
+	 * that are in the game name and descriptions
 	 */
 	private void init(){
 		final DefaultTableModel reqTableModel = (DefaultTableModel) gameReqsTable.getModel();

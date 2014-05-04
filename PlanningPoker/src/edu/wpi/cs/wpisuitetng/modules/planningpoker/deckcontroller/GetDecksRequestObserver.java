@@ -20,12 +20,12 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
  * This observer handles responses to requests for all
  * decks.
  * 
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 public class GetDecksRequestObserver implements RequestObserver {
 
-	final private GetDecksController controller;
+	private final GetDecksController controller;
 	
 	/**
 	 * Constructs the observer given a GetDecksController

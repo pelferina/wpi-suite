@@ -37,31 +37,25 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.IOException;
-
-
-
-
 
 import javax.swing.JComboBox;
 
 /**
  * This controls adding a new requirement from the new game tab.
- * 
  * @author FFF8E7
  * @version 6
  */
+@SuppressWarnings("serial")
 public class NewRequirementPanel extends JPanel {
-	private final Requirement currentRequirement;
+	private Requirement currentRequirement;
 	private final JTextField nameField = new JTextField();
 	private final JTextArea descriptionField = new JTextArea();
 	private final JScrollPane descriptionScrollPane = new JScrollPane(descriptionField);
 	private final JLabel nameLabel = new JLabel("Requirement Name*: ");
 	private final JLabel descriptionLabel = new JLabel("Requirement Description*: ");
 	private final JButton CreateRequirementButton = new JButton("Create Requirement");
-	private final JButton cancelButton = new JButton("Cancel");
+	private final JButton cancelButton = new JButton("Cancel Requirement");
 	private JComboBox<RequirementPriority> priorityComboBox = new JComboBox<RequirementPriority>();
 	private JComboBox<RequirementType> typeComboBox = new JComboBox<RequirementType>();
 	private final NewGameDistributedPanel newGamePanel;
@@ -212,7 +206,7 @@ public class NewRequirementPanel extends JPanel {
 				checkInput(e);
 			}
 			
-			public void checkInput(DocumentEvent e){
+			private void checkInput(DocumentEvent e){
 				isCreatable = (!nameField.getText().isEmpty() && !descriptionField.getText().isEmpty());
 				if (isCreatable){
 					CreateRequirementButton.setEnabled(isCreatable);
@@ -222,31 +216,6 @@ public class NewRequirementPanel extends JPanel {
 			}
 		});
 		
-		descriptionField.addKeyListener(new KeyListener(){
-
-			@Override
-			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (e.VK_ENTER == e.getKeyCode()){
-					if (CreateRequirementButton.isEnabled()){
-						CreateRequirementButton.doClick();
-					}
-				}
-				
-			}
-			
-		});
 		
 		/**
 		 * Document listener for the discriptionField
@@ -260,12 +229,12 @@ public class NewRequirementPanel extends JPanel {
 			public void removeUpdate(DocumentEvent e){
 				checkInput(e);
 			}
-			@Override 
+			@Override
 			public void insertUpdate(DocumentEvent e){
 				checkInput(e);
 			}
 			
-			public void checkInput(DocumentEvent e){
+			private void checkInput(DocumentEvent e){
 				isCreatable = (!nameField.getText().isEmpty() && !descriptionField.getText().isEmpty());
 				CreateRequirementButton.setEnabled(isCreatable);
 				reqError.setVisible(!isCreatable);
@@ -279,7 +248,7 @@ public class NewRequirementPanel extends JPanel {
 	 */
 	private void updateRequirement(){
 		currentRequirement.setId(RequirementModel.getInstance().getNextID());
-		currentRequirement.setWasCreated(true);		
+		currentRequirement.setWasCreated(true);
 		// Extract the name, release number, and description from the GUI fields
 		final String stringName = nameField.getText();
 
@@ -307,6 +276,7 @@ public class NewRequirementPanel extends JPanel {
 		ViewEventController.getInstance().refreshTable();
 		ViewEventController.getInstance().refreshTree();
 		newGamePanel.sendCreatedReq(currentRequirement);
+		currentRequirement = new Requirement();
 	}
 	/**
 	 * This function clears all fields so that creating multiple requirments won't have the same fields
@@ -334,8 +304,9 @@ public class NewRequirementPanel extends JPanel {
 	/**
 	 * This sets the cursor focus on the name box
 	 */
-	public void setFocusOnName() {
+	public void focusOnName() {
 		nameField.requestFocusInWindow();
+		getRootPane().setDefaultButton(CreateRequirementButton);
 	}
 }
 	

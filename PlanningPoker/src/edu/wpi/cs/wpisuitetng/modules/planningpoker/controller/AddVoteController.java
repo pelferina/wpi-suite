@@ -19,8 +19,8 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 /**
  * This controller responds when the user casts their vote during a game
  * 
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 public class AddVoteController {
 

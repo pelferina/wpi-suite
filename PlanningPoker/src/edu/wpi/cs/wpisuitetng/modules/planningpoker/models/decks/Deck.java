@@ -1,3 +1,4 @@
+// $codepro.audit.disable accessorMethodNamingConvention
 /*******************************************************************************
  * Copyright (c) 2014 WPI-Suite
  * All rights reserved. This program and the accompanying materials
@@ -9,6 +10,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,18 +21,18 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
 /**
  * A deck in a game. Decks can be assigned to a game.
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
 */
 public class Deck extends AbstractModel {
 
 	/** the ID of the deck */
 	private int id;
 	private int UserID = -1;
-	private final String name;
+	private String name;
 	private List<Integer> cards;
 
-
+	private boolean isDeleted;
 	private boolean isSingleSelection;
 	
 	/**
@@ -40,7 +42,8 @@ public class Deck extends AbstractModel {
 	{
 		id = 0;
 		name = "Default Deck";
-		cards = Arrays.asList(0,1,1,2,3,5,8,13);
+		cards = Arrays.asList(0, 1, 1, 2, 3, 5, 8, 13);
+		isDeleted = false;
 		isSingleSelection = false;
 	}
 	
@@ -62,14 +65,19 @@ public class Deck extends AbstractModel {
 	 * @param that deck to compare to
 	 * 
 	 * @return boolean for equality */
-	
 	@Override
-	public boolean equals(Object that) {
-		if (that instanceof Deck){
-			final Deck o = (Deck) that;
-			return (id == o.getId() && cards.equals(o.getCards()) && name.equals(o.getName()) && isSingleSelection == o.isSingleSelection() );
-		}
-		else return false; // if it's not a deck, it's not equal.
+	public boolean equals(Object other){
+		if(other.getClass() != Deck.class) return false;
+		return ((Deck) other).getId() == id;
+	}
+	
+	/**
+	 * Overridden for codePro, never used.
+	 * @return the unique integer value, specifically the ID
+	 */
+	@Override
+	public int hashCode(){
+		return this.getId();
 	}
 
 	/**
@@ -77,6 +85,16 @@ public class Deck extends AbstractModel {
 	 */
 	public List<Integer> getCards() {
 		return cards;
+	}
+
+	/**
+	 * set the card list
+	 * @param cards the card list
+	 * @return this deck
+	 */
+	public Deck setCards(List<Integer> cards) {
+		this.cards = new ArrayList<Integer>(cards);
+		return this;
 	}
 
 	/**
@@ -90,7 +108,7 @@ public class Deck extends AbstractModel {
 	 * @param id to be set
 	 * @return this Deck object
 	 */
-	public Deck setId(int id){
+	public Deck setId(int id){ // $codepro.audit.disable accessorMethodNamingConvention
 		this.id = id;
 		return this;
 	}
@@ -102,6 +120,15 @@ public class Deck extends AbstractModel {
 		return name;
 	}
 	
+	/**
+	 * Sets name
+	 * @param name The name of the Deck to be used
+	 * @return the instance of Deck
+	 */
+	public Deck setName(String name){
+		this.name = name;
+		return this;
+	}
 	/**
 	 * return the String representation of this deck
 	 */
@@ -124,8 +151,6 @@ public class Deck extends AbstractModel {
 
 	/**
 	 * Method toJSON.
-	
-	
 	 * @return String * @see edu.wpi.cs.wpisuitetng.modules.Model#toJSON() * @see edu.wpi.cs.wpisuitetng.modules.Model#toJSON()
 	 */
 	public String toJSON() {
@@ -156,7 +181,9 @@ public class Deck extends AbstractModel {
 	 */
 	@Override
 	public Boolean identify(Object o) {
-		return null;
+		if(o == null || o.getClass() != this.getClass()) return false;
+		final Deck aDeck = (Deck) o;
+		return (this.getId() == aDeck.getId());
 	}
 
 	/**
@@ -170,36 +197,50 @@ public class Deck extends AbstractModel {
 
 	/**
 	 * Method delete.
-	 * @see edu.wpi.cs.wpisuitetng.modules.Model#delete()
+	 * @see edu.wpi.cs.wpisuitetng.modules.Model#setDelete()
+	 * @param isDeleted Boolean which sets whether the deck is deleted
+	 * @return this Deck
 	 */
-	@Override
-	public void delete() {
-
-	}
-
-	public boolean isSingleSelection() {
-		return isSingleSelection;
-	}
-
-	public void setSingleSelection(boolean isSingleSelection) {
-		this.isSingleSelection = isSingleSelection;
-	}
-	/**
-	 * set the card list
-	 * @param cards the card list
-	 * @return The deck that is being changed
-	 */
-	public Deck setCards(List<Integer> cards) {
-		this.cards = cards;
+	public Deck setIsDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
 		return this;
 	}
 
+	public boolean getIsDeleted() {
+		return isDeleted;
+	}
+	
+	public boolean getIsSingleSelection() {
+		return isSingleSelection;
+	}
+
+	/**
+	 * setter for the single selection boolean
+	 * @param isSingleSelection Boolean to set isSingleSelection boolean
+	 * @return this Deck
+	 */
+	public Deck setIsSingleSelection(boolean isSingleSelection) {
+		this.isSingleSelection = isSingleSelection;
+		return this;
+	}
+	
 	public int getUserID() {
 		return UserID;
 	}
 
-	public void setUserID(int userID) {
+	/**
+	 * setter for the user ID
+	 * @param userID The integer to be used as the user ID
+	 * @return this Deck
+	 */
+	public Deck setUserID(int userID) {
 		UserID = userID;
+		return this;
+	}
+
+	@Override
+	public void delete() {
+		
 	}
 
 }

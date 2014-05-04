@@ -57,11 +57,10 @@ public class AddEmailAddressController implements ActionListener {
 	 * This method creates a request to send and email, and adds an observer
 	 * @param eModel The address to send to, as an EmailAddressModel
 	 */
-	public void saveEmail(EmailAddressModel eModel)
+	public static void saveEmail(EmailAddressModel eModel)
 	{
 		// Send a request to the core to save this message
 		final Request request = Network.getInstance().makeRequest("planningpoker/emailmodel", HttpMethod.PUT); // PUT == create
-		//request.setBody(new EmailAddressModel(address).toJSON()); // put the new message in the body of the request
 		request.setBody(eModel.toJSON());
 		request.addObserver(new AddEmailAddressObserver()); // add an observer to process the response
 		request.send(); // send the request

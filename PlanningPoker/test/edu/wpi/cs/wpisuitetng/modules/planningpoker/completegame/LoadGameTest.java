@@ -33,7 +33,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.completedgame.CompleteView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.completedgame.GameData;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.completedgame.VoteData;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -86,7 +85,7 @@ public class LoadGameTest {
 		votes.add(v);
 		testGame.setVotes(votes);
 		CompleteView cv = new CompleteView(testGame);
-		VoteData vd = cv.getVoteData();
+		cv.getVoteData();
 		GameData gd = cv.getGameData();
 		assertTrue(gd.getGameNameTextBox().getText().equals("Test Game"));
 		assertTrue(gd.getDescriptionTextArea().getText().equals("Test Description"));

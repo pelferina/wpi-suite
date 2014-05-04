@@ -39,6 +39,7 @@ import javax.swing.event.DocumentListener;
  * @author FFF8E7
  * @version 6
  */
+@SuppressWarnings("serial")
 public class ViewGame extends JPanel{
 
 	private final List<Integer> gameReqs;
@@ -157,13 +158,13 @@ public class ViewGame extends JPanel{
 		
 		//Spring layout placement for vote button
 		springLayout.putConstraint(SpringLayout.NORTH, voteButton, 6, SpringLayout.SOUTH, estimateTextField);
-		springLayout.putConstraint(SpringLayout.WEST, voteButton, 132, SpringLayout.WEST, this);		
-		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, voteButton, 0, springLayout.HORIZONTAL_CENTER, estimateTextField);
+		springLayout.putConstraint(SpringLayout.WEST, voteButton, 132, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, voteButton, 0, SpringLayout.HORIZONTAL_CENTER, estimateTextField);
 		
 		//Spring layout placement for submit button
 		springLayout.putConstraint(SpringLayout.NORTH, submit, 30, SpringLayout.SOUTH, voteButton);
 		springLayout.putConstraint(SpringLayout.WEST, submit, 0, SpringLayout.WEST, voteButton);
-		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, submit, 0, springLayout.HORIZONTAL_CENTER, voteButton);
+		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, submit, 0, SpringLayout.HORIZONTAL_CENTER, voteButton);
 		
 		//Spring layout placement for estimateTextField
 		springLayout.putConstraint(SpringLayout.NORTH, estimateTextField, 6, SpringLayout.SOUTH, estimateLabel);

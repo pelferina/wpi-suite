@@ -14,12 +14,16 @@ import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailAddressController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetAllUsers;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.mock.MockData;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.mock.MockNetwork;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddressEntityManager;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddressModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ToolbarView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
@@ -38,6 +42,10 @@ public class ViewEventControllerTest {
 	GameEntityManager p_manager;
 	Session adminSession;
 	Project testProject;
+	EmailAddressModel eModel;
+	EmailAddressEntityManager e_manager;
+	AddEmailAddressController eController;
+	
 	/**
 	 * Setting up using Network and Iteration
 	
@@ -53,24 +61,26 @@ public class ViewEventControllerTest {
 		RequirementModel.getInstance().addRequirement(req1);
 		RequirementModel.getInstance().addRequirement(req2);
 		RequirementModel.getInstance().addRequirement(req3);
-		admin.setRole(Role.ADMIN);
 		testProject = new Project("test", "1");
 		mockSsid = "abc123";
 		adminSession = new Session(admin, testProject, mockSsid);
 		db = new MockData(new HashSet<Object>());
 		db.save(admin);
 		p_manager = new GameEntityManager(db);
-		GetCurrentUser gcu =  GetCurrentUser.getInstance();
-		assertNotNull(gcu);
-		gcu.enableTesting();
+		e_manager = new EmailAddressEntityManager(db);
+		eController = new AddEmailAddressController(null);
+		eModel = new EmailAddressModel(null, "admin", false);
 		Network.initNetwork(new MockNetwork());
 		Network.getInstance().setDefaultNetworkConfiguration(new NetworkConfiguration("http://wpisuitetng"));
-		GetAllUsers gau = GetAllUsers.getInstance();
-		gau.enableTesting();
 	}	
 	
 	@Test
 	public void testViewEventController(){
+		GetAllUsers gau = GetAllUsers.getInstance();
+		gau.enableTesting();
+		GetCurrentUser gcu =  GetCurrentUser.getInstance();
+		gcu.enableTesting();
+		
 		ViewEventController vec = ViewEventController.getInstance();
 
 		MainView mv =  new MainView();
@@ -85,18 +95,7 @@ public class ViewEventControllerTest {
 		GameSession gs = new GameSession("G","D", 0, 0, Calendar.getInstance().getTime(), reqList);
 		db.save(gs);
 		gs.setDeckId(-1);
-		vec.makeActivateGameButtonDisable(gs);
-		vec.makeActivateGameButtonVisible(gs);
-		vec.makeArchiveGameButtonVisible(gs);
-		vec.makeEditGameButtonInVisible();
-		vec.makeEditGameButtonVisible(gs);
-		vec.makeEndGameButtonVisible(gs);
-		vec.makeOwnerButtonInvisible();
-		vec.makeUserButtonInvisible();
-		vec.makeViewGameButtonVisible(gs);
-		vec.makeVoteGameButtonVisible(gs);
-//		vec.playGameTab(gs);
-//		vec.editGameTab(gs);
-//		mv.addTab("Edit Game", gs);
+		//vec.deckManagementTab();
+		vec.createGame();
 	}
 }

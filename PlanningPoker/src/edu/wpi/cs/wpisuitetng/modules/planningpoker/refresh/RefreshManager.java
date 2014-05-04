@@ -36,8 +36,8 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 
 /**
  * This method manages refresh requests
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 public class RefreshManager {
 	
@@ -52,7 +52,7 @@ public class RefreshManager {
 	List<GameSession> gameCache;
 	List<Deck> deckCache;
 	List<User> userCache;
-	private final Timer refreshRequirementsTimer,refreshGamesTimer,refreshDeckTimer,refreshUserTimer;
+	private final Timer refreshRequirementsTimer, refreshGamesTimer, refreshDeckTimer, refreshUserTimer;
 	public RefreshManager() {
 	
 		gameController = GetGamesController.getInstance();
@@ -147,8 +147,7 @@ public class RefreshManager {
 		//Make a request to the database
 		if (differentList(userCache, new ArrayList<User>(Arrays.asList(userController.getUsers())) )){
 			userCache = new ArrayList<User>(Arrays.asList(userController.getUsers()));
-		}	
-		
+		}
 	}
 
 	/**
@@ -178,7 +177,7 @@ public class RefreshManager {
 		if (differentList(reqCache, RequirementModel.getInstance().getRequirements())){
 			reqController.refresh();
 			reqCache = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
-		}	
+		}
 	}
 	
 	private void updateDecks()
@@ -187,7 +186,7 @@ public class RefreshManager {
 		deckController.actionPerformed(null);
 	
 		if ( differentList(deckCache, DeckModel.getInstance().getDecks())){
-			System.out.println("Refreshin decks\n"+deckCache+"\n"+DeckModel.getInstance().getDecks());
+			System.out.println("Refreshin decks\n" + deckCache + "\n" + DeckModel.getInstance().getDecks());
 			deckController.refresh();
 			deckCache = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
 		}

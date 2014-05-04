@@ -15,7 +15,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
  * The EditGameActionListener that implements ActionListener
- * @author fff8e7
+ * @author FFF8E7
  * @version 6
  */
 public class EditGameActionListener implements ActionListener{
@@ -29,7 +29,7 @@ public class EditGameActionListener implements ActionListener{
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ViewEventController.getInstance().editGameTab(game);	
+		ViewEventController.getInstance().editGameTab(game);
 	}
 	
 }

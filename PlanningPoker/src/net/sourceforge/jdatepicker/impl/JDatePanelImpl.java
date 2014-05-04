@@ -84,14 +84,14 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 
 	private static final long serialVersionUID = -2299249311312882915L;
 	
-	private HashSet<ActionListener> actionListeners;
+	private final HashSet<ActionListener> actionListeners;
 	private Properties i18nStrings;
 	private boolean showYearButtons;
 	private boolean doubleClickAction;
 	
-	private InternalCalendarModel internalModel;
-	private InternalView internalView;
-	private InternalController internalController;
+	private final InternalCalendarModel internalModel;
+	private final InternalView internalView;
+	private final InternalController internalController;
 
 	public JDatePanelImpl(DateModel<?> model) {
 		showYearButtons = false;
@@ -112,7 +112,7 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 	}
 	
 	private Properties getDefaultStrings() {
-		Properties defaults = new Properties();
+		final Properties defaults = new Properties();
 		defaults.put("messages.today", "Today");
 		defaults.put("messages.nextMonth", "Next month");
 		defaults.put("messages.previousMonth", "Previous month");
@@ -160,7 +160,7 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 	 * @see net.sourceforge.jdatepicker.JDatePanel#isShowYearButtons()
 	 */
 	public boolean isShowYearButtons() {
-		return this.showYearButtons;
+		return showYearButtons;
 	}
 
 	/* (non-Javadoc)
@@ -225,14 +225,14 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 			} else {
 				getNextButtonPanel().remove(getNextYearButton());
 				getPreviousButtonPanel().remove(getPreviousYearButton());
-			}			
+			}
 		}
 		
 		/**
 		 * Update the UI of the monthLabel
 		 */
 		private void updateMonthLabel() {
-			DateFormatSymbols df = new DateFormatSymbols();
+			final DateFormatSymbols df = new DateFormatSymbols();
 			monthLabel.setText(df.getMonths()[internalModel.getModel().getMonth()]);
 		}
 		
@@ -264,7 +264,7 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 				northPanel = new javax.swing.JPanel();
 				northPanel.setLayout(new java.awt.BorderLayout());
 				northPanel.setName("");
-				northPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(3,3,3,3));
+				northPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 3));
 				northPanel.setBackground(java.awt.SystemColor.activeCaption);
 				northPanel.add(getPreviousButtonPanel(), java.awt.BorderLayout.WEST);
 				northPanel.add(getNextButtonPanel(), java.awt.BorderLayout.EAST);
@@ -282,7 +282,7 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 			if (northCenterPanel == null) {
 				northCenterPanel = new javax.swing.JPanel();
 				northCenterPanel.setLayout(new java.awt.BorderLayout());
-				northCenterPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0,5,0,5));
+				northCenterPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 5));
 				northCenterPanel.setOpaque(false);
 				northCenterPanel.add(getMonthLabel(), java.awt.BorderLayout.CENTER);
 				northCenterPanel.add(getYearSpinner(), java.awt.BorderLayout.EAST);
@@ -330,7 +330,7 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 				southPanel.setLayout(new java.awt.BorderLayout());
 				//southPanel.setOpaque(false);
 				southPanel.setBackground(Color.WHITE);
-				southPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(3,3,3,3));
+				southPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 3));
 				southPanel.add(getTodayLabel(), java.awt.BorderLayout.WEST);
 				southPanel.add(getNoneLabel(), java.awt.BorderLayout.EAST);
 			}
@@ -363,7 +363,7 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 				todayLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 				todayLabel.addMouseListener(internalController);
 				
-				DateFormat df1 = JDatePickerUtil.getMediumDateFormat();
+				final DateFormat df1 = JDatePickerUtil.getMediumDateFormat();
 				todayLabel.setText(i18nStrings.getProperty("messages.today") + ": " + df1.format(new Date()));
 			}
 			return todayLabel;
@@ -396,7 +396,7 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 				dayTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
 				dayTable.setRowHeight(18); 
 				//dayTable.setOpaque(false);
-				dayTable.setPreferredSize(new java.awt.Dimension(100,80));
+				dayTable.setPreferredSize(new java.awt.Dimension(100, 80));
 				dayTable.setModel(internalModel);
 				dayTable.setShowGrid(true);
 				dayTable.setGridColor(Color.WHITE);
@@ -440,7 +440,7 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 		private JPanel getPreviousButtonPanel() {
 			if (previousButtonPanel == null) {
 				previousButtonPanel = new javax.swing.JPanel();
-				java.awt.GridLayout layout = new java.awt.GridLayout(1,2);
+				final java.awt.GridLayout layout = new java.awt.GridLayout(1, 2);
 				layout.setHgap(3);
 				previousButtonPanel.setLayout(layout);
 				previousButtonPanel.setName("");
@@ -461,7 +461,7 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 		private JPanel getNextButtonPanel() {
 			if (nextButtonPanel == null) {
 				nextButtonPanel = new javax.swing.JPanel();
-				java.awt.GridLayout layout = new java.awt.GridLayout(1,2);
+				final java.awt.GridLayout layout = new java.awt.GridLayout(1, 2);
 				layout.setHgap(3);
 				nextButtonPanel.setLayout(layout);
 				nextButtonPanel.setName("");
@@ -481,9 +481,9 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 		 */    
 		private JButton getNextMonthButton() {
 			if (nextMonthButton == null) {
-				nextMonthButton = new javax.swing.JButton(new JNextIcon(4,7));
+				nextMonthButton = new javax.swing.JButton(new JNextIcon(4, 7));
 				nextMonthButton.setText("");
-				nextMonthButton.setPreferredSize(new java.awt.Dimension(20,15));
+				nextMonthButton.setPreferredSize(new java.awt.Dimension(20, 15));
 				nextMonthButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 				nextMonthButton.setFocusable(false);
 				nextMonthButton.addActionListener(internalController);
@@ -499,9 +499,9 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 		 */    
 		private JButton getNextYearButton() {
 			if (nextYearButton == null) {
-				nextYearButton = new javax.swing.JButton(new JNextIcon(8,7, true));
+				nextYearButton = new javax.swing.JButton(new JNextIcon(8, 7, true));
 				nextYearButton.setText("");
-				nextYearButton.setPreferredSize(new java.awt.Dimension(20,15));
+				nextYearButton.setPreferredSize(new java.awt.Dimension(20, 15));
 				nextYearButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 				nextYearButton.setFocusable(false);
 				nextYearButton.addActionListener(internalController);
@@ -517,9 +517,9 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 		 */    
 		private JButton getPreviousMonthButton() {
 			if (previousMonthButton == null) {
-				previousMonthButton = new javax.swing.JButton(new JPreviousIcon(4,7));
+				previousMonthButton = new javax.swing.JButton(new JPreviousIcon(4, 7));
 				previousMonthButton.setText("");
-				previousMonthButton.setPreferredSize(new java.awt.Dimension(20,15));
+				previousMonthButton.setPreferredSize(new java.awt.Dimension(20, 15));
 				previousMonthButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 				previousMonthButton.setFocusable(false);
 				previousMonthButton.addActionListener(internalController);
@@ -535,9 +535,9 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 		 */    
 		private JButton getPreviousYearButton() {
 			if (previousYearButton == null) {
-				previousYearButton = new javax.swing.JButton(new JPreviousIcon(8,7, true));
+				previousYearButton = new javax.swing.JButton(new JPreviousIcon(8, 7, true));
 				previousYearButton.setText("");
-				previousYearButton.setPreferredSize(new java.awt.Dimension(20,15));
+				previousYearButton.setPreferredSize(new java.awt.Dimension(20, 15));
 				previousYearButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 				previousYearButton.setFocusable(false);
 				previousYearButton.addActionListener(internalController);
@@ -554,8 +554,8 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 		private JPopupMenu getMonthPopupMenu() {
 			if (monthPopupMenu == null) {
 				monthPopupMenu = new javax.swing.JPopupMenu();
-				JMenuItem[] menuItems = getMonthPopupMenuItems(); 
-				for (int i=0; i<menuItems.length; i++) {
+				final JMenuItem[] menuItems = getMonthPopupMenuItems(); 
+				for (int i=0; i < menuItems.length; i++) {
 					monthPopupMenu.add(menuItems[i]);
 				}
 			}
@@ -564,10 +564,10 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 		
 		private JMenuItem[] getMonthPopupMenuItems(){
 			if (monthPopupMenuItems == null) {
-				DateFormatSymbols df = new DateFormatSymbols();
-				String[] months = df.getMonths();
-				monthPopupMenuItems = new JMenuItem[months.length-1];
-				for (int i=0; i<months.length-1; i++) {
+				final DateFormatSymbols df = new DateFormatSymbols();
+				final String[] months = df.getMonths();
+				monthPopupMenuItems = new JMenuItem[months.length - 1];
+				for (int i=0; i < months.length - 1; i++) {
 					JMenuItem mi = new JMenuItem(months[i]);
 					mi.addActionListener(internalController);
 					monthPopupMenuItems[i] = mi;
@@ -589,7 +589,7 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 		private static final long serialVersionUID = -2341614459632756921L;
 
 		public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean isSelected, boolean hasFocus, int row, int col) {
-			JLabel label = (JLabel) super.getTableCellRendererComponent(arg0, arg1, isSelected, hasFocus, row, col);
+			final JLabel label = (JLabel) super.getTableCellRendererComponent(arg0, arg1, isSelected, hasFocus, row, col);
 			label.setHorizontalAlignment(JLabel.CENTER);
 
 			if (row == -1) {
@@ -600,12 +600,12 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 			}
 
 			
-			Calendar todayCal = Calendar.getInstance();
-			Calendar selectedCal = Calendar.getInstance();
+			final Calendar todayCal = Calendar.getInstance();
+			final Calendar selectedCal = Calendar.getInstance();
 			selectedCal.set(internalModel.getModel().getYear(), internalModel.getModel().getMonth(), internalModel.getModel().getDay());
 			
-			int cellDayValue = (Integer) arg1;
-			int lastDayOfMonth = selectedCal.getActualMaximum(Calendar.DAY_OF_MONTH);
+			final int cellDayValue = (Integer) arg1;
+			final int lastDayOfMonth = selectedCal.getActualMaximum(Calendar.DAY_OF_MONTH);
 
 			// Other month
 			if (cellDayValue < 1 || cellDayValue > lastDayOfMonth) {
@@ -618,9 +618,9 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 				} 
 				//Before start of month
 				else {
-					Calendar lastMonth = new GregorianCalendar();
+					final Calendar lastMonth = new GregorianCalendar();
 					lastMonth.set(selectedCal.get(Calendar.YEAR), selectedCal.get(Calendar.MONTH) - 1, 1);
-					int lastDayLastMonth = lastMonth.getActualMaximum(Calendar.DAY_OF_MONTH);
+					final int lastDayLastMonth = lastMonth.getActualMaximum(Calendar.DAY_OF_MONTH);
 					label.setText(Integer.toString(lastDayLastMonth + cellDayValue));
 				}
 			}
@@ -701,14 +701,14 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 				internalView.getMonthPopupMenu().show((Component) arg0.getSource(), arg0.getX(), arg0.getY());
 			} 
 			else if (arg0.getSource() == internalView.getTodayLabel()) {
-				Calendar today = Calendar.getInstance();
+				final Calendar today = Calendar.getInstance();
 				internalModel.getModel().setDate(today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE));
 			} 
 			else if (arg0.getSource() == internalView.getDayTable()) {
-				int row = internalView.getDayTable().getSelectedRow();
-				int col = internalView.getDayTable().getSelectedColumn();
+				final int row = internalView.getDayTable().getSelectedRow();
+				final int col = internalView.getDayTable().getSelectedColumn();
 				if (row >= 0 && row <= 5) {
-					Integer date = (Integer) internalModel.getValueAt(row, col);
+					final Integer date = (Integer) internalModel.getValueAt(row, col);
 					internalModel.getModel().setDay(date);
 					internalModel.getModel().setSelected(true);
 					
@@ -755,13 +755,13 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 	 */
 	protected class InternalCalendarModel implements TableModel, SpinnerModel, ChangeListener {
 
-		private DateModel<?> model;
-		private HashSet<ChangeListener> spinnerChangeListeners;
-		private HashSet<TableModelListener> tableModelListeners;
+		private final DateModel<?> model;
+		private final HashSet<ChangeListener> spinnerChangeListeners;
+		private final HashSet<TableModelListener> tableModelListeners;
 
 		public InternalCalendarModel(DateModel<?> model){
-			this.spinnerChangeListeners = new HashSet<ChangeListener>();
-			this.tableModelListeners = new HashSet<TableModelListener>();
+			spinnerChangeListeners = new HashSet<ChangeListener>();
+			tableModelListeners = new HashSet<TableModelListener>();
 			this.model = model;
 			model.addChangeListener(this);
 		}
@@ -837,15 +837,15 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 		 * Part of TableModel, day
 		 */
 		public String getColumnName(int arg0) {
-			DateFormatSymbols df = new DateFormatSymbols();
-			String[] shortDays = df.getShortWeekdays();
+			final DateFormatSymbols df = new DateFormatSymbols();
+			final String[] shortDays = df.getShortWeekdays();
 			return shortDays[arg0 + 1];
 		}
 
 		/**
 		 * Part of TableModel, day
 		 */
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int arg0) {
 			return Integer.class;
 		}
@@ -861,10 +861,10 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 		 * Part of TableModel, day
 		 */
 		public Object getValueAt(int arg0, int arg1) {
-			Calendar firstDayOfMonth = Calendar.getInstance();
+			final Calendar firstDayOfMonth = Calendar.getInstance();
 			firstDayOfMonth.set(model.getYear(), model.getMonth(), 1);
-			int DOW = firstDayOfMonth.get(Calendar.DAY_OF_WEEK);
-			int value = arg1 - DOW + arg0*7 + 2;
+			final int DOW = firstDayOfMonth.get(Calendar.DAY_OF_WEEK);
+			final int value = arg1 - DOW + arg0 * 7 + 2;
 			return new Integer(value);
 		}
 		

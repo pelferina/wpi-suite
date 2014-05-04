@@ -17,7 +17,6 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
  * This class deals with instances of the User
- * 
  * @author FFF8E7
  * @version 6
  */
@@ -56,12 +55,11 @@ public class GetCurrentUser {
 				if(Network.getInstance().getDefaultNetworkConfiguration() != null){
 					sendRequest();
 					return user;
-				}	
+				}
 			}
 			catch(RuntimeException exception){
 				// Session not yet created
-				System.err.println("Exception thrown in GetCurrentUser:" +exception);
-				
+				System.err.println("Exception thrown in GetCurrentUser:" + exception);
 			}
 		}
 		else{

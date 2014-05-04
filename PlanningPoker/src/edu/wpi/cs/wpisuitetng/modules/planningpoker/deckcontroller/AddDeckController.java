@@ -27,13 +27,13 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * adding the contents of the deck text field to the model as a new
  * deck.
  * 
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 public class AddDeckController implements ActionListener {
 	
 	private static AddDeckController instance = null;
-	final private AddDeckRequestObserver observer;
+	private final AddDeckRequestObserver observer;
 	
 	/**
 	 * Construct an AddDeckController for the given model, view pair

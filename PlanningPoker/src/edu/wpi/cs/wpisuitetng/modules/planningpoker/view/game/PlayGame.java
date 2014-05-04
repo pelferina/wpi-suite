@@ -45,9 +45,10 @@ import javax.swing.event.DocumentListener;
 
 /**
  * A panel for playing a game session
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
+@SuppressWarnings("serial")
 public class PlayGame extends JPanel implements Refreshable{
 
 	protected final List<Integer> gameReqs;
@@ -56,7 +57,9 @@ public class PlayGame extends JPanel implements Refreshable{
 	protected final JLabel reqName = new JLabel("Requirement Name:");
 	protected final JLabel reqDesc = new JLabel("Requirement Description:");
 	protected final JLabel estimateLabel = new JLabel("Input Estimate:");
+	protected final JLabel votesSoFarNameLabel = new JLabel("Estimate: "); // Used by play deck game
 	protected final JLabel gameEnded = new JLabel("The Game Has Ended.");
+	protected final JLabel gameModified = new JLabel("The game has been modified. Please reopen it.");
 	protected final JLabel notAnIntegerError = new JLabel("Estimate must be a positive integer");
 	protected final JLabel voteConfirmation = new JLabel("Vote submitted!");
 	protected JLabel deadlineLabel = new JLabel("Game ends on:");
@@ -79,6 +82,7 @@ public class PlayGame extends JPanel implements Refreshable{
 	protected Timer setFocusTimer;
 	protected final SpringLayout springLayout = new SpringLayout();
 	protected ActionListener voteActionListener;
+	private boolean hasModified = false;
 
 	/**
 	 * Constructor for a PlayGame panel
@@ -95,6 +99,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		voteConfirmation.setVisible(false);
 		GetGamesController.getInstance().addRefreshable(this);
 		gameEnded.setVisible(false);
+		gameModified.setVisible(false);
 
 		setFocus = new TimerTask(){
 
@@ -189,7 +194,7 @@ public class PlayGame extends JPanel implements Refreshable{
 
 		gameNameTextField.setBorder(BorderFactory.createCompoundBorder(
 				gameNameTextField.getBorder(), 
-				BorderFactory.createEmptyBorder(0, GuiStandards.TEXT_BOX_MARGIN.getValue(), 0, 0)));	
+				BorderFactory.createEmptyBorder(0, GuiStandards.TEXT_BOX_MARGIN.getValue(), 0, 0)));
 
 		reqNameTextField.setBorder(BorderFactory.createCompoundBorder(
 				reqNameTextField.getBorder(), 
@@ -259,7 +264,7 @@ public class PlayGame extends JPanel implements Refreshable{
 					final AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
 					msgr.sendVote(userEstimates);
 					gv.isNew = true;
-					ViewEventController.getInstance().getMain().remove(gv);					
+					ViewEventController.getInstance().getMain().remove(gv);
 				}
 			}
 		});
@@ -306,11 +311,12 @@ public class PlayGame extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.NORTH, gameDescScroll, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, gameDesc);
 		springLayout.putConstraint(SpringLayout.WEST, gameDescScroll, 0, SpringLayout.WEST, gameDesc);
 		springLayout.putConstraint(SpringLayout.EAST, gameDescScroll, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.EAST, this);
-
+		springLayout.putConstraint(SpringLayout.SOUTH, gameDescScroll, -GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.NORTH, reqName);
+		
 		//Spring layout for reqDescScroll
 		springLayout.putConstraint(SpringLayout.NORTH, reqDescScroll, 10, SpringLayout.SOUTH, reqDesc);
 		springLayout.putConstraint(SpringLayout.WEST, reqDescScroll, 0, SpringLayout.WEST, reqDesc);
-		springLayout.putConstraint(SpringLayout.EAST, reqDescScroll, -30, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.EAST, reqDescScroll, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, reqDescScroll, -GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.NORTH, notAnIntegerError);
 
 		//Spring layout for reqDesc label
@@ -318,7 +324,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.WEST, reqDesc, 0, SpringLayout.WEST, reqName);
 
 		//Spring layout for reqName label
-		springLayout.putConstraint(SpringLayout.NORTH, reqName, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, gameDescScroll);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, reqName, -20, SpringLayout.VERTICAL_CENTER, this);
 		springLayout.putConstraint(SpringLayout.WEST, reqName, 0, SpringLayout.WEST, gameDesc);
 
 		//Spring layout for notAnIntegerError label
@@ -329,6 +335,11 @@ public class PlayGame extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.NORTH, gameEnded, 0, SpringLayout.SOUTH, notAnIntegerError);
 		springLayout.putConstraint(SpringLayout.EAST, gameEnded, 0, SpringLayout.EAST, notAnIntegerError);
 
+		//Spring layout for GameEnded label
+		springLayout.putConstraint(SpringLayout.NORTH, gameModified, 0, SpringLayout.SOUTH, notAnIntegerError);
+		springLayout.putConstraint(SpringLayout.EAST, gameModified, 0, SpringLayout.EAST, notAnIntegerError);
+		
+		
 		//Spring layout for voteConfirmation label
 		springLayout.putConstraint(SpringLayout.SOUTH, voteConfirmation, 10, SpringLayout.NORTH, voteButton);
 		springLayout.putConstraint(SpringLayout.WEST, voteConfirmation, 0, SpringLayout.WEST, voteButton);
@@ -352,6 +363,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		add(reqNameTextField);
 		add(notAnIntegerError);
 		add(gameEnded);
+		add(gameModified);
 		add(gameDescScroll);
 		add(reqDescScroll);
 		add(deadlineLabel);
@@ -481,22 +493,44 @@ public class PlayGame extends JPanel implements Refreshable{
 
 	@Override
 	public void refreshGames() {
-		currentGame = GameModel.getInstance().getGame(currentGame.getGameID());
+		if(hasModified){
+			return;
+		}
+		final GameSession refreshedGame = GameModel.getInstance().getGame(currentGame.getGameID());
+		
+		if (refreshedGame.getGameStatus().equals(GameStatus.ACTIVE) &&
+				(!refreshedGame.getGameReqs().equals(currentGame.getGameReqs())
+				|| !refreshedGame.getDeadlineString().equals(currentGame.getDeadlineString())
+				|| refreshedGame.getDeckId() != currentGame.getDeckId())) {
+			gameModified.setVisible(true);
+			hasModified = true;
+			hideSubmit();
+			currentGame = refreshedGame;
+			return;
+		}
+
+		currentGame = refreshedGame;
 		if (currentGame.getGameStatus() == GameStatus.COMPLETED || currentGame.getGameStatus() == GameStatus.ARCHIVED)
 		{
-			clear();
-			submit.setText("Game Ended");
-			submit.setVisible(false);
-			voteButton.setVisible(false);
-			estimateTextField.setVisible(false);
-			notAnIntegerError.setVisible(false);
+			hideSubmit();
 			gameEnded.setVisible(true);
-			estimateTextField.setText("");
-
-
 		}
 	}
 
+	private void hideSubmit(){
+		clear();
+		submit.setText("Game has been modified");
+		submit.setVisible(false);
+		voteButton.setVisible(false);
+		estimateTextField.setVisible(false);
+		estimateLabel.setVisible(false);
+		notAnIntegerError.setVisible(false);
+
+		estimateTextField.setText("");
+		votesSoFarNameLabel.setVisible(false);
+		deadlineLabel.setVisible(false);
+	}
+	
 	@Override
 	public void refreshDecks() {
 		// TODO Auto-generated method stub

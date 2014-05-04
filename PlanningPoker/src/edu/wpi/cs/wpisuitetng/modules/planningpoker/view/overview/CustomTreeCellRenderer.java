@@ -18,6 +18,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 
 
 
+
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
@@ -30,6 +31,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.icons.NormalIc
  * @version 6
  */
 
+@SuppressWarnings("serial")
 public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 	Icon normalIcon;
 	Icon voteIcon;
@@ -72,7 +74,12 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 		
 		if (((String) node.getUserObject()).equals("Needs Vote") && GameModel.getInstance().getGamesNeedingVote(currentUser.getIdNum()).size() > 0 ) {
 			setIcon(voteIcon);
-		} else {
+		} 
+		else if(((String) node.getUserObject()).equals("Completed") && GameModel.getInstance().getGamesNeedingFinalEstimate(currentUser.getIdNum()).size() > 0 )
+		{
+			setIcon(voteIcon);
+		}
+		else {
 			setIcon(normalIcon);
 			/*
 			DefaultMutableTreeNode firstLeaf = ((DefaultMutableTreeNode) tree

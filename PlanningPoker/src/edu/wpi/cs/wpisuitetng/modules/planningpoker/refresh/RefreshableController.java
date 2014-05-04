@@ -15,9 +15,8 @@ import java.util.List;
 
 /**
  * Controller that handles all of the refreshable classes
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
- *
+ * @author FFF8E7
+ * @version 6
  */
 public abstract class RefreshableController {
 	protected List<Refreshable> refreshables = new ArrayList<Refreshable>();

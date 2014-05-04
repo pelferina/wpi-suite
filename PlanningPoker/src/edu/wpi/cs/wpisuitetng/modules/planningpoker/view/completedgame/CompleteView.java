@@ -26,6 +26,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  * @author FFF8E7
  * @version 6
  */
+@SuppressWarnings("serial")
 public class CompleteView extends JSplitPane {
 
 	private final GameData gameData;

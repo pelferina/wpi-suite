@@ -28,9 +28,8 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * from the server. This controller is called when the user
  * clicks the refresh button.
  * 
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
- *
+ * @author FFF8E7
+ * @version 6
  */
 public class GetGamesController extends RefreshableController implements ActionListener {
 
@@ -49,7 +48,7 @@ public class GetGamesController extends RefreshableController implements ActionL
 	 * @return the instance of GetGamesController
 	 */
 	public static GetGamesController getInstance(){
-		if (instance==null){
+		if (instance == null){
 			instance = new GetGamesController();
 		}
 		

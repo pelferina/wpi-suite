@@ -61,7 +61,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * This is the window for the user to create a planning poker session
- * @author fff8e7
+ * @author FFF8E7
  * @version 6
  */
 @SuppressWarnings("serial")
@@ -109,8 +109,11 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	private final JCheckBox deckCheckBox = new JCheckBox("Use Deck");
 	private final JComboBox<String> deckBox = new JComboBox<String>(); 
 	private List<Deck> decks = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
-	private int selectedDeckIndex = 0;
+	private int selectedDeckID = 0;
+	private boolean justAddedDeck = false;
+
 	private final JButton createDeckButton = new JButton("Create Deck");
+	private final List<Integer> deckIDs = new ArrayList<Integer>();
 
 
 	/*
@@ -211,7 +214,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		saveGameButton.setEnabled(false);
 		activateGameButton.setEnabled(false);
 
-		setPanel();
+		panelSetup();
 
 		//Add padding
 		descriptionTextField.setBorder(BorderFactory.createCompoundBorder(
@@ -229,7 +232,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		setActivateGameButtonVisibility(false);
 
 		//Set deadline and deck to not be visible
-		setDeadlineVisibility(false);	
+		setDeadlineVisibility(false);
 		setDeckVisibility(false);
 		GetDecksController.getInstance().addRefreshable(this);
 
@@ -237,7 +240,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		initializeErrorMessages();
 
 		//Start timer to check if game can be activated
-		startCanActivateCheckerTimer();		
+		startCanActivateCheckerTimer();
 
 		//This is run if the game is opened in edit mode
 		if(editMode)
@@ -255,7 +258,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 					datePicker.repaint();
 					//Initialize the deadline to current time if the game is not in editmode or 
 					//if the current game was saved with a deadline
-					if(!editMode || currentGameSession.getEndDate()!=null)
+					if(!editMode || currentGameSession.getEndDate() != null)
 					{
 						initializeDeadline();
 					}
@@ -275,12 +278,12 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 					initializeDeckComboBox();
-					setDeckVisibility(true);		        
+					setDeckVisibility(true);
 				} else {
 					newGameP.closeDeck();
 					setDeckVisibility(false);
 				}
-			}	
+			}
 		});
 
 		//This will call a function in new game distributed panel that will open the deck creation panel
@@ -312,13 +315,13 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 				newGameP.isNew = false;
 
 				if (nameInputted()){
-					nameError.setVisible(false);		
+					nameError.setVisible(false);
 					setSaveGameButtonVisibility(true);
 				}
 				else
 				{
 					removeErrorLabels();
-					nameError.setVisible(true);		
+					nameError.setVisible(true);
 					setSaveGameButtonVisibility(false);
 				}
 			}
@@ -346,9 +349,11 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		deckBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				selectedDeckIndex = deckBox.getSelectedIndex();
+				if (deckIDs.size() > 0) {
+					selectedDeckID = deckIDs.get(deckBox.getSelectedIndex());
+				}
 				if (editMode){
-					if (deckBox.getSelectedIndex() != currentGameSession.getDeckId()){
+					if (selectedDeckID != currentGameSession.getDeckId()){
 						newGameP.isNew = false;
 					}
 				}
@@ -362,14 +367,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		saveGameButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				saveOrActivateGame();
-				if(editMode) // TODO: do we really need an if statement here?
-				{
-					newGameP.close.doClick();
-				}
-				else
-				{
-					newGameP.close.doClick();
-				}
+				newGameP.close.doClick();
 			}
 		});
 
@@ -393,7 +391,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	private void saveSelectedReqs(){
 		selectionsMade.clear();
 		final List<Requirement> reqsSelected = newGameP.getSelected();
-		for (int i=0; i<reqsSelected.size(); i++){
+		for (int i=0; i < reqsSelected.size(); i++){
 			selectionsMade.add(reqsSelected.get(i).getId());
 		}
 	}
@@ -408,7 +406,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		final String description = descriptionTextField.getText();
 
 		@SuppressWarnings("deprecation")
-		Date deadlineDate = new Date(deadlineYear - 1900, deadlineMonth , deadlineDay, hourTime, minuteTime);
+		Date deadlineDate = new Date(deadlineYear - 1900, deadlineMonth, deadlineDay, hourTime, minuteTime);
 
 		//If just saving the game, set deadline to null
 		if(!deadlineCheckBox.isSelected())
@@ -420,14 +418,13 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		//If activating: Set game status to active and Send an activation email 
 		if(!editMode)
 		{
-			final GameSession newGame = new GameSession(name, description, 0 , GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
+			final GameSession newGame = new GameSession(name, description, 0, GameModel.getInstance().getSize() + 1, deadlineDate, selectionsMade);
 			if(activate)
 			{
 				newGame.setGameStatus(GameStatus.ACTIVE);
 			}
 			if (deckCheckBox.isSelected()){
-				//TODO set correct deck
-				newGame.setDeckId(deckBox.getSelectedIndex());
+				newGame.setDeckId(selectedDeckID);
 			}
 
 			final AddGameController msgr = new AddGameController(model);
@@ -446,14 +443,14 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			}
 
 			if (deckCheckBox.isSelected()){
-				currentGameSession.setDeckId(deckBox.getSelectedIndex());
+				currentGameSession.setDeckId(selectedDeckID);
 			} else {
 				currentGameSession.setDeckId(-1);
 			}
 
 			final UpdateGameController msgr = new UpdateGameController();
 			msgr.sendGame(currentGameSession);
-		}		
+		}
 	}
 	/**
 	 * This timer is used to check if the game can be activated.
@@ -487,9 +484,17 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 				//Display Update button if game has been changed in edit mode
 				if(editMode && anythingChanged())
 				{
-
-					newGameP.isNew = false;
-					saveGameButton.setEnabled(true);
+					if (currentGameSession.getGameStatus() == GameStatus.DRAFT) {
+						newGameP.isNew = false;
+						saveGameButton.setEnabled(true);
+					}
+					else if (newGameP.getSelected().size() > 0){
+						newGameP.isNew = false;
+						saveGameButton.setEnabled(true);
+					}
+					else{
+						saveGameButton.setEnabled(false);
+					}
 				}
 				else if(editMode && !anythingChanged())
 				{
@@ -534,14 +539,14 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	 * @return true if invalid deadline is selected
 	 */
 	public boolean hasDeadline()
-	{	
+	{
 		//Get deadline date
 		currentDate = Calendar.getInstance();
-		setDeadlineDate();
+		deadlineDateSet();
 		hourTime = getHour(deadlineHourComboBox.getSelectedIndex() + 1);
 		minuteTime = deadlineMinuteComboBox.getSelectedIndex();
 		final Calendar deadline = (Calendar) currentDate.clone();
-		deadline.set(deadlineYear, deadlineMonth, deadlineDay, hourTime, minuteTime);		 
+		deadline.set(deadlineYear, deadlineMonth, deadlineDay, hourTime, minuteTime);
 		if (deadline.after(currentDate)){
 			deadlineError.setVisible(false);
 			return true;
@@ -592,7 +597,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	 */
 	private void setActivateGameButtonVisibility(boolean isVisible)
 	{
-		activateGameButton.setEnabled(isVisible);		
+		activateGameButton.setEnabled(isVisible);
 	}
 
 	/**
@@ -654,7 +659,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 				PMButton.setSelected(true);
 				isAM = false;
 			}
-		});		
+		});
 
 	}
 	/**
@@ -669,7 +674,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 					currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DAY_OF_MONTH));
 			datePicker.getModel().setSelected(true);
 		}
-		setDeadlineDate();
+		deadlineDateSet();
 
 		setupDeadlineTime();
 
@@ -680,7 +685,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		final String minute = minuteDateFormat.format(currentDate.getTime());
 		hourTime = Integer.parseInt(hour);
 		minuteTime = Integer.parseInt(minute) + 1;
-		deadlineHourComboBox.setSelectedIndex(hourTime-1);
+		deadlineHourComboBox.setSelectedIndex(hourTime - 1);
 		if (minuteTime != 60){
 			deadlineMinuteComboBox.setSelectedIndex(minuteTime);
 		}
@@ -703,18 +708,18 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			AMButton.setSelected(true);
 		}
 	}
-	private void setDeadlineDate() {
+	private void deadlineDateSet() {
 		deadlineYear = datePicker.getModel().getYear();
 		deadlineMonth = datePicker.getModel().getMonth();
 		deadlineDay = datePicker.getModel().getDay();
 	}
 	private void setupDeadlineTime() {
 		//Initialize Deadline Hour and Minute
-		for (int j=0; j<12; j++){
+		for (int j = 0; j < 12; j++){
 			deadlineHourComboBox.addItem((j + 1) + "");
 		}
 
-		for (int i=0; i<60; i++){
+		for (int i = 0; i < 60; i++){
 			if (i < 10){
 				deadlineMinuteComboBox.addItem("0" + i);
 			}
@@ -728,14 +733,11 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	 * This sets up the deck combobox
 	 */
 	public void initializeDeckComboBox()
-	{	
+	{
 		deckBox.removeAllItems();
+		deckIDs.clear();
 		//Initializes the deck combo box
 		addDecksToDeckComboBox();
-		if (editMode){
-			selectedDeckIndex = currentGameSession.getDeckId();
-		}
-		deckBox.setSelectedIndex(selectedDeckIndex);
 	}
 	/**
 	 * Add all available deck selections to the combo box
@@ -743,14 +745,33 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	 */
 	private void addDecksToDeckComboBox()
 	{
+		String deckTitle = DeckModel.getInstance().getDeck(selectedDeckID).getName();
 		decks = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
+		int i = 0;
 		for (Deck d: decks){
-			deckBox.addItem(d.getName());
+			if(!d.getIsDeleted()) {
+				deckBox.addItem(d.getName());
+				deckIDs.add(d.getId());
+				if (deckTitle == null){ // deck was deleted
+					deckBox.setSelectedIndex(0);
+				}
+				else if (deckTitle.equals(d.getName())) { // deck exists
+					deckBox.setSelectedIndex(i);
+					selectedDeckID = deckIDs.get(deckBox.getSelectedIndex());
+				}
+				i++;
+			}
+		}
+		if (justAddedDeck){
+			deckBox.setSelectedIndex(deckBox.getItemCount() - 1);
+			selectedDeckID = deckIDs.get(deckBox.getSelectedIndex());
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	private void initializeEditMode()
 	{
+		selectedDeckID = currentGameSession.getDeckId();
 
 		//Gets the deadline from the game
 		if (currentGameSession.getEndDate() != null){
@@ -767,9 +788,9 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			datePicker.getModel().setDate(year_index, month_index, day_index);
 			datePicker.getModel().setSelected(true);
 
-			setDeadlineDate();
+			deadlineDateSet();
 			setupDeadlineActionListeners();
-			setupDeadlineTime();			
+			setupDeadlineTime();
 			//	Sets the hour and minute combo boxes to the hour and minute in the game's deadline
 			if (currentGameSession.getEndDate().getHours() > 11){
 				deadlineHourComboBox.setSelectedIndex(currentGameSession.getEndDate().getHours() - 13);
@@ -784,7 +805,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 				PMButton.setSelected(false);
 			}
 			else {
-				deadlineHourComboBox.setSelectedIndex(currentGameSession.getEndDate().getHours()-1);
+				deadlineHourComboBox.setSelectedIndex(currentGameSession.getEndDate().getHours() - 1);
 				AMButton.setSelected(true);
 				isAM = true;
 				PMButton.setSelected(false);
@@ -802,13 +823,12 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			deckCheckBox.setSelected(true);
 			initializeDeckComboBox();
 			setDeckVisibility(true);
-			//TODO set actual deck in combo box
 		}
 		//Puts the name of the game into the name text field, it can not be edited
 		if(currentGameSession.getGameStatus() != GameStatus.DRAFT)
-		{	
+		{
 			nameTextField.setEditable(false);
-			descriptionTextField.setEditable(false);	
+			descriptionTextField.setEditable(false);
 			descriptionTextField.setOpaque(false);
 		}
 	}
@@ -873,18 +893,17 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			return true;
 		}
 		//returns true if user changed the selected deck
-		if ((currentGameSession.getDeckId() != deckBox.getSelectedIndex())){
+		if ((currentGameSession.getDeckId() != selectedDeckID)){
 			return true;
 		}
 
 		return false;
-	}
-	//TODO: Test midnight deadline -- this should be working, but we haven't been able to go past midnight or noon	
+	}	
 	//Sets the hour based on the AM or PM combo box selection
 	private int getHour(int hour){
 		if (isAM){
 			if (hour == 12){
-				return hour-12;
+				return hour - 12;
 			}
 			return hour;
 		}
@@ -919,7 +938,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	}
 
 	/**
-	 * removes all error labels
+	 * removes all error labels	
 	 */
 	private void removeErrorLabels(){
 		deadlineError.setVisible(false);
@@ -932,7 +951,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	 * for setting the NewGameInputPage
 	 */
 
-	private void setPanel(){
+	private void panelSetup(){
 		final ButtonGroup AMPMgroup = new ButtonGroup();
 		AMPMgroup.add(AMButton);
 		AMPMgroup.add(PMButton);
@@ -969,13 +988,13 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 
 		//Spring layout for the deckLabel
 		springLayout.putConstraint(SpringLayout.NORTH, deckLabel, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, deckCheckBox);
-		springLayout.putConstraint(SpringLayout.WEST, deckLabel, 0, SpringLayout.WEST, deckCheckBox);		
+		springLayout.putConstraint(SpringLayout.WEST, deckLabel, 0, SpringLayout.WEST, deckCheckBox);
 
 		//Spring layout for the deckBox
 		springLayout.putConstraint(SpringLayout.WEST, deckBox, 0, SpringLayout.WEST, deckLabel);
 		springLayout.putConstraint(SpringLayout.NORTH, deckBox, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, deckLabel);
 		springLayout.putConstraint(SpringLayout.EAST, deckBox, 0, SpringLayout.EAST, descriptionScrollPane);
-		
+
 		//Spring layout for the createDeckButton
 		springLayout.putConstraint(SpringLayout.WEST, createDeckButton, 0, SpringLayout.WEST, deckBox);
 		springLayout.putConstraint(SpringLayout.EAST, createDeckButton, 0, SpringLayout.EAST, deckBox);
@@ -1074,7 +1093,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	/**
 	 * This sets the focus to the name field
 	 */
-	public void setFocusNameText(){
+	public void focusNameText(){
 		nameTextField.requestFocusInWindow();
 	}
 
@@ -1096,6 +1115,14 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		return ((st > 0) || (len < aString.length())) ? aString.substring(st, len) : aString;
 	}
 
+	/**
+	 * called when a new deck is created. Indicates that the selected
+	 * deck should be the last one in the list (the deck that was just created)
+	 */
+	public void deckBoxSetToNewDeck() {
+		justAddedDeck = true;
+	}
+
 	@Override
 	public void refreshRequirements() {
 		//intentionally left blank
@@ -1108,7 +1135,6 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 
 	@Override
 	public void refreshDecks() {
-		final List<Deck> currentDecks = DeckModel.getInstance().getDecks();
 		if (decks.size() != DeckModel.getInstance().getDecks().size()){
 			initializeDeckComboBox();
 		}

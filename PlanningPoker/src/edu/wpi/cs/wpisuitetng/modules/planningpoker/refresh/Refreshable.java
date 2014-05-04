@@ -12,9 +12,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh;
 
 /**
  * This interface states what methods a refreshable class needs
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
- *
+ * @author FFF8E7
+ * @version 6
  */
 public interface Refreshable {
 	
@@ -27,11 +26,11 @@ public interface Refreshable {
 	 * This method refreshes the games.
 	 */
 
-	public void refreshGames();
+	void refreshGames();
 	
 	/**
 	 * This method refreshes the decks.
 	 */
-	public void refreshDecks();
+	void refreshDecks();
 
 }

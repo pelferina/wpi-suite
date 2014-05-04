@@ -17,20 +17,20 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JToggleButton;
+import javax.swing.SwingConstants;
 
 /**
  * Creates a card for the game voting
- * @author fff8e7
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 @SuppressWarnings("serial")
 public class GameCard extends JToggleButton{
 	
 	private final Integer value;
 	private BufferedImage cardSelectedImg;
-	private BufferedImage cardUnselectedImg;
+	private BufferedImage cardUnselectedImg; // $codepro.audit.disable variableShouldBeFinal
 	private ImageIcon cardSelectedIcon;
 	private final ImageIcon cardUnselectedIcon;
 	
@@ -50,7 +50,7 @@ public class GameCard extends JToggleButton{
 		}
 		final String cardText = value.toString();
 		final int length = cardText.length();
-		final int size = 30 - length*2;
+		final int size = 30 - length * 2;
 		final Font buttonFont = new Font("Arial", Font.BOLD, size);
 		cardUnselectedIcon = new ImageIcon(cardUnselectedImg);
 		cardSelectedIcon = new ImageIcon(cardSelectedImg); 
@@ -60,8 +60,8 @@ public class GameCard extends JToggleButton{
 		this.setSelected(false);
 		this.setBorder(BorderFactory.createEmptyBorder());
 		this.setContentAreaFilled(false);
-		this.setHorizontalTextPosition(JButton.CENTER);
-		this.setVerticalTextPosition(JButton.CENTER);
+		this.setHorizontalTextPosition(SwingConstants.CENTER);
+		this.setVerticalTextPosition(SwingConstants.CENTER);
 		this.setSelectedIcon(cardSelectedIcon);
 	}
 	

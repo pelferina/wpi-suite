@@ -9,14 +9,12 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker;
 
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
 import javax.swing.Timer;
 
 
@@ -31,13 +29,10 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ToolbarView;
 
-
-
-
 /**
  * This is the PlanningPoker module class.
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 public class PlanningPoker implements IJanewayModule{
 
@@ -45,9 +40,6 @@ public class PlanningPoker implements IJanewayModule{
 	private final List<JanewayTabModel> tabs;
 
 
-	private MainView mainPanel;
-	private JPanel buttonPanel;
-	final private RefreshManager refresh;
 	Timer getUserTimer;
 
 	/**
@@ -55,7 +47,7 @@ public class PlanningPoker implements IJanewayModule{
 	 */
 	public PlanningPoker() {
 		//Setup refreshing
-		refresh = new RefreshManager();
+		/*refresh =*/ new RefreshManager();
 		tabs = new ArrayList<JanewayTabModel>();
 
 		final MainView mainPanel = new MainView();
@@ -72,7 +64,7 @@ public class PlanningPoker implements IJanewayModule{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(GetCurrentUser.getInstance().getCurrentUser() !=null &&
+				if(GetCurrentUser.getInstance().getCurrentUser() != null &&
 						GetAllUsers.getInstance().getAllUsers() != null){
 					getUserTimer.stop();
 				}

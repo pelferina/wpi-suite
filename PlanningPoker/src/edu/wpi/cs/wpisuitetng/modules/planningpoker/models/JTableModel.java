@@ -22,9 +22,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
 
 /**
  * This is a model for the JTabel
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
- *
+ * @author FFF8E7
+ * @version 6
  */
 @SuppressWarnings("serial")
 public class JTableModel extends AbstractTableModel {
@@ -66,11 +65,11 @@ public class JTableModel extends AbstractTableModel {
 		Data = new Object[sessions.length][COLUMN_NAMES.length];
 		gameIDs = new Integer[sessions.length];
     	size = sessions.length;
-    	for (int i=0; i<sessions.length; i++){
+    	for (int i=0; i < sessions.length; i++){
     		Object[] curRow = {sessions[i].getGameName(),
-								sessions[i].getEndDate()!=null ? sessions[i].getDeadlineString() : "No Deadline", 
+								sessions[i].getEndDate() != null ? sessions[i].getDeadlineString() : "No Deadline", 
     							getUserFromID(sessions[i].getOwnerID()), 
-    							sessions[i].getVotes().size()+ " out of "+ getUsers.getAllUsers().length, // Progress
+    							sessions[i].getVotes().size() + " out of " + getUsers.getAllUsers().length, // Progress
     							gameStatus(sessions[i])
     							};
     		Data[i] = curRow;
@@ -140,7 +139,7 @@ public class JTableModel extends AbstractTableModel {
     }
 
     @Override public Object getValueAt(final int rowIndex, final int columnIndex) {
-       	if (rowIndex>=size){
+       	if (rowIndex >= size){
     		return "";
        	}
             /*Adding components*/
@@ -222,17 +221,17 @@ public class JTableModel extends AbstractTableModel {
 	public void removeGameFromList(int gameID) {
 		GameSession game = null;
 		for (GameSession gam : games){
-			if (gam.getGameID()==gameID){
+			if (gam.getGameID() == gameID){
 				game = gam;
 				break;
 			}
 		}
-		if (game==null){
+		if (game == null){
 			return; // if we want to remove a nonexistant game
 		}
-		final GameSession[] newGames = new GameSession[games.length-1];
+		final GameSession[] newGames = new GameSession[games.length - 1];
 		boolean hasFound = false;
-		for (int i=0; i<games.length; i++){
+		for (int i=0; i < games.length; i++){
 			if (!hasFound){
 				if (games[i].equals(game)){
 					hasFound=true;
@@ -241,16 +240,16 @@ public class JTableModel extends AbstractTableModel {
 				}
 				
 			} else{
-				newGames[i-1] = games[i];
+				newGames[i - 1] = games[i];
 			}
 		}
 		games = newGames;
 		size = newGames.length;
 		
 		
-		final Object[][] newData = new Object[Data.length-1][Data[0].length];
+		final Object[][] newData = new Object[Data.length - 1][Data[0].length];
 		hasFound = false;
-		for (int i=0; i<Data.length; i++){
+		for (int i=0; i < Data.length; i++){
 			if (!hasFound){
 				if (Data[i][0].equals(game.getGameName())){
 					hasFound=true;
@@ -259,12 +258,10 @@ public class JTableModel extends AbstractTableModel {
 				}
 				
 			} else{
-				newData[i-1] = Data[i];
+				newData[i - 1] = Data[i];
 			}
 		}
 		Data = newData;
-
 		fireTableDataChanged();
-		fireTableStructureChanged();
 	}
 }

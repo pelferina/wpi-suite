@@ -12,6 +12,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game;
 
 import java.awt.Dimension;
 
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
@@ -23,8 +24,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * A split pane for when a game's information is being viewed
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 @SuppressWarnings("serial")
 public class GameView extends JSplitPane{
@@ -35,6 +36,7 @@ public class GameView extends JSplitPane{
 	ViewGame viewGame;
 	boolean isDeckGame = false;
 	public boolean isNew = true;
+	JScrollPane playGameScrollPane;
 	
 	/**
 	 * Constructor to make a gameview with a given session
@@ -52,11 +54,13 @@ public class GameView extends JSplitPane{
 			if (gameToPlay.getDeckId() == -1){
 				isDeckGame = false;
 				playGame = new PlayGame(gameToPlay, this);
+				playGameScrollPane = new JScrollPane(playGame);
 				playDeckGame = null;
 			}
 			else {
 				isDeckGame = true;
 				playDeckGame = new PlayDeckGame(gameToPlay, this);
+				playGameScrollPane = new JScrollPane(playDeckGame);
 				playGame = null;
 			}
 		}
@@ -69,14 +73,14 @@ public class GameView extends JSplitPane{
 		else
 		{
 			if (isDeckGame){
-				addImpl(playDeckGame, JSplitPane.RIGHT, 2);
+				addImpl(playGameScrollPane, JSplitPane.RIGHT, 2);
 			}
 			else {
-				addImpl(playGame, JSplitPane.RIGHT, 2);
+				addImpl(playGameScrollPane, JSplitPane.RIGHT, 2);
 			}
-		}	
+		}
 		leftComponent.setMinimumSize(new Dimension(200, 200));
-		rightComponent.setMinimumSize(new Dimension(500, 200));
+		rightComponent.setMinimumSize(new Dimension(1000, 3000));
 		setResizeWeight(0.1);
 		
 		
@@ -135,7 +139,7 @@ public class GameView extends JSplitPane{
 		}
 		else {
 			playGame.clear();
-		}	
+		}
 	}
 	
 	/**

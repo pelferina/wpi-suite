@@ -39,12 +39,7 @@ public class GameSession extends AbstractModel {
 
 	private final int ownerID;
 	private final int gameID;
-	/** game status indicator 
-	 * 0  = game is in draft mode
-	 * 1  = game is in progress
-	 * 2  = game is finished.
-	 * */
-	
+
 	private GameStatus gameStatus;
 	
 	/** The date-time stamp of the creation */
@@ -52,12 +47,10 @@ public class GameSession extends AbstractModel {
 	private final Date creationdate;
 	/** The date that the game will end, if there is no end time then this value is null*/
 	private Date endDate;
-	private final boolean emailSent = false;
 	private List<Float> median;
 	private List<Float> mean;
 	private List<Double> standardDeviation;
 	private int deckId;
-	private  List<Vote> votes;
 	private List<Integer> finalVotes;
 	
 
@@ -79,7 +72,6 @@ public class GameSession extends AbstractModel {
 		this.gameReqs = gameReqs;
 		gameStatus = GameStatus.DRAFT;
 		creationdate = new Date();
-		votes = (new ArrayList<Vote>());
 		deckId = -1;
 		median = null;
 		mean = null;
@@ -133,13 +125,13 @@ public class GameSession extends AbstractModel {
 		}
 		if(endDate != null){
 			returnStr = returnStr + "      " + "End:" + dateFormat1.format(endDate);
-		}	
+		}
 		//if(endDate != null)
 		//	returnStr = returnStr + "	End: " + endDate.get(Calendar.MONTH) + '/'+ endDate.get(Calendar.DAY_OF_MONTH) + '/' + endDate.get(Calendar.YEAR);
 
 
 		if(gameReqs != null){
-			returnStr = returnStr +"      Requirements:";
+			returnStr = returnStr + "      Requirements:";
 			for(int i = 0; i < gameReqs.size(); i++){
 			returnStr =  returnStr + gameReqs.get(i) + ';';
 			}
@@ -194,7 +186,7 @@ public class GameSession extends AbstractModel {
 	 * @param endDate the date
 	 * @return GameSession, the game session we are changing
 	 */
-	public GameSession setEndDate(Date endDate) {
+	public GameSession setEndDate(Date endDate) { // $codepro.audit.disable accessorMethodNamingConvention
 		this.endDate = endDate;
 		return this;
 	}
@@ -208,7 +200,7 @@ public class GameSession extends AbstractModel {
 	 * @param gameStatus the game status to set to
 	 * @return GameSession the game session being changed
 	 */
-	public GameSession setGameStatus(GameStatus gameStatus) {
+	public GameSession setGameStatus(GameStatus gameStatus) { // $codepro.audit.disable accessorMethodNamingConvention
 		this.gameStatus = gameStatus;
 		return this;
 	}
@@ -222,7 +214,7 @@ public class GameSession extends AbstractModel {
 	 * @param gameReqs the list of requirements to set
 	 * @return GameSession the session being set
 	 */
-	public GameSession setGameReqs(List<Integer> gameReqs) {
+	public GameSession setGameReqs(List<Integer> gameReqs) { // $codepro.audit.disable accessorMethodNamingConvention
 		this.gameReqs = gameReqs;
 		return this;
 	}
@@ -231,7 +223,7 @@ public class GameSession extends AbstractModel {
 	 * @param description the string you want to set as the description
 	 * @return returns the game session called on
 	 */
-	public GameSession setGameDescription(String description){
+	public GameSession setGameDescription(String description){ // $codepro.audit.disable accessorMethodNamingConvention
 		gameDescription = description;
 		return this;
 	}
@@ -246,7 +238,7 @@ public class GameSession extends AbstractModel {
 	 * @param gameName the name of the game
 	 * @return GameSession the session of the game to set the name of
 	 */
-	public GameSession setGameName(String gameName) {
+	public GameSession setGameName(String gameName) { // $codepro.audit.disable accessorMethodNamingConvention
 		this.gameName = gameName;
 		return this;
 	}
@@ -263,10 +255,13 @@ public class GameSession extends AbstractModel {
 			if (gameDescription.equals(o.getGameDescription())){
 				if (ownerID == o.getOwnerID()){
 					if (gameID == o.getGameID()){
-						if ((endDate == null && o.getEndDate()==null) || endDate.equals(o.getEndDate())){ // if both are null or they are equal
+						if ((endDate == null && o.getEndDate() == null) || (endDate != null && o.getEndDate() != null && endDate.equals(o.getEndDate()))){ // if both are null or they are equal
 							if (gameReqs.equals(o.getGameReqs())){
 								if (gameStatus == o.getGameStatus()){
-										return true;
+										if(deckId == o.getDeckId()){
+											return true;
+										}
+											
 								}
 							}
 						}
@@ -279,6 +274,15 @@ public class GameSession extends AbstractModel {
 		
 		
 	}
+	/**
+	 * Never used, only for CodePro
+	 * @return The gameID as it is unique
+	 */
+	@Override
+	public int hashCode(){
+		return this.getGameID();
+	}
+	
 	/**Gets the votes
 	 * @return the votes
 	 */
@@ -317,21 +321,21 @@ public class GameSession extends AbstractModel {
 					shift = 0;
 				}
 				// calculate median
-				if((userNum+shift)%2 == 0){
-					median.add(((float)voteResult[i][(userNum+shift-1)/2] + voteResult[i][(userNum+shift-1)/2+1])/2);
+				if((userNum + shift) % 2 == 0){
+					median.add(((float)voteResult[i][(userNum + shift - 1) / 2] + voteResult[i][(userNum + shift - 1) / 2 + 1]) / 2);
 				}
-				else if ((userNum+shift) > 1){
-					median.add((float)voteResult[i][(userNum+shift-1)/2]);
+				else if ((userNum + shift) > 1){
+					median.add((float)voteResult[i][(userNum + shift - 1) / 2]);
 				}
 				else {
-					median.add((float)voteResult[i][(userNum+shift)-1]);
+					median.add((float)voteResult[i][(userNum + shift) - 1]);
 				}
 				// calculate mean
 				int sum = 0;
 				for(int j=0; j < userNum; j++){
 					sum += voteResult[i][j];
 				}
-				mean.add(((float)sum) / (userNum-shift));
+				mean.add(((float)sum) / (userNum - shift));
 				//calculate standard deviation
 				List<Integer> reqEstimates = new ArrayList<Integer>();
 				for (Vote v: votes){
@@ -355,7 +359,7 @@ public class GameSession extends AbstractModel {
 	 * @param deckId the ID of the deck, as integer
 	 * @return the GameSession the deck is from
 	 */
-	public GameSession setDeckId(int deckId){
+	public GameSession setDeckId(int deckId){ // $codepro.audit.disable accessorMethodNamingConvention
 		this.deckId = deckId;
 		return this;
 	}
@@ -369,7 +373,7 @@ public class GameSession extends AbstractModel {
 	 * @param finalVote the List<Integer> of all of the votes
 	 * @return the GameSession the votes are from
 	 */
-	public GameSession setFinalVotes(List<Integer> finalVote) {
+	public GameSession setFinalVotes(List<Integer> finalVote) { // $codepro.audit.disable accessorMethodNamingConvention
 		finalVotes = finalVote;
 		return this;
 	}
@@ -395,9 +399,9 @@ public class GameSession extends AbstractModel {
 		}
 		for (int i: Estimates){
 			estimateMinusMeanSquare = Math.pow((double)i - mean, 2);
-			estimatesSum = estimatesSum + estimateMinusMeanSquare;
+			estimatesSum += estimateMinusMeanSquare;
 		}
-		stddev = Math.pow((1/(double)Estimates.size()) * estimatesSum, 0.5);
+		stddev = Math.pow((1 / (double)Estimates.size()) * estimatesSum, 0.5);
 
 		return stddev;
 	}
@@ -411,6 +415,5 @@ public class GameSession extends AbstractModel {
 	 * @param votes
 	 */
 	public void setVotes(List<Vote> votes){
-		this.votes = votes;
 	}
 }

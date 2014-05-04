@@ -10,18 +10,15 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 import javax.swing.tree.*;
 
 
-
-
 /**
- * @author Anthony
- * @version $Revision: 1.0 $
+ * The gameTreeClass
+ * @author FFF8E7
+ * @version 6
  */
 @SuppressWarnings("serial")
 public class GameTree extends DefaultMutableTreeNode {
 	
 	private final DefaultMutableTreeNode top;
-	private final GameModel gameModel;
-
 	/**
 	 * This constructor creates a tree system and its highest node as well as populating variables
 	 * 
@@ -29,7 +26,7 @@ public class GameTree extends DefaultMutableTreeNode {
 	 */
 	public GameTree(DefaultMutableTreeNode top) {
         this.top = top;
-        gameModel = GameModel.getInstance();
+        GameModel.getInstance();
         createNodes(top);
 	}
 	
@@ -68,13 +65,5 @@ public class GameTree extends DefaultMutableTreeNode {
 	public void update(){
 		top.removeAllChildren();
 		createNodes(top);
-	}
-	
-	/**
-	 * Making Codepro work, never used
-	 */
-	@Override
-	public Object clone(){
-		return super.clone();
 	}
 }

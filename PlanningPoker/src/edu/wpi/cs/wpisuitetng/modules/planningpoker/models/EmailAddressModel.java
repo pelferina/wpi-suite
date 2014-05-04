@@ -22,7 +22,6 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
  * @author FFF8E7
  * @version 6
  */
-@SuppressWarnings({"serial"})
 public class EmailAddressModel extends AbstractModel {
 	
 	/** The list of messages on the board */
@@ -69,7 +68,7 @@ public class EmailAddressModel extends AbstractModel {
 	 * @param address a string address to be set
 	 * @return EmailAddressModel, the email address that is being set
 	 */
-	public EmailAddressModel setAddress(String address) {
+	public EmailAddressModel setAddress(String address) { // $codepro.audit.disable accessorMethodNamingConvention
 		this.address = address;
 		return this;
 	}
@@ -81,7 +80,7 @@ public class EmailAddressModel extends AbstractModel {
 	 * @param username the user name to be set, String
 	 * @return EmailAddressModel, the EmailAddressModel that the user is being set for
 	 */
-	public EmailAddressModel setUsername(String username) {
+	public EmailAddressModel setUsername(String username) { // $codepro.audit.disable accessorMethodNamingConvention
 		this.username = username;
 		return this;
 	}
@@ -90,7 +89,7 @@ public class EmailAddressModel extends AbstractModel {
 	 * @param value
 	 * @return EmailAddressModel, the EmailAddressModel that the user is being set for
 	 */
-	public EmailAddressModel setEnable(boolean value){
+	public EmailAddressModel setEnable(boolean value){ // $codepro.audit.disable accessorMethodNamingConvention
 		enable = value;
 		return this;
 	}

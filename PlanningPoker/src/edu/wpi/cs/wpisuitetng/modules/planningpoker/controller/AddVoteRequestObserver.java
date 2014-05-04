@@ -16,19 +16,15 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 /**
  * This observer watches over requests from the AddVoteController
  * 
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
- *
+ * @author FFF8E7
+ * @version 6
  */
 public class AddVoteRequestObserver implements RequestObserver {
-	private final AddVoteController controller;
-
 	/**
 	 * This constructor creates the AddVoteRequestObserverobject
 	 * @param addVoteController The addVoteController object to observe
 	 */
 	public AddVoteRequestObserver(AddVoteController addVoteController) {
-		controller = addVoteController;
 	}
 
 	@Override

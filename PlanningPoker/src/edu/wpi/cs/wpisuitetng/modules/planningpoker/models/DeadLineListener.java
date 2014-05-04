@@ -12,7 +12,6 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 import edu.wpi.cs.wpisuitetng.database.Data;
@@ -24,12 +23,11 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
  * This is the action listener for entity manager to check deadline on each games.
  * It will be called every few seconds on server side
  * 
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 public class DeadLineListener implements ActionListener{
-	final private Data db;
-	final private GameEntityManager entityManager;
+	private final Data db;
 	/**
 	 * This constructor creates a DeadLineListener with the given database and GameEntityManager
 	 * 
@@ -38,7 +36,6 @@ public class DeadLineListener implements ActionListener{
 	 */
 	public DeadLineListener(Data db, GameEntityManager ppem){
 		this.db = db;
-		entityManager = ppem;
 		System.err.println("create a listener");
 	}
 
@@ -51,15 +48,15 @@ public class DeadLineListener implements ActionListener{
 		//System.err.println("Refresh");
 		GameSession[] gameArray = {};
 		
-		gameArray = db.retrieveAll(new GameSession(new String(), new String(), 0 , 0, new Date(), null)).toArray(new GameSession[0]);
+		gameArray = db.retrieveAll(new GameSession(new String(), new String(), 0, 0, new Date(), null)).toArray(new GameSession[0]);
 
 		final Date today = new Date();
 		
-		for(int i=0; i<gameArray.length; i++){
+		for(int i=0; i < gameArray.length; i++){
 			if (gameArray[i].getEndDate() != null){
 				GameStatus status = gameArray[i].getGameStatus();
 				if (gameArray[i].getEndDate().before(today) && (status.equals(GameStatus.ACTIVE) || status.equals(GameStatus.INPROGRESS))){
-					System.out.println("Name "+gameArray[i].getGameName() + " reaches deadline at" + today);
+					System.out.println("Name " + gameArray[i].getGameName() + " reaches deadline at" + today);
 					
 					// change the status of gameSession
 					try {

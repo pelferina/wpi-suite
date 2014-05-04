@@ -20,8 +20,8 @@ import edu.wpi.cs.wpisuitetng.modules.EntityManager;
  * This is the entity manager for the Deck in the
  * DeckManager module.
  *
- * @version $Revision: 1.0 $
- * @author Cosmic Latte
+ * @author FFF8E7
+ * @version 6
  */
 public class DeckEntityManager implements EntityManager<Deck> {
 
@@ -54,11 +54,14 @@ public class DeckEntityManager implements EntityManager<Deck> {
 	@Override
 	public Deck makeEntity(Session s, String content) throws WPISuiteException {
 		final Deck importedDeck = Deck.fromJson(content);
-		System.out.println("Adding: " + content);
 		final Deck[] decks = getAll(s);
 		final Deck newDeck =  new Deck(importedDeck.getName(), importedDeck.getCards());
+		
+		newDeck.setIsDeleted(importedDeck.getIsDeleted());
+		newDeck.setUserID(importedDeck.getUserID());
+		newDeck.setIsSingleSelection(importedDeck.getIsSingleSelection());
 		newDeck.setId(decks.length + 1);
-		newDeck.setUserID(s.getUser().getIdNum());
+		
 		if(!db.save(newDeck, s.getProject())) {
 			System.err.println("Deck not saved");
 			throw new WPISuiteException();
@@ -180,6 +183,9 @@ public class DeckEntityManager implements EntityManager<Deck> {
 			throws WPISuiteException {
 		final Deck newDeck = Deck.fromJson(content);
 		db.update(Deck.class, "Id", newDeck.getId(), "Cards", newDeck.getCards());
+		db.update(Deck.class, "Id", newDeck.getId(), "Name", newDeck.getName());
+		db.update(Deck.class, "Id", newDeck.getId(), "IsDeleted", newDeck.getIsDeleted());
+		db.update(Deck.class, "Id", newDeck.getId(), "IsSingleSelection", newDeck.getIsSingleSelection());
 		return newDeck;
 	}
 

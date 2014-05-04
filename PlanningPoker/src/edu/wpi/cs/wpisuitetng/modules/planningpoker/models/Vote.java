@@ -31,7 +31,7 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 		this.setVote(vote);
 		this.setUID(UID);
 		this.setGameID(gameID);
-		this.setVoteID();
+		this.hashVoteID();
 		
 	}
 	
@@ -44,7 +44,7 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 		this.setVote(vote);
 		this.setUID(-1);
 		this.setGameID(gameID);
-		this.setVoteID();
+		this.hashVoteID();
 		
 	}
 	/**
@@ -59,7 +59,7 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	 */
 	public void setGameID(int gameID) {
 		this.gameID = gameID;
-		this.setVoteID();
+		this.hashVoteID();
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	 */
 	public void setUID(int uID) {
 		UID = uID;
-		this.setVoteID();
+		this.hashVoteID();
 	}
 
 	/**
@@ -137,7 +137,7 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	/**
 	 * Sets the vote id with the tohash method
 	 */
-	public void setVoteID(){
+	public void hashVoteID(){
 		VoteID = toHash(this);
 	}
 	/**
@@ -156,6 +156,13 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 		return ((Vote) other).VoteID == VoteID;
 		
 	}
+	/** (non-JavaDoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode(){
+		return this.getVoteID();
+	}
 	/**
 	 * Compares a vote to another vote
 	 * @param o the other vote
@@ -170,7 +177,7 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 	 * @return the hashed vote as an integer
 	 */
 	public static int toHash(Vote v){
-		return v.gameID* 100000 + v.UID;
+		return v.gameID * 100000 + v.UID;
 	}
 
 	/**

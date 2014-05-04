@@ -46,7 +46,7 @@ public class UpdateDeckController {
 	 * Adds a deck to the model
 	 * @param d the deck to add
 	 */
-	public void addDeckToModel(Deck	d) {
+	public void addDeckToModel(Deck d){
 		model.addDeck(d);
 	}
 	/**

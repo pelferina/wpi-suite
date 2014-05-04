@@ -49,113 +49,104 @@ public interface DateModel<T> {
 	 * 
 	 * @param changeListener
 	 */
-	public void addChangeListener(ChangeListener changeListener);
+	void addChangeListener(ChangeListener changeListener);
 
 	/**
 	 * Removes the specified ChangeListener. ChangeListeners will be notified
 	 * when the selected date is changed.
-	 * 
-	 * @param arg
+	 * @param changeListener The ChangeListener to be removed
 	 */
-	public void removeChangeListener(ChangeListener changeListener);
+	void removeChangeListener(ChangeListener changeListener);
 
 	/**
-	 * Getters and setters which represent a gregorian date.
-	 * 
-	 * @return
+	 * Getters and setters which represent a Gregorian date.
+	 * @return the currently set year as an integer
 	 */
-	public int getYear();
+	int getYear();
 	
 	/**
-	 * Getters and setters which represent a gregorian date.
-	 * 
-	 * @return
+	 * Getters and setters which represent a Gregorian date.
+	 * @param year the year to be set
 	 */
-	public void setYear(int year);
+	void setYear(int year);
 	
 	/**
-	 * Getters and setters which represent a gregorian date.
-	 * 
-	 * @return
+	 * Getters and setters which represent a Gregorian date.
+	 * @return the currently set month as an integer
 	 */
-	public int getMonth();
+	int getMonth();
 	
 	/**
-	 * Getters and setters which represent a gregorian date.
-	 * 
-	 * @return
+	 * Getters and setters which represent a Gregorian date.
+	 * @param month the month to be set
 	 */
-	public void setMonth(int month);
+	void setMonth(int month);
 	
 	/**
-	 * Getters and setters which represent a gregorian date.
-	 * 
-	 * @return
+	 * Getters and setters which represent a Gregorian date.
+	 * @return the currently set day as an integer
 	 */
-	public int getDay();
+	int getDay();
 	
 	/**
-	 * Getters and setters which represent a gregorian date.
-	 * 
-	 * @return
+	 * Getters and setters which represent a Gregorian date.
+	 * @param day the day to be set
 	 */
-	public void setDay(int day);
+	void setDay(int day);
 	
 	/**
-	 * Getters and setters which represent a gregorian date.
-	 * 
-	 * @return
+	 * sets the date
+	 * @param year The value that the year will be set to
+	 * @param month The value that the month will be set to
+	 * @param day The value that the day will be set to
 	 */
-	public void setDate(int year, int month, int day);
+	void setDate(int year, int month, int day);
 	
 	/**
-	 * Add or substract number of years.
-	 * 
+	 * Add or subtract number of years.
 	 * @param add
 	 */
-	public void addYear(int add);
+	void addYear(int add);
 	
 	/**
 	 * Add or substract number of months.
 	 * 
 	 * @param add
 	 */
-	public void addMonth(int add);
+	void addMonth(int add);
 	
 	/**
 	 * Add or substract number of day.
 	 * 
 	 * @param add
 	 */
-	public void addDay(int add);
+	void addDay(int add);
 
 	/**
 	 * Get the value this model represents.
-	 * 
-	 * @return
+	 * @return value of the T object
 	 */
-	public T getValue();
+	T getValue();
 
 	/**
 	 * Set the value this model represents.
 	 * 
 	 * @param value
 	 */
-	public void setValue(T value);
+	void setValue(T value);
 	
 	/**
 	 * Is the value selected or is it not.
-	 * 
-	 * @return
+	 * @return whether the DateModel is selected or not
 	 */
-	public boolean isSelected();
+	boolean isSelected();
 	
 	/**
 	 * Set the value as selected.
 	 * 
 	 * @param selected
 	 */
-	public void setSelected(boolean selected);
+	void setSelected(boolean selected);
 	
     /**
      * Adds a PropertyChangeListener to the list of bean listeners.
@@ -165,7 +156,7 @@ public interface DateModel<T> {
      *
      * @see #removePropertyChangeListener(PropertyChangeListener)
      */
-    public void addPropertyChangeListener(PropertyChangeListener listener);
+    void addPropertyChangeListener(PropertyChangeListener listener);
 
 
     /**
@@ -177,6 +168,6 @@ public interface DateModel<T> {
      *
      * @see #addPropertyChangeListener(PropertyChangeListener)
      */
-    public void removePropertyChangeListener(PropertyChangeListener listener);
+    void removePropertyChangeListener(PropertyChangeListener listener);
 
 }

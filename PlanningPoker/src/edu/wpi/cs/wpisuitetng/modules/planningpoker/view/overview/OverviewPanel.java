@@ -11,12 +11,11 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.BorderLayout;
-
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+
 
 
 
@@ -32,6 +31,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -89,7 +89,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		
 
 		//sort the table
-		table.setRowSorter(new TableRowSorter(table.getModel()));
+		table.setRowSorter(new TableRowSorter<TableModel>(table.getModel()));
 
 		//This is used to refresh the overview table
 
@@ -131,7 +131,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 					}
 					if(e.getClickCount() == 1){
 						// if the Y location of the mouse click is off the table rows de-select from the table.
-						if(e.getY() > target.getRowHeight() *target.getRowCount()){
+						if(e.getY() > target.getRowHeight() * target.getRowCount()){
 							target.clearSelection();
 						}
 					}
@@ -181,7 +181,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
         splitPane.setEnabled( false );
 
 
-		add(splitPane);	
+		add(splitPane);
 
 	}
 
@@ -242,7 +242,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 			sessions = gameModel.getCompletedGameSessions();
 		}
 		else if (s.equals("Archived")){
-			sessions = gameModel.getArchivedGameSessions();	
+			sessions = gameModel.getArchivedGameSessions();
 		}
 
 		final JTableModel jModel = (JTableModel)table.getModel();
@@ -264,7 +264,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		if (node != null)
 		{
 			final Object nodeInfo = node.getUserObject();
-			updateTable((String)nodeInfo);        	
+			updateTable((String)nodeInfo);
 		}
 		table.repaint();
 

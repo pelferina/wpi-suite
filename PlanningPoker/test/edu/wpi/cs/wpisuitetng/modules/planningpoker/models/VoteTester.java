@@ -25,8 +25,8 @@ public class VoteTester {
 	@Test
 	public final void testVoteClassMethods()
 	{
-		Vote v = new Vote(null, 0, 1);
-		ArrayList<Integer> votes = new ArrayList<Integer>();
+		final Vote v = new Vote(null, 0, 1);
+		final ArrayList<Integer> votes = new ArrayList<Integer>();
 		votes.add(1);votes.add(2);votes.add(3);votes.add(4);votes.add(5);
 		v.setVote(votes);
 		assertFalse(v.getVote().get(0) != 1);
@@ -36,7 +36,7 @@ public class VoteTester {
 		v.setGameID(10);
 		assertTrue(v.getGameID() == 10);
 		assertTrue(v.getUID() == 100);
-		Vote x = v.fromJson(v.toJSON());
+		final Vote x = Vote.fromJson(v.toJSON());
 		assertTrue(x.equals(v));
 		assertTrue(x.identify(v));
 		assertTrue(x.compareTo(v) == 0);
@@ -44,7 +44,7 @@ public class VoteTester {
 		assertTrue(v.getVoteID() == 0);
 		v.save();
 		v.delete();
-		Vote v2 = new Vote(null, 1);
+		final Vote v2 = new Vote(null, 1);
 		assertFalse(v.equals(v2));
 		assertFalse(v.identify(null));
 		assertFalse(v.identify(v2));
@@ -57,7 +57,7 @@ public class VoteTester {
 	}
 	@Test
 	public final void testNullManager() throws WPISuiteException{
-		VoteEntityManager nullManager = new VoteEntityManager(null);
+		final VoteEntityManager nullManager = new VoteEntityManager(null);
 		try{
 			nullManager.makeEntity(null, (new Vote(null, 0, 0)).toJSON());
 		}catch(Exception E) {

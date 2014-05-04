@@ -16,12 +16,10 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-
 import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -39,10 +37,10 @@ import javax.swing.table.DefaultTableModel;
 
 
 
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
-
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -53,18 +51,17 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
  * @author FFF8E7
  * @version 6
  */
+@SuppressWarnings("serial")
 public class GameRequirements extends JSplitPane{
 	
-	private JTable estimatesPending;
-	private JTable estimatesComplete;
-	private final JLabel reqstoEstimate = new JLabel("Requirements to estimate");
-	private final JLabel reqsEstimated = new JLabel("Requirements estimated");
+	private JTable estimatesPending; // $codepro.audit.disable variableShouldBeFinal
+	private JTable estimatesComplete; // $codepro.audit.disable variableShouldBeFinal
 	private JScrollPane pendingPane;
 	private JScrollPane completePane;
 	private final List<Integer> gameReqIDs;
 	private final List<Requirement> gameReqs = new ArrayList<Requirement>();
 	private final GameView gv;
-	final private int COLUMN_NUM = 2;
+	private final int COLUMN_NUM = 2;
 	
 	/**
 	 * Constructor for GameRequirements
@@ -236,6 +233,9 @@ public class GameRequirements extends JSplitPane{
   		}
 		if (i == -1){
 			gv.clearBoxes();
+			if (gv.playDeckGame != null){
+				gv.playDeckGame.disableAll();
+			}
 		}
 	}
 	
@@ -268,7 +268,7 @@ public class GameRequirements extends JSplitPane{
 			    	estimatesComplete.clearSelection();
 			    }
 			    else {
-			    	estimatesPending.clearSelection();	
+			    	estimatesPending.clearSelection();
 			    }
 				final List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
 				Requirement req = null;

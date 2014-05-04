@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SpringLayout;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -45,7 +46,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistribu
 
 /**
  * The DeckBuildingPanel class
- * @author Cosmic Latte
+ * @author FFF8E7
  * @version 6
  */
 @SuppressWarnings({"serial"})
@@ -57,7 +58,7 @@ public class DeckBuildingPanel extends JPanel {
 	private final JButton btnRmvAll = new JButton("Remove all");
 	private final JButton btnSave = new JButton("Save deck");
 	private final JButton btnDelete = new JButton("Delete deck");
-	private final JButton btnCancel = new JButton("Cancel");
+	private final JButton btnCancel = new JButton("Cancel deck");
 	private final JRadioButton btnSingleSelection = new JRadioButton("Single Selection");
 	private final JRadioButton btnMultipleSelection = new JRadioButton("Multiple Selection");
 	private final ButtonGroup selectionGroup = new ButtonGroup();
@@ -110,13 +111,16 @@ public class DeckBuildingPanel extends JPanel {
 		btnRmvAll.setFont(size);
 		btnRmvAll.setSize(80, 20);
 		btnCancel.setFont(size);
-		btnCancel.setSize(80,20);
+		btnCancel.setSize(80, 20);
 		errLabel.setVisible(false);
 		//cardPanel.setMinimumSize(new Dimension(200, 13));
 		cardArea.setMinimumSize(new Dimension(200, 135));
+
+		nameField.setDocument(new JTextFieldLimit(20));
+		numberField.setDocument(new JTextFieldLimit(3));
 		
 		// Sets up cardArea
-		cardArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		cardArea.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 		
 		//This document listener will enable the submit button when something is inputed into the estimate text field
 		numberField.getDocument().addDocumentListener(new DocumentListener(){
@@ -150,18 +154,19 @@ public class DeckBuildingPanel extends JPanel {
 			}
 		});
 		
-		nameField.setDocument(new JTextFieldLimit(20));
 		// All listeners and their functions
 		btnSave.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				newDeckName = nameField.getText();
+
 				final Deck newDeck = new Deck (newDeckName, newDeckCards);
-				newDeck.setSingleSelection(isSingleSelection);
+				newDeck.setIsSingleSelection(isSingleSelection);
+
 				AddDeckController.getInstance().addDeck(newDeck);
 				System.out.println("added Deck " + newDeckName + 
 						"; Id = " + newDeck.getId() + 
 						"; with cards: " + newDeckCards.toString() + 
-						"; with singleSelection set to:" + newDeck.isSingleSelection());
+						"; with singleSelection set to:" + newDeck.getIsSingleSelection());
 				System.out.println("Current DeckModel size is " + DeckModel.getInstance().getSize());
 				nameField.setText("");
 				
@@ -237,15 +242,12 @@ public class DeckBuildingPanel extends JPanel {
 					numberField.setText("");
 					resetPanel();
 					
-					// Outputs console msgs
-					System.out.println("Added card " + cardNumber);
-					System.out.println("Current card list is: " + newDeckCards.toString());
 				} catch (NumberFormatException err) {
 					System.err.println("Incorrect use of gameCard constructor: param not a number");
-					errLabel.setText(numberField.getText()+ " is not a valid non-negative integer!");
+					errLabel.setText(numberField.getText() + " is not a valid non-negative integer!");
 					errLabel.setVisible(true);
 				} 
-				isValidDeckName();	
+				isValidDeckName();
 			}
 		});
 		
@@ -268,11 +270,7 @@ public class DeckBuildingPanel extends JPanel {
 				
 				// Checks the amount of cards left and sets the save button to false if none is found
 				if(newDeckCards.isEmpty()) btnSave.setEnabled(false);
-				
-				// Outputs console messages
-				System.out.println("Removed cards from deck");
-				System.out.println("Current card list is: " + newDeckCards.toString());
-				
+
 				//display error message
 				if (newDeckCards.isEmpty()){
 					errLabel.setText("Need to have at least one card in a deck.");
@@ -295,10 +293,6 @@ public class DeckBuildingPanel extends JPanel {
 
 				// Sets button status to false because there are no more cards on the new deck
 				btnSave.setEnabled(false);
-				
-				// Outputs console messages
-				System.out.println("Cleared current deck");
-				System.out.println("Current card list is: " + newDeckCards.toString());
 
 				//display error message
 				if (newDeckCards.isEmpty()){
@@ -344,11 +338,11 @@ public class DeckBuildingPanel extends JPanel {
 		//Spring layout for textField
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameField, 0, SpringLayout.VERTICAL_CENTER, lblDeckName);
 		springLayout.putConstraint(SpringLayout.WEST, nameField, 10, SpringLayout.EAST, lblDeckName);
-		springLayout.putConstraint(SpringLayout.EAST, nameField, 100, SpringLayout.WEST, nameField);
+		springLayout.putConstraint(SpringLayout.EAST, nameField, 175, SpringLayout.WEST, nameField);
 		
-		//Spring layout for btnSave
-		springLayout.putConstraint(SpringLayout.SOUTH, btnSave, -GuiStandards.BOTTOM_MARGIN.getValue(), SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, btnSave, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.EAST, this);
+		//Spring layout for btnCancel
+		springLayout.putConstraint(SpringLayout.SOUTH, btnCancel, -GuiStandards.BOTTOM_MARGIN.getValue(), SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, btnCancel, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.EAST, this);
 	
 		//Spring layout for btnDelete
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnDelete, 0, SpringLayout.VERTICAL_CENTER, lblDeckName);
@@ -367,7 +361,7 @@ public class DeckBuildingPanel extends JPanel {
 		//Spring layout for numberField
 		springLayout.putConstraint(SpringLayout.NORTH, numberField, 0, SpringLayout.NORTH, lblAdd);
 		springLayout.putConstraint(SpringLayout.WEST, numberField, 10, SpringLayout.EAST, lblAdd);
-		springLayout.putConstraint(SpringLayout.EAST, numberField, 50, SpringLayout.WEST, numberField);
+		springLayout.putConstraint(SpringLayout.EAST, numberField, 40, SpringLayout.WEST, numberField);
 		
 		//Spring layout for btnAddCard
 		springLayout.putConstraint(SpringLayout.NORTH, btnAddCard, 10, SpringLayout.SOUTH, lblAdd);
@@ -393,9 +387,9 @@ public class DeckBuildingPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, btnRmvAll, 0, SpringLayout.WEST, btnRmvSelected);
 		springLayout.putConstraint(SpringLayout.EAST, btnRmvAll, 0, SpringLayout.EAST, btnRmvSelected);
 		
-		//Spring layout for btnCancel
-		springLayout.putConstraint(SpringLayout.NORTH, btnCancel, 0, SpringLayout.NORTH, btnSave);
-		springLayout.putConstraint(SpringLayout.EAST, btnCancel, -GuiStandards.BUTTON_OFFSET.getValue(), SpringLayout.WEST, btnSave);
+		//Spring layout for btnSave
+		springLayout.putConstraint(SpringLayout.NORTH, btnSave, 0, SpringLayout.NORTH, btnCancel);
+		springLayout.putConstraint(SpringLayout.EAST, btnSave, -GuiStandards.BUTTON_OFFSET.getValue(), SpringLayout.WEST, btnCancel);
 		
 		setLayout(springLayout);
 		
@@ -458,17 +452,12 @@ public class DeckBuildingPanel extends JPanel {
 	 * Checks if the inputed deck name is valid
 	 */
 	private void isValidDeckName(){
-		if (nameField.getText().length() > 0 && !DeckModel.getInstance().isDuplicateDeck(nameField.getText())){
-			if (!newDeckCards.isEmpty()){
-				btnSave.setEnabled(true);
-				errLabel.setVisible(false);
-				System.out.println("newDeckName is " + newDeckName);
-			}
-			else {
-				btnSave.setEnabled(false);
-				errLabel.setText("Need to have at least one card in a deck.");
-				errLabel.setVisible(true);
-			}
+		String name = nameField.getText();
+		name = trim(name);
+		if (name.length() != 0 && !DeckModel.getInstance().isDuplicateDeck(nameField.getText())){
+			errLabel.setVisible(false);
+			btnSave.setEnabled(true);
+			isValidDeck();
 		}
 		else {
 			btnSave.setEnabled(false);
@@ -477,12 +466,27 @@ public class DeckBuildingPanel extends JPanel {
 				errLabel.setVisible(true);
 			}
 			else {
-				errLabel.setText("Invalid deck name.");
+				errLabel.setText("Deck must have a name.");
 				errLabel.setVisible(true);
 			}
 		}
 	}
 	
+	/**
+	 * checks if deck is valid
+	 */
+	private void isValidDeck() {
+		if (!newDeckCards.isEmpty()){
+			btnSave.setEnabled(true);
+			errLabel.setVisible(false);
+			System.out.println("newDeckName is " + newDeckName);
+		}
+		else {
+			btnSave.setEnabled(false);
+			errLabel.setText("Need to have at least one card in a deck.");
+			errLabel.setVisible(true);
+		}
+	}
 	
 	/**
 	 *checks if the inputed card number is valid and perform actions accordingly
@@ -497,11 +501,9 @@ public class DeckBuildingPanel extends JPanel {
 				else {
 					btnSave.setEnabled(false);
 				}
-				//TODO notAnIntegerError.setVisible(false);
 			}
 			else{
 				btnAddCard.setEnabled(false);
-				//TODO notAnIntegerError.setVisible(true);
 			}
 		}
 		boolean needsName = false;
@@ -554,11 +556,30 @@ public class DeckBuildingPanel extends JPanel {
 	    // only got here if we didn't return false
 	    return true;
 	}
+	
+	/**
+	 * Trims a string by removing excess whitespace
+	 * @param aString The string to be trimmed
+	 * @return The newly trimmed string
+	 */
+	public String trim(String aString) {
+		int len = aString.length();
+		int st = 0;
+
+		while ((st < len) && Character.isWhitespace(aString.charAt(st))) {
+			st++;
+		}
+		while ((st < len) && Character.isWhitespace(aString.charAt(len - 1))) {
+			len--;
+		}
+		return ((st > 0) || (len < aString.length())) ? aString.substring(st, len) : aString;
+	}
+
 
 	/**
 	 * This function sets the focus on the name field.
 	 */
-	public void setFocusOnName() {
+	public void focusOnName() {
 		nameField.requestFocusInWindow();
 		getRootPane().setDefaultButton(btnAddCard);
 	}

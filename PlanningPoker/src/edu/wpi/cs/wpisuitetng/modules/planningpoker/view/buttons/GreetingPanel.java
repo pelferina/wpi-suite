@@ -36,15 +36,15 @@ import java.awt.Font;
 
 /**
  * Panel for buttons up top
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 @SuppressWarnings("serial")
 public class GreetingPanel extends ToolbarGroupView{
 	
 	// initialize the main view greeting panel
 	private final JPanel contentPanel = new JPanel();
-	private JLabel planningPokerImageLabel;
+	private JLabel planningPokerImageLabel; // $codepro.audit.disable variableShouldBeFinal
 	
 	public GreetingPanel(){
 		super("");
@@ -52,7 +52,7 @@ public class GreetingPanel extends ToolbarGroupView{
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
 //		userName = new JLabel ("<html><div align =\"center\"> <br/>Welcome to Planning Poker! </div></html>");
 		try{
-		    Image img = ImageIO.read(getClass().getResource("planningpoker.png"));
+		    Image img = ImageIO.read(getClass().getResource("planningpoker.png")); // $codepro.audit.disable variableShouldBeFinal
 			planningPokerImageLabel = new JLabel(new ImageIcon(img));
 		} catch(IOException ex) {
 			System.out.println("IOException thrown in PlanningPokerButtonsPanel.");
@@ -73,5 +73,5 @@ public class GreetingPanel extends ToolbarGroupView{
 		lblWelcomeToPlanning.setFont(new Font("SWRomnt", Font.PLAIN, 15));
 		contentPanel.add(lblWelcomeToPlanning);
 		super.setContent(contentPanel);
-	}	
+	}
 }

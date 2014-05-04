@@ -22,10 +22,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.deckcontroller.AddDeckContro
 
 /**
  * List of Decks being pulled from the server
- * 
- * 
- * @version $Revision: 1.0 $
- * @author Cosmic Latte
+ * @author FFF8E7
+ * @version 6
  */
 @SuppressWarnings({ "serial", "rawtypes" })
 public class DeckModel extends AbstractListModel {
@@ -167,13 +165,13 @@ public class DeckModel extends AbstractListModel {
 		if(id == 0) return defaultDeck;
 		for(Deck deck : listOfDecks)
 		{
-			if(deck.getId() ==id) return deck;
+			if(deck.getId() == id) return deck;
 		}
 		return null;
 	}
 	
 	/**
-	 * This function determines if the deck is a duplicate
+	 * This function determines if the deck is a duplicate base on the name
 	 * @param s The deck name as a string
 	 * @return true if the name is a duplicate, false otherwise
 	 */
@@ -181,7 +179,7 @@ public class DeckModel extends AbstractListModel {
 		for (Deck deck: listOfDecks)
 		{
 			System.out.print(deck.getId() +  ":" + deck.getName() + "	");
-			if (deck.getName().compareTo(s) == 0) {
+			if (deck.getName().equals(s)) {
 				return true;
 			}
 		}

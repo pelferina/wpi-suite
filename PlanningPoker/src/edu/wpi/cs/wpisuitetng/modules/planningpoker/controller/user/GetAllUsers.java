@@ -51,7 +51,7 @@ public class GetAllUsers {
 	 */
 	public User[] getAllUsers(){
 		if (testFlag == 1){
-			User[] testUsers = {new User("admin", "admin", "1234", 27)};
+			final User[] testUsers = {new User("admin", "admin", "1234", 27)};
 			return testUsers;
 		}
 		if(users == null){
@@ -59,7 +59,7 @@ public class GetAllUsers {
 				if(Network.getInstance().getDefaultNetworkConfiguration() != null){
 					sendRequest();
 					return users;
-				}	
+				}
 			}
 			catch(RuntimeException exception){
 				System.err.println("Exception thrown in GetAllUsers:" + exception);

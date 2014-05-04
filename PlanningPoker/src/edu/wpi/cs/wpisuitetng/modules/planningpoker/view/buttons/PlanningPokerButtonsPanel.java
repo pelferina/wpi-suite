@@ -27,8 +27,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
  * Panel for buttons up top
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 @SuppressWarnings("serial")
 public class PlanningPokerButtonsPanel extends ToolbarGroupView{
@@ -45,8 +45,8 @@ public class PlanningPokerButtonsPanel extends ToolbarGroupView{
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
 		this.setPreferredWidth(330);
 		
-		createButton.setPreferredSize(new Dimension(150,50));
-		optionsButton.setPreferredSize(new Dimension(150,50));	
+		createButton.setPreferredSize(new Dimension(150, 50));
+		optionsButton.setPreferredSize(new Dimension(150, 50));
 
 //		createButton.setHorizontalAlignment(SwingConstants.CENTER);
 		try {
@@ -69,7 +69,7 @@ public class PlanningPokerButtonsPanel extends ToolbarGroupView{
 					ViewEventController.getInstance().createGame();
 			//	}
 			}
-		});		
+		});
 		
 		//action listener for the Create Iteration Button
 		optionsButton.addActionListener(new ActionListener() {
@@ -82,7 +82,7 @@ public class PlanningPokerButtonsPanel extends ToolbarGroupView{
 		});
 		
 		contentPanel.add(createButton);
-		contentPanel.add(Box.createRigidArea(new Dimension(15,0)));
+		contentPanel.add(Box.createRigidArea(new Dimension(15, 0)));
 		contentPanel.add(optionsButton);
 		contentPanel.setOpaque(false);
 		
@@ -103,5 +103,5 @@ public class PlanningPokerButtonsPanel extends ToolbarGroupView{
 	 * @return JButton */
 	public JButton getOptionsButton() {
 		return optionsButton;
-	}	
+	}
 }

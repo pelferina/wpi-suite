@@ -21,8 +21,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
 
 /**
  * This is the listener that listens for when voting is complete
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 public class VotingCompleteListener implements ActionListener {
 	Data db;
@@ -42,7 +42,7 @@ public class VotingCompleteListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		GameSession[] gameArray = {};
 		final int numOfUser;
-		VoteModel.getInstance().addVotes(db.retrieveAll(new Vote(null,0)).toArray(new Vote[0]));
+		VoteModel.getInstance().addVotes(db.retrieveAll(new Vote(null, 0)).toArray(new Vote[0]));
 
 		gameArray = db.retrieveAll(
 				new GameSession(new String(), new String(), 0, 0, new Date(),

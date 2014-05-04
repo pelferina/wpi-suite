@@ -22,12 +22,13 @@ import java.util.List;
 
 
 
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SpringLayout;
+
 
 
 
@@ -59,16 +60,12 @@ public class PlayDeckGame extends PlayGame implements Refreshable{
 
 
 	private int votesSoFarInt = -1;
-	private final JLabel votesSoFarNameLabel = new JLabel("Estimate: ");
+
 	private final JLabel votesSoFarLabel = new JLabel("0");
 
 	//List of buttons associated with the cards. First element -> lowest card val
 	private final List<GameCard> cardButtons = new ArrayList<GameCard>();
 
-	/**
-	 * @wbp.nonvisual location=41,359
-	 */
-	private final JLabel gameEnded = new JLabel("Game Has Ended");
 	private boolean isDeckSingleSelection;
 
 	/**
@@ -81,10 +78,10 @@ public class PlayDeckGame extends PlayGame implements Refreshable{
 
 		deckId = currentGame.getDeckId();
 		gameCardList = DeckModel.getInstance().getDeck(deckId).getCards();
-		isDeckSingleSelection = DeckModel.getInstance().getDeck(deckId).isSingleSelection();
+		isDeckSingleSelection = DeckModel.getInstance().getDeck(deckId).getIsSingleSelection();
 		generateButtons();
 
-		deckArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		deckArea.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
 		for (final GameCard card: cardButtons){
 
@@ -145,7 +142,7 @@ public class PlayDeckGame extends PlayGame implements Refreshable{
 						}
 					}
 					checkCanSubmit();
-					System.out.println(userEstimates.getVote());
+					//System.out.println(userEstimates.getVote());
 					sendEstimatetoGameView(currentReq, votesSoFarInt);
 				}
 				gv.isNew = false;
@@ -156,17 +153,22 @@ public class PlayDeckGame extends PlayGame implements Refreshable{
 
 		springLayout.putConstraint(SpringLayout.SOUTH, reqDescScroll, -GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.NORTH, deckArea);
 
+		//Spring layout for reqName label
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, reqName, -100, SpringLayout.VERTICAL_CENTER, this);
+		springLayout.putConstraint(SpringLayout.WEST, reqName, 0, SpringLayout.WEST, gameDesc);
+
 		//Spring layout for deckArea
 		springLayout.putConstraint(SpringLayout.WEST, deckArea, GuiStandards.DIVIDER_MARGIN.getValue(), SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.EAST, deckArea, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, deckArea, -GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.NORTH, notAnIntegerError);
 
 		//Spring layout for votesSoFarNameLabel
-		springLayout.putConstraint(SpringLayout.NORTH, votesSoFarNameLabel, 15, SpringLayout.SOUTH, deckArea);
-		springLayout.putConstraint(SpringLayout.WEST, votesSoFarNameLabel, 0, SpringLayout.WEST, deckArea);
+		springLayout.putConstraint(SpringLayout.SOUTH, votesSoFarNameLabel, 0, SpringLayout.SOUTH, voteButton);
+		springLayout.putConstraint(SpringLayout.EAST, votesSoFarNameLabel, -50, SpringLayout.WEST, voteButton);
 
 		//Spring layout for votesSoFarLabel
 		springLayout.putConstraint(SpringLayout.NORTH, votesSoFarLabel, 0, SpringLayout.NORTH, votesSoFarNameLabel);
+		springLayout.putConstraint(SpringLayout.EAST, votesSoFarLabel, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.WEST, voteButton);
 		springLayout.putConstraint(SpringLayout.WEST, votesSoFarLabel, 5, SpringLayout.EAST, votesSoFarNameLabel);
 
 		setLayout(springLayout);
@@ -216,8 +218,8 @@ public class PlayDeckGame extends PlayGame implements Refreshable{
 			deckAreaPanel.add(i);
 		}
 
-		System.out.println("CI:"+cardButtons);
-		System.out.println("v2:"+gameCardList);
+		System.out.println("CI:" + cardButtons);
+		System.out.println("v2:" + gameCardList);
 		//This loop will cycle through all of the buttons that have been created and display them
 
 	}
@@ -231,6 +233,17 @@ public class PlayDeckGame extends PlayGame implements Refreshable{
 		{
 			GameCard c = cardButtons.get(i);
 			c.setSelected(false);
+		}
+		voteButton.setEnabled(false);
+	}
+
+	/**
+	 * Disables all the card buttons, used when no requirement is selected
+	 */
+	public void disableAll(){
+		for(int i=0; i < cardButtons.size(); i++){
+			GameCard c = cardButtons.get(i);
+			c.setEnabled(false);
 		}
 		voteButton.setEnabled(false);
 	}

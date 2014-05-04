@@ -14,51 +14,36 @@ import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.Timer;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.StandardChartTheme;
-import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.StandardBarPainter;
-import org.jfree.chart.renderer.xy.StandardXYBarPainter;
-import org.jfree.chart.renderer.xy.XYBarRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.data.general.PieDataset;
-import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.ui.RectangleInsets;
-import org.jfree.util.Rotation;
-
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetUsersController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 /**
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * The BarChar class, extends JScrollPane
+ * @author FFF8E7
+ * @version 6
  */
+@SuppressWarnings("serial")
 public class BarChart extends JScrollPane {
-private static GameSession theGame;
+private static GameSession theGame = new GameSession("", "", -1, -1, null, null);
 private final ChartPanel barChart;
-private static int theReq;
+private static int theReq = -1;
 
 		/**
 		 * Constructor for NewBarChartPanel.
@@ -79,13 +64,10 @@ private static int theReq;
 		/**
 		
 		 * @return the data set depending on the type of data called for either status or iteration */
-		private static DefaultCategoryDataset setData() {
+		private static DefaultCategoryDataset dataSetup() {
 			final List<Vote> votes = theGame.getVotes();
 			final DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
 			final int numUsers = votes.size();
-			final double[] data = new double[numUsers];
-			final double max = 0;
-			
 			//Get each vote
 			for(int i=0; i < numUsers; i++){
 				dataSet.addValue(votes.get(i).getVote().get(theReq), "Estimate", GetUsersController.getInstance().getUserFromID(votes.get(i).getUID()));
@@ -101,21 +83,21 @@ private static int theReq;
 		 * @return the created bar graph */
 		private static JFreeChart createChart(CategoryDataset dataset){
 		    
-		    final JFreeChart chart = ChartFactory.createBarChart("Estimates for "+RequirementModel.getInstance().getRequirement(theReq).getName(), "User", "Estimate", dataset, PlotOrientation.VERTICAL, false, true, false);
+		    final JFreeChart chart = ChartFactory.createBarChart("Estimates for " + RequirementModel.getInstance().getRequirement(theReq).getName(), "User", "Estimate", dataset, PlotOrientation.VERTICAL, false, true, false);
 
 		    final String fontName = "Lucida Sans";
 
 		    final StandardChartTheme theme = (StandardChartTheme)org.jfree.chart.StandardChartTheme.createJFreeTheme();
 
 		    theme.setTitlePaint( Color.decode( "#4572a7" ) );
-		    theme.setExtraLargeFont( new Font(fontName,Font.PLAIN, 16) ); //title
-		    theme.setLargeFont( new Font(fontName,Font.BOLD, 15)); //axis-title
-		    theme.setRegularFont( new Font(fontName,Font.PLAIN, 11));
+		    theme.setExtraLargeFont( new Font(fontName, Font.PLAIN, 16) ); //title
+		    theme.setLargeFont( new Font(fontName, Font.BOLD, 15)); //axis-title
+		    theme.setRegularFont( new Font(fontName, Font.PLAIN, 11));
 		    theme.setRangeGridlinePaint( Color.decode("#C0C0C0"));
 		    theme.setPlotBackgroundPaint( Color.white );
 		    theme.setChartBackgroundPaint( Color.white );
 		    theme.setGridBandPaint( Color.red );
-		    theme.setAxisOffset( new RectangleInsets(0,0,0,0) );
+		    theme.setAxisOffset( new RectangleInsets(0, 0, 0, 0) );
 		    theme.setBarPainter(new StandardBarPainter());
 		    theme.setAxisLabelPaint( Color.decode("#666666")  );
 		    theme.apply( chart );
@@ -142,7 +124,7 @@ private static int theReq;
 		
 		 * @return the created bar graph **/
 		public static ChartPanel createPanel() {
-			final JFreeChart chart = createChart(setData());
+			final JFreeChart chart = createChart(dataSetup());
 			final ChartPanel aPanel = new ChartPanel(chart);
 			aPanel.setDomainZoomable(false);
 			aPanel.setRangeZoomable(false);
@@ -170,7 +152,7 @@ private static int theReq;
 		{
 			theGame = aGame;
 			theReq = aReq;
-			barChart.setChart(createChart(setData()));
+			barChart.setChart(createChart(dataSetup()));
 			barChart.setDomainZoomable(false);
 			barChart.setRangeZoomable(false);
 		}

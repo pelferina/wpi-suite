@@ -62,7 +62,7 @@ public class NeedsVoteIcon implements Icon {
 	 * @see javax.swing.Icon#paintIcon(Component, Graphics, int, int) */
 	@Override
 	public void paintIcon(Component c, Graphics g, int x, int y) {
-		g.setColor(new Color(169,46,34));
+		g.setColor(new Color(169, 46, 34));
 		g.fillOval(x, y, width, height);
 	}
 

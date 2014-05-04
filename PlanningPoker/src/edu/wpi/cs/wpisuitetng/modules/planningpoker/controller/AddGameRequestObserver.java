@@ -19,9 +19,8 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  * This observer is called when a response is received from a request
  * to the server to add a game.
  * 
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
- *
+ * @author FFF8E7
+ * @version 6
  */
 public class AddGameRequestObserver implements RequestObserver {
 	

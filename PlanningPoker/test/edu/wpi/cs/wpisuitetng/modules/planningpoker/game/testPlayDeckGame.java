@@ -22,7 +22,6 @@ import org.junit.Test;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameCard;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.PlayDeckGame;
@@ -40,8 +39,7 @@ public class testPlayDeckGame {
 	
 	@Before
 	public void setUp() throws Exception {
-		User admin = new User("admin", "admin", "1234", 27);
-		User bob = new User("bob", "bob", "1234", 28);
+		final User admin = new User("admin", "admin", "1234", 27);
 		admin.setRole(Role.ADMIN);
 		req1 = new Requirement(1,"one","Desc");
 		req2 = new Requirement(2,"two","Desc");
@@ -50,9 +48,9 @@ public class testPlayDeckGame {
 		RequirementModel.getInstance().addRequirement(req2);
 		RequirementModel.getInstance().addRequirement(req3);
 
-	}	
+	}
 	@Test
-	public void testPlayDeckGame() throws Exception{
+	public void testAPlayDeckGame() throws Exception{
 		List <Integer> reqList =  new ArrayList<Integer>();
 		reqList.add(1);
 		//reqList.add(2);

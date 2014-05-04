@@ -38,13 +38,13 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.GuiStandards;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.completedgame.charts.BarChart;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.JTextFieldLimit;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 import javax.swing.SpringLayout;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-
 
 import java.awt.Color;
 import java.awt.Font;
@@ -54,14 +54,16 @@ import java.awt.Font;
  * @author FFF8E7
  * @version 6
  */
+@SuppressWarnings("serial")
 public class VoteData extends JPanel{
 
 	private final JLabel reqNameLabel = new JLabel("Requirement Name:");
 	private final JLabel reqDescriptionLabel = new JLabel("Requirement Description:");
+	private final JLabel estimatesLabel = new JLabel ("Estimates");
 	private final JLabel finalEstimateLabel = new JLabel ("Final Estimate:");
 	private final JLabel notAnIntegerError = new JLabel("Estimate must be a positive integer");
 	private final JTextField finalEstimateText = new JTextField();
-	private final JButton	submitEstimateButton = new JButton("Submit Estimate");
+	private final JButton submitEstimateButton = new JButton("Submit Estimate");
 	private final JButton archiveGameButton = new JButton("Archive Game");
 	private final JTextField reqNameText = new JTextField();
 	private JLabel meanTextField;
@@ -74,10 +76,9 @@ public class VoteData extends JPanel{
 	private JTable statsTable;
 	private final GameSession completedGame;
 	private final CompleteView completeView;
-	private List<Integer> gameReqIDs;
 	private final List<Requirement> gameReqs;
 	private Requirement currentReq;
-	private int	reqIndex;
+	private int reqIndex;
 	private List<Integer> finalVote;
 	private final Timer setFocusTimer;
 	private BarChart aChart;
@@ -95,10 +96,10 @@ public class VoteData extends JPanel{
 		gameReqs = cv.getGameRequirements();
 		finalVote = new ArrayList<Integer>();
 		notAnIntegerError.setVisible(false);
-//		archiveGameButton.setEnabled(false);
 		submitEstimateButton.setEnabled(false);
 		descriptionTextArea.setLineWrap(true);
 		descriptionTextArea.setWrapStyleWord(true);
+		finalEstimateText.setDocument(new JTextFieldLimit(3));
 		if(completedGame.getFinalVotes() != null){
 			if (completedGame.getFinalVotes().size() > 0 && completedGame.getFinalVotes().get(0) >= 0){
 				finalVote = completedGame.getFinalVotes();
@@ -179,7 +180,6 @@ public class VoteData extends JPanel{
 						break;
 					}
 				}
-				archiveGameButton.setEnabled(allVotes);
 				completeView.nextRequirement(finalEstimate);
 				completeView.isNew = false;
 			}
@@ -279,14 +279,14 @@ public class VoteData extends JPanel{
 		statsTable.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Statistic", "Value"}));
 		final DefaultTableModel statsModel = (DefaultTableModel) statsTable.getModel();
 		statsModel.setRowCount(2);
-		statsModel.setValueAt("Mean",0,0);
-		statsModel.setValueAt("Median",1,0);
+		statsModel.setValueAt("Mean", 0, 0);
+		statsModel.setValueAt("Median", 1, 0);
 		if (completedGame.getVotes().size() > 0){
 			statsModel.setValueAt(completedGame.getMean().get(reqIndex), 0, 1);
 			statsModel.setValueAt(completedGame.getMedian().get(reqIndex), 1, 1);
 		}
 		statsPane = new JScrollPane(statsTable);
-		statsPane.setViewportView(statsTable);	
+		statsPane.setViewportView(statsTable);
 		
 		
 		final SpringLayout springLayout = new SpringLayout();
@@ -314,8 +314,12 @@ public class VoteData extends JPanel{
 		springLayout.putConstraint(SpringLayout.EAST, descriptionScrollPane, 0, SpringLayout.EAST, reqNameText);
 		springLayout.putConstraint(SpringLayout.SOUTH, descriptionScrollPane, 100, SpringLayout.NORTH, descriptionScrollPane);
 		
+		//Spring layout constraints for estimatesLabel
+		springLayout.putConstraint(SpringLayout.NORTH, estimatesLabel, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, descriptionScrollPane);
+		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, estimatesLabel, 0, SpringLayout.HORIZONTAL_CENTER, this);
+		
 		//Spring layout constraints for estimatesPane
-		springLayout.putConstraint(SpringLayout.NORTH, estimatesPane, GuiStandards.LABEL_TEXT_OFFSET.getValue() * 2, SpringLayout.SOUTH, descriptionScrollPane);
+		springLayout.putConstraint(SpringLayout.NORTH, estimatesPane, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, estimatesLabel);
 		springLayout.putConstraint(SpringLayout.WEST, estimatesPane, -200, SpringLayout.EAST, estimatesPane);
 		springLayout.putConstraint(SpringLayout.EAST, estimatesPane, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, estimatesPane, -GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.NORTH, notAnIntegerError);
@@ -348,6 +352,7 @@ public class VoteData extends JPanel{
 		
 		setLayout(springLayout);
 		add(notAnIntegerError);
+		add(estimatesLabel);
 		add(estimatesPane);
 		add(descriptionScrollPane);
 		add(reqNameText);
@@ -390,7 +395,7 @@ public class VoteData extends JPanel{
 		//Repopulate statistics table
 		final DefaultTableModel statsModel = (DefaultTableModel) statsTable.getModel();
 		
-		if (completedGame.getMean().size()>0){
+		if (completedGame.getMean().size() > 0){
 		
 			statsModel.setValueAt(completedGame.getMean().get(reqIndex), 0, 1);
 			statsModel.setValueAt(completedGame.getMedian().get(reqIndex), 1, 1);
@@ -417,7 +422,7 @@ public class VoteData extends JPanel{
 		descriptionTextArea.setText(req.getDescription());
 		if (completedGame.getVotes().size() > 0){
 			meanTextField.setText(Float.toString(completedGame.getMean().get(reqIndex)));
-			medianTextField.setText(Float.toString(completedGame.getMedian().get(reqIndex)));	
+			medianTextField.setText(Float.toString(completedGame.getMedian().get(reqIndex)));
 		}
 		
 		aChart.updateChart(completedGame, reqIndex);

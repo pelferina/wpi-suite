@@ -21,9 +21,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddressEntityMan
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.EmailAddressModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.PreferencesPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementPriority;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.configuration.NetworkConfiguration;
 
