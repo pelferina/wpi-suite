@@ -42,6 +42,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.refresh.Refreshable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameCard;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.JTextFieldLimit;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 
 /**
@@ -125,19 +126,25 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		btnSave.setEnabled(false);
 		btnDelete.setFont(size);
 		btnDelete.setSize(80, 20);
+		btnDelete.setEnabled(false);
 		btnAddCard.setFont(size);
 		btnAddCard.setSize(80, 20);
 		btnAddCard.setEnabled(false);
 		btnRmvSelected.setFont(size);
 		btnRmvSelected.setSize(80, 20);
+		btnRmvSelected.setEnabled(false);
 		btnRmvAll.setFont(size);
 		btnRmvAll.setSize(80, 20);
+		btnRmvAll.setEnabled(false);
 		btnCancel.setFont(size);
 		btnCancel.setSize(80,20);
 		errLabel.setVisible(false);
 		//cardPanel.setMinimumSize(new Dimension(200, 13));
 		cardArea.setMinimumSize(new Dimension(200, 135));
 
+		nameField.setDocument(new JTextFieldLimit(20));
+		numberField.setDocument(new JTextFieldLimit(3));
+		
 		// Sets up cardArea
 		cardArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 
@@ -515,7 +522,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		//Spring layout for textField
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameField, 0, SpringLayout.VERTICAL_CENTER, lblDeckName);
 		springLayout.putConstraint(SpringLayout.WEST, nameField, 10, SpringLayout.EAST, lblDeckName);
-		springLayout.putConstraint(SpringLayout.EAST, nameField, 100, SpringLayout.WEST, nameField);
+		springLayout.putConstraint(SpringLayout.EAST, nameField, 175, SpringLayout.WEST, nameField);
 
 		//Spring layout for btnSave
 		springLayout.putConstraint(SpringLayout.NORTH, btnSave, 20, SpringLayout.NORTH, this);
@@ -534,7 +541,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		//Spring layout for numberField
 		springLayout.putConstraint(SpringLayout.NORTH, numberField, 0, SpringLayout.NORTH, lblAdd);
 		springLayout.putConstraint(SpringLayout.WEST, numberField, 10, SpringLayout.EAST, lblAdd);
-		springLayout.putConstraint(SpringLayout.EAST, numberField, 100, SpringLayout.WEST, numberField);
+		springLayout.putConstraint(SpringLayout.EAST, numberField, 40, SpringLayout.WEST, numberField);
 
 		//Spring layout for btnAddCard
 		springLayout.putConstraint(SpringLayout.NORTH, btnAddCard, 10, SpringLayout.SOUTH, lblAdd);
@@ -671,7 +678,9 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 	 * Checks if the inputed deck name is valid
 	 */
 	private void validateDeckName(){
-		if (!(nameField.getText().length() > 0)){
+		String name = nameField.getText();
+		name = trim(name);
+		if (name.length() == 0 || DeckModel.getInstance().isDuplicateDeck(nameField.getText())){
 			btnSave.setEnabled(false);
 			errLabel.setText("Invalid deck name.");
 			errLabel.setVisible(true);
@@ -718,6 +727,25 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		nameField.requestFocusInWindow();
 		getRootPane().setDefaultButton(btnAddCard);
 	}
+	
+	/**
+	 * Trims a string by removing excess whitespace
+	 * @param aString The string to be trimmed
+	 * @return The newly trimmed string
+	 */
+	public String trim(String aString) {
+		int len = aString.length();
+		int st = 0;
+
+		while ((st < len) && Character.isWhitespace(aString.charAt(st))) {
+			st++;
+		}
+		while ((st < len) && Character.isWhitespace(aString.charAt(len - 1))) {
+			len--;
+		}
+		return ((st > 0) || (len < aString.length())) ? aString.substring(st, len) : aString;
+	}
+
 
 	@Override
 	public void refreshRequirements() {}

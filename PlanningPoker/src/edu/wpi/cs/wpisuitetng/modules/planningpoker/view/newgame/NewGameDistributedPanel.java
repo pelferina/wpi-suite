@@ -137,7 +137,7 @@ public class NewGameDistributedPanel extends JSplitPane {
 		deckPanel.focusOnName();
 		newRequirement.setVisible(false);
 		newGameReqPanel.setVisible(false);
-		newRequirement.focusOnName();
+		deckPanel.focusOnName();
 		isDeckOpen = true;
 	}
 	

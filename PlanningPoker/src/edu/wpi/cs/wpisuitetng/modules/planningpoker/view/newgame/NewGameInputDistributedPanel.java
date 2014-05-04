@@ -936,7 +936,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	}
 
 	/**
-	 * removes all error labels
+	 * removes all error labels	
 	 */
 	private void removeErrorLabels(){
 		deadlineError.setVisible(false);
