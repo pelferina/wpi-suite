@@ -534,4 +534,34 @@ public class PlayGame extends JPanel implements Refreshable{
 		// TODO Auto-generated method stub
 
 	}
+
+
+	public JTextField getEstimateTextField() {
+		return estimateTextField;
+	}
+
+	public JTextField getGameNameTextField() {
+		return gameNameTextField;
+	}
+
+	public JTextField getReqNameTextField() {
+		return reqNameTextField;
+	}
+
+	public JTextArea getGameDescTextArea() {
+		return gameDescTextArea;
+	}
+
+	public JTextArea getReqDescTextArea() {
+		return reqDescTextArea;
+	}
+
+	public JButton getSubmit() {
+		return submit;
+	}
+
+	public JButton getVoteButton() {
+		return voteButton;
+	}
+
 }

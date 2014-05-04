@@ -1137,4 +1137,106 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			initializeDeckComboBox();
 		}
 	}
+
+	public JComboBox<String> getDeckBox() {
+		return deckBox;
+	}
+
+//	public void setDeckBox(JComboBox<String> deckBox) {
+//		this.deckBox = deckBox;
+//	}
+
+	public JCheckBox getDeadlineCheckBox() {
+		return deadlineCheckBox;
+	}
+
+	public JLabel getDeadlineLabel() {
+		return deadlineLabel;
+	}
+
+	public JLabel getNameLabel() {
+		return nameLabel;
+	}
+
+	public JLabel getDescriptionLabel() {
+		return descriptionLabel;
+	}
+
+	public JLabel getDeckLabel() {
+		return deckLabel;
+	}
+
+	public JTextField getNameTextField() {
+		return nameTextField;
+	}
+
+	public JScrollPane getDescriptionScrollPane() {
+		return descriptionScrollPane;
+	}
+
+	public JTextArea getDescriptionTextField() {
+		return descriptionTextField;
+	}
+
+	public JDatePickerImpl getDatePicker() {
+		return datePicker;
+	}
+
+	public JComboBox<String> getDeadlineHourComboBox() {
+		return deadlineHourComboBox;
+	}
+
+	public JComboBox<String> getDeadlineMinuteComboBox() {
+		return deadlineMinuteComboBox;
+	}
+
+	public JRadioButton getAMButton() {
+		return AMButton;
+	}
+
+	public JRadioButton getPMButton() {
+		return PMButton;
+	}
+
+	public JCheckBox getDeckCheckBox() {
+		return deckCheckBox;
+	}
+
+//	public JLabel getMinuteError() {
+//		return minuteError;
+//	}
+//
+//	public JLabel getDeadlineError() {
+//		return deadlineError;
+//	}
+//
+//	public JLabel getNameError() {
+//		return nameError;
+//	}
+//
+//	public JLabel getReqError() {
+//		return reqError;
+//	}
+//
+//	public JLabel getHourError() {
+//		return hourError;
+//	}
+
+	public JButton getCreateDeckButton() {
+		return createDeckButton;
+	}
+
+	public JButton getSaveGameButton() {
+		return saveGameButton;
+	}
+
+	public JButton getActivateGameButton() {
+		return activateGameButton;
+	}
+
+	public JButton getCancelButton() {
+		return cancelButton;
+	}
+	
+	
 }

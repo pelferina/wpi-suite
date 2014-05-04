@@ -147,6 +147,12 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 			
 			img = ImageIO.read(getClass().getResource("removeall.png"));
 			btnRemoveAll.setIcon(new ImageIcon(img));
+			
+			btnAddOne.setEnabled(true);
+			btnAddAll.setEnabled(true);
+			btnRemoveOne.setEnabled(true);
+			btnRemoveAll.setEnabled(true);
+
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
