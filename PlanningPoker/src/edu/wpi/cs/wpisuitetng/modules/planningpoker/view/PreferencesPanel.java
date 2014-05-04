@@ -61,6 +61,11 @@ public class PreferencesPanel extends JPanel {
 	
 	
 	private int testFlag = 0;
+	/**
+	 * constructor for PreferencesPanel
+	 * @param btnClose JButton to exit PreferencesPanel
+	 * @param testFlag Boolean-style check
+	 */
 	public PreferencesPanel(JButton btnClose, int testFlag){
 		this.testFlag = testFlag;
 		setupPanel();
@@ -119,7 +124,7 @@ public class PreferencesPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, submitButton, 0, SpringLayout.HORIZONTAL_CENTER, enableCheckBox);
 		// Swing layout for enableCheckBox
 		springLayout.putConstraint(SpringLayout.NORTH, enableCheckBox, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, emailLabel);
-		springLayout.putConstraint(springLayout.WEST, enableCheckBox, 0, SpringLayout.WEST, emailLabel);
+		springLayout.putConstraint(SpringLayout.WEST, enableCheckBox, 0, SpringLayout.WEST, emailLabel);
 		// Swing layout for deckButton
 		springLayout.putConstraint(SpringLayout.NORTH, deckButton, 30, SpringLayout.SOUTH, submitButton);
 		springLayout.putConstraint(SpringLayout.WEST, deckButton, 0, SpringLayout.WEST, submitButton);
@@ -164,8 +169,9 @@ public class PreferencesPanel extends JPanel {
 		add(enableCheckBox);
 		enableCheckBox.addItemListener(new CheckBoxChangedListener(this));
 		
-		if(testFlag == 1)
+		if(testFlag == 1){
 			return;
+		}
 		
 		retrieveEmail();
 		emailField.setText(eModel.getAddress());

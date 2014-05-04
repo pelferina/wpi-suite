@@ -156,6 +156,13 @@ public class Vote extends AbstractModel implements Comparable<Vote>{
 		return ((Vote) other).VoteID == VoteID;
 		
 	}
+	/** (non-JavaDoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode(){
+		return this.getVoteID();
+	}
 	/**
 	 * Compares a vote to another vote
 	 * @param o the other vote
