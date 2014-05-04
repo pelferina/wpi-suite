@@ -48,11 +48,13 @@ public class ActivateGameActionListener implements ActionListener{
 		request.addObserver(new UpdateGameRequestObserver()); // add an observer to process the response
 		request.send(); // send the request
 	}
-	
+	/**
+	 * Updates the deck
+	 */
 	public void updateDeck(){
 		boolean deckFound = false;
-		String deckName = DeckModel.getInstance().getDeck(game.getDeckId()).getName();
-		List<Deck> decks = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
+		final String deckName = DeckModel.getInstance().getDeck(game.getDeckId()).getName();
+		final List<Deck> decks = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
 		for (Deck d: decks){
 			if(!d.getIsDeleted()) {
 				if (deckName.equals(d.getName())) { 

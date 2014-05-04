@@ -72,10 +72,13 @@ public class ToolbarView  extends DefaultToolbarView {
 		buttonPanel.removeButtons();
 	}
 
-	
+	/**
+	 * gets the available width
+	 * @return the size in an integer
+	 */
 	public int getDummySize()
 	{
-		int size = (int) getWidth();
+		int size = getWidth();
 		size -= buttonPanel.getWidth();
 		size -= gameButton.getWidth();
 

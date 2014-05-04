@@ -747,7 +747,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	 */
 	private void addDecksToDeckComboBox()
 	{
-		String deckTitle = DeckModel.getInstance().getDeck(selectedDeckID).getName();
+		final String deckTitle = DeckModel.getInstance().getDeck(selectedDeckID).getName();
 		decks = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
 		int i = 0;
 		for (Deck d: decks){

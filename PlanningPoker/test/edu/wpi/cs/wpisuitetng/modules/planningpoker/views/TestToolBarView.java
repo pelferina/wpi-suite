@@ -15,7 +15,6 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ToolbarView;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerButtonsPanel;
 
 public class TestToolBarView {
 

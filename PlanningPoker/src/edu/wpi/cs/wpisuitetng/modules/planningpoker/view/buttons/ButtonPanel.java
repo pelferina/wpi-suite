@@ -9,13 +9,10 @@
  *******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
 
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 
@@ -25,7 +22,6 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.SpringLayout;
 import javax.swing.Timer;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
@@ -43,8 +39,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 public class ButtonPanel extends ToolbarGroupView{
 	private final JPanel contentPanel = new JPanel();
 	private final LinkedList<JButton> buttonQueue = new LinkedList<JButton>();
-	private int spacerCount = 0;
-	
 	JButton newButton = new JButton("<html>New<br />Game</html>");
 	JButton settingButton = new JButton("<html>User<br />Setting</html>");
 	JButton editButton = new JButton("<html>Edit<br />Game</html>");
@@ -55,8 +49,6 @@ public class ButtonPanel extends ToolbarGroupView{
 	JButton viewButton = new JButton("<html>View<br />Game</html>");
 	JButton createCancelButton = new JButton("<html>Cancel<br />Games</html>");
 	
-	private ImageIcon newImg = null;
-	private ImageIcon settingImg = null;
 	private ImageIcon editImg = null;
 	private ImageIcon activateImg = null;
 	private ImageIcon archiveImg = null;
@@ -194,8 +186,9 @@ public class ButtonPanel extends ToolbarGroupView{
     		}else if(gameSelected.getGameStatus().equals(GameStatus.DRAFT)){
     			if(isValid(gameSelected)){
     				removeActionListeners(activateButton);
-    				if(gameSelected.getEndDate() != null)
+    				if(gameSelected.getEndDate() != null){
     					expireThisButtonIn(gameSelected);
+    				}
     				activateButton.addActionListener(new ActivateGameActionListener(gameSelected));
     				buttonQueue.add(activateButton);
     				contentPanel.add(activateButton);
@@ -255,7 +248,7 @@ public class ButtonPanel extends ToolbarGroupView{
 	}
 	
 	private void expireThisButtonIn(final GameSession gameSelected) {
-		int expireTime =(int) (gameSelected.getEndDate().getTime() - Calendar.getInstance().getTime().getTime());
+		final int expireTime =(int) (gameSelected.getEndDate().getTime() - Calendar.getInstance().getTime().getTime());
 		if (expireTimer != null){
 			expireTimer.stop();
 		}
