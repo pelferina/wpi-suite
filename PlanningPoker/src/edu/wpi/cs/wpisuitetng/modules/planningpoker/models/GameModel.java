@@ -26,7 +26,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
  * @author FFF8E7
  * @version 6
  */
-@SuppressWarnings({"serial"})
+@SuppressWarnings({"serial", "rawtypes"})
 public class GameModel extends AbstractListModel {
 	private static GameModel instance = null;
 	
@@ -323,7 +323,7 @@ public class GameModel extends AbstractListModel {
 		for (GameSession game : games){
 			if (game.getGameStatus() == GameStatus.INPROGRESS ){
 				for (Vote aVote : game.getVotes()){
-					if (aVote.getUID() == userID){
+					if (aVote.getUID() == userID && !aVote.getVote().contains(-1)){
 						votedGames.add(game);
 					}
 				}

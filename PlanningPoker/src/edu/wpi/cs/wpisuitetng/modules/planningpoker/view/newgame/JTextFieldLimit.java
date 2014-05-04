@@ -17,6 +17,7 @@ import javax.swing.text.PlainDocument;
  * @author FFF8E7
  * @version 6
  */
+@SuppressWarnings("serial")
 public class JTextFieldLimit extends PlainDocument {
   private final int limit;
   /**

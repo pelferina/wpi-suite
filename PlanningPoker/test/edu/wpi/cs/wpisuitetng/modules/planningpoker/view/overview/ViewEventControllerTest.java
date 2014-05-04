@@ -95,16 +95,6 @@ public class ViewEventControllerTest {
 		GameSession gs = new GameSession("G","D", 0, 0, Calendar.getInstance().getTime(), reqList);
 		db.save(gs);
 		gs.setDeckId(-1);
-		vec.makeActivateGameButtonDisable(gs);
-		vec.makeActivateGameButtonVisible(gs);
-		vec.makeArchiveGameButtonVisible(gs);
-		vec.makeEditGameButtonInVisible();
-		vec.makeEditGameButtonVisible(gs);
-		vec.makeEndGameButtonVisible(gs);
-		vec.makeOwnerButtonInvisible();
-		vec.makeUserButtonInvisible();
-		vec.makeViewGameButtonVisible(gs);
-		vec.makeVoteGameButtonVisible(gs);
 		//vec.deckManagementTab();
 		vec.createGame();
 	}

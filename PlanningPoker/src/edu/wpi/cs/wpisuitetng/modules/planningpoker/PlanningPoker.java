@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
 import javax.swing.Timer;
 
 
@@ -41,9 +40,6 @@ public class PlanningPoker implements IJanewayModule{
 	private final List<JanewayTabModel> tabs;
 
 
-	private MainView mainPanel;
-	private JPanel buttonPanel;
-	private final RefreshManager refresh;
 	Timer getUserTimer;
 
 	/**
@@ -51,7 +47,7 @@ public class PlanningPoker implements IJanewayModule{
 	 */
 	public PlanningPoker() {
 		//Setup refreshing
-		refresh = new RefreshManager();
+		/*refresh =*/ new RefreshManager();
 		tabs = new ArrayList<JanewayTabModel>();
 
 		final MainView mainPanel = new MainView();

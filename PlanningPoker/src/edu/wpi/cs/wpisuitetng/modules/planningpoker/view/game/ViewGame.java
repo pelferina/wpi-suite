@@ -39,6 +39,7 @@ import javax.swing.event.DocumentListener;
  * @author FFF8E7
  * @version 6
  */
+@SuppressWarnings("serial")
 public class ViewGame extends JPanel{
 
 	private final List<Integer> gameReqs;

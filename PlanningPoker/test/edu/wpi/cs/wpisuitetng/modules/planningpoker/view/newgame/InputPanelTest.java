@@ -11,27 +11,20 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-
-import javax.swing.JButton;
-import javax.swing.JFormattedTextField;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.MockNetwork;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.mock.MockNetwork;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.configuration.NetworkConfiguration;
 
@@ -41,8 +34,6 @@ public class InputPanelTest {
 	private Requirement req3;
 	
 	private List<Requirement> reqs;
-	private final JButton btnClose = new JButton("x");
-
 	/**
 	 * Setting up using Network and Iteration
 	

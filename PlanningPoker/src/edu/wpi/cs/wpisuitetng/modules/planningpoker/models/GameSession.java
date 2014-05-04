@@ -47,12 +47,10 @@ public class GameSession extends AbstractModel {
 	private final Date creationdate;
 	/** The date that the game will end, if there is no end time then this value is null*/
 	private Date endDate;
-	private final boolean emailSent = false;
 	private List<Float> median;
 	private List<Float> mean;
 	private List<Double> standardDeviation;
 	private int deckId;
-	private  List<Vote> votes;
 	private List<Integer> finalVotes;
 	
 
@@ -74,7 +72,6 @@ public class GameSession extends AbstractModel {
 		this.gameReqs = gameReqs;
 		gameStatus = GameStatus.DRAFT;
 		creationdate = new Date();
-		votes = (new ArrayList<Vote>());
 		deckId = -1;
 		median = null;
 		mean = null;
@@ -418,6 +415,5 @@ public class GameSession extends AbstractModel {
 	 * @param votes
 	 */
 	public void setVotes(List<Vote> votes){
-		this.votes = votes;
 	}
 }

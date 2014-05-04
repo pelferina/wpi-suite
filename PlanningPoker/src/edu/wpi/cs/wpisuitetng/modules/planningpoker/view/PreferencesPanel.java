@@ -56,7 +56,6 @@ public class PreferencesPanel extends JPanel {
 	private final JButton submitButton = new JButton ("Save");
 	private final JButton deckButton = new JButton ("Manage Decks");
 	private final JCheckBox enableCheckBox = new JCheckBox("Enable E-mail Notification");
-	private final JButton close;
 	private EmailAddressModel eModel;
 	
 	
@@ -74,7 +73,6 @@ public class PreferencesPanel extends JPanel {
 		}
 		else currentEmailLabel.setText(emailField.getText());
 		emailField.setText("");
-		close = btnClose;
 	}
 	
 	/**
@@ -88,7 +86,6 @@ public class PreferencesPanel extends JPanel {
 		}
 		else currentEmailLabel.setText(emailField.getText());
 		emailField.setText("");
-		close = btnClose;
 	}
 	
 	/**

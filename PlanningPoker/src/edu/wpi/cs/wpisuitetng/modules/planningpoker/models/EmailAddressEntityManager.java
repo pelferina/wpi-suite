@@ -14,7 +14,6 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.Message;

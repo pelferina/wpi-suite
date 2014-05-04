@@ -27,14 +27,11 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 public class AddDeckRequestObserver implements RequestObserver {
 	
 	
-	private final AddDeckController controller;
-	
 	/**
 	 * Constructs the observer given an AddDeckController
 	 * @param controller the controller used to add Decks
 	 */
 	public AddDeckRequestObserver(AddDeckController controller) {
-		this.controller = controller;
 	}
 	
 	/**
@@ -48,8 +45,7 @@ public class AddDeckRequestObserver implements RequestObserver {
 		// Get the response to the given request
 		final ResponseModel response = iReq.getResponse();
 		
-		// Parse the Deck out of the response body
-		final Deck deck = Deck.fromJson(response.getBody());
+		Deck.fromJson(response.getBody());
 	}
 
 	/**

@@ -11,23 +11,15 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.MockNetwork;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
-import edu.wpi.cs.wpisuitetng.network.Network;
-import edu.wpi.cs.wpisuitetng.network.configuration.NetworkConfiguration;
 
 public class ReqPanelTest {
 	private Requirement req1;
@@ -51,8 +43,6 @@ public class ReqPanelTest {
 	@Test
 	public void testAddRemoveButtons(){
 		NewGameReqPanel reqPanel = new NewGameReqPanel(null);
-		JTable unselected = reqPanel.getReqsTable();
-		JTable selected = reqPanel.getSelectedTabel();
 		JButton addOne = reqPanel.getAddOneButton();
 		JButton addAll = reqPanel.getAddAllButton();
 		JButton removeOne = reqPanel.getRemoveOneButton();

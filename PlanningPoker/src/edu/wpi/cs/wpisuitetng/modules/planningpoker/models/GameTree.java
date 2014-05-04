@@ -19,8 +19,6 @@ import javax.swing.tree.*;
 public class GameTree extends DefaultMutableTreeNode {
 	
 	private final DefaultMutableTreeNode top;
-	private final GameModel gameModel;
-
 	/**
 	 * This constructor creates a tree system and its highest node as well as populating variables
 	 * 
@@ -28,7 +26,7 @@ public class GameTree extends DefaultMutableTreeNode {
 	 */
 	public GameTree(DefaultMutableTreeNode top) {
         this.top = top;
-        gameModel = GameModel.getInstance();
+        GameModel.getInstance();
         createNodes(top);
 	}
 	

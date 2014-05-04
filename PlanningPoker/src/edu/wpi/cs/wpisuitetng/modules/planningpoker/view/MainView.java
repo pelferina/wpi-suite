@@ -25,19 +25,14 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsRequestObserver;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckManagingPanel;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.completedgame.CompleteView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.reqpanel.NewRequirementPanel;
-
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -50,9 +45,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 public class MainView extends JTabbedPane {
 	private final OverviewPanel overviewPanel;
 
-	private GameModel gameModel;
 	private int newGameTabs = 0;
-	private GetRequirementsRequestObserver refresher;
 	private int j = 0;
 	private final List<Integer> openTabs = new ArrayList<Integer>();
 	private final List<NewGameDistributedPanel> newGames = new ArrayList<NewGameDistributedPanel>();
@@ -290,7 +283,6 @@ public class MainView extends JTabbedPane {
 	public class MyCloseActionHandler implements ActionListener {
 
 	    private final String tabName;
-	    private final int index;
 	    //0 - New Game
 	    //1 - Edit Game
 	    //2 - Game View
@@ -298,7 +290,6 @@ public class MainView extends JTabbedPane {
 	    //4 - Preferences Panel
 	    //5 - New Requirement
 	    private final int type;
-	    private final MainView mv;
 	    private GameView gameView;
 	    private CompleteView completeView;
 	    private NewGameDistributedPanel ngdp;
@@ -316,10 +307,8 @@ public class MainView extends JTabbedPane {
 	     */
 	    public MyCloseActionHandler(String tabName, int index, MainView mv, NewGameDistributedPanel ngdp, int type) {
 	        this.tabName = tabName;
-	        this.index = index;
 	        this.ngdp = ngdp;
 	        this.type = type;
-	        this.mv = mv;
 	    }
 	    /**
 	     * Constructor for the closeActionHandler
@@ -331,10 +320,8 @@ public class MainView extends JTabbedPane {
 	     */
 	    public MyCloseActionHandler(String tabName, int index, MainView mv, NewRequirementPanel rp, int type) {
 	        this.tabName = tabName;
-	        this.index = index;
 	        newReq = rp;
 	        this.type = type;
-	        this.mv = mv;
 	    }
 
 	    /**
@@ -347,10 +334,8 @@ public class MainView extends JTabbedPane {
 	     */
 	    public MyCloseActionHandler(String tabName, int index, MainView mv, GameView gv, int type){
 	    	this.tabName = tabName;
-	    	this.index = index;
 	    	gameView = gv;
 	    	this.type = type;
-	    	this.mv = mv;
 	    }
 	    /**
 	     * constructor for CloseActionHandler 
@@ -362,10 +347,8 @@ public class MainView extends JTabbedPane {
 	     */
 	    public MyCloseActionHandler(String tabName, int index, MainView mv, CompleteView cv, int type) {
 	        this.tabName = tabName;
-	        this.index = index;
 	        completeView = cv;
 	        this.type = type;
-	        this.mv = mv;
 	    }
 	    /**
 	     * constructor for CloseActionHandler 
@@ -377,10 +360,8 @@ public class MainView extends JTabbedPane {
 	     */
 	    public MyCloseActionHandler(String tabName, int index, MainView mv, DeckManagingPanel dm, int type) {
 	        this.tabName = tabName;
-	        this.index = index;
 	        deckManaging = dm;
 	        this.type = type;
-	        this.mv = mv;
 	    }
 	    
 	    /**
@@ -394,10 +375,8 @@ public class MainView extends JTabbedPane {
 	    public MyCloseActionHandler(String tabName, int index, MainView mv,
 				PreferencesPanel userPreferences, int type) {
 			this.tabName = tabName;
-	    	this.index = index;
 	    	this.userPreferences = userPreferences;
 	    	this.type = type;
-	    	this.mv = mv;
 		}
 
 		public String getTabName() {
