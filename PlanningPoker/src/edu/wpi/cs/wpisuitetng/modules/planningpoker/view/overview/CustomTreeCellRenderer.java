@@ -74,7 +74,12 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 		
 		if (((String) node.getUserObject()).equals("Needs Vote") && GameModel.getInstance().getGamesNeedingVote(currentUser.getIdNum()).size() > 0 ) {
 			setIcon(voteIcon);
-		} else {
+		} 
+		else if(((String) node.getUserObject()).equals("Completed") && GameModel.getInstance().getGamesNeedingFinalEstimate(currentUser.getIdNum()).size() > 0 )
+		{
+			setIcon(voteIcon);
+		}
+		else {
 			setIcon(normalIcon);
 			/*
 			DefaultMutableTreeNode firstLeaf = ((DefaultMutableTreeNode) tree

@@ -27,15 +27,12 @@ import javax.swing.JTabbedPane;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckManagingPanel;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.completedgame.CompleteView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.game.GameView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.reqpanel.NewRequirementPanel;
-
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -60,14 +57,11 @@ public class MainView extends JTabbedPane {
 
 	public MainView() {
 		overviewPanel = new OverviewPanel();
-		//deckPanel = new DeckManagingPanel(); //TODO get rid of this 
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
 		addTab("Overview", overviewPanel);
-		//addTab("Manage Deck", deckPanel);
 		ViewEventController.getInstance().setMainView(this);
 	}
-	//The function to add a new game tab
 	//The function to add a new game tab
 
 	/**
@@ -208,6 +202,7 @@ public class MainView extends JTabbedPane {
 				final DeckManagingPanel deckManaging = new DeckManagingPanel(btnClose);
 				myCloseActionHandler = new MyCloseActionHandler("Deck Management", j, this, deckManaging, 6);
 				add(deckManaging, open);
+				deckManaging.focusOnName();
 				hasDeckManagingPane = true;
 				manageDeckIndex = open;
 			}

@@ -8,14 +8,17 @@
  * Contributors: Team Cosmic Latte
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateGameRequestObserver;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.Deck;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -36,6 +39,9 @@ public class ActivateGameActionListener implements ActionListener{
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if(game.getDeckId() >= 0) {
+			updateDeck();
+		}
 		game.setGameStatus(GameStatus.ACTIVE);
 		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.POST); // POST == UPDAT
 		request.setBody(game.toJSON()); // put the new session in the body of the request
@@ -43,4 +49,20 @@ public class ActivateGameActionListener implements ActionListener{
 		request.send(); // send the request
 	}
 	
+	public void updateDeck(){
+		boolean deckFound = false;
+		String deckName = DeckModel.getInstance().getDeck(game.getDeckId()).getName();
+		List<Deck> decks = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
+		for (Deck d: decks){
+			if(!d.getIsDeleted()) {
+				if (deckName.equals(d.getName())) { 
+					game.setDeckId(d.getId());
+					deckFound = true;
+				}
+			}
+		}
+		if(!deckFound){
+			game.setDeckId(0); // set id to default deck
+		}
+	}
 }

@@ -542,7 +542,8 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
 		filterBacklog();
 		for (int i = 0; i < selectedSize; i++){
-			reqs.remove(selected.get(i));
+			Requirement inSelected = RequirementModel.getInstance().getRequirement(selected.get(i).getId());
+			reqs.remove(inSelected);
 		}
 		final DefaultTableModel dtm = (DefaultTableModel) unselectedTable.getModel();
 		dtm.setRowCount(0);
@@ -601,6 +602,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	 */
 	public void receiveCreatedReq(Requirement r){
 		disableAllButtons();
+
 		selected.add(r);
 		final DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
 		final String[] data = {r.getName(), r.getDescription()};
