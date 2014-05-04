@@ -279,13 +279,10 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 				newDeckName = nameField.getText();
 				final Deck newDeck = new Deck (newDeckName, newDeckCards); //Updated deck with new name and new cards
 				newDeck.setIsSingleSelection(isSingleSelection); //Updates selection mode
-				System.out.println("new deck cards: " + newDeckCards);
 				if(newDeckFlag){ // Store new deck
-					System.out.println("storing new deck");
 					AddDeckController.getInstance().addDeck(newDeck); 
 					setupDecks();
 				} else { // Update selected deck
-					System.out.println("Editing deck");
 					final Deck thisDeck = DeckModel.getInstance().getDeck(deckIDs.get(selectedDeckIndex));
 					thisDeck.setIsDeleted(true); // delete old version
 					UpdateDeckController.getInstance().updateDeck(thisDeck);
@@ -431,10 +428,6 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 				btnSave.setEnabled(false);
 				btnRmvSelected.setEnabled(false);
 				btnRmvAll.setEnabled(false);
-
-				// Outputs console messages
-				System.out.println("Cleared current deck");
-				System.out.println("Current card list is: " + newDeckCards.toString());
 
 				//display error message
 				if (newDeckCards.isEmpty()){
@@ -682,7 +675,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 	private void validateDeckName(){
 		String name = nameField.getText();
 		name = trim(name);
-		if (name.length() == 0 || DeckModel.getInstance().isDuplicateDeck(nameField.getText())){
+		if (name.length() == 0 || (DeckModel.getInstance().isDuplicateDeck(nameField.getText()) && newDeckFlag)){
 			btnSave.setEnabled(false);
 			errLabel.setText("Invalid deck name.");
 			errLabel.setVisible(true);
