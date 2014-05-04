@@ -22,8 +22,8 @@ public class testJTableModel{
 	
 	@Test
 	public void testJTableModelCreate(){
-		GameSession gs = new GameSession("t", "Test Description", 0, 1, new Date(), new ArrayList<Integer>());
-		GameSession[] games = {gs};
+		final GameSession gs = new GameSession("t", "Test Description", 0, 1, new Date(), new ArrayList<Integer>());
+		final GameSession[] games = {gs};
 		assertNotNull(new JTableModel(games) );
 	}
 

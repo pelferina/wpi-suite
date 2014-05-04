@@ -64,7 +64,7 @@ public class MockData implements Data {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> deleteAll(T arg0) {
-		List<T> deleted = new ArrayList<T>();
+		final List<T> deleted = new ArrayList<T>();
 		for(Object obj : objects) {
 			if(arg0.getClass().isInstance(obj)) {
 				deleted.add((T) obj);
@@ -87,7 +87,7 @@ public class MockData implements Data {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public List<Model> retrieve(Class type, String fieldName, Object value) {
-		List<Model> rv = new ArrayList<Model>();
+		final List<Model> rv = new ArrayList<Model>();
 		for(Object obj : objects) {
 			if(!type.isInstance(obj)) {
 				continue;
@@ -125,7 +125,7 @@ public class MockData implements Data {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> retrieveAll(T arg0) {
-		List<T> all = new ArrayList<T>();
+		final List<T> all = new ArrayList<T>();
 		for(Object obj : objects) {
 			if(arg0.getClass().isInstance(obj)) {
 				all.add((T) obj);
@@ -160,20 +160,20 @@ public class MockData implements Data {
 	@Override
 	public void update(final Class anObjectToBeModified, String fieldName, Object uniqueID, String changeField, Object changeValue) {
 
-		List<? extends Object> objectsToUpdate = retrieve(anObjectToBeModified, fieldName, uniqueID);
+		final List<? extends Object> objectsToUpdate = retrieve(anObjectToBeModified, fieldName, uniqueID);
 		Object theObject;
 		for(int i = 0; i < objectsToUpdate.size(); i++){
 			final Class <?> objectClass = objectsToUpdate.get(i).getClass();
 			Method[] allMethods = objectClass.getMethods();
 			Method methodToBeSaved = null;
 			for(Method m: allMethods){
-				if(m.getName().equalsIgnoreCase("set"+changeField)){
+				if(m.getName().equalsIgnoreCase("set" + changeField)){
 					methodToBeSaved = m;
 				}
 			}
 			final Method theSetter = methodToBeSaved;
 			if(theSetter == null){
-				System.err.println("Mock data|"+ "Null setter method.");
+				System.err.println("Mock data|" + "Null setter method.");
 			}
 			try {
 				theObject = (Object) theSetter.invoke(objectsToUpdate.get(i), changeValue);
@@ -257,7 +257,7 @@ public class MockData implements Data {
 	 */
 	@Override
 	public <T> List<Model> deleteAll(T arg0, Project arg1) {
-		List<Model> toDelete = retrieveAll(arg0, arg1);
+		final List<Model> toDelete = retrieveAll(arg0, arg1);
 		objects.removeAll(toDelete);
 		return toDelete;
 	}
@@ -293,7 +293,7 @@ public class MockData implements Data {
 	
 	 * @return List<Model> */
 	private List<Model> filterByProject(List<Model> models, Project project) {
-		List<Model> filteredModels = new ArrayList<Model>();
+		final List<Model> filteredModels = new ArrayList<Model>();
 		for(Model m : models) {
 			if(m.getProject().getName().equalsIgnoreCase(project.getName())) {
 				filteredModels.add(m);

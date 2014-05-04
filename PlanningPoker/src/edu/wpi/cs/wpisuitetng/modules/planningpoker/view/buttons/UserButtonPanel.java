@@ -49,7 +49,7 @@ public class UserButtonPanel extends ToolbarGroupView{
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
 		this.setPreferredWidth(150);
 		
-		userButton.setPreferredSize(new Dimension(150, 50));	
+		userButton.setPreferredSize(new Dimension(150, 50));
 		userButton.setVisible(false);
 		
 		try {

@@ -57,15 +57,15 @@ public class EditButtonsPanel extends ToolbarGroupView{
 		editButton.setEnabled(true);
 	}
 
-	public EditButtonsPanel(){	
+	public EditButtonsPanel(){
 		super("");
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
 		this.setPreferredWidth(300);
 		
-		editButton.setPreferredSize(new Dimension(150, 50));	
+		editButton.setPreferredSize(new Dimension(150, 50));
 		
 		try {
-		    editImg = new ImageIcon(ImageIO.read(getClass().getResource("edit.png")));		    
+		    editImg = new ImageIcon(ImageIO.read(getClass().getResource("edit.png")));
 		} catch (IOException ex) {
 			System.out.println("IOException thrown in EditButtonsPanel.");
 		}

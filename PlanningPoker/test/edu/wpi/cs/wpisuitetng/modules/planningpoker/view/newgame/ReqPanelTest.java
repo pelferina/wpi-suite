@@ -26,20 +26,20 @@ public class ReqPanelTest {
 	
 	@Test
 	public void testAddRemoveButtons(){
-		Requirement req1 = new Requirement();
-		Requirement req2 = new Requirement();
-		Requirement req3 = new Requirement();
-		List<Requirement> reqs = new ArrayList<Requirement>();
+		final Requirement req1 = new Requirement();
+		final Requirement req2 = new Requirement();
+		final Requirement req3 = new Requirement();
+		final List<Requirement> reqs = new ArrayList<Requirement>();
 		reqs.add(req1);
 		reqs.add(req2);
 		reqs.add(req3);
-		NewGameReqPanel reqPanel = new NewGameReqPanel(null);
-		JTable unselected = reqPanel.getReqsTable();
-		JTable selected = reqPanel.getSelectedTabel();
-		JButton addOne = reqPanel.getAddOneButton();
-		JButton addAll = reqPanel.getAddAllButton();
-		JButton removeOne = reqPanel.getRemoveOneButton();
-		JButton removeAll = reqPanel.getRemoveAllButton();
+		final NewGameReqPanel reqPanel = new NewGameReqPanel(null);
+		final JTable unselected = reqPanel.getReqsTable();
+		final JTable selected = reqPanel.getSelectedTabel();
+		final JButton addOne = reqPanel.getAddOneButton();
+		final JButton addAll = reqPanel.getAddAllButton();
+		final JButton removeOne = reqPanel.getRemoveOneButton();
+		final JButton removeAll = reqPanel.getRemoveAllButton();
 		unselected.setRowSelectionInterval(0, 1);
 		addOne.doClick();
 		List<Requirement> selectedReqs = reqPanel.getSelected();

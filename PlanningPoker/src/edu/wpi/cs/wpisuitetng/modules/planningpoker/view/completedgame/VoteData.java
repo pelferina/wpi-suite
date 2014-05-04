@@ -62,7 +62,7 @@ public class VoteData extends JPanel{
 	private final JLabel finalEstimateLabel = new JLabel ("Final Estimate:");
 	private final JLabel notAnIntegerError = new JLabel("Estimate must be a positive integer");
 	private final JTextField finalEstimateText = new JTextField();
-	private final JButton	submitEstimateButton = new JButton("Submit Estimate");
+	private final JButton submitEstimateButton = new JButton("Submit Estimate");
 	private final JButton archiveGameButton = new JButton("Archive Game");
 	private final JTextField reqNameText = new JTextField();
 	private JLabel meanTextField;
@@ -78,7 +78,7 @@ public class VoteData extends JPanel{
 	private List<Integer> gameReqIDs;
 	private final List<Requirement> gameReqs;
 	private Requirement currentReq;
-	private int	reqIndex;
+	private int reqIndex;
 	private List<Integer> finalVote;
 	private final Timer setFocusTimer;
 	private BarChart aChart;
@@ -287,7 +287,7 @@ public class VoteData extends JPanel{
 			statsModel.setValueAt(completedGame.getMedian().get(reqIndex), 1, 1);
 		}
 		statsPane = new JScrollPane(statsTable);
-		statsPane.setViewportView(statsTable);	
+		statsPane.setViewportView(statsTable);
 		
 		
 		final SpringLayout springLayout = new SpringLayout();
@@ -423,7 +423,7 @@ public class VoteData extends JPanel{
 		descriptionTextArea.setText(req.getDescription());
 		if (completedGame.getVotes().size() > 0){
 			meanTextField.setText(Float.toString(completedGame.getMean().get(reqIndex)));
-			medianTextField.setText(Float.toString(completedGame.getMedian().get(reqIndex)));	
+			medianTextField.setText(Float.toString(completedGame.getMedian().get(reqIndex)));
 		}
 		
 		aChart.updateChart(completedGame, reqIndex);

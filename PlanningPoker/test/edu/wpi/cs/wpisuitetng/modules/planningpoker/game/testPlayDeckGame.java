@@ -31,17 +31,17 @@ public class testPlayDeckGame {
 	
 	@Before
 	public void setUp() throws Exception {
-		User admin = new User("admin", "admin", "1234", 27);
-		User bob = new User("bob", "bob", "1234", 28);
+		final User admin = new User("admin", "admin", "1234", 27);
+		final User bob = new User("bob", "bob", "1234", 28);
 		admin.setRole(Role.ADMIN);
 		
 
-	}	
+	}
 	@Test
 	public void testDeadlineCheck() throws Exception{
-		GameSession gs = new GameSession("G","D", 0, 0, Calendar.getInstance().getTime(), new ArrayList());
-		GameView gv = new GameView(gs);
-		PlayDeckGame pdg = new PlayDeckGame(gs, gv);
+		final GameSession gs = new GameSession("G", "D", 0, 0, Calendar.getInstance().getTime(), new ArrayList());
+		final GameView gv = new GameView(gs);
+		final PlayDeckGame pdg = new PlayDeckGame(gs, gv);
 		pdg.clear();
 		pdg.checkCanSubmit();
 		

@@ -181,7 +181,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
         splitPane.setEnabled( false );
 
 
-		add(splitPane);	
+		add(splitPane);
 
 	}
 
@@ -242,7 +242,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 			sessions = gameModel.getCompletedGameSessions();
 		}
 		else if (s.equals("Archived")){
-			sessions = gameModel.getArchivedGameSessions();	
+			sessions = gameModel.getArchivedGameSessions();
 		}
 
 		final JTableModel jModel = (JTableModel)table.getModel();
@@ -264,7 +264,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		if (node != null)
 		{
 			final Object nodeInfo = node.getUserObject();
-			updateTable((String)nodeInfo);        	
+			updateTable((String)nodeInfo);
 		}
 		table.repaint();
 

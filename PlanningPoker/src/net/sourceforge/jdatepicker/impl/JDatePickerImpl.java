@@ -103,13 +103,13 @@ public class JDatePickerImpl extends JPanel implements JDatePicker {
 		internalEventHandler = new InternalEventHandler();
 
 		//Create Layout
-		SpringLayout layout = new SpringLayout();
+		final SpringLayout layout = new SpringLayout();
         setLayout(layout);
 
         //Create and Add Components
 		//Add and Configure TextField
-		formattedTextField = new JFormattedTextField((formatter!=null) ? formatter : createDefaultFormatter());
-		DateModel<?> model = datePanel.getModel();
+		formattedTextField = new JFormattedTextField((formatter != null) ? formatter : createDefaultFormatter());
+		final DateModel<?> model = datePanel.getModel();
 		setTextFieldValue(formattedTextField, model.getYear(), model.getMonth(), model.getDay(), model.isSelected());
 //		formattedTextField.setEditable(true);		
 		add(formattedTextField);
@@ -120,8 +120,8 @@ public class JDatePickerImpl extends JPanel implements JDatePicker {
 		button = new JButton();
 		button.setFocusable(true);
 		try {
-		    Image img = ImageIO.read(getClass().getResource("calendar_icon.png"));
-		    this.button.setIcon(new ImageIcon(img));		    
+		    final Image img = ImageIO.read(getClass().getResource("calendar_icon.png"));
+		    button.setIcon(new ImageIcon(img));
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
@@ -131,10 +131,10 @@ public class JDatePickerImpl extends JPanel implements JDatePicker {
         layout.putConstraint(SpringLayout.SOUTH, this, 0, SpringLayout.SOUTH, button);
 		
 		//Do layout formatting
-		int h = (int)button.getPreferredSize().getHeight();
-		int w = (int)datePanel.getPreferredSize().getWidth();
+		final int h = (int)button.getPreferredSize().getHeight();
+		final int w = (int)datePanel.getPreferredSize().getWidth();
 		button.setPreferredSize(new Dimension(h, h));
-		formattedTextField.setPreferredSize(new Dimension(w-h-1, h));
+		formattedTextField.setPreferredSize(new Dimension(w - h - 1, h));
 
 		//Add event listeners
 		addHierarchyBoundsListener(internalEventHandler);
@@ -143,7 +143,7 @@ public class JDatePickerImpl extends JPanel implements JDatePicker {
 		formattedTextField.addPropertyChangeListener("value", internalEventHandler);
 		datePanel.addActionListener(internalEventHandler);
 		datePanel.getModel().addChangeListener(internalEventHandler);
-	}	
+	}
 	
 	protected JFormattedTextField.AbstractFormatter createDefaultFormatter() {
 		return new DateComponentFormatter();
@@ -216,10 +216,10 @@ public class JDatePickerImpl extends JPanel implements JDatePicker {
 	 */
 	private void showPopup() {
 		if (popup == null){
-			PopupFactory fac = new PopupFactory();
-			Point xy = getLocationOnScreen();
+			final PopupFactory fac = new PopupFactory();
+			final Point xy = getLocationOnScreen();
 			datePanel.setVisible(true); 
-			popup = fac.getPopup(this, datePanel, (int) xy.getX(), (int) (xy.getY()+this.getHeight()));
+			popup = fac.getPopup(this, datePanel, (int) xy.getX(), (int) (xy.getY() + this.getHeight()));
 			popup.show();
 		}
 	}
@@ -263,14 +263,14 @@ public class JDatePickerImpl extends JPanel implements JDatePicker {
 
 		public void stateChanged(ChangeEvent arg0) {
 			if (arg0.getSource() == datePanel.getModel()) {
-				DateModel<?> model = datePanel.getModel();
+				final DateModel<?> model = datePanel.getModel();
 				setTextFieldValue(formattedTextField, model.getYear(), model.getMonth(), model.getDay(), model.isSelected());
 			}
 		}
 
 		public void propertyChange(PropertyChangeEvent evt) {
 			if (formattedTextField.isEditable() && formattedTextField.getValue() != null) {
-				Calendar value = (Calendar)formattedTextField.getValue();
+				final Calendar value = (Calendar)formattedTextField.getValue();
 				datePanel.getModel().setDate(value.get(Calendar.YEAR), value.get(Calendar.MONTH), value.get(Calendar.DATE));
 				datePanel.getModel().setSelected(true);
 			}
@@ -299,7 +299,7 @@ public class JDatePickerImpl extends JPanel implements JDatePicker {
 			textField.setValue(null);
 		}
 		else {
-			Calendar calendar = Calendar.getInstance();
+			final Calendar calendar = Calendar.getInstance();
 			calendar.set(year, month, day, 0, 0, 0);
 			calendar.set(Calendar.MILLISECOND, 0);
 			textField.setValue(calendar);

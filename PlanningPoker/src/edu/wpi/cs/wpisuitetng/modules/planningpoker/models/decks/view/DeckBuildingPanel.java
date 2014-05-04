@@ -159,7 +159,7 @@ public class DeckBuildingPanel extends JPanel {
 			public void actionPerformed(ActionEvent e){
 				newDeckName = nameField.getText();
 
-				Deck newDeck = new Deck (newDeckName, newDeckCards);
+				final Deck newDeck = new Deck (newDeckName, newDeckCards);
 				newDeck.setIsSingleSelection(isSingleSelection);
 
 				AddDeckController.getInstance().addDeck(newDeck);

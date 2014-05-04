@@ -26,12 +26,12 @@ public class LoadGameTest {
 
 	@Test
 	public void testLoadCompleteGame(){
-		ArrayList<Integer> reqArray = new ArrayList<Integer>();
+		final ArrayList<Integer> reqArray = new ArrayList<Integer>();
 		reqArray.add(0);
-		GameSession testGame = new GameSession("Test Game", "Test Description", 0, 0, new Date(), reqArray);
-		CompleteView cv = new CompleteView(testGame);
-		VoteData vd = cv.getVoteData();
-		GameData gd = cv.getGameData();
+		final GameSession testGame = new GameSession("Test Game", "Test Description", 0, 0, new Date(), reqArray);
+		final CompleteView cv = new CompleteView(testGame);
+		final VoteData vd = cv.getVoteData();
+		final GameData gd = cv.getGameData();
 		assertTrue(gd.getGameNameTextBox().getText().equals("Test Game"));
 		assertTrue(gd.getDescriptionTextArea().getText().equals("Test Description"));
 	}

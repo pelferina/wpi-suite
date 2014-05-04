@@ -248,7 +248,7 @@ public class NewRequirementPanel extends JPanel {
 	 */
 	private void updateRequirement(){
 		currentRequirement.setId(RequirementModel.getInstance().getNextID());
-		currentRequirement.setWasCreated(true);		
+		currentRequirement.setWasCreated(true);
 		// Extract the name, release number, and description from the GUI fields
 		final String stringName = nameField.getText();
 

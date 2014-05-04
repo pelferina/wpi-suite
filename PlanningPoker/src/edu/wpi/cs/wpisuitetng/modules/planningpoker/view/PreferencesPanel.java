@@ -96,7 +96,7 @@ public class PreferencesPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.WEST, currentEmailLabel, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.EAST, currentEmailNameLabel);
 		// Swing layout for email label
 		springLayout.putConstraint(SpringLayout.NORTH, emailLabel, GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.SOUTH, currentEmailNameLabel);
-		springLayout.putConstraint(SpringLayout.WEST, emailLabel, GuiStandards.LEFT_MARGIN.getValue(), SpringLayout.WEST, this);			
+		springLayout.putConstraint(SpringLayout.WEST, emailLabel, GuiStandards.LEFT_MARGIN.getValue(), SpringLayout.WEST, this);
 		// Swing layout for email Field
 		springLayout.putConstraint(SpringLayout.NORTH, emailField, 0, SpringLayout.NORTH, emailLabel);
 		springLayout.putConstraint(SpringLayout.WEST, emailField, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.EAST, emailLabel);

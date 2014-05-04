@@ -23,7 +23,7 @@ public class OverviewPanelTest {
 
 	@Test
 	public void test() {
-		OverviewPanel op = new OverviewPanel();
+		final OverviewPanel op = new OverviewPanel();
 		op.updateTable("Drafts");
 		assertNotNull(op);
 	}

@@ -49,9 +49,9 @@ public class DeckTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		User admin = new User("admin", "admin", "1234", 27);
+		final User admin = new User("admin", "admin", "1234", 27);
 		admin.setRole(Role.ADMIN);
-		testProject = new Project("test", "1");	
+		testProject = new Project("test", "1");
 		mockSsid = "abc123";
 		adminSession = new Session(admin, testProject, mockSsid);
 		db = new MockData(new HashSet<Object>());
@@ -59,11 +59,11 @@ public class DeckTest {
 		d_manager = new DeckEntityManager(db);
 		dController = AddDeckController.getInstance();
 		
-		testCards1 = Arrays.asList(0,1,2,3,4,5);
+		testCards1 = Arrays.asList(0, 1, 2, 3, 4, 5);
 		d1 = new Deck("Test Deck1", testCards1);
-		testCards2 = Arrays.asList(6,7,8,9,10);
+		testCards2 = Arrays.asList(6, 7, 8, 9, 10);
 		d2 = new Deck("Test Deck2", testCards2);
-	}	
+	}
 	
 	// Tests whether a Deck can be created successfully.
 
@@ -86,12 +86,12 @@ public class DeckTest {
 	
 	@Test
 	public void testAddDecks(){
-		Deck[] decks = {d1, d2};
+		final Deck[] decks = {d1, d2};
 		DeckModel.getInstance().addDecks(decks);
 		//assertEquals(d1, DeckModel.getInstance().getDeck(2));
 		//assertEquals(d2, DeckModel.getInstance().getDeck(3));
 		assertEquals(4, DeckModel.getInstance().getSize());
 	}
 
-}	
+}
 

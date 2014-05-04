@@ -45,8 +45,8 @@ public class PlanningPokerEntityManagerTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		User admin = new User("admin", "admin", "1234", 27);
-		User bob = new User("bob", "bob", "1234", 28);
+		final User admin = new User("admin", "admin", "1234", 27);
+		final User bob = new User("bob", "bob", "1234", 28);
 		admin.setRole(Role.ADMIN);
 		testProject = new Project("test", "1");
 		mockSsid = "abc123";
@@ -67,40 +67,40 @@ public class PlanningPokerEntityManagerTest {
 		eController = new AddEmailAddressController(null);
 
 
-	}	
+	}
 	//@Test
 	public void testDeadlineCheck(){
-		Date deadline = new Date();
-		deadline.setSeconds(deadline.getSeconds()+5);
+		final Date deadline = new Date();
+		deadline.setSeconds(deadline.getSeconds() + 5);
 		
-		GameSession testGame = new GameSession("test game", null, 1, 1, deadline , null);
+		final GameSession testGame = new GameSession("test game", null, 1, 1, deadline, null);
 		db.save(testGame, testProject);
-		assertTrue(testGame.getGameStatus().compareTo(GameStatus.DRAFT)==0);
+		assertTrue(testGame.getGameStatus().compareTo(GameStatus.DRAFT) == 0);
 		try {
 			Thread.sleep(10000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		assertTrue(testGame.getGameStatus().compareTo(GameStatus.ARCHIVED)==0);	
+		assertTrue(testGame.getGameStatus().compareTo(GameStatus.ARCHIVED) == 0);
 	}
 	@Test
 	public void testStats(){
-		ArrayList<Integer> reqList = new ArrayList<Integer>();
-		ArrayList<Vote> voteList = new ArrayList<Vote>();
-		ArrayList<Integer> vote11 = new ArrayList<Integer>();
-		ArrayList<Integer> vote22 = new ArrayList<Integer>();
+		final ArrayList<Integer> reqList = new ArrayList<Integer>();
+		final ArrayList<Vote> voteList = new ArrayList<Vote>();
+		final ArrayList<Integer> vote11 = new ArrayList<Integer>();
+		final ArrayList<Integer> vote22 = new ArrayList<Integer>();
 		vote11.add(12);
 		vote11.add(32);
 		vote22.add(21);
 		vote22.add(17);
-		Vote vote1 = new Vote(vote11,1,1);
-		Vote vote2 = new Vote(vote22,2,1);
+		final Vote vote1 = new Vote(vote11, 1, 1);
+		final Vote vote2 = new Vote(vote22, 2, 1);
 		
 		
 		reqList.add(1);
 		reqList.add(2);
-		GameSession testGame = new GameSession("test game", null, 1, 1, null , reqList);
+		final GameSession testGame = new GameSession("test game", null, 1, 1, null, reqList);
 		System.out.println(testGame.getMean());
 		System.out.println(testGame.getMedian());
 		
