@@ -484,7 +484,11 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 				//Display Update button if game has been changed in edit mode
 				if(editMode && anythingChanged())
 				{
-					if (newGameP.getSelected().size() > 0) {
+					if (currentGameSession.getGameStatus() == GameStatus.DRAFT) {
+						newGameP.isNew = false;
+						saveGameButton.setEnabled(true);
+					}
+					else if (newGameP.getSelected().size() > 0){
 						newGameP.isNew = false;
 						saveGameButton.setEnabled(true);
 					}
@@ -521,9 +525,6 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		if (newGameP.getSelected().isEmpty()){
 			removeErrorLabels();
 			reqError.setVisible(true);
-			if (editMode){
-				saveGameButton.setEnabled(false);
-			}
 			return false;
 		}
 		else
