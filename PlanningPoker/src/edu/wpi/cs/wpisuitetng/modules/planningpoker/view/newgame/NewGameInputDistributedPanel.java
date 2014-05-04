@@ -747,14 +747,19 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	 */
 	private void addDecksToDeckComboBox()
 	{
+		String deckTitle = DeckModel.getInstance().getDeck(selectedDeckID).getName();
 		decks = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
 		int i = 0;
 		for (Deck d: decks){
 			if(!d.getIsDeleted()) {
 				deckBox.addItem(d.getName());
 				deckIDs.add(d.getId());
-				if (selectedDeckID == d.getId()) {
+				if (deckTitle == null){ // deck was deleted
+					deckBox.setSelectedIndex(0);
+				}
+				else if (deckTitle.equals(d.getName())) { // deck exists
 					deckBox.setSelectedIndex(i);
+					selectedDeckID = deckIDs.get(deckBox.getSelectedIndex());
 				}
 				i++;
 			}
@@ -895,8 +900,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		}
 
 		return false;
-	}
-	//TODO: Test midnight deadline -- this should be working, but we haven't been able to go past midnight or noon	
+	}	
 	//Sets the hour based on the AM or PM combo box selection
 	private int getHour(int hour){
 		if (isAM){

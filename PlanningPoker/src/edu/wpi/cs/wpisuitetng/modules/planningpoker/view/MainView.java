@@ -50,7 +50,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 public class MainView extends JTabbedPane {
 	private final OverviewPanel overviewPanel;
 
-	//private final DeckManagingPanel deckPanel; //TODO get rid of this 
 	private GameModel gameModel;
 	private int newGameTabs = 0;
 	private GetRequirementsRequestObserver refresher;
@@ -65,14 +64,11 @@ public class MainView extends JTabbedPane {
 
 	public MainView() {
 		overviewPanel = new OverviewPanel();
-		//deckPanel = new DeckManagingPanel(); //TODO get rid of this 
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
 		addTab("Overview", overviewPanel);
-		//addTab("Manage Deck", deckPanel);
 		ViewEventController.getInstance().setMainView(this);
 	}
-	//The function to add a new game tab
 	//The function to add a new game tab
 
 	/**
@@ -213,6 +209,7 @@ public class MainView extends JTabbedPane {
 				final DeckManagingPanel deckManaging = new DeckManagingPanel(btnClose);
 				myCloseActionHandler = new MyCloseActionHandler("Deck Management", j, this, deckManaging, 6);
 				add(deckManaging, open);
+				deckManaging.focusOnName();
 				hasDeckManagingPane = true;
 				manageDeckIndex = open;
 			}
