@@ -177,41 +177,43 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		btnAddOne.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
-				disableAllButtons();
-				int[] index = unselectedTable.getSelectedRows();
-				boolean last = false;
-				if(unselectedTable.getSelectedRow() == unselectedTable.getRowCount() - 1){
-					last = true;
-				}
-				int offset = 0;
-				while(index.length > 0){
-					final Requirement selectedReq = reqs.get(index[0] - offset);
-					selected.add(selectedReq);
-					reqs.remove(index[0] - offset);
-					final String[] data = {selectedReq.getName(), selectedReq.getDescription()};
-					final DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
-					final DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
-					dtm.setRowCount(reqs.size());
-					for (int j = 0; j < reqs.size(); j++){
-						dtm.setValueAt(reqs.get(j).getName(), j, 0);
-						dtm.setValueAt(reqs.get(j).getDescription(), j, 1);
+				if (unselectedTable.getSelectedRowCount() > 0){
+					disableAllButtons();
+					int[] index = unselectedTable.getSelectedRows();
+					boolean last = false;
+					if(unselectedTable.getSelectedRow() == unselectedTable.getRowCount() - 1){
+						last = true;
 					}
-					dtm_1.addRow(data);
-					index = removeFirst(index);
-					offset++;
+					int offset = 0;
+					while(index.length > 0){
+						final Requirement selectedReq = reqs.get(index[0] - offset);
+						selected.add(selectedReq);
+						reqs.remove(index[0] - offset);
+						final String[] data = {selectedReq.getName(), selectedReq.getDescription()};
+						final DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
+						final DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
+						dtm.setRowCount(reqs.size());
+						for (int j = 0; j < reqs.size(); j++){
+							dtm.setValueAt(reqs.get(j).getName(), j, 0);
+							dtm.setValueAt(reqs.get(j).getDescription(), j, 1);
+						}
+						dtm_1.addRow(data);
+						index = removeFirst(index);
+						offset++;
+					}
+					selectedTable.clearSelection();
+					unselectedTable.clearSelection();
+					int rowIndex = unselectedTable.getRowCount() - 1;
+					if(!last && unselectedTable.getRowCount() > 0){
+						unselectedTable.setRowSelectionInterval(0, 0);
+					}
+					else if(last && unselectedTable.getRowCount() > 0){
+						unselectedTable.setRowSelectionInterval(rowIndex, rowIndex);
+					}
+					rowIndex = selectedTable.getRowCount() - 1;
+					selectedTable.setRowSelectionInterval(rowIndex, rowIndex);
+					enableAllButtons();
 				}
-				selectedTable.clearSelection();
-				unselectedTable.clearSelection();
-				int rowIndex = unselectedTable.getRowCount() - 1;
-				if(!last && unselectedTable.getRowCount() > 0){
-					unselectedTable.setRowSelectionInterval(0, 0);
-				}
-				else if(last && unselectedTable.getRowCount() > 0){
-					unselectedTable.setRowSelectionInterval(rowIndex, rowIndex);
-				}
-				rowIndex = selectedTable.getRowCount() - 1;
-				selectedTable.setRowSelectionInterval(rowIndex, rowIndex);
-				enableAllButtons();
 			}
 
 		});
