@@ -109,7 +109,9 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	private final JCheckBox deckCheckBox = new JCheckBox("Use Deck");
 	private final JComboBox<String> deckBox = new JComboBox<String>(); 
 	private List<Deck> decks = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
-	private int selectedDeckIndex = 0;
+	private int selectedDeckID = 0;
+	private boolean justAddedDeck = false;
+
 	private final JButton createDeckButton = new JButton("Create Deck");
 	private List<Integer> deckIDs = new ArrayList<Integer>();
 
@@ -208,7 +210,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		newGameP = ngdp;
 
 		currentDate = Calendar.getInstance();
-		
+
 		setupButtonIcons();	
 
 		saveGameButton.setEnabled(false);
@@ -350,10 +352,10 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (deckIDs.size() > 0) {
-					selectedDeckIndex = deckIDs.get(deckBox.getSelectedIndex());
+					selectedDeckID = deckIDs.get(deckBox.getSelectedIndex());
 				}
 				if (editMode){
-					if (selectedDeckIndex != currentGameSession.getDeckId()){
+					if (selectedDeckID != currentGameSession.getDeckId()){
 						newGameP.isNew = false;
 					}
 				}
@@ -424,7 +426,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 				newGame.setGameStatus(GameStatus.ACTIVE);
 			}
 			if (deckCheckBox.isSelected()){
-				newGame.setDeckId(selectedDeckIndex);
+				newGame.setDeckId(selectedDeckID);
 			}
 
 			final AddGameController msgr = new AddGameController(model);
@@ -443,7 +445,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			}
 
 			if (deckCheckBox.isSelected()){
-				currentGameSession.setDeckId(selectedDeckIndex);
+				currentGameSession.setDeckId(selectedDeckID);
 			} else {
 				currentGameSession.setDeckId(-1);
 			}
@@ -735,6 +737,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	public void initializeDeckComboBox()
 	{	
 		deckBox.removeAllItems();
+		deckIDs.clear();
 		//Initializes the deck combo box
 		addDecksToDeckComboBox();
 	}
@@ -750,17 +753,22 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			if(!d.getIsDeleted()) {
 				deckBox.addItem(d.getName());
 				deckIDs.add(d.getId());
-				if (selectedDeckIndex == d.getId()) {
+				if (selectedDeckID == d.getId()) {
 					deckBox.setSelectedIndex(i);
 				}
 				i++;
 			}
+		}
+		if (justAddedDeck){
+			deckBox.setSelectedIndex(deckBox.getItemCount() - 1);
+			selectedDeckID = deckIDs.get(deckBox.getSelectedIndex());
 		}
 	}
 
 	@SuppressWarnings("deprecation")
 	private void initializeEditMode()
 	{
+		selectedDeckID = currentGameSession.getDeckId();
 
 		//Gets the deadline from the game
 		if (currentGameSession.getEndDate() != null){
@@ -882,7 +890,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			return true;
 		}
 		//returns true if user changed the selected deck
-		if ((currentGameSession.getDeckId() != selectedDeckIndex)){
+		if ((currentGameSession.getDeckId() != selectedDeckID)){
 			return true;
 		}
 
@@ -1105,6 +1113,14 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		return ((st > 0) || (len < aString.length())) ? aString.substring(st, len) : aString;
 	}
 
+	/**
+	 * called when a new deck is created. Indicates that the selected
+	 * deck should be the last one in the list (the deck that was just created)
+	 */
+	public void deckBoxSetToNewDeck() {
+		justAddedDeck = true;
+	}
+
 	@Override
 	public void refreshRequirements() {
 		//intentionally left blank
@@ -1117,7 +1133,6 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 
 	@Override
 	public void refreshDecks() {
-		final List<Deck> currentDecks = DeckModel.getInstance().getDecks();
 		if (decks.size() != DeckModel.getInstance().getDecks().size()){
 			initializeDeckComboBox();
 		}

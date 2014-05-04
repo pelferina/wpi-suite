@@ -157,6 +157,7 @@ public class NewGameDistributedPanel extends JSplitPane {
 			setDividerLocation(DIVIDER_LOCATION);
 			newRequirement.setVisible(true);
 		}
+		newGameInputPanel.deckBoxSetToNewDeck();
 		isDeckOpen = false;
 	}
 	/**
