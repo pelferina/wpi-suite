@@ -37,12 +37,14 @@ public class EndGameActionListener implements ActionListener{
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		GameStatus gs = game.getGameStatus();
 		game.setGameStatus(GameStatus.COMPLETED);
 		final Request request = Network.getInstance().makeRequest("planningpoker/planningpokergame", HttpMethod.POST); // POST == UPDAT
 		request.setBody(game.toJSON()); // put the new session in the body of the request
 		request.addObserver(new UpdateGameRequestObserver()); // add an observer to process the response
 		request.send(); // send the request
 		OverviewPanel.getInstance().removeGameFromTable(game.getGameID());
+		game.setGameStatus(gs);
 	}
 	
 }

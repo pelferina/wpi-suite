@@ -263,8 +263,6 @@ public class JTableModel extends AbstractTableModel {
 			}
 		}
 		Data = newData;
-
 		fireTableDataChanged();
-		fireTableStructureChanged();
 	}
 }
