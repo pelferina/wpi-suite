@@ -246,15 +246,15 @@ public class ButtonPanel extends ToolbarGroupView{
     	
     	for (JButton button : buttonQueue)
     	{
-    		button.setPreferredSize(new Dimension(150, 50));
-    		button.setMinimumSize(new Dimension(150, 50));
-    		button.setMaximumSize(new Dimension(150, 50));
+    		button.setPreferredSize(new Dimension(150, 60));
+    		button.setMinimumSize(new Dimension(150, 60));
+    		button.setMaximumSize(new Dimension(150, 60));
     	}
     	
     	final int buttonNum = buttonQueue.size();
-    	contentPanel.setPreferredSize(new Dimension(150*buttonNum + 15*(buttonNum),100));
-    	contentPanel.setMinimumSize(new Dimension(150*buttonNum + 15*(buttonNum),100));
-    	contentPanel.setMaximumSize(new Dimension(150*buttonNum + 15*(buttonNum),100));
+//    	contentPanel.setPreferredSize(new Dimension(150*buttonNum + 15*(buttonNum),100));
+//    	contentPanel.setMinimumSize(new Dimension(150*buttonNum + 15*(buttonNum),100));
+//    	contentPanel.setMaximumSize(new Dimension(150*buttonNum + 15*(buttonNum),100));
     	this.setPreferredSize(new Dimension(150*buttonNum + 15*(buttonNum),100));
     	this.setMinimumSize(new Dimension(150*buttonNum + 15*(buttonNum),100));
     	this.setMaximumSize(new Dimension(150*buttonNum + 15*(buttonNum),100));

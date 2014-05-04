@@ -8,16 +8,22 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.DefaultToolbarView;
+import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.ButtonPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.GreetingPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.OwnerButtonPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.PlanningPokerButtonsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.UserButtonPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.iterationcontroller.GetIterationController;
 
 /**
  * Sets up upper toolbar of RequirementManager tab
@@ -30,19 +36,25 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.UserButtonPanel
 public class ToolbarView  extends DefaultToolbarView {
 
 //	TODO: Cancel Game
-	//public PlanningPokerButtonsPanel gameButton = new PlanningPokerButtonsPanel();
+	public PlanningPokerButtonsPanel gameButton = new PlanningPokerButtonsPanel();
 	public OwnerButtonPanel ownerButton = new OwnerButtonPanel();
 	public UserButtonPanel userButton = new UserButtonPanel();
 	public GreetingPanel greetingPanel = new GreetingPanel();
 	public ButtonPanel buttonPanel = new ButtonPanel();
+	ToolbarGroupView dummyPanel = new ToolbarGroupView("");
 	/**
 	 * Creates and positions option buttons in upper toolbar
 	 * @param visible boolean
 	 */
 	public ToolbarView(boolean visible) {
-		
-		//this.insertGroupAt(greetingPanel, 0);	
+		//this.insertGroupAt(greetingPanel, 0);
 		this.addGroup(buttonPanel);
+		this.addGroup(dummyPanel);
+		this.addGroup(gameButton);
+		
+		
+		this.updateUI();
+		
 	}
 	
 	/**
@@ -59,6 +71,8 @@ public class ToolbarView  extends DefaultToolbarView {
 	 */
 	public void changeButtons(GameSession gameSelected){
 		buttonPanel.showButton(gameSelected);
+		dummyPanel.setPreferredWidth(getDummySize());
+		this.updateUI();
 		//this.updateUI();
 		//this.repaint();
 	}
@@ -144,5 +158,23 @@ public class ToolbarView  extends DefaultToolbarView {
 	 */
 	public void makeUserButtonInvisible(){
 		userButton.makeUserButtonInvisible();
+	}
+	
+	public int getDummySize()
+	{
+		int size = (int) getWidth();
+		size -= buttonPanel.getWidth();
+		size -= gameButton.getWidth();
+
+		return size;
+	}
+	
+	@Override
+	public void paintComponent(Graphics g)
+	{
+		dummyPanel.setPreferredWidth(getDummySize());
+
+		super.paintComponent(g);
+		this.updateUI();
 	}
 }
