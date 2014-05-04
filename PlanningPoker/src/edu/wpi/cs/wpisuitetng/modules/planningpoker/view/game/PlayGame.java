@@ -323,7 +323,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.WEST, reqDesc, 0, SpringLayout.WEST, reqName);
 
 		//Spring layout for reqName label
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, reqName, -100, SpringLayout.VERTICAL_CENTER, this);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, reqName, -20, SpringLayout.VERTICAL_CENTER, this);
 		springLayout.putConstraint(SpringLayout.WEST, reqName, 0, SpringLayout.WEST, gameDesc);
 
 		//Spring layout for notAnIntegerError label
