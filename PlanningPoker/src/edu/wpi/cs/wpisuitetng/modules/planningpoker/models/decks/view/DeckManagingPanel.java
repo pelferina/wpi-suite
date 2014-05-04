@@ -739,14 +739,6 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		}
 	}
 
-	public boolean isSingleSelection() {
-		return isSingleSelection;
-	}
-
-	public boolean isNewDeckFlag() {
-		return newDeckFlag;
-	}
-
 	public JButton getBtnAddCard() {
 		return btnAddCard;
 	}
@@ -763,13 +755,6 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		return btnSave;
 	}
 
-	public JButton getBtnDelete() {
-		return btnDelete;
-	}
-
-	public JButton getBtnClose() {
-		return btnClose;
-	}
 
 	public JRadioButton getBtnSingleSelection() {
 		return btnSingleSelection;
@@ -779,16 +764,9 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		return btnMultipleSelection;
 	}
 
-	public ButtonGroup getSelectionGroup() {
-		return selectionGroup;
-	}
 
 	public JComboBox<String> getDecksComboBox() {
 		return decksComboBox;
-	}
-
-	public JLabel getLblSelection() {
-		return lblSelection;
 	}
 
 	public JTextField getNameField() {
@@ -799,48 +777,9 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		return numberField;
 	}
 
-	public SpringLayout getSpringLayout() {
-		return springLayout;
-	}
-
-	public String getNewDeckName() {
-		return newDeckName;
-	}
-
-	public List<Integer> getNewDeckCards() {
-		return newDeckCards;
-	}
-
 	public List<Integer> getCardsToBeRemoved() {
 		return cardsToBeRemoved;
 	}
 
-	public List<Integer> getCurrentDeck() {
-		return currentDeck;
-	}
-
-	public List<Integer> getDeckIDs() {
-		return deckIDs;
-	}
-
-	public List<Deck> getDecks() {
-		return decks;
-	}
-
-	public JPanel getCardPanel() {
-		return cardPanel;
-	}
-
-	public JScrollPane getCardArea() {
-		return cardArea;
-	}
-
-	public NewGameDistributedPanel getNewGameDistributed() {
-		return newGameDistributed;
-	}
-
-	public int getSelectedDeckIndex() {
-		return selectedDeckIndex;
-	}
 
 }

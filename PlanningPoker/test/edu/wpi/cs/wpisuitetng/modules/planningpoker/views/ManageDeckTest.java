@@ -81,6 +81,8 @@ public class ManageDeckTest {
 		dmp.getCardsToBeRemoved().add(1);
 		dmp.getBtnRmvSelected().doClick();
 		dmp.getBtnRmvAll().doClick();
+		dmp.getBtnSingleSelection().doClick();
+		dmp.getBtnMultipleSelection().doClick();
 	}
 
 }
