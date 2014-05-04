@@ -529,7 +529,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	//This gets only the requirements in the "Backlog" iteration from the requirements manager
 	private void filterBacklog()
 	{
-		final ArrayList<Requirement> reqsToRemove = new ArrayList<Requirement>();
+		final List<Requirement> reqsToRemove = new ArrayList<Requirement>();
 		for (Requirement req : reqs) {
 			if (!req.getIteration().equals("Backlog")) reqsToRemove.add(req);
 		}

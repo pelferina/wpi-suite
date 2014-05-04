@@ -36,8 +36,8 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 
 /**
  * This method manages refresh requests
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 public class RefreshManager {
 	

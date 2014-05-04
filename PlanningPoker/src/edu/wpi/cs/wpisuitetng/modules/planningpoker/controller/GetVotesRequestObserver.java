@@ -14,7 +14,7 @@ import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 /**
  * The GetVotesRequestObserver class
- * @author Cosmic Latte
+ * @author FFF8E7
  * @version 6
  */
 public class GetVotesRequestObserver implements RequestObserver {

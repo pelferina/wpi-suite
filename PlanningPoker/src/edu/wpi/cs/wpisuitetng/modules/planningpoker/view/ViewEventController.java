@@ -17,8 +17,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 /**
  * Provides an interface for interaction with the main GUI elements
  * All actions on GUI elements should be conducted through this controller.
- * @version $Revision: 1.0 $
- * @author Cosmic Latte
+ * @author FFF8E7
+ * @version 6
  */
 
 public class ViewEventController {

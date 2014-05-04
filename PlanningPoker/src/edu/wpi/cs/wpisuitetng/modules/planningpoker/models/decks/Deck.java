@@ -1,3 +1,4 @@
+// $codepro.audit.disable accessorMethodNamingConvention
 /*******************************************************************************
  * Copyright (c) 2014 WPI-Suite
  * All rights reserved. This program and the accompanying materials
@@ -16,13 +17,12 @@ import java.util.List;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
 
 
 /**
  * A deck in a game. Decks can be assigned to a game.
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
 */
 public class Deck extends AbstractModel {
 
@@ -151,8 +151,6 @@ public class Deck extends AbstractModel {
 
 	/**
 	 * Method toJSON.
-	
-	
 	 * @return String * @see edu.wpi.cs.wpisuitetng.modules.Model#toJSON() * @see edu.wpi.cs.wpisuitetng.modules.Model#toJSON()
 	 */
 	public String toJSON() {
@@ -208,7 +206,6 @@ public class Deck extends AbstractModel {
 		return this;
 	}
 
-	// TODO Javadocs
 	public boolean getIsDeleted() {
 		return isDeleted;
 	}

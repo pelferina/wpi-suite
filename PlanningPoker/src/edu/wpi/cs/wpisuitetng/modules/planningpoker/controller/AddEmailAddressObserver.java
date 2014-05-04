@@ -21,7 +21,6 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  * 
  * @author FFF8E7
  * @version 6
- *
  */
 public class AddEmailAddressObserver implements RequestObserver {
 	
