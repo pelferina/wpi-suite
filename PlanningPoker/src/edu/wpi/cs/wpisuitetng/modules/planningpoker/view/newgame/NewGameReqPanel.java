@@ -225,7 +225,6 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				disableAllButtons();
-				System.out.println("Reqs are "+reqs);
 				if(reqs.size() != 0){
 					final DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
 					final DefaultTableModel dtm = (DefaultTableModel)unselectedTable.getModel();
@@ -546,7 +545,6 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 				dtm.setValueAt(reqs.get(i).getName(), i, 0);
 				dtm.setValueAt(reqs.get(i).getDescription(), i, 1);
 		}
-		System.out.println("NEWGAMETABLEUPDATE" + reqs);
 		dtm.fireTableDataChanged();
 	}
 
