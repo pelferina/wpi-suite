@@ -277,6 +277,15 @@ public class GameSession extends AbstractModel {
 		
 		
 	}
+	/**
+	 * Never used, only for CodePro
+	 * @return The gameID as it is unique
+	 */
+	@Override
+	public int hashCode(){
+		return this.getGameID();
+	}
+	
 	/**Gets the votes
 	 * @return the votes
 	 */

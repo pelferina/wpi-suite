@@ -56,9 +56,9 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
  * @version $Revision: 1.0 $
  */
 public class BarChart extends JScrollPane {
-private static GameSession theGame;
+private static GameSession theGame = new GameSession("", "", -1, -1, null, null);
 private final ChartPanel barChart;
-private static int theReq;
+private static int theReq = -1;
 
 		/**
 		 * Constructor for NewBarChartPanel.

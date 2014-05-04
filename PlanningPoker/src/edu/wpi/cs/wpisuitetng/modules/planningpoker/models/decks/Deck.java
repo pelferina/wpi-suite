@@ -70,6 +70,15 @@ public class Deck extends AbstractModel {
 		if(other.getClass() != Deck.class) return false;
 		return ((Deck) other).getId() == id;
 	}
+	
+	/**
+	 * Overridden for codePro, never used.
+	 * @return the unique integer value, specifically the ID
+	 */
+	@Override
+	public int hashCode(){
+		return this.getId();
+	}
 
 	/**
 	 * @return the defaultDeck
