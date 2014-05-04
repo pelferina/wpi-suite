@@ -26,7 +26,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
  * @author FFF8E7
  * @version 6
  */
-@SuppressWarnings({"serial"})
+@SuppressWarnings({"serial", "rawtypes"})
 public class GameModel extends AbstractListModel {
 	private static GameModel instance = null;
 	

@@ -54,6 +54,7 @@ import java.awt.Font;
  * @author FFF8E7
  * @version 6
  */
+@SuppressWarnings("serial")
 public class VoteData extends JPanel{
 
 	private final JLabel reqNameLabel = new JLabel("Requirement Name:");
@@ -75,7 +76,6 @@ public class VoteData extends JPanel{
 	private JTable statsTable;
 	private final GameSession completedGame;
 	private final CompleteView completeView;
-	private List<Integer> gameReqIDs;
 	private final List<Requirement> gameReqs;
 	private Requirement currentReq;
 	private int reqIndex;

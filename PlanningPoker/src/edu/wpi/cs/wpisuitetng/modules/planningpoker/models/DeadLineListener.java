@@ -12,7 +12,6 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 import edu.wpi.cs.wpisuitetng.database.Data;
@@ -29,7 +28,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
  */
 public class DeadLineListener implements ActionListener{
 	private final Data db;
-	private final GameEntityManager entityManager;
 	/**
 	 * This constructor creates a DeadLineListener with the given database and GameEntityManager
 	 * 
@@ -38,7 +36,6 @@ public class DeadLineListener implements ActionListener{
 	 */
 	public DeadLineListener(Data db, GameEntityManager ppem){
 		this.db = db;
-		entityManager = ppem;
 		System.err.println("create a listener");
 	}
 

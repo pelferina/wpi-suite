@@ -11,12 +11,11 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.BorderLayout;
-
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+
 
 
 
@@ -32,6 +31,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -89,7 +89,7 @@ public class OverviewPanel extends JPanel implements Refreshable {
 		
 
 		//sort the table
-		table.setRowSorter(new TableRowSorter(table.getModel()));
+		table.setRowSorter(new TableRowSorter<TableModel>(table.getModel()));
 
 		//This is used to refresh the overview table
 

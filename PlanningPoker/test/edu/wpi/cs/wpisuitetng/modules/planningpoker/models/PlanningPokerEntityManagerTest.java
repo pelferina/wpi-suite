@@ -29,8 +29,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
-import edu.wpi.cs.wpisuitetng.network.Network;
-import edu.wpi.cs.wpisuitetng.network.configuration.NetworkConfiguration;
 
 public class PlanningPokerEntityManagerTest {
 	MockData db;
@@ -43,6 +41,7 @@ public class PlanningPokerEntityManagerTest {
 	Project testProject;
 	AddEmailAddressController eController;
 	
+	@SuppressWarnings("deprecation")
 	@Before
 	public void setUp() throws Exception {
 		final User admin = new User("admin", "admin", "1234", 27);
@@ -69,6 +68,7 @@ public class PlanningPokerEntityManagerTest {
 
 	}
 	//@Test
+	@SuppressWarnings("deprecation")
 	public void testDeadlineCheck(){
 		final Date deadline = new Date();
 		deadline.setSeconds(deadline.getSeconds() + 5);
@@ -87,15 +87,12 @@ public class PlanningPokerEntityManagerTest {
 	@Test
 	public void testStats(){
 		final ArrayList<Integer> reqList = new ArrayList<Integer>();
-		final ArrayList<Vote> voteList = new ArrayList<Vote>();
 		final ArrayList<Integer> vote11 = new ArrayList<Integer>();
 		final ArrayList<Integer> vote22 = new ArrayList<Integer>();
 		vote11.add(12);
 		vote11.add(32);
 		vote22.add(21);
 		vote22.add(17);
-		final Vote vote1 = new Vote(vote11, 1, 1);
-		final Vote vote2 = new Vote(vote22, 2, 1);
 		
 		
 		reqList.add(1);

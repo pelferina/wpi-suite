@@ -36,7 +36,7 @@ public class VoteTester {
 		v.setGameID(10);
 		assertTrue(v.getGameID() == 10);
 		assertTrue(v.getUID() == 100);
-		final Vote x = v.fromJson(v.toJSON());
+		final Vote x = Vote.fromJson(v.toJSON());
 		assertTrue(x.equals(v));
 		assertTrue(x.identify(v));
 		assertTrue(x.compareTo(v) == 0);

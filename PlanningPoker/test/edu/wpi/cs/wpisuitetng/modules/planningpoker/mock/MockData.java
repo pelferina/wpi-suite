@@ -14,7 +14,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
 
 import edu.wpi.cs.wpisuitetng.database.Data;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
@@ -23,8 +22,8 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 
 /**
  * A mock data implementation for server-side testing. 
- * @author justinhess
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 public class MockData implements Data {
 
@@ -161,7 +160,6 @@ public class MockData implements Data {
 	public void update(final Class anObjectToBeModified, String fieldName, Object uniqueID, String changeField, Object changeValue) {
 
 		final List<? extends Object> objectsToUpdate = retrieve(anObjectToBeModified, fieldName, uniqueID);
-		Object theObject;
 		for(int i = 0; i < objectsToUpdate.size(); i++){
 			final Class <?> objectClass = objectsToUpdate.get(i).getClass();
 			Method[] allMethods = objectClass.getMethods();
@@ -176,7 +174,7 @@ public class MockData implements Data {
 				System.err.println("Mock data|" + "Null setter method.");
 			}
 			try {
-				theObject = (Object) theSetter.invoke(objectsToUpdate.get(i), changeValue);
+				theSetter.invoke(objectsToUpdate.get(i), changeValue);
 			} catch (IllegalArgumentException e) {
 				
 				e.printStackTrace();

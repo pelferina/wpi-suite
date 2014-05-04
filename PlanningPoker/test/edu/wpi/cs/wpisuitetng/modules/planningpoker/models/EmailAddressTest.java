@@ -28,8 +28,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.mock.MockData;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementPriority;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
-import edu.wpi.cs.wpisuitetng.network.Network;
-import edu.wpi.cs.wpisuitetng.network.configuration.NetworkConfiguration;
 
 public class EmailAddressTest {
 
@@ -43,6 +41,7 @@ public class EmailAddressTest {
 	Project testProject;
 	AddEmailAddressController eController;
 	
+	@SuppressWarnings("deprecation")
 	@Before
 	public void setUp() throws Exception {
 		final User admin = new User("admin", "admin", "1234", 27);
@@ -65,10 +64,11 @@ public class EmailAddressTest {
 		eController = new AddEmailAddressController(null);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testSendEmail() throws UnsupportedEncodingException{
 		final GameSession gs = new GameSession("Test Game", "Test Description", 0, 1, new Date(1, 1, 1), new ArrayList<Integer>());
-		//Fixed accordin to http://stackoverflow.com/questions/10944448/instanceof-vs-isinstance
+		//Fixed according to http://stackoverflow.com/questions/10944448/instanceof-vs-isinstance
 		
 		
 //		try {

@@ -22,7 +22,6 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
  * @author FFF8E7
  * @version 6
  */
-@SuppressWarnings({"serial"})
 public class EmailAddressModel extends AbstractModel {
 	
 	/** The list of messages on the board */

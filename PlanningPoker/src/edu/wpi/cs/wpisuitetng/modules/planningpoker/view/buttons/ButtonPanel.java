@@ -35,6 +35,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
  * @author FFF8E7
  * @version 6
  */
+@SuppressWarnings("serial")
 public class ButtonPanel extends ToolbarGroupView{
 	private final JPanel contentPanel = new JPanel();
 	private final List<JButton> buttonQueue = new LinkedList<JButton>();
@@ -177,8 +178,6 @@ public class ButtonPanel extends ToolbarGroupView{
 	public void showButton(final GameSession gameSelected){
     	final User currentUser = GetCurrentUser.getInstance().getCurrentUser();
     	final GameStatus status = gameSelected.getGameStatus();
-    	final boolean hasCategory = false;
-    	
     	if(status.equals(GameStatus.ACTIVE) || status.equals(GameStatus.INPROGRESS) ){
     		removeActionListeners(playButton);
     		playButton.addActionListener(new ActionListener(){

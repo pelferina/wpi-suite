@@ -128,7 +128,7 @@ public class GameEntityManager implements EntityManager<GameSession> {
 		// support
 		// retrieving specific PostBoardMessages.
 		try {
-			final int ID = Integer.parseInt(id);
+			Integer.parseInt(id);
 			final GameSession aSample = new GameSession(null, null, 0, 0, null, null);
 
 			return (GameSession[]) db.retrieveAll(aSample).toArray();

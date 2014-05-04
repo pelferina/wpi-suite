@@ -35,8 +35,6 @@ public class AddEmailAddressObserver implements RequestObserver {
 		// Parse the message out of the response body
 		final EmailAddressModel email = EmailAddressModel.fromJson(response.getBody());
 		System.out.println(email.getAddress() + " added successfully");
-		
-		return;
 	}
 
 	@Override

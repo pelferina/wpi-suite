@@ -21,7 +21,6 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
@@ -33,6 +32,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
  * @author FFF8E7
  * @version 6
  */
+@SuppressWarnings("serial")
 public class UserButtonPanel extends ToolbarGroupView{
 	
 	private final JPanel contentPanel = new JPanel();
@@ -40,7 +40,6 @@ public class UserButtonPanel extends ToolbarGroupView{
 	private ActionListener listener = null;
 	private ImageIcon viewImg; // $codepro.audit.disable variableShouldBeFinal
 	private ImageIcon voteImg; // $codepro.audit.disable variableShouldBeFinal
-	private final Timer expireTimer = null;
 	Component spacer = Box.createRigidArea(new Dimension(15, 0));
 	
 	public UserButtonPanel(){

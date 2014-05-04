@@ -31,7 +31,6 @@ import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.GuiStandards;
-
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -45,6 +44,7 @@ import java.awt.Font;
  * @author FFF8E7
  * @version 6
  */
+@SuppressWarnings("serial")
 public class GameData extends JPanel{
 
 	private final JLabel gameNameLabel = new JLabel("Game Name:");

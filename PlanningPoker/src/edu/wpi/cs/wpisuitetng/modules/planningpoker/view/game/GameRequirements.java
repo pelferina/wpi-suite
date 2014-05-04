@@ -16,12 +16,10 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-
 import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -39,10 +37,10 @@ import javax.swing.table.DefaultTableModel;
 
 
 
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
-
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
@@ -53,12 +51,11 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
  * @author FFF8E7
  * @version 6
  */
+@SuppressWarnings("serial")
 public class GameRequirements extends JSplitPane{
 	
 	private JTable estimatesPending; // $codepro.audit.disable variableShouldBeFinal
 	private JTable estimatesComplete; // $codepro.audit.disable variableShouldBeFinal
-	private final JLabel reqstoEstimate = new JLabel("Requirements to estimate");
-	private final JLabel reqsEstimated = new JLabel("Requirements estimated");
 	private JScrollPane pendingPane;
 	private JScrollPane completePane;
 	private final List<Integer> gameReqIDs;

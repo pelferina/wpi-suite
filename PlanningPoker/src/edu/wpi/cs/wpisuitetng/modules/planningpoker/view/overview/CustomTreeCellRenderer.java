@@ -18,6 +18,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 
 
 
+
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameModel;
@@ -30,6 +31,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.icons.NormalIc
  * @version 6
  */
 
+@SuppressWarnings("serial")
 public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 	Icon normalIcon;
 	Icon voteIcon;

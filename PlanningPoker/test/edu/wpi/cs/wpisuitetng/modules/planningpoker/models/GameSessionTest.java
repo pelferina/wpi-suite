@@ -14,7 +14,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -23,9 +22,7 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.mock.MockNetwork;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 public class GameSessionTest {
 
@@ -66,6 +63,7 @@ public class GameSessionTest {
 		assertEquals(GameStatus.DRAFT, gs.getGameStatus());
 	}
 	
+	@SuppressWarnings("unused")
 	@Test
 	public void testGetDraftGameSessionList(){
 		final GameModel gm = GameModel.getInstance();
@@ -101,12 +99,6 @@ public class GameSessionTest {
 		gm.addGame(gs3);
 		final List<GameSession> activeGameSessionList = new ArrayList<GameSession>();
 		activeGameSessionList.add(gs2);
-		int i = 0;
-		for (GameSession expectedGameSession: activeGameSessionList){
-			//assertTrue(expectedGameSession.equals(gm.getActiveGameSessions().get(i)));
-			i++;
-		}
-		//System.out.println(gm.getActiveGameSessions().toString());
 	}
 	
 	@Test

@@ -48,6 +48,7 @@ import javax.swing.event.DocumentListener;
  * @author FFF8E7
  * @version 6
  */
+@SuppressWarnings("serial")
 public class PlayGame extends JPanel implements Refreshable{
 
 	protected final List<Integer> gameReqs;
