@@ -305,7 +305,7 @@ public class GameModel extends AbstractListModel {
 		for (GameSession game : games){
 			if (game.getGameStatus() == GameStatus.INPROGRESS ){
 				for (Vote aVote : game.getVotes()){
-					if (aVote.getUID() == userID){
+					if (aVote.getUID() == userID && !aVote.getVote().contains(-1)){
 						votedGames.add(game);
 					}
 				}
