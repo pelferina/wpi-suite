@@ -1,5 +1,7 @@
 /*******************************************************************************
- * Copyright (c) 2014 WPI-Suite
+ * Copyright (c)
+
+ 2014 WPI-Suite
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -147,6 +149,12 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 			
 			img = ImageIO.read(getClass().getResource("removeall.png"));
 			btnRemoveAll.setIcon(new ImageIcon(img));
+			
+			btnAddOne.setEnabled(true);
+			btnAddAll.setEnabled(true);
+			btnRemoveOne.setEnabled(true);
+			btnRemoveAll.setEnabled(true);
+
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
@@ -266,6 +274,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 						offset++;
 					}
 				selectedTable.clearSelection();
+				
 				unselectedTable.clearSelection();
 				int rowIndex = selectedTable.getRowCount() - 1;
 				if(selectedTable.getRowCount() > 0){
@@ -533,15 +542,15 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
 		filterBacklog();
 		for (int i = 0; i < selectedSize; i++){
-			reqs.remove(selected.get(i).getId());
+			reqs.remove(selected.get(i));
 		}
 		final DefaultTableModel dtm = (DefaultTableModel) unselectedTable.getModel();
+		dtm.setRowCount(0);
 		dtm.setRowCount(reqs.size());
 		for (int i = 0; i < reqs.size(); i++){
 				dtm.setValueAt(reqs.get(i).getName(), i, 0);
 				dtm.setValueAt(reqs.get(i).getDescription(), i, 1);
 		}
-		System.out.println("NEWGAMETABLEUPDATE" + reqs);
 		dtm.fireTableDataChanged();
 	}
 

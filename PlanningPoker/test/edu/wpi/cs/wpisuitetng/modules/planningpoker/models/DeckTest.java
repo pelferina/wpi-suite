@@ -11,11 +11,17 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
+
+import javax.swing.JButton;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,15 +30,13 @@ import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddEmailAddressController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.deckcontroller.AddDeckController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.mock.MockData;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.DeckModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementPriority;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.decks.view.DeckBuildingPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistributedPanel;
 
 public class DeckTest {
 	MockData db;
@@ -43,7 +47,6 @@ public class DeckTest {
 	Project testProject;
 	List<Integer> testCards1; 
 	Deck d1;
-	
 	List<Integer> testCards2;
 	Deck d2;
 	
@@ -79,12 +82,50 @@ public class DeckTest {
 	
 	@Test
 	public void testAddDeck(){
-		DeckModel.getInstance().addDeck(d1);
-		assertEquals(d1, DeckModel.getInstance().getDeck(1));
-		assertEquals(2, DeckModel.getInstance().getSize());
+		GameSession gs = new GameSession("G","D", 0, 0, Calendar.getInstance().getTime(), new ArrayList<Integer>());
+		NewGameDistributedPanel ngdp = new NewGameDistributedPanel(gs, new JButton());
+		DeckBuildingPanel dbp = new DeckBuildingPanel(ngdp);
+		assertNotNull(dbp);
+		dbp.getNameField().setText("Default Deck");
+		dbp.getNameField().setText("testDeck");
+		assertFalse(dbp.getBtnSave().isEnabled());
+		dbp.getNumberField().setText("a");
+		assertFalse(dbp.getBtnSave().isEnabled());
+		dbp.getNumberField().setText("-1");
+		assertFalse(dbp.getBtnSave().isEnabled());
+		dbp.getNumberField().setText("5");
+		assertTrue(dbp.getBtnAddCard().isEnabled());
+		dbp.getBtnAddCard().doClick();
+		assertEquals(1, dbp.getNewDeckCards().size());
+		dbp.getNameField().setText("");
+		dbp.getNameField().setText("testDeck");
+		assertTrue(dbp.getBtnSave().isEnabled());
+		dbp.getNumberField().setText("10");
+		dbp.getBtnAddCard().doClick();
+		assertEquals(2, dbp.getNewDeckCards().size());
+		List<Integer> toBeRmv = new ArrayList<Integer>();
+		toBeRmv.add(5);
+		assertTrue(dbp.getBtnRmvSelected().isEnabled());
+		dbp.getBtnRmvSelected().doClick();
+		dbp.getBtnRmvAll().doClick();
+		assertFalse(dbp.getBtnSave().isEnabled());
+		dbp.getNumberField().setText("5");
+		dbp.getBtnAddCard().doClick();
+		dbp.getBtnSave().doClick();
+//		DeckModel.getInstance().addDeck(d1);
+//		assertEquals(d1, DeckModel.getInstance().getDeck(1));
+//		assertEquals(2, DeckModel.getInstance().getSize());
 	}
 	
 	@Test
+	public void testBtnCancel(){
+		GameSession gs = new GameSession("G","D", 0, 0, Calendar.getInstance().getTime(), new ArrayList<Integer>());
+		NewGameDistributedPanel ngdp = new NewGameDistributedPanel(gs, new JButton());
+		DeckBuildingPanel dbp = new DeckBuildingPanel(ngdp);
+		assertNotNull(dbp);
+		dbp.getBtnCancel().doClick();
+	}	
+
 	public void testAddDecks(){
 		final Deck[] decks = {d1, d2};
 		DeckModel.getInstance().addDecks(decks);
@@ -94,4 +135,5 @@ public class DeckTest {
 	}
 
 }
+
 

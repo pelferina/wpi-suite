@@ -323,7 +323,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.WEST, reqDesc, 0, SpringLayout.WEST, reqName);
 
 		//Spring layout for reqName label
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, reqName, -100, SpringLayout.VERTICAL_CENTER, this);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, reqName, -20, SpringLayout.VERTICAL_CENTER, this);
 		springLayout.putConstraint(SpringLayout.WEST, reqName, 0, SpringLayout.WEST, gameDesc);
 
 		//Spring layout for notAnIntegerError label
@@ -535,4 +535,34 @@ public class PlayGame extends JPanel implements Refreshable{
 		// TODO Auto-generated method stub
 
 	}
+
+
+	public JTextField getEstimateTextField() {
+		return estimateTextField;
+	}
+
+	public JTextField getGameNameTextField() {
+		return gameNameTextField;
+	}
+
+	public JTextField getReqNameTextField() {
+		return reqNameTextField;
+	}
+
+	public JTextArea getGameDescTextArea() {
+		return gameDescTextArea;
+	}
+
+	public JTextArea getReqDescTextArea() {
+		return reqDescTextArea;
+	}
+
+	public JButton getSubmit() {
+		return submit;
+	}
+
+	public JButton getVoteButton() {
+		return voteButton;
+	}
+
 }
