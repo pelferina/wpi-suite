@@ -156,13 +156,15 @@ public class DeckBuildingPanel extends JPanel {
 		btnSave.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				newDeckName = nameField.getText();
-				final Deck newDeck = new Deck (newDeckName, newDeckCards);
-				newDeck.setSingleSelection(isSingleSelection);
+
+				Deck newDeck = new Deck (newDeckName, newDeckCards);
+				newDeck.setIsSingleSelection(isSingleSelection);
+
 				AddDeckController.getInstance().addDeck(newDeck);
 				System.out.println("added Deck " + newDeckName + 
 						"; Id = " + newDeck.getId() + 
 						"; with cards: " + newDeckCards.toString() + 
-						"; with singleSelection set to:" + newDeck.isSingleSelection());
+						"; with singleSelection set to:" + newDeck.getIsSingleSelection());
 				System.out.println("Current DeckModel size is " + DeckModel.getInstance().getSize());
 				nameField.setText("");
 				

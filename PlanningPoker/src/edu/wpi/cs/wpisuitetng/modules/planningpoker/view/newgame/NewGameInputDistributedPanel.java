@@ -111,6 +111,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	private List<Deck> decks = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
 	private int selectedDeckIndex = 0;
 	private final JButton createDeckButton = new JButton("Create Deck");
+	private List<Integer> deckIDs = new ArrayList<Integer>();
 
 
 	/*
@@ -207,7 +208,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		newGameP = ngdp;
 
 		currentDate = Calendar.getInstance();
-
+		
 		setupButtonIcons();	
 
 		saveGameButton.setEnabled(false);
@@ -348,9 +349,11 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		deckBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				selectedDeckIndex = deckBox.getSelectedIndex();
+				if (deckIDs.size() > 0) {
+					selectedDeckIndex = deckIDs.get(deckBox.getSelectedIndex());
+				}
 				if (editMode){
-					if (deckBox.getSelectedIndex() != currentGameSession.getDeckId()){
+					if (selectedDeckIndex != currentGameSession.getDeckId()){
 						newGameP.isNew = false;
 					}
 				}
@@ -364,14 +367,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		saveGameButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				saveOrActivateGame();
-				if(editMode) // TODO: do we really need an if statement here?
-				{
-					newGameP.close.doClick();
-				}
-				else
-				{
-					newGameP.close.doClick();
-				}
+				newGameP.close.doClick();
 			}
 		});
 
@@ -428,8 +424,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 				newGame.setGameStatus(GameStatus.ACTIVE);
 			}
 			if (deckCheckBox.isSelected()){
-				//TODO set correct deck
-				newGame.setDeckId(deckBox.getSelectedIndex());
+				newGame.setDeckId(selectedDeckIndex);
 			}
 
 			final AddGameController msgr = new AddGameController(model);
@@ -448,7 +443,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			}
 
 			if (deckCheckBox.isSelected()){
-				currentGameSession.setDeckId(deckBox.getSelectedIndex());
+				currentGameSession.setDeckId(selectedDeckIndex);
 			} else {
 				currentGameSession.setDeckId(-1);
 			}
@@ -741,10 +736,6 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		deckBox.removeAllItems();
 		//Initializes the deck combo box
 		addDecksToDeckComboBox();
-		if (editMode){
-			selectedDeckIndex = currentGameSession.getDeckId();
-		}
-		deckBox.setSelectedIndex(selectedDeckIndex);
 	}
 	/**
 	 * Add all available deck selections to the combo box
@@ -753,11 +744,20 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 	private void addDecksToDeckComboBox()
 	{
 		decks = new ArrayList<Deck>(DeckModel.getInstance().getDecks());
+		int i = 0;
 		for (Deck d: decks){
-			deckBox.addItem(d.getName());
+			if(!d.getIsDeleted()) {
+				deckBox.addItem(d.getName());
+				deckIDs.add(d.getId());
+				if (selectedDeckIndex == d.getId()) {
+					deckBox.setSelectedIndex(i);
+				}
+				i++;
+			}
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	private void initializeEditMode()
 	{
 
@@ -811,7 +811,6 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			deckCheckBox.setSelected(true);
 			initializeDeckComboBox();
 			setDeckVisibility(true);
-			//TODO set actual deck in combo box
 		}
 		//Puts the name of the game into the name text field, it can not be edited
 		if(currentGameSession.getGameStatus() != GameStatus.DRAFT)
@@ -882,7 +881,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 			return true;
 		}
 		//returns true if user changed the selected deck
-		if ((currentGameSession.getDeckId() != deckBox.getSelectedIndex())){
+		if ((currentGameSession.getDeckId() != selectedDeckIndex)){
 			return true;
 		}
 
@@ -984,7 +983,7 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.WEST, deckBox, 0, SpringLayout.WEST, deckLabel);
 		springLayout.putConstraint(SpringLayout.NORTH, deckBox, GuiStandards.LABEL_TEXT_OFFSET.getValue(), SpringLayout.SOUTH, deckLabel);
 		springLayout.putConstraint(SpringLayout.EAST, deckBox, 0, SpringLayout.EAST, descriptionScrollPane);
-		
+
 		//Spring layout for the createDeckButton
 		springLayout.putConstraint(SpringLayout.WEST, createDeckButton, 0, SpringLayout.WEST, deckBox);
 		springLayout.putConstraint(SpringLayout.EAST, createDeckButton, 0, SpringLayout.EAST, deckBox);

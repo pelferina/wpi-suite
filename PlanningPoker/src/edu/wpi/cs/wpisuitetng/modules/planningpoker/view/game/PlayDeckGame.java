@@ -76,7 +76,7 @@ public class PlayDeckGame extends PlayGame implements Refreshable{
 
 		deckId = currentGame.getDeckId();
 		gameCardList = DeckModel.getInstance().getDeck(deckId).getCards();
-		isDeckSingleSelection = DeckModel.getInstance().getDeck(deckId).isSingleSelection();
+		isDeckSingleSelection = DeckModel.getInstance().getDeck(deckId).getIsSingleSelection();
 		generateButtons();
 
 		deckArea.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
