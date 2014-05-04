@@ -7,8 +7,6 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
-import javax.swing.SpringLayout;
-
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.DefaultToolbarView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.ButtonPanel;
@@ -20,9 +18,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons.UserButtonPanel
 /**
  * Sets up upper toolbar of RequirementManager tab
  * 
- *
- * @version $Revision: 1.0 $
- * @author justinhess
+ * @author FFF8E7
+ * @version 6
  */
 @SuppressWarnings("serial")
 public class ToolbarView  extends DefaultToolbarView {

@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.Box;
@@ -36,7 +37,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
  */
 public class ButtonPanel extends ToolbarGroupView{
 	private final JPanel contentPanel = new JPanel();
-	private final LinkedList<JButton> buttonQueue = new LinkedList<JButton>();
+	private final List<JButton> buttonQueue = new LinkedList<JButton>();
 	Component spacer = Box.createRigidArea(new Dimension(15, 0));
 	
 	JButton newButton = new JButton("<html>New<br />Game</html>");
