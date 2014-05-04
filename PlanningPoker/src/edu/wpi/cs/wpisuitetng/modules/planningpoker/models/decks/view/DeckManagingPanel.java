@@ -376,6 +376,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 					errLabel.setVisible(true);
 				} 
 				validateAll();
+				numberField.requestFocusInWindow();
 			}
 		});
 
