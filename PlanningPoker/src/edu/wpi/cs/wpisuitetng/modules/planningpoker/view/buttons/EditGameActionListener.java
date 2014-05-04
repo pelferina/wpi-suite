@@ -15,7 +15,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
  * The EditGameActionListener that implements ActionListener
- * @author fff8e7
+ * @author FFF8E7
  * @version 6
  */
 public class EditGameActionListener implements ActionListener{

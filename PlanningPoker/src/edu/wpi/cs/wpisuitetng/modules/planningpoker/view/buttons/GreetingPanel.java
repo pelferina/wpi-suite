@@ -36,8 +36,8 @@ import java.awt.Font;
 
 /**
  * Panel for buttons up top
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 @SuppressWarnings("serial")
 public class GreetingPanel extends ToolbarGroupView{

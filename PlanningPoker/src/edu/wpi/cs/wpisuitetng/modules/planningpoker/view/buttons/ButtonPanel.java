@@ -11,9 +11,11 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
@@ -22,6 +24,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.SpringLayout;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
@@ -37,7 +40,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 public class ButtonPanel extends ToolbarGroupView{
 	private final JPanel contentPanel = new JPanel();
 	private final LinkedList<JButton> buttonQueue = new LinkedList<JButton>();
-	Component spacer = Box.createRigidArea(new Dimension(15, 0));
+	private int spacerCount = 0;
 	
 	JButton newButton = new JButton("<html>New<br />Game</html>");
 	JButton settingButton = new JButton("<html>User<br />Setting</html>");
@@ -47,7 +50,6 @@ public class ButtonPanel extends ToolbarGroupView{
 	JButton endButton = new JButton("<html>End<br />Game</html>");
 	JButton playButton = new JButton("<html>Play<br />Game</html>");
 	JButton viewButton = new JButton("<html>View<br />Game</html>");
-	
 	JButton createCancelButton = new JButton("<html>Cancel<br />Games</html>");
 	
 	private ImageIcon newImg = null;
@@ -63,10 +65,13 @@ public class ButtonPanel extends ToolbarGroupView{
 	public ButtonPanel() {
 		super("");
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
+		
+		//Set up image icons
 		readImg();
+		
+		//Add Create Game and User Settings buttons
 		newButton.setIcon(newImg);
 		settingButton.setIcon(settingImg);
-		this.setPreferredWidth(165 * 2);
 		newButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -79,10 +84,7 @@ public class ButtonPanel extends ToolbarGroupView{
 				ViewEventController.getInstance().options();
 			}
 		});
-		contentPanel.add(newButton);
-		contentPanel.add(Box.createRigidArea(new Dimension(15, 0)));
-		contentPanel.add(settingButton);
-		contentPanel.add(Box.createRigidArea(new Dimension(15, 0)));
+
 		contentPanel.setOpaque(false);
 		this.add(contentPanel);
 		super.setContent(contentPanel);
@@ -161,11 +163,10 @@ public class ButtonPanel extends ToolbarGroupView{
 			contentPanel.remove(button);
 		}
 		contentPanel.removeAll();
-		contentPanel.add(newButton);
-		contentPanel.add(Box.createRigidArea(new Dimension(15, 0)));
-		contentPanel.add(settingButton);
-		contentPanel.add(Box.createRigidArea(new Dimension(15, 0)));
-		this.setPreferredWidth(165 * 2);
+		//contentPanel.add(newButton);
+		//contentPanel.add(Box.createRigidArea(new Dimension(15,0)));
+		//contentPanel.add(settingButton);
+		//contentPanel.add(Box.createRigidArea(new Dimension(15,0)));
 		contentPanel.updateUI();
 		buttonQueue.clear();
 	}
@@ -186,7 +187,6 @@ public class ButtonPanel extends ToolbarGroupView{
 				}
     			
     		});
-    		playButton.setPreferredSize(new Dimension(150, 50));
     		buttonQueue.add(playButton);
     		contentPanel.add(playButton);
     		contentPanel.add(Box.createRigidArea(new Dimension(15, 0)));
@@ -196,10 +196,9 @@ public class ButtonPanel extends ToolbarGroupView{
     		viewButton.addActionListener(new ActionListener(){
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					ViewEventController.getInstance().viewGameTab(gameSelected);
+					ViewEventController.getInstance().viewGameTab(gameSelected);					
 				}
     		});
-    		viewButton.setPreferredSize(new Dimension(150, 50));
     		buttonQueue.add(viewButton);
     		contentPanel.add(viewButton);
     		contentPanel.add(Box.createRigidArea(new Dimension(15, 0)));
@@ -207,20 +206,18 @@ public class ButtonPanel extends ToolbarGroupView{
     	}
     	
     	if(currentUser.getIdNum() == gameSelected.getOwnerID()){
-    		if(gameSelected.getGameStatus().equals(GameStatus.ACTIVE) || gameSelected.getGameStatus().equals(GameStatus.DRAFT)){
+    		if(gameSelected.getGameStatus().equals(GameStatus.ACTIVE)||gameSelected.getGameStatus().equals(GameStatus.DRAFT)){
     			removeActionListeners(editButton);
-    			editButton.setPreferredSize(new Dimension(150, 50));
     			editButton.addActionListener(new EditGameActionListener(gameSelected));
     			buttonQueue.add(editButton);
     			contentPanel.add(editButton);
-    			contentPanel.add(Box.createRigidArea(new Dimension(15, 0)));
+    			contentPanel.add(Box.createRigidArea(new Dimension(15,0)));
     			contentPanel.updateUI();
-    		}
+    		}	
     		
     		if(gameSelected.getGameStatus().equals(GameStatus.ACTIVE) || gameSelected.getGameStatus().equals(GameStatus.INPROGRESS)){
     			removeActionListeners(endButton);
     			endButton.addActionListener(new EndGameActionListener(gameSelected));
-    			endButton.setPreferredSize(new Dimension(150, 50));
         		buttonQueue.add(endButton);
         		contentPanel.add(endButton);
         		contentPanel.add(Box.createRigidArea(new Dimension(15, 0)));
@@ -228,7 +225,6 @@ public class ButtonPanel extends ToolbarGroupView{
     		}else if(gameSelected.getGameStatus().equals(GameStatus.DRAFT)){
     			if(isValid(gameSelected)){
     				removeActionListeners(activateButton);
-    				activateButton.setPreferredSize(new Dimension(150, 50));
     				activateButton.addActionListener(new ActivateGameActionListener(gameSelected));
     				buttonQueue.add(activateButton);
     				contentPanel.add(activateButton);
@@ -239,7 +235,6 @@ public class ButtonPanel extends ToolbarGroupView{
     			}
     		}else if(gameSelected.getGameStatus().equals(GameStatus.COMPLETED)){
     			removeActionListeners(archiveButton);
-    			archiveButton.setPreferredSize(new Dimension(150, 50));
     			archiveButton.addActionListener(new ArchiveGameActionListener(gameSelected));
     			buttonQueue.add(archiveButton);
     			contentPanel.add(archiveButton);
@@ -248,8 +243,21 @@ public class ButtonPanel extends ToolbarGroupView{
     		}
     		
     	}
+    	
+    	for (JButton button : buttonQueue)
+    	{
+    		button.setPreferredSize(new Dimension(150, 60));
+    		button.setMinimumSize(new Dimension(150, 60));
+    		button.setMaximumSize(new Dimension(150, 60));
+    	}
+    	
     	final int buttonNum = buttonQueue.size();
-		this.setPreferredWidth(165 * (buttonNum + 2));
+//    	contentPanel.setPreferredSize(new Dimension(150*buttonNum + 15*(buttonNum),100));
+//    	contentPanel.setMinimumSize(new Dimension(150*buttonNum + 15*(buttonNum),100));
+//    	contentPanel.setMaximumSize(new Dimension(150*buttonNum + 15*(buttonNum),100));
+    	this.setPreferredSize(new Dimension(150*buttonNum + 15*(buttonNum),100));
+    	this.setMinimumSize(new Dimension(150*buttonNum + 15*(buttonNum),100));
+    	this.setMaximumSize(new Dimension(150*buttonNum + 15*(buttonNum),100));
 
 		this.updateUI();
 	}

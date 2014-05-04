@@ -13,19 +13,15 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.buttons;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.user.GetCurrentUser;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.GameSession;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.JTableModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 
 /**
  * This is a table listener for determining when a table is selected
  * 
- * @author fff8e7
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 public class TableSelectListener implements ListSelectionListener{
 	private final JTable table;

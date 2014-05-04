@@ -24,8 +24,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
  * A split pane for when a game's information is being viewed
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 @SuppressWarnings("serial")
 public class GameView extends JSplitPane{

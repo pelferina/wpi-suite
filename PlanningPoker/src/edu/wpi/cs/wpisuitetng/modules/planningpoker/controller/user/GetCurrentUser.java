@@ -17,7 +17,6 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
  * This class deals with instances of the User
- * 
  * @author FFF8E7
  * @version 6
  */

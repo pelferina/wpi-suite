@@ -21,8 +21,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Vote;
  * This is the entity manager for the Deck in the
  * DeckManager module.
  *
- * @version $Revision: 1.0 $
- * @author Cosmic Latte
+ * @author FFF8E7
+ * @version 6
  */
 public class DeckEntityManager implements EntityManager<Deck> {
 
@@ -68,7 +68,6 @@ public class DeckEntityManager implements EntityManager<Deck> {
 			throw new WPISuiteException();
 		}
 		System.err.println("Deck saved");
-		System.out.println("new deck being saved is deck " + newDeck.getId());
 		return newDeck;
 	}
 	

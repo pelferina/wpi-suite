@@ -25,7 +25,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
  *
  * @author FFF8E7
  * @version 6
- * 
  */
 @SuppressWarnings({"serial"})
 public class GameModel extends AbstractListModel {
@@ -266,6 +265,24 @@ public class GameModel extends AbstractListModel {
 			}
 		
 		return usersGames;
+	}
+	
+	/**
+	 * This returns the game sessions needing a final estimation
+	 * @param userID the user's ID number, as integer
+	 * @return a List<GameSessions> needing votes
+	 */
+	public List<GameSession> getGamesNeedingFinalEstimate(int userID)
+	{
+		final List<GameSession> needsEstimation = new ArrayList<GameSession>();
+		
+		for (GameSession game : games){
+			if (game.getGameStatus() == GameStatus.COMPLETED && game.getOwnerID() == userID && game.getFinalVotes().contains(-1)){
+				needsEstimation.add(game);
+			}
+		}
+		
+		return needsEstimation;
 	}
 	
 	/**

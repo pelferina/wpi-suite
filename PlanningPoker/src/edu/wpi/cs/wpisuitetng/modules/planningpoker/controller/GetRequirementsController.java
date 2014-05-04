@@ -26,8 +26,8 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * This controller coordinates retrieving all of the requirements
  * from the server.
  *
- * @version $Revision: 1.0 $
- * @author justinhess
+ * @author FFF8E7
+ * @version 6
  */
 public class GetRequirementsController extends RefreshableController implements ActionListener {
 

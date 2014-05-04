@@ -105,7 +105,7 @@ public class ViewEventControllerTest {
 		vec.makeUserButtonInvisible();
 		vec.makeViewGameButtonVisible(gs);
 		vec.makeVoteGameButtonVisible(gs);
-		vec.deckManagementTab();
+		//vec.deckManagementTab();
 		vec.createGame();
 	}
 }

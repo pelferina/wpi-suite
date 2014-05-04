@@ -19,10 +19,9 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 /**
 * This observer handles responses to requests for all core users
 *
-* @author Ruofan Ding
-* @version $Revision: 1.0 $
-*
-*/
+ * @author FFF8E7
+ * @version 6
+ */
 public class GetUsersRequestObserver implements RequestObserver {
 	
 	private final GetUsersController controller;

@@ -46,7 +46,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistribu
 
 /**
  * The DeckBuildingPanel class
- * @author Cosmic Latte
+ * @author FFF8E7
  * @version 6
  */
 @SuppressWarnings({"serial"})
@@ -242,9 +242,6 @@ public class DeckBuildingPanel extends JPanel {
 					numberField.setText("");
 					resetPanel();
 					
-					// Outputs console msgs
-					System.out.println("Added card " + cardNumber);
-					System.out.println("Current card list is: " + newDeckCards.toString());
 				} catch (NumberFormatException err) {
 					System.err.println("Incorrect use of gameCard constructor: param not a number");
 					errLabel.setText(numberField.getText() + " is not a valid non-negative integer!");
@@ -273,11 +270,7 @@ public class DeckBuildingPanel extends JPanel {
 				
 				// Checks the amount of cards left and sets the save button to false if none is found
 				if(newDeckCards.isEmpty()) btnSave.setEnabled(false);
-				
-				// Outputs console messages
-				System.out.println("Removed cards from deck");
-				System.out.println("Current card list is: " + newDeckCards.toString());
-				
+
 				//display error message
 				if (newDeckCards.isEmpty()){
 					errLabel.setText("Need to have at least one card in a deck.");
@@ -300,10 +293,6 @@ public class DeckBuildingPanel extends JPanel {
 
 				// Sets button status to false because there are no more cards on the new deck
 				btnSave.setEnabled(false);
-				
-				// Outputs console messages
-				System.out.println("Cleared current deck");
-				System.out.println("Current card list is: " + newDeckCards.toString());
 
 				//display error message
 				if (newDeckCards.isEmpty()){
@@ -512,11 +501,9 @@ public class DeckBuildingPanel extends JPanel {
 				else {
 					btnSave.setEnabled(false);
 				}
-				//TODO notAnIntegerError.setVisible(false);
 			}
 			else{
 				btnAddCard.setEnabled(false);
-				//TODO notAnIntegerError.setVisible(true);
 			}
 		}
 		boolean needsName = false;

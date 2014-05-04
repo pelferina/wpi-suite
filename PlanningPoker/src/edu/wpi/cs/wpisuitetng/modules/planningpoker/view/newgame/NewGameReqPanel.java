@@ -1,5 +1,7 @@
 /*******************************************************************************
- * Copyright (c) 2014 WPI-Suite
+ * Copyright (c)
+
+ 2014 WPI-Suite
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -272,6 +274,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 						offset++;
 					}
 				selectedTable.clearSelection();
+				
 				unselectedTable.clearSelection();
 				int rowIndex = selectedTable.getRowCount() - 1;
 				if(selectedTable.getRowCount() > 0){
@@ -526,7 +529,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	//This gets only the requirements in the "Backlog" iteration from the requirements manager
 	private void filterBacklog()
 	{
-		final ArrayList<Requirement> reqsToRemove = new ArrayList<Requirement>();
+		final List<Requirement> reqsToRemove = new ArrayList<Requirement>();
 		for (Requirement req : reqs) {
 			if (!req.getIteration().equals("Backlog")) reqsToRemove.add(req);
 		}
@@ -539,15 +542,16 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 		reqs = new ArrayList<Requirement>(RequirementModel.getInstance().getRequirements());
 		filterBacklog();
 		for (int i = 0; i < selectedSize; i++){
-			reqs.remove(selected.get(i).getId());
+			Requirement inSelected = RequirementModel.getInstance().getRequirement(selected.get(i).getId());
+			reqs.remove(inSelected);
 		}
 		final DefaultTableModel dtm = (DefaultTableModel) unselectedTable.getModel();
+		dtm.setRowCount(0);
 		dtm.setRowCount(reqs.size());
 		for (int i = 0; i < reqs.size(); i++){
 				dtm.setValueAt(reqs.get(i).getName(), i, 0);
 				dtm.setValueAt(reqs.get(i).getDescription(), i, 1);
 		}
-		System.out.println("NEWGAMETABLEUPDATE" + reqs);
 		dtm.fireTableDataChanged();
 	}
 
@@ -598,6 +602,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	 */
 	public void receiveCreatedReq(Requirement r){
 		disableAllButtons();
+
 		selected.add(r);
 		final DefaultTableModel dtm_1 = (DefaultTableModel)selectedTable.getModel();
 		final String[] data = {r.getName(), r.getDescription()};

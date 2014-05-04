@@ -23,7 +23,7 @@ import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 /**
  * The GetVoteController class
- * @author Cosmic Latte
+ * @author FFF8E7
  * @version 6
  */
 public class GetVoteController extends RefreshableController implements ActionListener {

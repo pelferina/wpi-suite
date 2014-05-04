@@ -26,8 +26,8 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * from the server. This controller is called when the user
  * clicks the deck from the Drop-down menu.
  * 
- * @author Cosmic Latte
- * @version $Revision: 1.0 $
+ * @author FFF8E7
+ * @version 6
  */
 public class GetDecksController extends RefreshableController implements ActionListener {
 

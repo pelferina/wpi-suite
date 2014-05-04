@@ -32,6 +32,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SpringLayout;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -48,7 +49,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameDistribu
 
 /**
  * The DeckBuildingPanel class
- * @author Cosmic Latte
+ * @author FFF8E7
  * @version 6
  */
 @SuppressWarnings({"serial"})
@@ -69,7 +70,9 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 	private final JComboBox<String> decksComboBox = new JComboBox<String>();
 	private final JLabel lblDeckName = new JLabel("Deck Name:");
 	private final JLabel lblDecks = new JLabel("Decks:");
-	private final JLabel errLabel = new JLabel("");
+	private final JLabel deckNameErrLabel = new JLabel("Invalid deck name.");
+	private final JLabel numberValueErrLabel = new JLabel("A deck value must be a positive integer.");
+	private final JLabel cardEmptyErrLabel = new JLabel("A deck must have at least one card.");
 	private final JLabel lblAdd = new JLabel("Card Value:");
 	private final JLabel lblSelection = new JLabel("Selection Mode:");
 	private final JTextField nameField = new JTextField();
@@ -84,13 +87,14 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 	private final JPanel cardPanel = new JPanel();
 	private final JScrollPane cardArea = new JScrollPane(cardPanel);
 	private NewGameDistributedPanel newGameDistributed;
-	//	private final JLabel notAnIntegerError = new JLabel ("Please enter an non-negative integer for card value!");
-	//	private final JLabel duplicateNameError = new JLabel ("This deck name already exists!");
-	//	private final JLabel noCardError = new JLabel ("You need to have at least one card in the deck!");
+//	private final JLabel notAnIntegerError = new JLabel ("Please enter an non-negative integer for card value!");
+//	private final JLabel duplicateNameError = new JLabel ("This deck name already exists!");
+//	private final JLabel noCardError = new JLabel ("You need to have at least one card in the deck!");
 	private int selectedDeckIndex;
 	private int testFlag = 0;
 
 	/** Constructor for a DeckPanel panel
+	 * @param close Button to close this panel
 	 */
 	public DeckManagingPanel(JButton close){
 		btnClose = close;
@@ -137,15 +141,17 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		btnRmvAll.setFont(size);
 		btnRmvAll.setSize(80, 20);
 		btnRmvAll.setEnabled(false);
-		errLabel.setVisible(false);
 		//cardPanel.setMinimumSize(new Dimension(200, 13));
+		deckNameErrLabel.setVisible(false);
+		cardEmptyErrLabel.setVisible(false);
+		numberValueErrLabel.setVisible(false);
 		cardArea.setMinimumSize(new Dimension(200, 135));
 
 		nameField.setDocument(new JTextFieldLimit(20));
 		numberField.setDocument(new JTextFieldLimit(3));
 		
 		// Sets up cardArea
-		cardArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		cardArea.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
 	}
 	/**
@@ -257,7 +263,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 						
 						
 						// GUI calls
-						nameField.setEnabled(true);
+						nameField.setEnabled(false);
 						nameField.setText(decksComboBox.getItemAt(selectedDeckIndex));
 						btnAddCard.setEnabled(true);
 						btnRmvSelected.setEnabled(true);
@@ -276,13 +282,10 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 				newDeckName = nameField.getText();
 				final Deck newDeck = new Deck (newDeckName, newDeckCards); //Updated deck with new name and new cards
 				newDeck.setIsSingleSelection(isSingleSelection); //Updates selection mode
-				System.out.println("new deck cards: " + newDeckCards);
 				if(newDeckFlag){ // Store new deck
-					System.out.println("storing new deck");
 					AddDeckController.getInstance().addDeck(newDeck); 
 					setupDecks();
 				} else { // Update selected deck
-					System.out.println("Editing deck");
 					final Deck thisDeck = DeckModel.getInstance().getDeck(deckIDs.get(selectedDeckIndex));
 					thisDeck.setIsDeleted(true); // delete old version
 					UpdateDeckController.getInstance().updateDeck(thisDeck);
@@ -350,10 +353,11 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 
 				} catch (NumberFormatException err) {
 					System.err.println("Incorrect use of gameCard constructor: param not a number");
-					errLabel.setText(numberField.getText() + " is not a valid non-negative integer!");
-					errLabel.setVisible(true);
+//					errLabel.setText(numberField.getText() + " is not a valid non-negative integer!");
+//					errLabel.setVisible(true);
 				} 
 				validateAll();
+				numberField.requestFocusInWindow();
 			}
 		});
 
@@ -383,10 +387,10 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 				}
 
 				//display error message
-				if (newDeckCards.isEmpty()){
-					errLabel.setText("Need to have at least one card in a deck.");
-					errLabel.setVisible(true);
-				}
+//				if (newDeckCards.isEmpty()){
+//					DeckNameerrLabel.setText("Need to have at least one card in a deck.");
+//					errLabel.setVisible(true);
+//				}
 
 			}
 		});
@@ -407,15 +411,11 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 				btnRmvSelected.setEnabled(false);
 				btnRmvAll.setEnabled(false);
 
-				// Outputs console messages
-				System.out.println("Cleared current deck");
-				System.out.println("Current card list is: " + newDeckCards.toString());
-
 				//display error message
-				if (newDeckCards.isEmpty()){
-					errLabel.setText("Need to have at least one card in a deck.");
-					errLabel.setVisible(true);
-				}
+//				if (newDeckCards.isEmpty()){
+//					deckCarderrLabel.setText("Need to have at least one card in a deck.");
+//					errLabel.setVisible(true);
+//				}
 			}
 		});
 
@@ -527,7 +527,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 
 		//SpringLayout for lblSelection
 		springLayout.putConstraint(SpringLayout.NORTH, lblSelection, 0, SpringLayout.NORTH, numberField);
-		springLayout.putConstraint(SpringLayout.WEST, lblSelection, 10, SpringLayout.EAST, numberField);
+		springLayout.putConstraint(SpringLayout.WEST, lblSelection, 200, SpringLayout.EAST, numberField);
 
 		//SpringLayout for selectionGroup
 		springLayout.putConstraint(SpringLayout.NORTH, btnSingleSelection, 10, SpringLayout.SOUTH, lblSelection);
@@ -551,7 +551,19 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		//Spring layout for btnClose
 		springLayout.putConstraint(SpringLayout.SOUTH, btnClose, -20, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, btnClose, -20, SpringLayout.EAST, this);
+		
+		//Spring layout for deckNameErrLabel
+		springLayout.putConstraint(SpringLayout.NORTH, deckNameErrLabel, 0, SpringLayout.NORTH, nameField);
+		springLayout.putConstraint(SpringLayout.WEST, deckNameErrLabel, 10, SpringLayout.EAST, nameField);
 
+		//Spring layout for numberValueErrLabel
+		springLayout.putConstraint(SpringLayout.NORTH, numberValueErrLabel, 10, SpringLayout.SOUTH, btnAddCard);
+		springLayout.putConstraint(SpringLayout.WEST, numberValueErrLabel, 0, SpringLayout.WEST, btnAddCard);
+		
+		//Spring layout for cardEmptyErrLabel
+		springLayout.putConstraint(SpringLayout.NORTH, cardEmptyErrLabel, 5, SpringLayout.SOUTH, cardArea);
+		springLayout.putConstraint(SpringLayout.WEST, cardEmptyErrLabel, 80, SpringLayout.EAST, btnSingleSelection);
+		
 		setLayout(springLayout);
 
 		add(lblDecks);
@@ -570,6 +582,9 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		add(btnRmvAll);
 		add(btnDelete);
 		add(btnClose);
+		add(deckNameErrLabel);
+		add(numberValueErrLabel);
+		add(cardEmptyErrLabel);
 	}
 
 
@@ -655,10 +670,11 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 	private void validateDeckName(){
 		String name = nameField.getText();
 		name = trim(name);
-		if (name.length() == 0 || DeckModel.getInstance().isDuplicateDeck(nameField.getText())){
+		if (name.length() == 0 || (DeckModel.getInstance().isDuplicateDeck(nameField.getText()) && newDeckFlag)){
 			btnSave.setEnabled(false);
-			errLabel.setText("Invalid deck name.");
-			errLabel.setVisible(true);
+			deckNameErrLabel.setVisible(true);
+		} else {
+			deckNameErrLabel.setVisible(false);
 		}
 	}
 
@@ -673,6 +689,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 				valid = true;
 			}
 		}
+		numberValueErrLabel.setVisible(!valid);
 		btnAddCard.setEnabled(valid);
 	}
 
@@ -680,6 +697,9 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		//Checks that a card has been added to deck
 		if (newDeckCards.isEmpty()){
 			btnSave.setEnabled(false);
+			cardEmptyErrLabel.setVisible(true);
+		} else {
+			cardEmptyErrLabel.setVisible(false);
 		}
 	}
 
@@ -698,7 +718,10 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		return true;
 	}
 
-	public void setFocusOnName() {
+	/**
+	 * sets the focus to the name field
+	 */
+	public void focusOnName() {
 		nameField.requestFocusInWindow();
 		getRootPane().setDefaultButton(btnAddCard);
 	}

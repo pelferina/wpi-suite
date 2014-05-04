@@ -48,7 +48,7 @@ import javax.swing.JComboBox;
  */
 @SuppressWarnings("serial")
 public class NewRequirementPanel extends JPanel {
-	private final Requirement currentRequirement;
+	private Requirement currentRequirement;
 	private final JTextField nameField = new JTextField();
 	private final JTextArea descriptionField = new JTextArea();
 	private final JScrollPane descriptionScrollPane = new JScrollPane(descriptionField);
@@ -206,7 +206,7 @@ public class NewRequirementPanel extends JPanel {
 				checkInput(e);
 			}
 			
-			public void checkInput(DocumentEvent e){
+			private void checkInput(DocumentEvent e){
 				isCreatable = (!nameField.getText().isEmpty() && !descriptionField.getText().isEmpty());
 				if (isCreatable){
 					CreateRequirementButton.setEnabled(isCreatable);
@@ -234,7 +234,7 @@ public class NewRequirementPanel extends JPanel {
 				checkInput(e);
 			}
 			
-			public void checkInput(DocumentEvent e){
+			private void checkInput(DocumentEvent e){
 				isCreatable = (!nameField.getText().isEmpty() && !descriptionField.getText().isEmpty());
 				CreateRequirementButton.setEnabled(isCreatable);
 				reqError.setVisible(!isCreatable);
@@ -276,6 +276,7 @@ public class NewRequirementPanel extends JPanel {
 		ViewEventController.getInstance().refreshTable();
 		ViewEventController.getInstance().refreshTree();
 		newGamePanel.sendCreatedReq(currentRequirement);
+		currentRequirement = new Requirement();
 	}
 	/**
 	 * This function clears all fields so that creating multiple requirments won't have the same fields

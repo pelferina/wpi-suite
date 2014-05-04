@@ -45,13 +45,11 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
  * Main view of the PlanningPoker module
  * @author FFF8E7
  * @version 6
- *
  */
 @SuppressWarnings("serial")
 public class MainView extends JTabbedPane {
 	private final OverviewPanel overviewPanel;
 
-	//private final DeckManagingPanel deckPanel; //TODO get rid of this 
 	private GameModel gameModel;
 	private int newGameTabs = 0;
 	private GetRequirementsRequestObserver refresher;
@@ -66,14 +64,11 @@ public class MainView extends JTabbedPane {
 
 	public MainView() {
 		overviewPanel = new OverviewPanel();
-		//deckPanel = new DeckManagingPanel(); //TODO get rid of this 
 		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
 		addTab("Overview", overviewPanel);
-		//addTab("Manage Deck", deckPanel);
 		ViewEventController.getInstance().setMainView(this);
 	}
-	//The function to add a new game tab
 	//The function to add a new game tab
 
 	/**
@@ -100,8 +95,7 @@ public class MainView extends JTabbedPane {
 			addTab("Req Tab", gs);
 		}
 		/**
-		 * function to add a ReqTab
-		 * @param gs The GameSession to add the tab to
+		 * function to add a DeckManagementTab
 		 */
 		public void addDeckManagementTab(){
 			if(!hasDeckManagingPane){
@@ -215,6 +209,7 @@ public class MainView extends JTabbedPane {
 				final DeckManagingPanel deckManaging = new DeckManagingPanel(btnClose);
 				myCloseActionHandler = new MyCloseActionHandler("Deck Management", j, this, deckManaging, 6);
 				add(deckManaging, open);
+				deckManaging.focusOnName();
 				hasDeckManagingPane = true;
 				manageDeckIndex = open;
 			}
@@ -377,7 +372,7 @@ public class MainView extends JTabbedPane {
 	     * @param tabName name of the tab being closed
 	     * @param index index of that tab on the tab list
 	     * @param mv the MainView
-	     * @param cv the completeView panel
+	     * @param dm The DeckManagingPanel
 	     * @param type integer for type
 	     */
 	    public MyCloseActionHandler(String tabName, int index, MainView mv, DeckManagingPanel dm, int type) {

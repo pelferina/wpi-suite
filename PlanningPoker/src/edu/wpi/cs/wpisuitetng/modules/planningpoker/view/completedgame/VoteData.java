@@ -38,13 +38,13 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.characteristics.GameS
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.GuiStandards;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.completedgame.charts.BarChart;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.JTextFieldLimit;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 import javax.swing.SpringLayout;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-
 
 import java.awt.Color;
 import java.awt.Font;
@@ -96,10 +96,10 @@ public class VoteData extends JPanel{
 		gameReqs = cv.getGameRequirements();
 		finalVote = new ArrayList<Integer>();
 		notAnIntegerError.setVisible(false);
-//		archiveGameButton.setEnabled(false);
 		submitEstimateButton.setEnabled(false);
 		descriptionTextArea.setLineWrap(true);
 		descriptionTextArea.setWrapStyleWord(true);
+		finalEstimateText.setDocument(new JTextFieldLimit(3));
 		if(completedGame.getFinalVotes() != null){
 			if (completedGame.getFinalVotes().size() > 0 && completedGame.getFinalVotes().get(0) >= 0){
 				finalVote = completedGame.getFinalVotes();
@@ -180,7 +180,6 @@ public class VoteData extends JPanel{
 						break;
 					}
 				}
-				archiveGameButton.setEnabled(allVotes);
 				completeView.nextRequirement(finalEstimate);
 				completeView.isNew = false;
 			}

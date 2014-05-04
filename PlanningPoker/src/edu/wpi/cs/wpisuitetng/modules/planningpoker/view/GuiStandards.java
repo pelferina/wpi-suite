@@ -5,8 +5,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 /**
  * This enum contains standard distances for placement of GUI objects
- * @author fff8e7
- *
+ * @author FFF8E7
+ * @version 6
  */
 public enum GuiStandards {
 	// distances between GUI elements and the edge of the screen
