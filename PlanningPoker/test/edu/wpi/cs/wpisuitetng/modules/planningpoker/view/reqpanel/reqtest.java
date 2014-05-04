@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors: Team Cosmic Latte
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.reqpanel;
 
 import static org.junit.Assert.*;
@@ -23,14 +34,14 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.Requi
 		private NewGameDistributedPanel newGamePanel;
 		@Test
 		public void testUpdaterequirement(){
-			NewRequirementPanel testreqPanel = new NewRequirementPanel(null);	
+			final NewRequirementPanel testreqPanel = new NewRequirementPanel(null);
 			testreqPanel.panelSetup();
-			Requirement testRequirement = new Requirement();
-			String testName = "test: Name";
-			String testDescription = "test: Description";
-			JTextField testnameField = new JTextField(); ; 
-			JButton reqbutton = testreqPanel.getCreateRequirementButton();
-			JLabel reqError = testreqPanel.getReqError();
+			final Requirement testRequirement = new Requirement();
+			final String testName = "test: Name";
+			final String testDescription = "test: Description";
+			final JTextField testnameField = new JTextField();  
+			final JButton reqbutton = testreqPanel.getCreateRequirementButton();
+			final JLabel reqError = testreqPanel.getReqError();
 			assertEquals(false, reqbutton.isEnabled());
 			assertEquals(true, reqError.isEnabled());
 			

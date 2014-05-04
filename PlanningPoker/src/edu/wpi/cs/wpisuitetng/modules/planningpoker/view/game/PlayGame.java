@@ -193,7 +193,7 @@ public class PlayGame extends JPanel implements Refreshable{
 
 		gameNameTextField.setBorder(BorderFactory.createCompoundBorder(
 				gameNameTextField.getBorder(), 
-				BorderFactory.createEmptyBorder(0, GuiStandards.TEXT_BOX_MARGIN.getValue(), 0, 0)));	
+				BorderFactory.createEmptyBorder(0, GuiStandards.TEXT_BOX_MARGIN.getValue(), 0, 0)));
 
 		reqNameTextField.setBorder(BorderFactory.createCompoundBorder(
 				reqNameTextField.getBorder(), 
@@ -263,7 +263,7 @@ public class PlayGame extends JPanel implements Refreshable{
 					final AddVoteController msgr = new AddVoteController(VoteModel.getInstance());
 					msgr.sendVote(userEstimates);
 					gv.isNew = true;
-					ViewEventController.getInstance().getMain().remove(gv);					
+					ViewEventController.getInstance().getMain().remove(gv);
 				}
 			}
 		});
@@ -323,7 +323,7 @@ public class PlayGame extends JPanel implements Refreshable{
 		springLayout.putConstraint(SpringLayout.WEST, reqDesc, 0, SpringLayout.WEST, reqName);
 
 		//Spring layout for reqName label
-		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, reqName, -100, SpringLayout.VERTICAL_CENTER, this);
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, reqName, -20, SpringLayout.VERTICAL_CENTER, this);
 		springLayout.putConstraint(SpringLayout.WEST, reqName, 0, SpringLayout.WEST, gameDesc);
 
 		//Spring layout for notAnIntegerError label
@@ -492,9 +492,10 @@ public class PlayGame extends JPanel implements Refreshable{
 
 	@Override
 	public void refreshGames() {
-		if(hasModified)
+		if(hasModified){
 			return;
-		GameSession refreshedGame = GameModel.getInstance().getGame(currentGame.getGameID());
+		}
+		final GameSession refreshedGame = GameModel.getInstance().getGame(currentGame.getGameID());
 		
 		if (refreshedGame.getGameStatus().equals(GameStatus.ACTIVE) &&
 				(!refreshedGame.getGameReqs().equals(currentGame.getGameReqs())
@@ -534,4 +535,34 @@ public class PlayGame extends JPanel implements Refreshable{
 		// TODO Auto-generated method stub
 
 	}
+
+
+	public JTextField getEstimateTextField() {
+		return estimateTextField;
+	}
+
+	public JTextField getGameNameTextField() {
+		return gameNameTextField;
+	}
+
+	public JTextField getReqNameTextField() {
+		return reqNameTextField;
+	}
+
+	public JTextArea getGameDescTextArea() {
+		return gameDescTextArea;
+	}
+
+	public JTextArea getReqDescTextArea() {
+		return reqDescTextArea;
+	}
+
+	public JButton getSubmit() {
+		return submit;
+	}
+
+	public JButton getVoteButton() {
+		return voteButton;
+	}
+
 }

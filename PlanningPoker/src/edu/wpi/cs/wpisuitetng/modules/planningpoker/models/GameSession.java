@@ -52,9 +52,10 @@ public class GameSession extends AbstractModel {
 	private List<Float> mean;
 	private List<Double> standardDeviation;
 	private int deckId;
-	private final List<Vote> votes;
+	private  List<Vote> votes;
 	private List<Integer> finalVotes;
 	
+
 	/**
 	 * This constructor generates a game session
 	 * @param game the name of the game as a string
@@ -403,4 +404,11 @@ public class GameSession extends AbstractModel {
 		return standardDeviation;
 	}
 	
+	/**
+	 * Only use this for testing purposes
+	 * @param votes
+	 */
+	public void setVotes(List<Vote> votes){
+		this.votes = votes;
+	}
 }

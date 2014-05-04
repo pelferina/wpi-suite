@@ -126,7 +126,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 					reqsToRemove.add(temp_req);
 					selected.add(temp_req);
 				}
-			}	
+			}
 		}
 		for (Requirement r: reqsToRemove){
 			reqList.remove(r);
@@ -149,6 +149,12 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 			
 			img = ImageIO.read(getClass().getResource("removeall.png"));
 			btnRemoveAll.setIcon(new ImageIcon(img));
+			
+			btnAddOne.setEnabled(true);
+			btnAddAll.setEnabled(true);
+			btnRemoveOne.setEnabled(true);
+			btnRemoveAll.setEnabled(true);
+
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
@@ -157,7 +163,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 	//Initializes the reqpanel
 	
 	private void init()
-	{	
+	{
 		setupButtonIcons();
 		final SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
@@ -274,7 +280,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 				if(selectedTable.getRowCount() > 0){
 					selectedTable.setRowSelectionInterval(rowIndex, rowIndex);
 				}
-				rowIndex = unselectedTable.getRowCount() - 1;				
+				rowIndex = unselectedTable.getRowCount() - 1;
 				unselectedTable.setRowSelectionInterval(rowIndex, rowIndex);
 				enableAllButtons();
 			}
@@ -298,7 +304,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 					dtm_1.setRowCount(0);
 				}
 				selectedTable.clearSelection();
-				unselectedTable.clearSelection();	
+				unselectedTable.clearSelection();
 				unselectedTable.setRowSelectionInterval(0, 0);
 				enableAllButtons();
 			}
@@ -373,7 +379,7 @@ public class NewGameReqPanel extends JPanel implements Refreshable {
 					if(selectedTable.getRowCount() > 0){
 						selectedTable.setRowSelectionInterval(rowIndex, rowIndex);
 					}
-					rowIndex = unselectedTable.getRowCount() - 1;				
+					rowIndex = unselectedTable.getRowCount() - 1;
 					unselectedTable.setRowSelectionInterval(rowIndex, rowIndex);
 				}
 			}

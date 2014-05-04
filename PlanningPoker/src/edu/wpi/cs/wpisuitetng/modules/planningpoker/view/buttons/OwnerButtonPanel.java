@@ -52,14 +52,14 @@ public class OwnerButtonPanel extends ToolbarGroupView{
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
 		this.setPreferredWidth(315);
 		
-		ownerButton.setPreferredSize(new Dimension(150, 50));	
+		ownerButton.setPreferredSize(new Dimension(150, 50));
 		editButton.setPreferredSize(new Dimension(150, 50));
 		
 		try {
 		    endImg= new ImageIcon(ImageIO.read(getClass().getResource("cancel.png")));
 		    activateImg = new ImageIcon(ImageIO.read(getClass().getResource("activategame.png")));
 		    archiveImg =new ImageIcon( ImageIO.read(getClass().getResource("archive.png")));
-		    editImg = new ImageIcon(ImageIO.read(getClass().getResource("edit.png")));		    
+		    editImg = new ImageIcon(ImageIO.read(getClass().getResource("edit.png")));
 		} catch (IOException ex) {
 			System.out.println("IOException thrown in EndGameButtonPanel");
 		}

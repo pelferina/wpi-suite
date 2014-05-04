@@ -103,7 +103,7 @@ public class JDateComponentFactory {
 	 * @return
 	 */
 	public static DateModel<?> createDateModel(Object value) {
-		Class<?> clazz = value.getClass();
+		final Class<?> clazz = value.getClass();
 		
 		DateModel<?> result = null;
 		if (clazz.equals(java.util.Calendar.class)) {

@@ -32,7 +32,7 @@ public class MockNetwork extends Network {
 		if (requestMethod == null) {
 			throw new NullPointerException("requestMethod may not be null");
 		}
-		
+		System.out.println("In makeRequestin mocknetwork");
 		lastRequestMade = new MockRequest(defaultNetworkConfiguration, path, requestMethod); 
 		
 		return lastRequestMade;

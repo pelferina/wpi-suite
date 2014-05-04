@@ -271,7 +271,7 @@ public class GameRequirements extends JSplitPane{
 			    	estimatesComplete.clearSelection();
 			    }
 			    else {
-			    	estimatesPending.clearSelection();	
+			    	estimatesPending.clearSelection();
 			    }
 				final List<Requirement> allReqs = RequirementModel.getInstance().getRequirements();
 				Requirement req = null;

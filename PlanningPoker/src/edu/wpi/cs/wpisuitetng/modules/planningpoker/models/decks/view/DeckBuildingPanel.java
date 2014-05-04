@@ -73,7 +73,7 @@ public class DeckBuildingPanel extends JPanel {
 	private final SpringLayout springLayout = new SpringLayout();
 	private String newDeckName;
 	private final List<Integer> newDeckCards = new ArrayList<Integer>();
-	private final List<Integer> cardsToBeRemoved = new ArrayList<Integer>();
+	private List<Integer> cardsToBeRemoved = new ArrayList<Integer>();
 	private final JPanel cardPanel = new JPanel();
 	private final JScrollPane cardArea = new JScrollPane(cardPanel);
 	private final NewGameDistributedPanel newGameDistributed;
@@ -159,7 +159,7 @@ public class DeckBuildingPanel extends JPanel {
 			public void actionPerformed(ActionEvent e){
 				newDeckName = nameField.getText();
 
-				Deck newDeck = new Deck (newDeckName, newDeckCards);
+				final Deck newDeck = new Deck (newDeckName, newDeckCards);
 				newDeck.setIsSingleSelection(isSingleSelection);
 
 				AddDeckController.getInstance().addDeck(newDeck);
@@ -554,7 +554,7 @@ public class DeckBuildingPanel extends JPanel {
 		
 		btnSave.setEnabled(allValid);
 	}
-	
+
 	/**
 	 * Helper function for checking if the estimate text box contains an integer
 	 * @param s the string to be checking
@@ -595,5 +595,42 @@ public class DeckBuildingPanel extends JPanel {
 	public void focusOnName() {
 		nameField.requestFocusInWindow();
 		getRootPane().setDefaultButton(btnAddCard);
+	}
+	
+	public boolean isSingleSelection() {
+		return isSingleSelection;
+	}
+	public JButton getBtnAddCard() {
+		return btnAddCard;
+	}
+	public JButton getBtnRmvSelected() {
+		return btnRmvSelected;
+	}
+	public JButton getBtnRmvAll() {
+		return btnRmvAll;
+	}
+	public JButton getBtnSave() {
+		return btnSave;
+	}
+
+	public JButton getBtnCancel() {
+		return btnCancel;
+	}
+
+	public JTextField getNameField() {
+		return nameField;
+	}
+	public JTextField getNumberField() {
+		return numberField;
+	}
+	public List<Integer> getNewDeckCards() {
+		return newDeckCards;
+	}
+	
+	public List<Integer> getCardsToBeRemoved() {
+		return cardsToBeRemoved;
+	}
+	public void setCardsToBeRemoved(List<Integer> cardsToBeRemoved) {
+		this.cardsToBeRemoved = cardsToBeRemoved;
 	}
 }
