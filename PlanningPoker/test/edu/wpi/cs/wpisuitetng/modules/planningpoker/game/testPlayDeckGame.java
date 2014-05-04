@@ -52,7 +52,6 @@ public class testPlayDeckGame {
 
 	}
 	@Test
-<<<<<<< HEAD
 	public void testPlayDeckGame() throws Exception{
 		List <Integer> reqList =  new ArrayList<Integer>();
 		reqList.add(1);
@@ -62,15 +61,6 @@ public class testPlayDeckGame {
 		gs.setDeckId(0);
 		GameView gv = new GameView(gs);
 		PlayDeckGame pdg = new PlayDeckGame(gs, gv);
-=======
-	public void testDeadlineCheck() throws Exception{
-		final GameSession gs = new GameSession("G", "D", 0, 0, Calendar.getInstance().getTime(), new ArrayList());
-		final GameView gv = new GameView(gs);
-		final PlayDeckGame pdg = new PlayDeckGame(gs, gv);
-		pdg.clear();
-		pdg.checkCanSubmit();
-		
->>>>>>> 935ab2df87bf2fd07ccd1b2e3e1ab3b712368ce2
 		assertNotNull(pdg);
 		assertEquals("G", pdg.getGameNameTextField().getText());
 		assertEquals("D", pdg.getGameDescTextArea().getText());

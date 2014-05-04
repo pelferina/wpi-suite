@@ -127,13 +127,8 @@ public class GameSessionTest {
 			assertTrue(expectedGameSession.equals(gm.getCompletedGameSessions().get(i)));
 			i++;
 		}
-<<<<<<< HEAD
 		//System.out.println(gm.getCompletedGameSessions().toString());
 	}	
 }	
-=======
-		System.out.println(gm.getCompletedGameSessions().toString());
-	}
-}
->>>>>>> 935ab2df87bf2fd07ccd1b2e3e1ab3b712368ce2
+
 

@@ -118,16 +118,14 @@ public class DeckTest {
 	}
 	
 	@Test
-<<<<<<< HEAD
 	public void testBtnCancel(){
 		GameSession gs = new GameSession("G","D", 0, 0, Calendar.getInstance().getTime(), new ArrayList<Integer>());
 		NewGameDistributedPanel ngdp = new NewGameDistributedPanel(gs, new JButton());
 		DeckBuildingPanel dbp = new DeckBuildingPanel(ngdp);
 		assertNotNull(dbp);
 		dbp.getBtnCancel().doClick();
-	}
-}	
-=======
+	}	
+
 	public void testAddDecks(){
 		final Deck[] decks = {d1, d2};
 		DeckModel.getInstance().addDecks(decks);
@@ -137,5 +135,5 @@ public class DeckTest {
 	}
 
 }
->>>>>>> 935ab2df87bf2fd07ccd1b2e3e1ab3b712368ce2
+
 
