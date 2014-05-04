@@ -58,7 +58,7 @@ public class PlayDeckGame extends PlayGame implements Refreshable{
 	private final int deckId;
 	private List<Integer> gameCardList = new ArrayList<Integer>();
 	private int votesSoFarInt = -1;
-	
+
 	private final JLabel votesSoFarLabel = new JLabel("0");
 
 	//List of buttons associated with the cards. First element -> lowest card val
@@ -151,6 +151,10 @@ public class PlayDeckGame extends PlayGame implements Refreshable{
 
 		springLayout.putConstraint(SpringLayout.SOUTH, reqDescScroll, -GuiStandards.NEXT_LABEL_OFFSET.getValue(), SpringLayout.NORTH, deckArea);
 
+		//Spring layout for reqName label
+		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, reqName, -100, SpringLayout.VERTICAL_CENTER, this);
+		springLayout.putConstraint(SpringLayout.WEST, reqName, 0, SpringLayout.WEST, gameDesc);
+
 		//Spring layout for deckArea
 		springLayout.putConstraint(SpringLayout.WEST, deckArea, GuiStandards.DIVIDER_MARGIN.getValue(), SpringLayout.WEST, this);
 		springLayout.putConstraint(SpringLayout.EAST, deckArea, -GuiStandards.RIGHT_MARGIN.getValue(), SpringLayout.EAST, this);
@@ -230,7 +234,7 @@ public class PlayDeckGame extends PlayGame implements Refreshable{
 		}
 		voteButton.setEnabled(false);
 	}
-	
+
 	/**
 	 * Disables all the card buttons, used when no requirement is selected
 	 */
