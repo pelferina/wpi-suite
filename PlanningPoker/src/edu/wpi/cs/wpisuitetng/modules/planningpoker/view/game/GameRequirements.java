@@ -236,6 +236,9 @@ public class GameRequirements extends JSplitPane{
   		}
 		if (i == -1){
 			gv.clearBoxes();
+			if (gv.playDeckGame != null){
+				gv.playDeckGame.disableAll();
+			}
 		}
 	}
 	
