@@ -34,9 +34,9 @@ public class OverviewPanelTest {
 		op.updateTable("Voted");
 		op.updateTable("History");
 		op.updateTable("Complete");
+		op.updateTable("Completed");
 		op.updateTable("Archived");
 		op.refreshGames();
-		
 	}
 
 }

@@ -1204,26 +1204,6 @@ public class NewGameInputDistributedPanel extends JPanel implements Refreshable{
 		return deckCheckBox;
 	}
 
-//	public JLabel getMinuteError() {
-//		return minuteError;
-//	}
-//
-//	public JLabel getDeadlineError() {
-//		return deadlineError;
-//	}
-//
-//	public JLabel getNameError() {
-//		return nameError;
-//	}
-//
-//	public JLabel getReqError() {
-//		return reqError;
-//	}
-//
-//	public JLabel getHourError() {
-//		return hourError;
-//	}
-
 	public JButton getCreateDeckButton() {
 		return createDeckButton;
 	}

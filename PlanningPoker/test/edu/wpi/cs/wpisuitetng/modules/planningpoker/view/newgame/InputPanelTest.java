@@ -181,5 +181,24 @@ public class InputPanelTest {
 		assertTrue(testNew.getCancelButton().isEnabled());
 		
 	}
-	
+	/**
+	 * Check enability when valid fields are filled
+	 */
+	@Test
+	public void validGameCreation()
+	{
+		// Create new game panel
+		NewGameDistributedPanel ngdp = new NewGameDistributedPanel(reqs, null);
+		NewGameInputDistributedPanel testNew = new NewGameInputDistributedPanel(ngdp);
+				
+		
+		String testName = "testName";
+		
+		// add fields
+		testNew.getNameTextField().setText(testName);
+			
+		assertTrue(testNew.getSaveGameButton().isEnabled());
+		assertFalse(testNew.getActivateGameButton().isEnabled());
+		assertTrue(testNew.getCancelButton().isEnabled());
+	}
 }
