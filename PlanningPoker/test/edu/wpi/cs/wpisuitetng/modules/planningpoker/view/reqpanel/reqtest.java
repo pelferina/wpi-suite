@@ -18,6 +18,8 @@ import javax.swing.JLabel;
 
 import org.junit.Test;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGameReqPanel;
+
 	public class reqtest {
 		@Test
 		public void testUpdaterequirement(){
@@ -29,5 +31,16 @@ import org.junit.Test;
 			assertEquals(true, reqError.isEnabled());
 			
 		}
-		
+		@Test
+		public void errorRequiredFieldTest(){
+			final NewRequirementPanel testreqPanel = new NewRequirementPanel(null);
+			testreqPanel.panelSetup();
+			final JButton reqbutton = testreqPanel.getCreateRequirementButton();
+			final JLabel reqError = testreqPanel.getReqError();
+
+			testreqPanel.getNameTextField().setText("NewReq");;
+			testreqPanel.getDescriptionField().setText("My Requirement Description");
+			
+			assertEquals(true, reqbutton.isEnabled());			
+		}
 	}

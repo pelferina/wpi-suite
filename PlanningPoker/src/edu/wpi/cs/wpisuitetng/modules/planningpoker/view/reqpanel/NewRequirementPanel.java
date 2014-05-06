@@ -294,6 +294,14 @@ public class NewRequirementPanel extends JPanel {
 	public String getDescription(){
 		return descriptionField.getText();
 	}
+	public JTextField getNameTextField()
+	{
+		return nameField;
+	}
+	public JTextArea getDescriptionField()
+	{
+		return descriptionField;
+	}
 	public JButton getCreateRequirementButton(){
 		return CreateRequirementButton;
 	}

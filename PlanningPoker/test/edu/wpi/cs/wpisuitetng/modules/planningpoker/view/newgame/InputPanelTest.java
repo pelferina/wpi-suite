@@ -11,16 +11,24 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.MockNetwork;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.mock.MockNetwork;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.configuration.NetworkConfiguration;
 
@@ -109,12 +117,88 @@ public class InputPanelTest {
 		// a field is added correctly but both name and description are filled with blanks
 		ngdp.getNewGameReqPanel().getAddOneButton().doClick();
 		testNew.getNameTextField().setText("");
-//		
+		
 		// can't create because no name/description, but a field has been changed
 		assertFalse(testNew.getSaveGameButton().isEnabled());
 		assertFalse(testNew.getActivateGameButton().isEnabled());
-
+	}
+	/**
+	 * check for the default case when starting a new requirement panel
+	 */
+	@Test
+	public void defaultField()
+	{
+		// Create new game panel
+		NewGameDistributedPanel ngdp = new NewGameDistributedPanel(reqs, null);
+		NewGameInputDistributedPanel testNew = new NewGameInputDistributedPanel(ngdp);
 		
+		//Select deadline check box
+		testNew.getDeadlineCheckBox().setSelected(true);
+		
+		//Get current time
+		Calendar testDate = Calendar.getInstance();
+		
+		//Default deadline hour and minute to a minute from the current time
+		final SimpleDateFormat hourDateFormat = new SimpleDateFormat("hh");
+		final SimpleDateFormat minuteDateFormat = new SimpleDateFormat("mm"); 
+		final String hour = hourDateFormat.format(testDate.getTime());
+		final String minute = minuteDateFormat.format(testDate.getTime());
+		int hourTimeIndex = Integer.parseInt(hour)-1;
+		int minuteTimeIndex = Integer.parseInt(minute) + 1;
+		
+		//Check if default deadline is correctly set
+		assertEquals(hourTimeIndex,testNew.getDeadlineHourComboBox().getSelectedIndex());
+		assertEquals(minuteTimeIndex, testNew.getDeadlineMinuteComboBox().getSelectedIndex());
 
+		if (testDate.get(Calendar.AM_PM) == Calendar.PM) 
+			assertTrue(testNew.getPMButton().isSelected());
+		else
+			assertTrue(testNew.getAMButton().isSelected());
+		
+		//Select deck checkbox 
+		testNew.getDeckCheckBox().setSelected(true);
+		
+		//Check default deck
+		assertEquals(0,testNew.getDeckBox().getSelectedIndex());
+	}
+	
+	/**
+	 * check the error when extreme cases occur
+	 */
+	@Test
+	public void invalidFieldTest()
+	{
+		// Create new game panel
+		NewGameDistributedPanel ngdp = new NewGameDistributedPanel(reqs, null);
+		NewGameInputDistributedPanel testNew = new NewGameInputDistributedPanel(ngdp);
+		
+		// fill in a valid field
+		testNew.getNameTextField().setText("Game");
+
+		// can't create because no requirements selected, but a field has been changed
+		assertTrue(testNew.getSaveGameButton().isEnabled());
+		assertFalse(testNew.getActivateGameButton().isEnabled());
+		assertTrue(testNew.getCancelButton().isEnabled());
+		
+	}
+	/**
+	 * Check enability when valid fields are filled
+	 */
+	@Test
+	public void validGameCreation()
+	{
+		// Create new game panel
+		NewGameDistributedPanel ngdp = new NewGameDistributedPanel(reqs, null);
+		NewGameInputDistributedPanel testNew = new NewGameInputDistributedPanel(ngdp);
+				
+		
+		String testName = "testName";
+		
+		// add fields
+		testNew.getNameTextField().setText(testName);
+			
+		assertTrue(testNew.getSaveGameButton().isEnabled());
+		assertFalse(testNew.getActivateGameButton().isEnabled());
+		assertTrue(testNew.getCancelButton().isEnabled());
 	}
 }

@@ -18,6 +18,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -62,7 +63,6 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 	private final JButton btnRmvAll = new JButton("Remove all");
 	private final JButton btnSave = new JButton("Save deck");
 	private final JButton btnDelete = new JButton("Delete deck");
-	private final JButton btnCancel = new JButton("Cancel");
 	private JButton btnClose = new JButton("Close");
 	private final JRadioButton btnSingleSelection = new JRadioButton("Single Selection");
 	private final JRadioButton btnMultipleSelection = new JRadioButton("Multiple Selection");
@@ -91,6 +91,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 //	private final JLabel duplicateNameError = new JLabel ("This deck name already exists!");
 //	private final JLabel noCardError = new JLabel ("You need to have at least one card in the deck!");
 	private int selectedDeckIndex;
+	private int testFlag = 0;
 
 	/** Constructor for a DeckPanel panel
 	 * @param close Button to close this panel
@@ -140,8 +141,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 		btnRmvAll.setFont(size);
 		btnRmvAll.setSize(80, 20);
 		btnRmvAll.setEnabled(false);
-		btnCancel.setFont(size);
-		btnCancel.setSize(80, 20);
+		//cardPanel.setMinimumSize(new Dimension(200, 13));
 		deckNameErrLabel.setVisible(false);
 		cardEmptyErrLabel.setVisible(false);
 		numberValueErrLabel.setVisible(false);
@@ -314,28 +314,6 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 
 				// Moves selection back to initial index
 				decksComboBox.setSelectedIndex(0);
-			}
-		});
-
-		btnCancel.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				nameField.setText("");
-
-				// Clears lists
-				newDeckCards.clear();
-				cardsToBeRemoved.clear();
-
-				// Clears panel
-				cardPanel.removeAll();
-				cardPanel.revalidate();
-				cardPanel.repaint();
-
-				// Resets Selection Modes
-				isSingleSelection = true;
-				btnSingleSelection.setSelected(true);
-				btnMultipleSelection.setSelected(false);
-
-				newGameDistributed.closeDeck();
 			}
 		});
 
@@ -639,9 +617,7 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 	private void setupButtonIcons()
 	{
 		try{
-			Image img = ImageIO.read(getClass().getResource("cancel.png"));
-			btnCancel.setIcon(new ImageIcon(img));
-			img = ImageIO.read(getClass().getResource("save.png"));
+			Image img = ImageIO.read(getClass().getResource("save.png"));
 			btnSave.setIcon(new ImageIcon(img));
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
@@ -785,4 +761,48 @@ public class DeckManagingPanel extends JPanel implements Refreshable{
 			setupDecks();
 		}
 	}
+
+	public JButton getBtnAddCard() {
+		return btnAddCard;
+	}
+
+	public JButton getBtnRmvSelected() {
+		return btnRmvSelected;
+	}
+
+	public JButton getBtnRmvAll() {
+		return btnRmvAll;
+	}
+
+	public JButton getBtnSave() {
+		return btnSave;
+	}
+
+
+	public JRadioButton getBtnSingleSelection() {
+		return btnSingleSelection;
+	}
+
+	public JRadioButton getBtnMultipleSelection() {
+		return btnMultipleSelection;
+	}
+
+
+	public JComboBox<String> getDecksComboBox() {
+		return decksComboBox;
+	}
+
+	public JTextField getNameField() {
+		return nameField;
+	}
+
+	public JTextField getNumberField() {
+		return numberField;
+	}
+
+	public List<Integer> getCardsToBeRemoved() {
+		return cardsToBeRemoved;
+	}
+
+
 }

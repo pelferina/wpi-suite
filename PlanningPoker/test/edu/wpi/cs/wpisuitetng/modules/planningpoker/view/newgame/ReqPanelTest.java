@@ -75,5 +75,4 @@ public class ReqPanelTest {
 		assertFalse(selectedReqs.contains(req2));
 		assertFalse(selectedReqs.contains(req3));
 	}
-	
 }
